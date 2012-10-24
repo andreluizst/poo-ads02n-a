@@ -15,9 +15,12 @@ public class Entrada {
     private Double qtde;
     private String dataEntrada;
     private String lote;
+    private Produto produto;
+    private Fornecedor fornecedor;
 
     public Entrada(){
-
+        fornecedor=new Fornecedor();
+        produto=new Produto();
     }
     public Entrada(Integer codEntrada, Double qtde, String dataEntrada, String lote){
         this.codEntrada = codEntrada;
@@ -80,6 +83,34 @@ public class Entrada {
      */
     public void setLote(String lote) {
         this.lote = lote;
+    }
+
+    /**
+     * @return the produto
+     */
+    public Produto getProduto() {
+        return produto;
+    }
+
+    /**
+     * @param produto the produto to set
+     */
+    public void setProduto(Produto produto) {
+        this.produto = produto;
+    }
+
+    /**
+     * @return the fornecedor
+     */
+    public Fornecedor getFornecedor() {
+        return fornecedor;
+    }
+
+    /**
+     * @param fornecedor the fornecedor to set
+     */
+    public void setFornecedor(Fornecedor fornecedor) {
+        this.fornecedor = fornecedor;
     }
 
     
