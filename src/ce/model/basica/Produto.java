@@ -13,6 +13,7 @@ public class Produto {
     private Double qtdeMin;
     private Double qtdeIdeal;
     private Double qtdeEstoq;
+    private int statusProd;
     private List<Fornecedor> fornecedores;
     //private List<Fornecedor> delForns;
     //private List<Fornecedor> insForns;
@@ -23,7 +24,7 @@ public class Produto {
     }
     
     public Produto(Integer codProd, String descProd, Double qtdeEstoq, 
-            Double qtdeMin, Double qtdeIdeal, Categoria categoria){
+            Double qtdeMin, Double qtdeIdeal, int statusProd, Categoria categoria){
             //List<Fornecedor> fornecedores){
         this();
         this.codProd= codProd;
@@ -32,9 +33,20 @@ public class Produto {
         this.qtdeMin= qtdeMin;
         this.qtdeIdeal= qtdeIdeal;
         this.categoria= categoria;
-        //this.fornecedores=fornecedores;
-        //this.categoria.setCodCateg(categoria.getCodCateg());
-        //this.categoria.setDescricao(categoria.getDescricao());
+        this.statusProd=statusProd;
+    }
+    
+    public Produto(String descProd, Double qtdeEstoq, 
+            Double qtdeMin, Double qtdeIdeal, int statusProd, Categoria categoria){
+            //List<Fornecedor> fornecedores){
+        this();
+        this.codProd= 0;
+        this.descProd= descProd;
+        this.qtdeEstoq= qtdeEstoq;
+        this.qtdeMin= qtdeMin;
+        this.qtdeIdeal= qtdeIdeal;
+        this.categoria= categoria;
+        this.statusProd=statusProd;
     }
 
     /**
@@ -134,5 +146,19 @@ public class Produto {
     public void setFornecedores(List<Fornecedor> fornecedores) {
         this.fornecedores = fornecedores;
     }
-    
+
+    /**
+     * @return the statusProd
+     */
+    public int getStatusProd() {
+        return statusProd;
+    }
+
+    /**
+     * @param statusProd the statusProd to set
+     */
+    public void setStatusProd(int statusProd) {
+        this.statusProd = statusProd;
+    }
+  
 }

@@ -21,6 +21,10 @@ public class Unidade {
         this.descricao=descricao;
     }
 
+    public Unidade(String descricao){
+        this.codUnid=0;
+        this.descricao=descricao;
+    }
     /**
      * @return the codUnid
      */

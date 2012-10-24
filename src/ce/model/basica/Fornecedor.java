@@ -43,7 +43,37 @@ public class Fornecedor {
         this.fone=fone;
         this.email=email;
     }
+    
+    public Fornecedor(Integer codForn, String nome){
+        this.codForn= codForn;
+        this.nome=nome;
+        this.cnpj="";
+        this.logradouro="";
+        this.num=0;
+        this.comp="";
+        this.bairro="";
+        this.municipio="";
+        this.uf="";
+        this.cep="";
+        this.fone="";
+        this.email="";
+    }
 
+    public Fornecedor(Integer codForn, String nome, String cnpj){
+        this.codForn= codForn;
+        this.nome=nome;
+        this.cnpj=cnpj;
+        this.logradouro="";
+        this.num=0;
+        this.comp="";
+        this.bairro="";
+        this.municipio="";
+        this.uf="";
+        this.cep="";
+        this.fone="";
+        this.email="";
+    }
+    
     /**
      * @return the codForn
      */
