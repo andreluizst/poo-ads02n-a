@@ -135,7 +135,7 @@ public class RepositorioLocalEstoque implements IRepositorioLocalEstoque{
             PreparedStatement pstmt= c.prepareStatement(sql);
             pstmt.setInt(1, codLocal);
             ResultSet rs= pstmt.executeQuery();
-            if(rs != null){
+            if(rs.next()){
                 le = new LocalEstoque(rs.getInt("codLocal"), 
                         rs.getString("descricao"));
             }

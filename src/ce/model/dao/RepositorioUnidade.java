@@ -124,19 +124,21 @@ public class RepositorioUnidade implements IRepositorioUnidade{
         }
     }
     
-    public Unidade pesqCodForn(Integer codUnid) throws ConexaoException, 
+    public Unidade pesqCodUnid(Integer codUnid) throws ConexaoException, 
             RepositorioException{
         Unidade u= null;
         Connection c= gerenciadorConexao.conectar();
-        String sql= "select * from unidade where codUnid=?";        
+        String sql= "SELECT * FROM unidade WHERE codUnid=?";        
         try{
             PreparedStatement pstmt= c.prepareStatement(sql);
             pstmt.setInt(1, codUnid);
-            ResultSet rs= pstmt.executeQuery();
-            if(rs != null){
+            //pstmt.setLong(1, codUnid);
+            ResultSet rs = pstmt.executeQuery();
+            if(rs.next()){
                 u = new Unidade(rs.getInt("codUnid"), rs.getString("descricao"));
             }
             pstmt.close();
+            rs.close();
             return u;
         }
         catch(SQLException e){

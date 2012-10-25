@@ -134,7 +134,7 @@ public class RepositorioEstado implements IRepositorioEstado{
             PreparedStatement pstmt= c.prepareStatement(sql);
             pstmt.setString(1, uf);
             ResultSet rs= pstmt.executeQuery();
-            if(rs != null){
+            if(rs.next()){
                 e = new Estado(rs.getString("UF"), rs.getString("descricao")); 
             }
             pstmt.close();

@@ -167,7 +167,7 @@ public class RepositorioFornecedor implements IRepositorioFornecedor{
             PreparedStatement pstmt= c.prepareStatement(sql);
             pstmt.setInt(1, codForn);
             ResultSet rs= pstmt.executeQuery();
-            if(rs != null){
+            if(rs.next()){
                 f = new Fornecedor(rs.getInt("codForn"), rs.getString("nome"), 
                         rs.getString("CNPJ"), rs.getString("logradouro"),
                         rs.getInt("Num"), rs.getString("Comp"), 

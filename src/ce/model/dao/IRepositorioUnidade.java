@@ -19,5 +19,5 @@ public interface IRepositorioUnidade {
     public void excluir(Integer codUnid) throws ConexaoException, RepositorioException;
     public List<Unidade> listar() throws ConexaoException, RepositorioException;
     public List<Unidade> pesquisar(String descricao) throws ConexaoException, RepositorioException;
-    public Unidade pesqCodForn(Integer codUnid) throws ConexaoException, RepositorioException; 
+    public Unidade pesqCodUnid(Integer codUnid) throws ConexaoException, RepositorioException; 
 }

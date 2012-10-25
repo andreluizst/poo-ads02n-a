@@ -98,6 +98,7 @@ public class RepositorioCategoria implements IRepositorioCategoria{
         String sql = "SELECT codCateg, descricao FROM categoria WHERE descricao=?";
         try{
             PreparedStatement pstm = c.prepareStatement(sql);
+            pstm.setString(1, descricao);
             ResultSet rs = pstm.executeQuery();
 
             if( rs.next() ){
@@ -122,6 +123,7 @@ public class RepositorioCategoria implements IRepositorioCategoria{
         String sql = "select codCateg, descricao from categoria where codCateg=?";
         try{
             PreparedStatement pstm = c.prepareStatement(sql);
+            pstm.setInt(1, codCateg);
             ResultSet resultSet = pstm.executeQuery();
 
             if(resultSet.next()){

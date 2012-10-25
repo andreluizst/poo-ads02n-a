@@ -168,7 +168,7 @@ public class RepositorioFuncionario implements IRepositorioFuncionario{
             PreparedStatement pstmt= c.prepareStatement(sql);
             pstmt.setString(1, cpf);
             ResultSet rs= pstmt.executeQuery();
-            if(rs != null){
+            if(rs.next()){
                 f = new Funcionario(rs.getString("CPF"), rs.getString("nome"), 
                         rs.getString("DtNasc"), rs.getString("logradouro"),
                         rs.getInt("Num"), rs.getString("Comp"), 

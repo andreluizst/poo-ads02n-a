@@ -27,6 +27,7 @@ public class GerenciadorConexao implements IGerenciadorConexao {
         local = "jdbc:mysql://localhost:3306/estoque";
         usuario = "root";
         senha = "root";
+        //senha = "andre";
         loginNeeded=false;
     }
 

@@ -29,28 +29,31 @@ public class Main {
         rpCateg = new RepositorioCategoria();
         rpProd= new RepositorioProduto();
         rpUnid=new RepositorioUnidade();
-        testaInserir();
+        //testaInserir();
         testaListar();
     }
 
     private static void testaInserir() {
         //Categoria c = new Categoria("Informática");//testado e ok
+        Produto p;
         try {
             /*Categoria - TESTADA E OK
-             * rep.incluir(c);
-            rep.incluir(new Categoria("Papelaria"));*///testado e ok
-            /*Unidade - TESTADA E OK
-            rpUnid.inserir(new Unidade("Peça"));
+            rpCateg.incluir(c);
+            rpCateg.incluir(new Categoria("Papelaria"));//testado e ok
+            /*Unidade - TESTADA E OK*/
+            /*rpUnid.inserir(new Unidade("Peça"));
             rpUnid.inserir(new Unidade("Caixa"));*/
             
-            //Produto - dando erro. Possivelmente pq o campo codUnid da tabela
-            //é NOT NULL e a classe Produto não está tratando esse campo.
-            // INCLUIR ESTE ATRIBUTO, mas antes testar o RepositorioUnidade
+            //Produto - TESTADO E OK
             
-            rpProd.inserir(new Produto("Monitor LCD 22", 100.00, 50.00,
-                    100.00, 0, rpCateg.pesquisar("Informática")));
-            rpProd.inserir(new Produto("Notebook DELL Inspiron 14r", 200.00, 40.00,
-                    80.00, 0, rpCateg.pesquisar("Informática")));
+            p= new Produto("Monitor LCD 22", 100.00, 
+                    50.00, 100.00, 0,
+                    rpCateg.pesquisar("Informática"), 
+                    rpUnid.pesqCodUnid(1));
+            /*rpProd.inserir(p);
+            rpProd.inserir(new Produto("Notebook DELL Inspiron 14r", 200.00,
+                    40.00, 80.00, 0, rpCateg.pesquisar("Informática"),
+                    rpUnid.pesqCodUnid(1)));*/
             System.out.println("Inserido com sucesso!");
         } catch (ConexaoException ex) {
             System.out.println("ERRO conexão: " + ex.getMessage());
@@ -64,8 +67,9 @@ public class Main {
         try {
             
             /*Categoria - testada e ok
-             * for (Categoria item : (ArrayList<Categoria>) rep.listar()) {
-             System.out.println(item.getCodCateg() + " - " + item.getDescricao());*/
+             for (Categoria item : (ArrayList<Categoria>) rpCateg.listar()) {
+                System.out.println(item.getCodCateg() + " - " + item.getDescricao());
+             }*/
             /*Unidade - TESTADA E OK
             for (Unidade item : (ArrayList<Unidade>) rpUnid.listar()) {
                 System.out.println(item.getCodUnid() + " - " + item.getDescricao());

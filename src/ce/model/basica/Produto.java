@@ -15,16 +15,19 @@ public class Produto {
     private Double qtdeEstoq;
     private int statusProd;
     private List<Fornecedor> fornecedores;
+    private Unidade unidade;
     //private List<Fornecedor> delForns;
     //private List<Fornecedor> insForns;
 
     public Produto(){
         this.categoria=new Categoria();
         this.fornecedores= new ArrayList<Fornecedor>();
+        this.unidade= new Unidade();
     }
     
     public Produto(Integer codProd, String descProd, Double qtdeEstoq, 
-            Double qtdeMin, Double qtdeIdeal, int statusProd, Categoria categoria){
+            Double qtdeMin, Double qtdeIdeal, int statusProd, 
+            Categoria categoria, Unidade unidade){
             //List<Fornecedor> fornecedores){
         this();
         this.codProd= codProd;
@@ -33,11 +36,13 @@ public class Produto {
         this.qtdeMin= qtdeMin;
         this.qtdeIdeal= qtdeIdeal;
         this.categoria= categoria;
+        this.unidade=unidade;
         this.statusProd=statusProd;
     }
     
     public Produto(String descProd, Double qtdeEstoq, 
-            Double qtdeMin, Double qtdeIdeal, int statusProd, Categoria categoria){
+            Double qtdeMin, Double qtdeIdeal, int statusProd, 
+            Categoria categoria, Unidade unidade){
             //List<Fornecedor> fornecedores){
         this();
         this.codProd= 0;
@@ -46,6 +51,7 @@ public class Produto {
         this.qtdeMin= qtdeMin;
         this.qtdeIdeal= qtdeIdeal;
         this.categoria= categoria;
+        this.unidade=unidade;
         this.statusProd=statusProd;
     }
 
@@ -159,6 +165,20 @@ public class Produto {
      */
     public void setStatusProd(int statusProd) {
         this.statusProd = statusProd;
+    }
+
+    /**
+     * @return the unidade
+     */
+    public Unidade getUnidade() {
+        return unidade;
+    }
+
+    /**
+     * @param unidade the unidade to set
+     */
+    public void setUnidade(Unidade unidade) {
+        this.unidade = unidade;
     }
   
 }
