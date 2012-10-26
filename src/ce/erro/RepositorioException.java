@@ -3,9 +3,18 @@ package ce.erro;
 /**
  *
  * @author professor
+ * @author André Luiz S. Teotônio
  */
 public class RepositorioException extends Exception{
+    /**
+     * Esta propriedade contém a classe que lançou a exceção. Se a classe B
+     * capturar a exceção da classe A e por sua vez relançar para uma outra
+     * class, por exemplo C, que ao tratar esta exceção poderá verificar que
+     * esta propriedade terá o seguinte caminho: A.B
+     *
+     */
     private String pathClassCall= "";
+    
     public RepositorioException(){
         super();
     }
@@ -14,9 +23,13 @@ public class RepositorioException extends Exception{
         super(e);
     }
     
+    /**
+     * Abilita o rastreamento da(s) classe(s) chamadora(s)
+     * @param nameClassCall
+     * Nome da classe que está lançando a exceção
+     * */
     public RepositorioException(Exception e, String nameClassCall){
         super(e);
-        //pathClassCall= nameClassCall;
         if (pathClassCall.compareTo("") == 0){
             pathClassCall= nameClassCall;
         }else{
@@ -33,7 +46,7 @@ public class RepositorioException extends Exception{
     }
     
     public void addClassCallToPath(String name){
-        if (pathClassCall.compareTo("") > 0){
+        if (pathClassCall.compareTo("") == 0){
             pathClassCall= name;
         }else{
             pathClassCall= name + "." + pathClassCall;

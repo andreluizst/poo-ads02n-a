@@ -20,6 +20,11 @@ public class LocalEstoque {
         this.codLocal=codLocal;
         this.descricao=descricao;
     }
+    
+    public LocalEstoque(String descricao){
+        this.codLocal=0;
+        this.descricao=descricao;
+    }
 
     /**
      * @return the codLocal

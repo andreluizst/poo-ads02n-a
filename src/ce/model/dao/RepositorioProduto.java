@@ -96,6 +96,7 @@ public class RepositorioProduto implements IRepositorioProduto{
                     atualizaFornXProd=true;
                 }
             }
+            rsFornsDB.close();
             pstmtFornsDB.close();
             if (atualizaFornXProd){
                 sqlFornsDB= "delete from FornXProd where codProd=?";
@@ -186,10 +187,12 @@ public class RepositorioProduto implements IRepositorioProduto{
                     f= rpForn.pesqCodForn(rsForns.getInt("codForn"));
                     fornecedores.add(f);
                 }
-                //pstmtForns.close();
+                rsForns.close();
+                pstmtForns.close();
                 p.setFornecedores(fornecedores);
                 lista.add(p);
             }
+            rs.close();
             statement.close();
             pstmtForns.close();
             return lista;

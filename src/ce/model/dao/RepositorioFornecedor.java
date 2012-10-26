@@ -45,7 +45,7 @@ public class RepositorioFornecedor implements IRepositorioFornecedor{
             pstmt.close();
         }
         catch(SQLException e){
-            throw new RepositorioException(e);
+            throw new RepositorioException(e, "RepositorioFornecedor");
         }
         finally{
             gerenciadorConexao.desconectar(c);
@@ -75,7 +75,7 @@ public class RepositorioFornecedor implements IRepositorioFornecedor{
             pstmt.close();
         }
         catch(SQLException e){
-            throw new RepositorioException(e);
+            throw new RepositorioException(e, "RepositorioFornecedor");
         }
         finally{
             gerenciadorConexao.desconectar(c);
@@ -92,7 +92,7 @@ public class RepositorioFornecedor implements IRepositorioFornecedor{
             pstmt.close();
         }
         catch(SQLException e){
-            throw new RepositorioException(e);
+            throw new RepositorioException(e, "RepositorioFornecedor");
         }
         finally{
             gerenciadorConexao.desconectar(c);
@@ -117,6 +117,7 @@ public class RepositorioFornecedor implements IRepositorioFornecedor{
                         rs.getString("Fone"), rs.getString("Email"));
                 lista.add(f);
             }
+            rs.close();
             stmt.close();
             return lista;
         }
@@ -147,11 +148,12 @@ public class RepositorioFornecedor implements IRepositorioFornecedor{
                         rs.getString("Fone"), rs.getString("Email"));
                 lista.add(f);
             }
+            rs.close();
             pstmt.close();
             return lista;
         }
         catch(SQLException e){
-            throw new RepositorioException(e);
+            throw new RepositorioException(e, "RepositorioFornecedor");
         }
         finally{
             gerenciadorConexao.desconectar(c);
@@ -175,11 +177,12 @@ public class RepositorioFornecedor implements IRepositorioFornecedor{
                         rs.getString("UF"), rs.getString("CEP"), 
                         rs.getString("Fone"), rs.getString("Email"));
             }
+            rs.close();
             pstmt.close();
             return f;
         }
         catch(SQLException e){
-            throw new RepositorioException(e);
+            throw new RepositorioException(e, "RepositoroiFornecedor");
         }
         finally{
             gerenciadorConexao.desconectar(c);

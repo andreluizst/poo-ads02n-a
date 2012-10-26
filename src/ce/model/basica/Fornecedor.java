@@ -44,6 +44,23 @@ public class Fornecedor {
         this.email=email;
     }
     
+    public Fornecedor(String nome, String cnpj, String logradouro, int num,
+            String comp, String bairro, String municipio, String uf, String cep,
+            String fone, String email){
+        this.codForn= 0;
+        this.nome=nome;
+        this.cnpj=cnpj;
+        this.logradouro=logradouro;
+        this.num=num;
+        this.comp=comp;
+        this.bairro=bairro;
+        this.municipio=municipio;
+        this.uf=uf;
+        this.cep=cep;
+        this.fone=fone;
+        this.email=email;
+    }
+    
     public Fornecedor(Integer codForn, String nome){
         this.codForn= codForn;
         this.nome=nome;
