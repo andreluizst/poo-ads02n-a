@@ -33,7 +33,7 @@ public class RepositorioUnidade implements IRepositorioUnidade{
             pstmt.close();
         }
         catch(SQLException e){
-            throw new RepositorioException(e);
+            throw new RepositorioException(e, "RepositorioUnidade");
         }
         finally{
             gerenciadorConexao.desconectar(c);
@@ -51,7 +51,7 @@ public class RepositorioUnidade implements IRepositorioUnidade{
             pstmt.close();
         }
         catch(SQLException e){
-            throw new RepositorioException(e);
+            throw new RepositorioException(e, "RepositorioUnidade");
         }
         finally{
             gerenciadorConexao.desconectar(c);
@@ -68,7 +68,7 @@ public class RepositorioUnidade implements IRepositorioUnidade{
             pstmt.close();
         }
         catch(SQLException e){
-            throw new RepositorioException(e);
+            throw new RepositorioException(e, "RepositorioUnidade");
         }
         finally{
             gerenciadorConexao.desconectar(c);
@@ -92,7 +92,7 @@ public class RepositorioUnidade implements IRepositorioUnidade{
             return lista;
         }
         catch(SQLException e){
-            throw new RepositorioException(e);
+            throw new RepositorioException(e, "RepositorioUnidade");
         }
         finally{
             gerenciadorConexao.desconectar(c);
@@ -117,7 +117,7 @@ public class RepositorioUnidade implements IRepositorioUnidade{
             return lista;
         }
         catch(SQLException e){
-            throw new RepositorioException(e);
+            throw new RepositorioException(e, "RepositorioUnidade");
         }
         finally{
             gerenciadorConexao.desconectar(c);
@@ -142,7 +142,7 @@ public class RepositorioUnidade implements IRepositorioUnidade{
             return u;
         }
         catch(SQLException e){
-            throw new RepositorioException(e);
+            throw new RepositorioException(e, "RepositorioUnidade");
         }
         finally{
             gerenciadorConexao.desconectar(c);

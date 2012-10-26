@@ -58,7 +58,7 @@ public class Main {
         } catch (ConexaoException ex) {
             System.out.println("ERRO conexão: " + ex.getMessage());
         } catch (RepositorioException ex) {
-            System.out.println("ERRO repositório: " + ex.getMessage());
+            System.out.println("ERRO " + ex.getPathClassCall() + ": " + ex.getMessage());
         }
     }
 
@@ -84,9 +84,9 @@ public class Main {
                         + item.getCodProd() + " - " + item.getDescProd());
             }
         } catch (ConexaoException ex) {
-            System.out.println("ERRO: " + ex.getMessage());
+            System.out.println("ERRO conexão: " + ex.getMessage());
         } catch (RepositorioException ex) {
-            System.out.println("ERRO: " + ex.getMessage());
+            System.out.println("ERRO repositório: " + ex.getPathClassCall() + ex.getMessage());
         }
     }
 //1º TESTE SUBVERSION

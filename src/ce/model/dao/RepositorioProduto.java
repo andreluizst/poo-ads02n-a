@@ -54,7 +54,7 @@ public class RepositorioProduto implements IRepositorioProduto{
             pstmt.close();
         }
         catch (SQLException e){
-            throw new RepositorioException("RepositorioProduto.inserir ERROR: "+e);
+            throw new RepositorioException(e, "RepositorioProduto");
         }
         finally{
             gc.desconectar(conexao);
@@ -148,7 +148,7 @@ public class RepositorioProduto implements IRepositorioProduto{
             pstmtFp.close();
         }
         catch(SQLException e){
-            throw new RepositorioException(e);
+            throw new RepositorioException(e, "RepositorioProduto");
         }
         finally{
             gc.desconectar(conexao);
@@ -181,7 +181,6 @@ public class RepositorioProduto implements IRepositorioProduto{
                         rpUnid.pesqCodUnid(rs.getInt("codUnid")));
                 //PreparedStatement pstmtForns= c.prepareStatement(sqlForns);
                 pstmtForns.setInt(1, p.getCodProd());
-                System.out.println("ResultSet rsForns= pstmtForns.executeQuery();...");
                 ResultSet rsForns= pstmtForns.executeQuery();
                 while (rsForns.next()){
                     f= rpForn.pesqCodForn(rsForns.getInt("codForn"));
@@ -196,7 +195,10 @@ public class RepositorioProduto implements IRepositorioProduto{
             return lista;
         }
         catch(SQLException e){
-            throw new RepositorioException(e);
+            throw new RepositorioException(e, "RepositorioProduto");
+        }
+        catch(RepositorioException ex){
+            throw new RepositorioException(ex, "RepositorioProduto."+ex.getPathClassCall());
         }
         finally{
             gc.desconectar(c);

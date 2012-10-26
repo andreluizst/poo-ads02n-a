@@ -40,7 +40,7 @@ public class RepositorioCategoria implements IRepositorioCategoria{
 
             return lista;
         }catch(SQLException e){
-            throw new RepositorioException(e);
+            throw new RepositorioException(e, "RepositorioCategoria");
         }finally{
             gc.desconectar(c);
         }
@@ -55,7 +55,7 @@ public class RepositorioCategoria implements IRepositorioCategoria{
             pstm.execute();
             pstm.close();
         }catch(SQLException e){
-            throw new RepositorioException(e);
+            throw new RepositorioException(e, "RepositorioCategoria");
         }finally{
             gc.desconectar(c);
         }
@@ -71,7 +71,7 @@ public class RepositorioCategoria implements IRepositorioCategoria{
             pstm.execute();
             pstm.close();
         }catch(SQLException e){
-            throw new RepositorioException(e);
+            throw new RepositorioException(e, "RepositorioCategoria");
         }finally{
             gc.desconectar(c);
         }
@@ -86,7 +86,7 @@ public class RepositorioCategoria implements IRepositorioCategoria{
             pstm.execute();
             pstm.close();
         }catch(SQLException e){
-            throw new RepositorioException(e);
+            throw new RepositorioException(e, "RepositorioCategoria");
         }finally{
             gc.desconectar(c);
         }
@@ -111,7 +111,7 @@ public class RepositorioCategoria implements IRepositorioCategoria{
 
             return cat;
         }catch(SQLException e){
-            throw new RepositorioException(e);
+            throw new RepositorioException(e, "RepositorioCategoria");
         }finally{
             gc.desconectar(c);
         }
@@ -135,7 +135,7 @@ public class RepositorioCategoria implements IRepositorioCategoria{
             return categoria;
         }
         catch(SQLException e){
-            throw new RepositorioException(e);
+            throw new RepositorioException(e, "RepositorioCategoria");
         }
         finally{
             gc.desconectar(c);
