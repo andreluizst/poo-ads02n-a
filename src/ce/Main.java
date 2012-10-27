@@ -75,6 +75,9 @@ public class Main {
             rpForn.inserir(new Fornecedor("Nagem", "11435908001203",
                     "Av Cons. Aguiar", 1456, "", "Boa Viagem",
                     "Recife", "PE", "51055060", "8122212325", "vendas@nagem.com.br"));
+            rpForn.inserir(new Fornecedor("Infohouse", "35456123000102",
+                    "Av Cons. Aguiar", 1002, "", "Boa Viagem",
+                    "Recife", "PE", "51055060", "8134622233", "vendas@infohouse.com.br"));
             */
             System.out.println("Inserido com sucesso!");
         } catch (ConexaoException ex) {
@@ -87,9 +90,13 @@ public class Main {
     private static void testaAlterar(){
         Produto p1;
         try{
+            //Produto.alterar() - TESTADO E OK.
             p1= rpProd.pesqCodProd(1);
-            p1.getFornecedores().add(rpForn.pesqCodForn(1));
-            p1.getFornecedores().add(rpForn.pesqCodForn(2));
+            //p1.getFornecedores().add(rpForn.pesqCodForn(1));
+            //p1.getFornecedores().add(rpForn.pesqCodForn(3));
+            //p1.getFornecedores().add(rpForn.pesqCodForn(2));
+            //p1.getFornecedores().remove(1);
+            //p1.getFornecedores().clear();
             System.out.println("rpProd.alterar(p1);...");
             rpProd.alterar(p1);
             System.out.println("Alterado com sucesso!");

@@ -4,6 +4,8 @@
  */
 package ce.model.basica;
 
+import java.util.ArrayList;
+import java.util.List;
 /**
  *
  * @author Andre
@@ -21,9 +23,10 @@ public class Fornecedor {
     private String cep;
     private String fone;
     private String email;
+    private List<Produto> produtos;
     
     public Fornecedor(){
-        
+        produtos= new ArrayList<Produto>();
     }
     
     public Fornecedor(Integer codForn, String nome, String cnpj, 
@@ -257,5 +260,19 @@ public class Fornecedor {
      */
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    /**
+     * @return the produtos
+     */
+    public List<Produto> getProdutos() {
+        return produtos;
+    }
+
+    /**
+     * @param produtos the produtos to set
+     */
+    public void setProdutos(List<Produto> produtos) {
+        this.produtos = produtos;
     }
 }

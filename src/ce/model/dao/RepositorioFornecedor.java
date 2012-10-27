@@ -7,6 +7,7 @@ package ce.model.dao;
 import ce.erro.ConexaoException;
 import ce.erro.RepositorioException;
 import ce.model.basica.Fornecedor;
+import ce.model.basica.Produto;
 import ce.util.GerenciadorConexao;
 import ce.util.IGerenciadorConexao;
 import java.sql.*;
@@ -45,7 +46,7 @@ public class RepositorioFornecedor implements IRepositorioFornecedor{
             pstmt.close();
         }
         catch(SQLException e){
-            throw new RepositorioException(e, "RepositorioFornecedor");
+            throw new RepositorioException(e, "RepositorioFornecedor.inserir()");
         }
         finally{
             gerenciadorConexao.desconectar(c);
@@ -57,6 +58,11 @@ public class RepositorioFornecedor implements IRepositorioFornecedor{
         String sql = "update Fornecedor set cnpj=?, nome=?, logradouro=?,"
                 + "num=?,comp=?,bairro=?, municipio=?, uf=?, cep=?, fone=?,"
                 + "email=? where codForn=?";
+        boolean atualizaFornXProd= false;
+        List<Produto> ProdsForn= new ArrayList<Produto>();
+        Produto p= null;
+        String sqlProds= "select distinct codProd, codForn from FornXProd"
+                + " where codForn=?";
         try{
             PreparedStatement pstmt = c.prepareStatement(sql);
             pstmt.setString(1, f.getCnpj());
@@ -73,9 +79,50 @@ public class RepositorioFornecedor implements IRepositorioFornecedor{
             pstmt.setInt(12, f.getCodForn());
             pstmt.execute();
             pstmt.close();
+            PreparedStatement pstmtProds= c.prepareStatement(sqlProds);
+            pstmtProds.setInt(1, f.getCodForn());
+            ResultSet rs= pstmtProds.executeQuery();
+            IRepositorioProduto rpProd= new RepositorioProduto();
+            while (rs.next()){
+                p= rpProd.pesqCodProd(rs.getInt("codProd"));
+                ProdsForn.add(p);
+            }
+            if (ProdsForn.size() != f.getProdutos().size()){
+                atualizaFornXProd=true;
+            }else{
+                if (p.getFornecedores().size() > 0){
+                    for (int i=0;i<p.getFornecedores().size();i++){
+                        if (ProdsForn.get(i).getCodProd() != 
+                                f.getProdutos().get(i).getCodProd()){
+                            atualizaFornXProd= true;
+                            break;
+                        }
+                    }
+                }
+            }
+            rs.close();
+            pstmtProds.close();
+            if (atualizaFornXProd){
+                sqlProds= "delete from FornXProd where codForn=?";
+                pstmtProds= c.prepareStatement(sqlProds);
+                pstmtProds.setInt(1, f.getCodForn());
+                pstmtProds.execute();
+                pstmtProds.close();
+                if (f.getProdutos().size() > 0){
+                    sqlProds= "insert into FornXProd (codForn, codProd)"
+                        + " values(?, ?)";
+                    for (int i=0;i<f.getProdutos().size();i++){
+                        pstmtProds= c.prepareStatement(sqlProds);
+                        pstmtProds.setInt(1, f.getCodForn());
+                        pstmtProds.setInt(2, f.getProdutos().get(i).getCodProd());
+                        pstmtProds.execute();
+                        pstmtProds.close();
+                    }
+                }
+            }
         }
         catch(SQLException e){
-            throw new RepositorioException(e, "RepositorioFornecedor");
+            throw new RepositorioException(e, "RepositorioFornecedor.alterar()");
         }
         finally{
             gerenciadorConexao.desconectar(c);
@@ -92,7 +139,7 @@ public class RepositorioFornecedor implements IRepositorioFornecedor{
             pstmt.close();
         }
         catch(SQLException e){
-            throw new RepositorioException(e, "RepositorioFornecedor");
+            throw new RepositorioException(e, "RepositorioFornecedor.excluir()");
         }
         finally{
             gerenciadorConexao.desconectar(c);
@@ -102,12 +149,18 @@ public class RepositorioFornecedor implements IRepositorioFornecedor{
     public List<Fornecedor> listar() throws ConexaoException,
             RepositorioException{
         List<Fornecedor> lista = new ArrayList<Fornecedor>();
+        List<Produto> produtos= new ArrayList<Produto>();
         Fornecedor f;
+        Produto p=null;
         Connection c= gerenciadorConexao.conectar();
         String sql= "select * from Fornecedor";
+        String sqlProds= "SELECT DISTINCT codProd, codForn from FornXProd"
+                + " where codForn=?";
         try{
             Statement stmt= c.createStatement();
             ResultSet rs= stmt.executeQuery(sql);
+            PreparedStatement pstmtProds= c.prepareStatement(sqlProds);
+            IRepositorioProduto rpProd= new RepositorioProduto();
             while (rs.next()){
                 f = new Fornecedor(rs.getInt("codForn"), rs.getString("nome"), 
                         rs.getString("CNPJ"), rs.getString("logradouro"),
@@ -115,6 +168,15 @@ public class RepositorioFornecedor implements IRepositorioFornecedor{
                         rs.getString("Bairro"), rs.getString("Municipio"),
                         rs.getString("UF"), rs.getString("CEP"), 
                         rs.getString("Fone"), rs.getString("Email"));
+                pstmtProds.setInt(1, f.getCodForn());
+                ResultSet rsProds= pstmtProds.executeQuery();
+                while (rsProds.next()){
+                    p= rpProd.pesqCodProd(rsProds.getInt("codProd"));
+                    produtos.add(p);
+                }
+                rsProds.close();
+                pstmtProds.close();
+                f.setProdutos(produtos);
                 lista.add(f);
             }
             rs.close();
@@ -122,7 +184,10 @@ public class RepositorioFornecedor implements IRepositorioFornecedor{
             return lista;
         }
         catch(SQLException e){
-            throw new RepositorioException(e);
+            throw new RepositorioException(e, "RepositorioFornecedor.listar()");
+        }
+        catch(RepositorioException ex){
+            throw new RepositorioException(ex, "RepositorioFornecedor.listar()."+ex.getPathClassCall());
         }
         finally{
             gerenciadorConexao.desconectar(c);
@@ -131,14 +196,20 @@ public class RepositorioFornecedor implements IRepositorioFornecedor{
     
     public List<Fornecedor> pesquisar(String nome) throws ConexaoException,
             RepositorioException{
-                List<Fornecedor> lista = new ArrayList<Fornecedor>();
-        Fornecedor f;
+        List<Fornecedor> lista = new ArrayList<Fornecedor>();
+        List<Produto> produtos= new ArrayList<Produto>();
+        Fornecedor f=null;
+        Produto p=null;
         Connection c= gerenciadorConexao.conectar();
         String sql= "select * from Fornecedor where nome like ?";
+        String sqlProds= "SELECT DISTINCT codProd, codForn"
+                + " from FornXProd where codForn=?";
         try{
             PreparedStatement pstmt= c.prepareStatement(sql);
             pstmt.setString(1, nome);
             ResultSet rs= pstmt.executeQuery();
+            PreparedStatement pstmtProds= c.prepareStatement(sqlProds);
+            IRepositorioProduto rpProd= new RepositorioProduto();
             while (rs.next()){
                 f = new Fornecedor(rs.getInt("codForn"), rs.getString("nome"), 
                         rs.getString("CNPJ"), rs.getString("logradouro"),
@@ -146,6 +217,15 @@ public class RepositorioFornecedor implements IRepositorioFornecedor{
                         rs.getString("Bairro"), rs.getString("Municipio"),
                         rs.getString("UF"), rs.getString("CEP"), 
                         rs.getString("Fone"), rs.getString("Email"));
+                pstmtProds.setInt(1, f.getCodForn());
+                ResultSet rsProds= pstmt.executeQuery();
+                while (rsProds.next()){
+                    p= rpProd.pesqCodProd(rsProds.getInt("codProd"));
+                    produtos.add(p);
+                }
+                rsProds.close();
+                pstmtProds.close();
+                f.setProdutos(produtos);
                 lista.add(f);
             }
             rs.close();
@@ -153,7 +233,10 @@ public class RepositorioFornecedor implements IRepositorioFornecedor{
             return lista;
         }
         catch(SQLException e){
-            throw new RepositorioException(e, "RepositorioFornecedor");
+            throw new RepositorioException(e, "RepositorioFornecedor.pesquisar()");
+        }
+        catch(RepositorioException ex){
+            throw new RepositorioException(ex, "RepositorioFornecedor.pesquisar()."+ex.getPathClassCall());
         }
         finally{
             gerenciadorConexao.desconectar(c);
@@ -163,12 +246,18 @@ public class RepositorioFornecedor implements IRepositorioFornecedor{
     public Fornecedor pesqCodForn(Integer codForn) throws ConexaoException, 
             RepositorioException{
         Fornecedor f= null;
+        Produto p= null;
         Connection c= gerenciadorConexao.conectar();
+        List<Produto> produtos= new ArrayList<Produto>();
         String sql= "select * from Fornecedor where codForn=?";        
+        String sqlProds = "SELECT DISTINCT codProd, codForn"
+                + " from fornxprod where codForn=?";
         try{
             PreparedStatement pstmt= c.prepareStatement(sql);
             pstmt.setInt(1, codForn);
             ResultSet rs= pstmt.executeQuery();
+            PreparedStatement pstmtProds= c.prepareStatement(sqlProds);
+            IRepositorioProduto rpProd= new RepositorioProduto();
             if(rs.next()){
                 f = new Fornecedor(rs.getInt("codForn"), rs.getString("nome"), 
                         rs.getString("CNPJ"), rs.getString("logradouro"),
@@ -176,13 +265,25 @@ public class RepositorioFornecedor implements IRepositorioFornecedor{
                         rs.getString("Bairro"), rs.getString("Municipio"),
                         rs.getString("UF"), rs.getString("CEP"), 
                         rs.getString("Fone"), rs.getString("Email"));
+                pstmtProds.setInt(1, codForn);
+                ResultSet rsProds= pstmtProds.executeQuery();
+                while (rsProds.next()){
+                    p= rpProd.pesqCodProd(rsProds.getInt("codProd"));
+                    produtos.add(p);
+                }
+                f.setProdutos(produtos);
+                rsProds.close();
             }
             rs.close();
             pstmt.close();
+            pstmtProds.close();
             return f;
         }
         catch(SQLException e){
-            throw new RepositorioException(e, "RepositoroiFornecedor");
+            throw new RepositorioException(e, "RepositoroiFornecedor.pesqCodForn()");
+        }
+        catch(RepositorioException ex){
+            throw new RepositorioException(ex, "RepositorioFornecedor.pesqCodForn()."+ex.getPathClassCall());
         }
         finally{
             gerenciadorConexao.desconectar(c);
