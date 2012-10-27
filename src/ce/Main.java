@@ -41,7 +41,7 @@ public class Main {
         rpLclEstoque= new RepositorioLocalEstoque();
         //testaInserir();
         testaAlterar();
-        testaListar();
+        //testaListar();
     }
 
     private static void testaInserir() {
@@ -90,7 +90,9 @@ public class Main {
             p1= rpProd.pesqCodProd(1);
             p1.getFornecedores().add(rpForn.pesqCodForn(1));
             p1.getFornecedores().add(rpForn.pesqCodForn(2));
+            System.out.println("rpProd.alterar(p1);...");
             rpProd.alterar(p1);
+            System.out.println("Alterado com sucesso!");
         }
         catch(ConexaoException e){
             System.out.println("ERRO conexão: " + e.getMessage());

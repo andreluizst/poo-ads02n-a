@@ -4,6 +4,7 @@ import ce.erro.ConexaoException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.ResourceBundle;
 
 /**
  *
@@ -23,12 +24,13 @@ public class GerenciadorConexao implements IGerenciadorConexao {
 
     private GerenciadorConexao(){
         super();
-        driver = "com.mysql.jdbc.Driver";
-        local = "jdbc:mysql://localhost:3306/estoque";
-        usuario = "root";
-        senha = "root";
+        ResourceBundle rp= ResourceBundle.getBundle("ce.util.Banco");
+        driver = rp.getString("driver"); //"com.mysql.jdbc.Driver";
+        local = rp.getString("local");//"jdbc:mysql://localhost:3306/estoque";
+        usuario = rp.getString("usuario");//"root";
+        senha = rp.getString("senha");//"root";
         //senha = "andre";
-        loginNeeded=false;
+        loginNeeded= false;
     }
 
     public static IGerenciadorConexao getInstancia(){

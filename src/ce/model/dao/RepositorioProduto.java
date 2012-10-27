@@ -106,9 +106,10 @@ public class RepositorioProduto implements IRepositorioProduto{
                 pstmtFornsDB.close();
                 sqlFornsDB= "insert into FornXProd (codProd, codForn)"
                         + " values(?, ?)";
-                pstmtFornsDB= conexao.prepareStatement(sqlFornsDB);
+                //pstmtFornsDB= conexao.prepareStatement(sqlFornsDB);
                 //pstmtFornsDB.setInt(1, p.getCodProd());
                 for (int i=0;i<p.getFornecedores().size();i++){
+                    pstmtFornsDB= conexao.prepareStatement(sqlFornsDB);
                     pstmtFornsDB.setInt(1, p.getCodProd());
                     pstmtFornsDB.setInt(2, p.getFornecedores().get(i).getCodForn());
                     pstmtFornsDB.execute();
@@ -128,7 +129,7 @@ public class RepositorioProduto implements IRepositorioProduto{
             pstmt.close();
         }
         catch(SQLException e){
-            throw new RepositorioException(e);
+            throw new RepositorioException(e, "RepositorioProduto");
         }
         finally{
             gc.desconectar(conexao);
@@ -247,7 +248,7 @@ public class RepositorioProduto implements IRepositorioProduto{
             return lista;
         }
         catch(SQLException e){
-            throw new RepositorioException(e);
+            throw new RepositorioException(e, "RepositorioProduto");
         }
         finally{
             gc.desconectar(c);
@@ -278,7 +279,7 @@ public class RepositorioProduto implements IRepositorioProduto{
                         rs.getDouble("qtdeIdeal"), rs.getInt("statusProd"),
                         rpCateg.pesqPorCod(rs.getInt("codCateg")),
                         rpUnid.pesqCodUnid(rs.getInt("codUnid")));
-                if (rsForns != null){
+                if (rsForns.next()){
                     while (rsForns.next()){
                         f= new Fornecedor(rsForns.getInt("codForn"), 
                         rsForns.getString("nome"));/*, null, null,
@@ -288,12 +289,13 @@ public class RepositorioProduto implements IRepositorioProduto{
                 }
                 p.setFornecedores(fornecedores);
             }
+            rs.close();
             pstmt.close();
             pstmtForns.close();
             return p;
         }
         catch(SQLException e){
-            throw new RepositorioException(e);
+            throw new RepositorioException(e, "RepositorioProduto");
         }
         finally{
             gc.desconectar(c);
