@@ -84,14 +84,14 @@ public class RepositorioFornecedor implements IRepositorioFornecedor{
             ResultSet rs= pstmtProds.executeQuery();
             IRepositorioProduto rpProd= new RepositorioProduto();
             while (rs.next()){
-                p= rpProd.pesqCodProd(rs.getInt("codProd"));
+                p= rpProd.pesqCodProd(rs.getInt("codProd"), false);
                 ProdsForn.add(p);
             }
             if (ProdsForn.size() != f.getProdutos().size()){
                 atualizaFornXProd=true;
             }else{
-                if (p.getFornecedores().size() > 0){
-                    for (int i=0;i<p.getFornecedores().size();i++){
+                if (f.getProdutos().size() > 0){
+                    for (int i=0;i<f.getProdutos().size();i++){
                         if (ProdsForn.get(i).getCodProd() != 
                                 f.getProdutos().get(i).getCodProd()){
                             atualizaFornXProd= true;
@@ -106,7 +106,7 @@ public class RepositorioFornecedor implements IRepositorioFornecedor{
                 sqlProds= "delete from FornXProd where codForn=?";
                 pstmtProds= c.prepareStatement(sqlProds);
                 pstmtProds.setInt(1, f.getCodForn());
-                pstmtProds.execute();
+                pstmtProds.executeUpdate();
                 pstmtProds.close();
                 if (f.getProdutos().size() > 0){
                     sqlProds= "insert into FornXProd (codForn, codProd)"
@@ -115,7 +115,7 @@ public class RepositorioFornecedor implements IRepositorioFornecedor{
                         pstmtProds= c.prepareStatement(sqlProds);
                         pstmtProds.setInt(1, f.getCodForn());
                         pstmtProds.setInt(2, f.getProdutos().get(i).getCodProd());
-                        pstmtProds.execute();
+                        pstmtProds.executeUpdate();
                         pstmtProds.close();
                     }
                 }
@@ -159,7 +159,6 @@ public class RepositorioFornecedor implements IRepositorioFornecedor{
         try{
             Statement stmt= c.createStatement();
             ResultSet rs= stmt.executeQuery(sql);
-            PreparedStatement pstmtProds= c.prepareStatement(sqlProds);
             IRepositorioProduto rpProd= new RepositorioProduto();
             while (rs.next()){
                 f = new Fornecedor(rs.getInt("codForn"), rs.getString("nome"), 
@@ -168,10 +167,11 @@ public class RepositorioFornecedor implements IRepositorioFornecedor{
                         rs.getString("Bairro"), rs.getString("Municipio"),
                         rs.getString("UF"), rs.getString("CEP"), 
                         rs.getString("Fone"), rs.getString("Email"));
+                PreparedStatement pstmtProds= c.prepareStatement(sqlProds);
                 pstmtProds.setInt(1, f.getCodForn());
                 ResultSet rsProds= pstmtProds.executeQuery();
                 while (rsProds.next()){
-                    p= rpProd.pesqCodProd(rsProds.getInt("codProd"));
+                    p= rpProd.pesqCodProd(rsProds.getInt("codProd"), false);
                     produtos.add(p);
                 }
                 rsProds.close();
@@ -220,7 +220,7 @@ public class RepositorioFornecedor implements IRepositorioFornecedor{
                 pstmtProds.setInt(1, f.getCodForn());
                 ResultSet rsProds= pstmt.executeQuery();
                 while (rsProds.next()){
-                    p= rpProd.pesqCodProd(rsProds.getInt("codProd"));
+                    p= rpProd.pesqCodProd(rsProds.getInt("codProd"), false);
                     produtos.add(p);
                 }
                 rsProds.close();
@@ -243,7 +243,7 @@ public class RepositorioFornecedor implements IRepositorioFornecedor{
         }
     }
     
-    public Fornecedor pesqCodForn(Integer codForn) throws ConexaoException, 
+    public Fornecedor pesqCodForn(Integer codForn, boolean comProds) throws ConexaoException, 
             RepositorioException{
         Fornecedor f= null;
         Produto p= null;
@@ -256,7 +256,6 @@ public class RepositorioFornecedor implements IRepositorioFornecedor{
             PreparedStatement pstmt= c.prepareStatement(sql);
             pstmt.setInt(1, codForn);
             ResultSet rs= pstmt.executeQuery();
-            PreparedStatement pstmtProds= c.prepareStatement(sqlProds);
             IRepositorioProduto rpProd= new RepositorioProduto();
             if(rs.next()){
                 f = new Fornecedor(rs.getInt("codForn"), rs.getString("nome"), 
@@ -265,18 +264,21 @@ public class RepositorioFornecedor implements IRepositorioFornecedor{
                         rs.getString("Bairro"), rs.getString("Municipio"),
                         rs.getString("UF"), rs.getString("CEP"), 
                         rs.getString("Fone"), rs.getString("Email"));
-                pstmtProds.setInt(1, codForn);
-                ResultSet rsProds= pstmtProds.executeQuery();
-                while (rsProds.next()){
-                    p= rpProd.pesqCodProd(rsProds.getInt("codProd"));
-                    produtos.add(p);
+                if (comProds){
+                    PreparedStatement pstmtProds= c.prepareStatement(sqlProds);
+                    pstmtProds.setInt(1, codForn);
+                    ResultSet rsProds= pstmtProds.executeQuery();
+                    while (rsProds.next()){
+                        p= rpProd.pesqCodProd(rsProds.getInt("codProd"), false);
+                        produtos.add(p);
+                    }
+                    f.setProdutos(produtos);
+                    rsProds.close();
+                    pstmtProds.close();
                 }
-                f.setProdutos(produtos);
-                rsProds.close();
             }
             rs.close();
             pstmt.close();
-            pstmtProds.close();
             return f;
         }
         catch(SQLException e){

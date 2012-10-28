@@ -47,7 +47,7 @@ public class Main {
     private static void testaInserir() {
         //Categoria c = new Categoria("Informática");//testado e ok
         Produto p;
-        try {
+        /*try {
             /*Categoria - TESTADA E OK
             rpCateg.incluir(c);
             rpCateg.incluir(new Categoria("Papelaria"));//testado e ok
@@ -56,7 +56,7 @@ public class Main {
             rpUnid.inserir(new Unidade("Caixa"));*/
             
             //Produto - TESTADO E OK
-            p= new Produto("Monitor LCD 22", 100.00, 
+            /*p= new Produto("Monitor LCD 22", 100.00, 
                     50.00, 100.00, 0,
                     rpCateg.pesquisar("Informática"), 
                     rpUnid.pesqCodUnid(1));
@@ -78,27 +78,38 @@ public class Main {
             rpForn.inserir(new Fornecedor("Infohouse", "35456123000102",
                     "Av Cons. Aguiar", 1002, "", "Boa Viagem",
                     "Recife", "PE", "51055060", "8134622233", "vendas@infohouse.com.br"));
-            */
+            
             System.out.println("Inserido com sucesso!");
         } catch (ConexaoException ex) {
             System.out.println("ERRO conexão: " + ex.getMessage());
         } catch (RepositorioException ex) {
             System.out.println("ERRO " + ex.getPathClassCall() + ": " + ex.getMessage());
-        }
+        }*/
     }
     
     private static void testaAlterar(){
-        Produto p1;
+        //Produto p1;
+        Fornecedor f;
         try{
+            /*
             //Produto.alterar() - TESTADO E OK.
-            p1= rpProd.pesqCodProd(1);
+            //p1= rpProd.pesqCodProd(1, true);
             //p1.getFornecedores().add(rpForn.pesqCodForn(1));
             //p1.getFornecedores().add(rpForn.pesqCodForn(3));
             //p1.getFornecedores().add(rpForn.pesqCodForn(2));
             //p1.getFornecedores().remove(1);
             //p1.getFornecedores().clear();
             System.out.println("rpProd.alterar(p1);...");
-            rpProd.alterar(p1);
+            rpProd.alterar(p1);*/
+            //Fornecedor.alterar() - TESTADO E OK
+            System.out.println("f= rpForn.pesqCodForn(1);...");
+            f= rpForn.pesqCodForn(1, true);
+            //f.getProdutos().add(rpProd.pesqCodProd(1, false));
+            //f.getProdutos().add(rpProd.pesqCodProd(2, false));
+            //f.getProdutos().remove(1);
+            //f.getProdutos().clear();
+            System.out.println("rpForn.alterar(f);...");
+            rpForn.alterar(f);
             System.out.println("Alterado com sucesso!");
         }
         catch(ConexaoException e){
@@ -113,35 +124,35 @@ public class Main {
         System.out.println("LISTANDO...");
         try {
             
-            /*Categoria - testada e ok
+            //*Categoria - testada e ok
              for (Categoria item : (ArrayList<Categoria>) rpCateg.listar()) {
                 System.out.println(item.getCodCateg() + " - " + item.getDescricao());
-             }*/
-            /*Unidade - TESTADA E OK
+             }//*/
+            //*Unidade - TESTADA E OK
             for (Unidade item : (ArrayList<Unidade>) rpUnid.listar()) {
                 System.out.println(item.getCodUnid() + " - " + item.getDescricao());
-            }*/
+            }//*/
             
             //Produto - parcialmente ok. Falta testar a lista de fornecedores
             //dessa classe
-            /*for (Produto item : (ArrayList<Produto>) rpProd.listar()) {
+            for (Produto item : (ArrayList<Produto>) rpProd.listar()) {
                 System.out.println(item.getCategoria().getDescricao() + " - "
                         + item.getCodProd() + " - " + item.getDescProd());
-            }*/
+            }
             //LocalEstoque - TESTADA E OK
             //Fornecedor - TESTADA E OK
             System.out.println("Listando LocalEstoque...");
             for (LocalEstoque item : (ArrayList<LocalEstoque>) rpLclEstoque.listar()) {
                 System.out.println(item.getCodLocal() + " - " + item.getDescricao());
             }
-            System.out.println("Listando Fornecedor...");
+            /*System.out.println("Listando Fornecedor...");
             for (Fornecedor item : (ArrayList<Fornecedor>) rpForn.listar()) {
                 System.out.println(item.getCodForn() + " - " + item.getNome()
                         + " - " + item.getCnpj() + " - " + item.getFone());
                 System.out.println(item.getLogradouro() + " " + item.getComp()
                         + " - " + item.getNum() + " - " + item.getBairro()
                         + " - " + item.getMunicipio() + " - " + item.getUf());
-            }
+            }*/
         } catch (ConexaoException ex) {
             System.out.println("ERRO conexão: " + ex.getMessage());
         } catch (RepositorioException ex) {

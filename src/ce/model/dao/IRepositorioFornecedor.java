@@ -19,5 +19,5 @@ public interface IRepositorioFornecedor {
     public void excluir(Integer codForn) throws ConexaoException, RepositorioException;
     public List<Fornecedor> listar() throws ConexaoException, RepositorioException;
     public List<Fornecedor> pesquisar(String descProd) throws ConexaoException, RepositorioException;
-    public Fornecedor pesqCodForn(Integer codForn) throws ConexaoException, RepositorioException; 
+    public Fornecedor pesqCodForn(Integer codForn, boolean comProds) throws ConexaoException, RepositorioException; 
 }

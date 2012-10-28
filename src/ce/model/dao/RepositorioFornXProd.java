@@ -98,8 +98,8 @@ public class RepositorioFornXProd implements IRepositorioFornXProd{
             Statement stmt= c.createStatement();
             ResultSet rs= stmt.executeQuery(sql);
             while (rs.next()){
-                fxp = new FornXProd(rpf.pesqCodForn(rs.getInt("codForn")), 
-                        rpp.pesqCodProd(rs.getInt("codProd")));
+                fxp = new FornXProd(rpf.pesqCodForn(rs.getInt("codForn"), false), 
+                        rpp.pesqCodProd(rs.getInt("codProd"), false));
                 lista.add(fxp);
             }
             stmt.close();
@@ -126,8 +126,8 @@ public class RepositorioFornXProd implements IRepositorioFornXProd{
             pstmt.setInt(1, codProd);
             ResultSet rs= pstmt.executeQuery();
             while (rs.next()){
-                fxp = new FornXProd(rpf.pesqCodForn(rs.getInt("codForn")), 
-                        rpp.pesqCodProd(rs.getInt("codProd")));
+                fxp = new FornXProd(rpf.pesqCodForn(rs.getInt("codForn"), false), 
+                        rpp.pesqCodProd(rs.getInt("codProd"), false));
                 lista.add(fxp);
             }
             pstmt.close();
@@ -154,8 +154,8 @@ public class RepositorioFornXProd implements IRepositorioFornXProd{
             pstmt.setInt(1, codForn);
             ResultSet rs= pstmt.executeQuery();
             while (rs.next()){
-                fxp = new FornXProd(rpf.pesqCodForn(rs.getInt("codForn")), 
-                        rpp.pesqCodProd(rs.getInt("codProd")));
+                fxp = new FornXProd(rpf.pesqCodForn(rs.getInt("codForn"), false), 
+                        rpp.pesqCodProd(rs.getInt("codProd"), false));
                 lista.add(fxp);
             }
             pstmt.close();

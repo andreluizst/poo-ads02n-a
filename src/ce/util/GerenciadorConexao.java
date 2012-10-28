@@ -29,7 +29,11 @@ public class GerenciadorConexao implements IGerenciadorConexao {
         local = rp.getString("local");//"jdbc:mysql://localhost:3306/estoque";
         usuario = rp.getString("usuario");//"root";
         senha = rp.getString("senha");//"root";
-        //senha = "andre";
+        /*driver = "com.mysql.jdbc.Driver";
+        local = "jdbc:mysql://localhost:3306/estoque";
+        usuario = "root";
+        //senha = "root";
+        senha = "andre";*/
         loginNeeded= false;
     }
 
