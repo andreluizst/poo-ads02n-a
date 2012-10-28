@@ -6,6 +6,11 @@ package ce.model.dao;
 
 import ce.erro.ConexaoException;
 import ce.erro.RepositorioException;
+import ce.erro.RepositorioInserirException;
+import ce.erro.RepositorioAlterarException;
+import ce.erro.RepositorioExcluirException;
+import ce.erro.RepositorioListarException;
+import ce.erro.RepositorioPesquisarException;
 import ce.model.basica.Fornecedor;
 import ce.model.basica.Produto;
 import ce.model.basica.Unidade;
@@ -26,7 +31,7 @@ public class RepositorioProduto implements IRepositorioProduto{
     }
     
     @Override
-    public void inserir(Produto p) throws ConexaoException, RepositorioException{
+    public void inserir(Produto p) throws ConexaoException, RepositorioInserirException{
         Connection conexao = gc.conectar();
         String sql= "Insert into Produto(descProd, qtdeEstoq, qtdeMin,"
             + " qtdeIdeal, codCateg, statusProd, codUnid)"
@@ -55,7 +60,7 @@ public class RepositorioProduto implements IRepositorioProduto{
             pstmt.close();
         }
         catch (SQLException e){
-            throw new RepositorioException(e, "RepositorioProduto.inserir()");
+            throw new RepositorioInserirException(e, "RepositorioProduto.inserir()");
         }
         finally{
             gc.desconectar(conexao);
@@ -63,7 +68,7 @@ public class RepositorioProduto implements IRepositorioProduto{
     }
 
     @Override
-    public void alterar(Produto p) throws ConexaoException, RepositorioException{
+    public void alterar(Produto p) throws ConexaoException, RepositorioAlterarException{
         Connection conexao = gc.conectar();
         boolean atualizaFornXProd= false;
         List<Fornecedor> fornsDB= new ArrayList<Fornecedor>();
@@ -131,7 +136,11 @@ public class RepositorioProduto implements IRepositorioProduto{
             
         }
         catch(SQLException e){
-            throw new RepositorioException(e, "RepositorioProduto.alterar()");
+            throw new RepositorioAlterarException(e, "RepositorioProduto.alterar()");
+        }
+         catch(RepositorioException ex){
+            throw new RepositorioAlterarException(ex, 
+                    "RepositorioProduto.alterar()."+ex.getPathClassCall());
         }
         finally{
             gc.desconectar(conexao);
@@ -139,7 +148,7 @@ public class RepositorioProduto implements IRepositorioProduto{
     }
     
     @Override
-    public void excluir(Integer codProd)throws ConexaoException, RepositorioException{
+    public void excluir(Integer codProd)throws ConexaoException, RepositorioExcluirException{
         Connection conexao = gc.conectar();
         String sql= "delete from Produto where codProd=?";
         String sqlFrons= "delete from FornXProd where codProd=?";
@@ -153,7 +162,7 @@ public class RepositorioProduto implements IRepositorioProduto{
             pstmtFp.close();
         }
         catch(SQLException e){
-            throw new RepositorioException(e, "RepositorioProduto.excluir()");
+            throw new RepositorioExcluirException(e, "RepositorioProduto.excluir()");
         }
         finally{
             gc.desconectar(conexao);
@@ -161,7 +170,7 @@ public class RepositorioProduto implements IRepositorioProduto{
     }
     
     @Override
-    public List<Produto> listar()throws ConexaoException, RepositorioException{
+    public List<Produto> listar()throws ConexaoException, RepositorioListarException{
         List<Produto> lista = new ArrayList<Produto>();
         List<Fornecedor> fornecedores= new ArrayList<Fornecedor>();
         Produto p= null;
@@ -203,10 +212,11 @@ public class RepositorioProduto implements IRepositorioProduto{
             return lista;
         }
         catch(SQLException e){
-            throw new RepositorioException(e, "RepositorioProduto.listar()");
+            throw new RepositorioListarException(e, "RepositorioProduto.listar()");
         }
         catch(RepositorioException ex){
-            throw new RepositorioException(ex, "RepositorioProduto.listar()."+ex.getPathClassCall());
+            throw new RepositorioListarException(ex,
+                    "RepositorioProduto.listar()."+ex.getPathClassCall());
         }
         finally{
             gc.desconectar(c);
@@ -215,7 +225,7 @@ public class RepositorioProduto implements IRepositorioProduto{
     
     @Override
     public List<Produto> pesquisar(String descProd) throws ConexaoException, 
-            RepositorioException{
+            RepositorioPesquisarException{
         List<Produto> lista = new ArrayList<Produto>();
         List<Fornecedor> fornecedores= new ArrayList<Fornecedor>();
         Produto p = null;
@@ -253,10 +263,10 @@ public class RepositorioProduto implements IRepositorioProduto{
             return lista;
         }
         catch(SQLException e){
-            throw new RepositorioException(e, "RepositorioProduto.pesquisar()");
+            throw new RepositorioPesquisarException(e, "RepositorioProduto.pesquisar()");
         }
         catch(RepositorioException ex){
-            throw new RepositorioException(ex, "RepositorioProduto.pesquisar()."+ex.getPathClassCall());
+            throw new RepositorioPesquisarException(ex, "RepositorioProduto.pesquisar()."+ex.getPathClassCall());
         }
         finally{
             gc.desconectar(c);
@@ -279,7 +289,7 @@ public class RepositorioProduto implements IRepositorioProduto{
      */
     @Override
     public Produto pesqCodProd(Integer codProd, boolean comForns) throws ConexaoException, 
-            RepositorioException{
+            RepositorioPesquisarException{
         Produto p= null;
         Fornecedor f= null;
         List<Fornecedor> fornecedores= new ArrayList<Fornecedor>();
@@ -315,13 +325,17 @@ public class RepositorioProduto implements IRepositorioProduto{
             }
             rs.close();
             pstmt.close();
+            if (f==null){
+                throw new RepositorioPesquisarException("Produto."+codProd+" não encontrado!",
+                        "RepositoroiFornecedor.pesqCodProd()");
+            }
             return p;
         }
         catch(SQLException e){
-            throw new RepositorioException(e, "RepositorioProduto.pesqCodProd()");
+            throw new RepositorioPesquisarException(e, "RepositorioProduto.pesqCodProd()");
         }
         catch(RepositorioException ex){
-            throw new RepositorioException(ex, "RepositorioProduto.pesqCodProd()."+ex.getPathClassCall());
+            throw new RepositorioPesquisarException(ex, "RepositorioProduto.pesqCodProd()."+ex.getPathClassCall());
         }
         finally{
             gc.desconectar(c);

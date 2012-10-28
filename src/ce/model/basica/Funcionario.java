@@ -210,5 +210,12 @@ public class Funcionario {
         this.email = email;
     }
     
+    @Override
+    public String toString(){
+        return cpf + " - " + nome + " - " + dtNasc + " - " + logradouro
+                + " - " +num + " - " + comp + " - " + bairro+ " - " + municipio
+                + " - " + uf + " - " + cep + " - " + fone + " - " + email;
+    }
+    
     
 }

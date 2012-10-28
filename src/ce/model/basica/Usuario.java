@@ -13,16 +13,31 @@ public class Usuario {
 
     private String nome;
     private int codUsuario;
+    private String senha;
+    private Perfil perfil;
     private Funcionario funcionario;
 
     public Usuario(){
         funcionario= new Funcionario();
+        perfil=new Perfil();
     }
 
-    public Usuario(String nome, int codUsuario, Funcionario funcionario){
+    public Usuario(int codUsuario, String nome, Perfil perfil,
+            Funcionario funcionario, String senha){
         this.nome = nome;
+        this.perfil=perfil;
         this.codUsuario = codUsuario;
         this.funcionario= funcionario;
+        this.senha=senha;
+    }
+    
+    public Usuario(String nome, Perfil perfil,
+            Funcionario funcionario, String senha){
+        this.nome=nome;
+        this.perfil=perfil;
+        this.codUsuario=0;
+        this.funcionario=funcionario;
+        this.senha=senha;
     }
 
     /**
@@ -65,6 +80,34 @@ public class Usuario {
      */
     public void setFuncionario(Funcionario funcionario) {
         this.funcionario = funcionario;
+    }
+
+    /**
+     * @return the perfil
+     */
+    public Perfil getPerfil() {
+        return perfil;
+    }
+
+    /**
+     * @param perfil the perfil to set
+     */
+    public void setPerfil(Perfil perfil) {
+        this.perfil = perfil;
+    }
+
+    /**
+     * @return the senha
+     */
+    public String getSenha() {
+        return senha;
+    }
+
+    /**
+     * @param senha the senha to set
+     */
+    public void setSenha(String senha) {
+        this.senha = senha;
     }
 
     

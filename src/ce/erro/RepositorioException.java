@@ -40,6 +40,22 @@ public class RepositorioException extends Exception{
     public RepositorioException(String s){
         super(s);
     }
+    
+    /**
+     * Abilita o rastreamento da(s) classe(s) chamadora(s)
+     * @param s
+     * Mensagem
+     * @param nameClassCall 
+     * Nome da classe que está lançando a exceção
+     */
+    public RepositorioException(String s, String nameClassCall){
+        super(s);
+        if (pathClassCall.compareTo("") == 0){
+            pathClassCall= nameClassCall;
+        }else{
+            pathClassCall= nameClassCall + "." + pathClassCall;
+        }
+    }
 
     public RepositorioException(Throwable t){
         super(t);

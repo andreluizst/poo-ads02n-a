@@ -27,6 +27,7 @@ public class RepositorioFuncionario implements IRepositorioFuncionario{
         gerenciadorConexao= GerenciadorConexao.getInstancia();
     }
     
+    @Override
     public void inserir(Funcionario f) throws ConexaoException, 
             RepositorioInserirException{
         Connection c= gerenciadorConexao.conectar();
@@ -58,10 +59,11 @@ public class RepositorioFuncionario implements IRepositorioFuncionario{
         }
     }
     
+    @Override
     public void alterar(Funcionario f)throws ConexaoException, 
             RepositorioAlterarException{
         Connection c= gerenciadorConexao.conectar();
-        String sql = "update Fornecedor set DtNasc=?, nome=?, logradouro=?,"
+        String sql = "update Funcionario set DtNasc=?, nome=?, logradouro=?,"
                 + "num=?,comp=?,bairro=?, municipio=?, uf=?, cep=?, fone=?,"
                 + "email=? where cpf=?";
         try{
@@ -89,6 +91,7 @@ public class RepositorioFuncionario implements IRepositorioFuncionario{
         }
     }
     
+    @Override
     public void excluir(String cpf)throws ConexaoException, 
             RepositorioExcluirException{
         Connection c= gerenciadorConexao.conectar();
@@ -107,6 +110,7 @@ public class RepositorioFuncionario implements IRepositorioFuncionario{
         }
     }
     
+    @Override
     public List<Funcionario> listar() throws ConexaoException,
             RepositorioListarException{
         List<Funcionario> lista = new ArrayList<Funcionario>();
@@ -137,6 +141,7 @@ public class RepositorioFuncionario implements IRepositorioFuncionario{
         }
     }
     
+    @Override
     public List<Funcionario> pesquisar(String nome) throws ConexaoException,
             RepositorioPesquisarException{
                 List<Funcionario> lista = new ArrayList<Funcionario>();
@@ -168,6 +173,7 @@ public class RepositorioFuncionario implements IRepositorioFuncionario{
         }
     }
     
+    @Override
     public Funcionario pesqCpf(String cpf) throws ConexaoException, 
             RepositorioPesquisarException{
         Funcionario f= null;
@@ -187,6 +193,9 @@ public class RepositorioFuncionario implements IRepositorioFuncionario{
             }
             rs.close();
             pstmt.close();
+            if (f==null){
+                throw new RepositorioPesquisarException("Funcionario."+cpf+" não encontrado!" );
+            }
             return f;
         }
         catch(SQLException e){

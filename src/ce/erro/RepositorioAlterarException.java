@@ -17,6 +17,17 @@ public class RepositorioAlterarException extends RepositorioException {
         super(e);
     }
     
+    /**
+     * Abilita o rastreamento da(s) classe(s) chamadora(s)
+     * @param s
+     * Mensagem
+     * @param nameClassCall 
+     * Nome da classe que está lançando a exceção
+     */
+    public RepositorioAlterarException(String s, String nameClassCall){
+        super(s, nameClassCall);
+    }
+    
     public RepositorioAlterarException(Exception e, String nameClassCall){
         super(e, nameClassCall);
     }

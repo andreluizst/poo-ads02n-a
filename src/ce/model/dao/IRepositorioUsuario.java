@@ -5,30 +5,30 @@
 package ce.model.dao;
 
 import ce.erro.ConexaoException;
-//import ce.erro.RepositorioException;
 import ce.erro.RepositorioInserirException;
 import ce.erro.RepositorioAlterarException;
 import ce.erro.RepositorioExcluirException;
 import ce.erro.RepositorioListarException;
 import ce.erro.RepositorioPesquisarException;
-import ce.model.basica.Fornecedor;
+import ce.model.basica.Usuario;
 import java.util.List;
-
 /**
  *
  * @author Andre
  */
-public interface IRepositorioFornecedor {
-    public void inserir(Fornecedor f) throws ConexaoException, 
+public interface IRepositorioUsuario {
+    public void inserir(Usuario u) throws ConexaoException, 
             RepositorioInserirException;
-    public void alterar(Fornecedor f) throws ConexaoException, 
+    public void alterar(Usuario u) throws ConexaoException, 
             RepositorioAlterarException;
-    public void excluir(Integer codForn) throws ConexaoException, 
+    public void excluir(Usuario u) throws ConexaoException, 
             RepositorioExcluirException;
-    public List<Fornecedor> listar() throws ConexaoException, 
+    public List<Usuario> listar() throws ConexaoException, 
             RepositorioListarException;
-    public List<Fornecedor> pesquisar(String descProd) throws ConexaoException, 
+    /*public List<Usuario> pesquisar(String nome) throws ConexaoException, 
+            RepositorioPesquisarException;*/
+    public Usuario pesqCod(int cod) throws ConexaoException, 
             RepositorioPesquisarException;
-    public Fornecedor pesqCodForn(Integer codForn, boolean comProds) 
-            throws ConexaoException, RepositorioPesquisarException;
+    public Usuario pesqCpf(String cpf) throws ConexaoException, 
+            RepositorioPesquisarException;
 }

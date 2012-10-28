@@ -18,10 +18,16 @@ public class Perfil {
 
     }
 
-    public Perfil(String nome, int codPerfil){
+    public Perfil(int codPerfil, String nome){
         this.nome = nome;
         this.codPerfil = codPerfil;
     }
+    
+    public Perfil(String nome){
+        this.nome= nome;
+        this.codPerfil= 0;
+    }
+    
     public String getNome(){
         return this.nome;
     }

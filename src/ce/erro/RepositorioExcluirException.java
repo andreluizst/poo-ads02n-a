@@ -24,6 +24,17 @@ public class RepositorioExcluirException extends RepositorioException{
     public RepositorioExcluirException(String s){
         super(s);
     }
+    
+    /**
+     * Abilita o rastreamento da(s) classe(s) chamadora(s)
+     * @param s
+     * Mensagem
+     * @param nameClassCall 
+     * Nome da classe que está lançando a exceção
+     */
+    public RepositorioExcluirException(String s, String nameClassCall){
+        super(s, nameClassCall);
+    }
 
     public RepositorioExcluirException(Throwable t){
         super(t);

@@ -5,7 +5,12 @@
 package ce.model.dao;
 
 import ce.erro.ConexaoException;
-import ce.erro.RepositorioException;
+//import ce.erro.RepositorioException;
+import ce.erro.RepositorioInserirException;
+import ce.erro.RepositorioAlterarException;
+import ce.erro.RepositorioExcluirException;
+import ce.erro.RepositorioListarException;
+import ce.erro.RepositorioPesquisarException;
 import ce.model.basica.Produto;
 import java.util.List;
 
@@ -14,10 +19,16 @@ import java.util.List;
  * @author Andre
  */
 public interface IRepositorioProduto {
-    public void inserir(Produto p) throws ConexaoException, RepositorioException;
-    public void alterar(Produto p) throws ConexaoException, RepositorioException;
-    public void excluir(Integer codProd) throws ConexaoException, RepositorioException;
-    public List<Produto> listar() throws ConexaoException, RepositorioException;
-    public List<Produto> pesquisar(String descProd) throws ConexaoException, RepositorioException;
-    public Produto pesqCodProd(Integer codProd, boolean comForns) throws ConexaoException, RepositorioException; 
+    public void inserir(Produto p) throws ConexaoException, 
+            RepositorioInserirException;
+    public void alterar(Produto p) throws ConexaoException, 
+            RepositorioAlterarException;
+    public void excluir(Integer codProd) throws ConexaoException, 
+            RepositorioExcluirException;
+    public List<Produto> listar() throws ConexaoException, 
+            RepositorioListarException;
+    public List<Produto> pesquisar(String descProd) throws ConexaoException, 
+            RepositorioPesquisarException;
+    public Produto pesqCodProd(Integer codProd, boolean comForns) 
+            throws ConexaoException, RepositorioPesquisarException; 
 }

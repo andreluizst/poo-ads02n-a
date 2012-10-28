@@ -12,6 +12,7 @@ import ce.model.basica.Unidade;
 import ce.model.basica.Produto;
 import ce.model.basica.Fornecedor;
 import ce.model.basica.LocalEstoque;
+import ce.model.basica.Funcionario;
 import ce.model.dao.IRepositorioCategoria;
 import ce.model.dao.RepositorioCategoria;
 import ce.model.dao.IRepositorioUnidade;
@@ -47,15 +48,16 @@ public class Main {
         rpUnid=new RepositorioUnidade();
         rpForn= new RepositorioFornecedor();
         rpLclEstoque= new RepositorioLocalEstoque();
-        //testaInserir();
-        testaAlterar();
-        //testaListar();
+        rpFun= new RepositorioFuncionario();
+        testaInserir(); testaListar();
+        testaAlterar(); testaListar();
+        //testaExcluir(); testaListar();
     }
 
     private static void testaInserir() {
         //Categoria c = new Categoria("Informática");//testado e ok
         Produto p;
-        /*try {
+        try {
             /*Categoria - TESTADA E OK
             rpCateg.incluir(c);
             rpCateg.incluir(new Categoria("Papelaria"));//testado e ok
@@ -64,7 +66,7 @@ public class Main {
             rpUnid.inserir(new Unidade("Caixa"));*/
             
             //Produto - TESTADO E OK
-            /*p= new Produto("Monitor LCD 22", 100.00, 
+            p= new Produto("Monitor LCD 22", 100.00, 
                     50.00, 100.00, 0,
                     rpCateg.pesquisar("Informática"), 
                     rpUnid.pesqCodUnid(1));
@@ -86,18 +88,35 @@ public class Main {
             rpForn.inserir(new Fornecedor("Infohouse", "35456123000102",
                     "Av Cons. Aguiar", 1002, "", "Boa Viagem",
                     "Recife", "PE", "51055060", "8134622233", "vendas@infohouse.com.br"));
-            
+            */
+            //Funcionario.inserir() - TESTADO E OK
+            /*rpFun.inserir(new Funcionario("98512536598", "Maria da Silva", "15/05/1965", 
+                    "Rua Frei Damião", 20, "", "Afogados", "Recife", "PE", 
+                    "50030450", "8133442560", "maria.silva@gmail.com"));*
+            rpFun.inserir(new Funcionario("25648712341", "João Souza de Andrade",
+                    "15/05/1962", "Av Recife", 1520, "", "Ipsepe",
+                    "Recife", "PE", "51020310", "8132456655", 
+                    "joao.andrade@gmail.com"));
+            rpFun.inserir(new Funcionario("00011122200", "Milena Tavares",
+                    "13/09/1980", "Av Brasil", 840, "", "Prazeres",
+                    "Jaboarão dos Guararapes", "PE", "52032024", "8134656987", 
+                    "milena.tavares@hotmail.com"));*/
             System.out.println("Inserido com sucesso!");
         } catch (ConexaoException ex) {
-            System.out.println("ERRO conexão: " + ex.getMessage());
-        } catch (RepositorioException ex) {
+            System.out.println("ERRO de conexão: " + ex.getMessage());
+        }
+        catch(RepositorioInserirException e){
+            System.out.println("ERRO de inclusao " + e.getPathClassCall() + ": " + e.getMessage());
+        }
+        catch (RepositorioException ex) {
             System.out.println("ERRO " + ex.getPathClassCall() + ": " + ex.getMessage());
-        }*/
+        }
     }
     
     private static void testaAlterar(){
         //Produto p1;
-        Fornecedor f;
+        Fornecedor f=null;
+        Funcionario fun=null;
         try{
             /*
             //Produto.alterar() - TESTADO E OK.
@@ -110,21 +129,34 @@ public class Main {
             System.out.println("rpProd.alterar(p1);...");
             rpProd.alterar(p1);*/
             //Fornecedor.alterar() - TESTADO E OK
-            System.out.println("f= rpForn.pesqCodForn(1);...");
+            /*
             f= rpForn.pesqCodForn(1, true);
             //f.getProdutos().add(rpProd.pesqCodProd(1, false));
             //f.getProdutos().add(rpProd.pesqCodProd(2, false));
             //f.getProdutos().remove(1);
             //f.getProdutos().clear();
-            System.out.println("rpForn.alterar(f);...");
             rpForn.alterar(f);
+            */
+            //Funcionario.alterar() - TESTADO E OK
+            fun= rpFun.pesqCpf("00011122200");
+            /*fun.setNome("Milena Tavares");
+            fun.setNome("fui alterado");
+            */
+            rpFun.alterar(fun);
+            
             System.out.println("Alterado com sucesso!");
         }
-        catch(ConexaoException e){
-            System.out.println("ERRO conexão: " + e.getMessage());
+        catch(ConexaoException ec){
+            System.out.println("ERRO conexão: " + ec.getMessage());
+        }
+        /*catch(RepositorioPesquisarException epr){
+            System.out.println("ERRO de pesquisa " + epr.getPathClassCall() + ": " + epr.getMessage());
+        }*/
+        catch(RepositorioAlterarException ear){
+            System.out.println("ERRO de alteração " + ear.getPathClassCall() + ": " + ear.getMessage());
         }
         catch(RepositorioException re){
-            System.out.println("ERRO " + re.getPathClassCall() + ": " + re.getMessage());
+            System.out.println("testaAlterar() - ERRO " + re.getPathClassCall() + ": " + re.getMessage());
         }
     }
 
@@ -161,9 +193,35 @@ public class Main {
                         + " - " + item.getNum() + " - " + item.getBairro()
                         + " - " + item.getMunicipio() + " - " + item.getUf());
             }*/
-        } catch (ConexaoException ex) {
+            //Funcionario.listar() - TESTADO E OK
+            System.out.println("Listando Funcionario...");
+            for (Funcionario fun: rpFun.listar()){
+                System.out.println(fun.toString());
+            }
+        }
+        catch (ConexaoException ex) {
             System.out.println("ERRO conexão: " + ex.getMessage());
-        } catch (RepositorioException ex) {
+        } 
+        catch(RepositorioListarException e){
+            System.out.println("ERRO ao listar " + e.getPathClassCall()+ ": " + e.getMessage());
+        }
+        catch (RepositorioException ex) {
+            System.out.println("ERRO repositório: " + ex.getPathClassCall() + ex.getMessage());
+        }
+    }
+    
+    public static void testaExcluir(){
+        
+        try{
+            rpFun.excluir("25648712341");
+        }
+        catch (ConexaoException ex) {
+            System.out.println("ERRO conexão: " + ex.getMessage());
+        } 
+        catch(RepositorioExcluirException e){
+            System.out.println("ERRO de exclusão em " + e.getPathClassCall()+ ": " + e.getMessage());
+        }
+        catch (RepositorioException ex) {
             System.out.println("ERRO repositório: " + ex.getPathClassCall() + ex.getMessage());
         }
     }
