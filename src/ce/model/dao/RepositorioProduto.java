@@ -25,6 +25,7 @@ public class RepositorioProduto implements IRepositorioProduto{
         gc= GerenciadorConexao.getInstancia();
     }
     
+    @Override
     public void inserir(Produto p) throws ConexaoException, RepositorioException{
         Connection conexao = gc.conectar();
         String sql= "Insert into Produto(descProd, qtdeEstoq, qtdeMin,"
@@ -61,6 +62,7 @@ public class RepositorioProduto implements IRepositorioProduto{
         }
     }
 
+    @Override
     public void alterar(Produto p) throws ConexaoException, RepositorioException{
         Connection conexao = gc.conectar();
         boolean atualizaFornXProd= false;
@@ -136,6 +138,7 @@ public class RepositorioProduto implements IRepositorioProduto{
         }
     }
     
+    @Override
     public void excluir(Integer codProd)throws ConexaoException, RepositorioException{
         Connection conexao = gc.conectar();
         String sql= "delete from Produto where codProd=?";
@@ -157,6 +160,7 @@ public class RepositorioProduto implements IRepositorioProduto{
         }
     }
     
+    @Override
     public List<Produto> listar()throws ConexaoException, RepositorioException{
         List<Produto> lista = new ArrayList<Produto>();
         List<Fornecedor> fornecedores= new ArrayList<Fornecedor>();
@@ -209,6 +213,7 @@ public class RepositorioProduto implements IRepositorioProduto{
         }
     }
     
+    @Override
     public List<Produto> pesquisar(String descProd) throws ConexaoException, 
             RepositorioException{
         List<Produto> lista = new ArrayList<Produto>();
@@ -257,7 +262,22 @@ public class RepositorioProduto implements IRepositorioProduto{
             gc.desconectar(c);
         }
     }
-    
+    /**
+     * 
+     * @param codProd
+     * Código do Produto desejado
+     * @param comForns
+     * Se false a lista de fornecedores do Produto não será preenchida. Este
+     * parametro deve ser false se o método estiver sendo chamado de dentro
+     * do repositório de fornecedores, pois gerará erro de conexão:
+     *      com.mysql.jdbc.exceptions.jdbc4.MySQLNonTransientConnectionException: 
+     *              Data source rejected establishment of connection,  message from server: "Too many connections"
+     * @return
+     * Retorna um Produto com todos os seus atributos preenchidos
+     * @throws ConexaoException
+     * @throws RepositorioException 
+     */
+    @Override
     public Produto pesqCodProd(Integer codProd, boolean comForns) throws ConexaoException, 
             RepositorioException{
         Produto p= null;

@@ -16,8 +16,6 @@ public class Produto {
     private int statusProd;
     private List<Fornecedor> fornecedores;
     private Unidade unidade;
-    //private List<Fornecedor> delForns;
-    //private List<Fornecedor> insForns;
 
     public Produto(){
         this.categoria=new Categoria();

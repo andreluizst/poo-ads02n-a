@@ -24,6 +24,7 @@ public class RepositorioFornecedor implements IRepositorioFornecedor{
         gerenciadorConexao = GerenciadorConexao.getInstancia();
     }
     
+    @Override
     public void inserir(Fornecedor f) throws ConexaoException, RepositorioException{
         Connection c= gerenciadorConexao.conectar();
         String sql = "insert into Fornecedor(cnpj, nome, logradouro, num, comp,"
@@ -53,6 +54,7 @@ public class RepositorioFornecedor implements IRepositorioFornecedor{
         }
     }
     
+    @Override
     public void alterar(Fornecedor f)throws ConexaoException, RepositorioException{
         Connection c= gerenciadorConexao.conectar();
         String sql = "update Fornecedor set cnpj=?, nome=?, logradouro=?,"
@@ -129,6 +131,7 @@ public class RepositorioFornecedor implements IRepositorioFornecedor{
         }
     }
     
+    @Override
     public void excluir(Integer codForn)throws ConexaoException, RepositorioException{
         Connection c= gerenciadorConexao.conectar();
         String sql = "delete from Fornecedor where codForn=?";
@@ -146,6 +149,7 @@ public class RepositorioFornecedor implements IRepositorioFornecedor{
         }
     }
     
+    @Override
     public List<Fornecedor> listar() throws ConexaoException,
             RepositorioException{
         List<Fornecedor> lista = new ArrayList<Fornecedor>();
@@ -194,6 +198,7 @@ public class RepositorioFornecedor implements IRepositorioFornecedor{
         }
     }
     
+    @Override
     public List<Fornecedor> pesquisar(String nome) throws ConexaoException,
             RepositorioException{
         List<Fornecedor> lista = new ArrayList<Fornecedor>();
@@ -242,7 +247,31 @@ public class RepositorioFornecedor implements IRepositorioFornecedor{
             gerenciadorConexao.desconectar(c);
         }
     }
-    
+    /*
+     * As Interfaces IRepositorioProduto e IRepositorioFornecedor tiveram seus
+     * métodos pesCodxxx atualizados com +1 paramentro para melhorar a 
+     * usabilidade e resolver o problema de conexões pois o método 
+     * RepositorioFornecedor.pesqCodForn faz chama o método 
+     * RepositorioProduto.pesqCodProd que chama o pesCodForn o fornecedor 
+     * gerando conexão extra caso não informe ao método para mão retornar os 
+     * protudos do fornecedor dentro do fornecedor por exemplo.
+     */
+    /**
+     * 
+     * @param codForn
+     * Código do Fornecedor desejado
+     * @param comProds
+     * Se false a lista de produtos do Fornecedor não será preenchida. Este
+     * parametro deve ser false se o método estiver sendo chamado de dentro
+     * do repositório de produtos, pois gerará erro de conexão:
+     *      com.mysql.jdbc.exceptions.jdbc4.MySQLNonTransientConnectionException: 
+     *              Data source rejected establishment of connection,  message from server: "Too many connections"
+     * @return
+     * Retorna um Fornecedor com todos os seus atributos preenchidos
+     * @throws ConexaoException
+     * @throws RepositorioException 
+     */
+    @Override
     public Fornecedor pesqCodForn(Integer codForn, boolean comProds) throws ConexaoException, 
             RepositorioException{
         Fornecedor f= null;

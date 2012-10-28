@@ -2,6 +2,11 @@ package ce;
 
 import ce.erro.ConexaoException;
 import ce.erro.RepositorioException;
+import ce.erro.RepositorioInserirException;
+import ce.erro.RepositorioAlterarException;
+import ce.erro.RepositorioExcluirException;
+import ce.erro.RepositorioListarException;
+import ce.erro.RepositorioPesquisarException;
 import ce.model.basica.Categoria;
 import ce.model.basica.Unidade;
 import ce.model.basica.Produto;
@@ -17,6 +22,8 @@ import ce.model.dao.IRepositorioFornecedor;
 import ce.model.dao.RepositorioFornecedor;
 import ce.model.dao.IRepositorioLocalEstoque;
 import ce.model.dao.RepositorioLocalEstoque;
+import ce.model.dao.IRepositorioFuncionario;
+import ce.model.dao.RepositorioFuncionario;
 import java.util.ArrayList;
 
 /**
@@ -29,6 +36,7 @@ public class Main {
     private static IRepositorioProduto rpProd;
     private static IRepositorioFornecedor rpForn;
     private static IRepositorioLocalEstoque rpLclEstoque;
+    private static IRepositorioFuncionario rpFun;
 
     /**
      * @param args the command line arguments

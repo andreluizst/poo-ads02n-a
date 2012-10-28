@@ -5,7 +5,11 @@
 package ce.model.dao;
 
 import ce.erro.ConexaoException;
-import ce.erro.RepositorioException;
+import ce.erro.RepositorioInserirException;
+import ce.erro.RepositorioAlterarException;
+import ce.erro.RepositorioExcluirException;
+import ce.erro.RepositorioListarException;
+import ce.erro.RepositorioPesquisarException;
 import ce.model.basica.Funcionario;
 import ce.util.GerenciadorConexao;
 import ce.util.IGerenciadorConexao;
@@ -23,7 +27,8 @@ public class RepositorioFuncionario implements IRepositorioFuncionario{
         gerenciadorConexao= GerenciadorConexao.getInstancia();
     }
     
-    public void inserir(Funcionario f) throws ConexaoException, RepositorioException{
+    public void inserir(Funcionario f) throws ConexaoException, 
+            RepositorioInserirException{
         Connection c= gerenciadorConexao.conectar();
         String sql = "insert into funcionario(cpf, nome, logradouro,"
                 + "num, comp, bairro, municipio, uf, cep, fone, email, dtNasc)"
@@ -42,18 +47,19 @@ public class RepositorioFuncionario implements IRepositorioFuncionario{
             pstmt.setString(10, f.getFone());
             pstmt.setString(11, f.getEmail());
             pstmt.setString(12, f.getDtNasc());
-            pstmt.execute();
+            pstmt.executeUpdate();
             pstmt.close();
         }
         catch(SQLException e){
-            throw new RepositorioException(e);
+            throw new RepositorioInserirException(e, "RepositorioFuncionario");
         }
         finally{
             gerenciadorConexao.desconectar(c);
         }
     }
     
-    public void alterar(Funcionario f)throws ConexaoException, RepositorioException{
+    public void alterar(Funcionario f)throws ConexaoException, 
+            RepositorioAlterarException{
         Connection c= gerenciadorConexao.conectar();
         String sql = "update Fornecedor set DtNasc=?, nome=?, logradouro=?,"
                 + "num=?,comp=?,bairro=?, municipio=?, uf=?, cep=?, fone=?,"
@@ -72,28 +78,29 @@ public class RepositorioFuncionario implements IRepositorioFuncionario{
             pstmt.setString(10, f.getFone());
             pstmt.setString(11, f.getEmail());
             pstmt.setString(12, f.getCpf());
-            pstmt.execute();
+            pstmt.executeUpdate();
             pstmt.close();
         }
         catch(SQLException e){
-            throw new RepositorioException(e);
+            throw new RepositorioAlterarException(e, "RepositorioFuncionario");
         }
         finally{
             gerenciadorConexao.desconectar(c);
         }
     }
     
-    public void excluir(String cpf)throws ConexaoException, RepositorioException{
+    public void excluir(String cpf)throws ConexaoException, 
+            RepositorioExcluirException{
         Connection c= gerenciadorConexao.conectar();
         String sql = "delete from funcionario where cpf=?";
         try{
             PreparedStatement pstmt = c.prepareStatement(sql);
             pstmt.setString(1, cpf);
-            pstmt.execute();
+            pstmt.executeUpdate();
             pstmt.close();
         }
         catch(SQLException e){
-            throw new RepositorioException(e);
+            throw new RepositorioExcluirException(e, "RepositorioFuncionario");
         }
         finally{
             gerenciadorConexao.desconectar(c);
@@ -101,7 +108,7 @@ public class RepositorioFuncionario implements IRepositorioFuncionario{
     }
     
     public List<Funcionario> listar() throws ConexaoException,
-            RepositorioException{
+            RepositorioListarException{
         List<Funcionario> lista = new ArrayList<Funcionario>();
         Funcionario f;
         Connection c= gerenciadorConexao.conectar();
@@ -118,11 +125,12 @@ public class RepositorioFuncionario implements IRepositorioFuncionario{
                         rs.getString("Fone"), rs.getString("Email"));
                 lista.add(f);
             }
+            rs.close();
             stmt.close();
             return lista;
         }
         catch(SQLException e){
-            throw new RepositorioException(e);
+            throw new RepositorioListarException(e, "RepositorioFuncionario");
         }
         finally{
             gerenciadorConexao.desconectar(c);
@@ -130,7 +138,7 @@ public class RepositorioFuncionario implements IRepositorioFuncionario{
     }
     
     public List<Funcionario> pesquisar(String nome) throws ConexaoException,
-            RepositorioException{
+            RepositorioPesquisarException{
                 List<Funcionario> lista = new ArrayList<Funcionario>();
         Funcionario f;
         Connection c= gerenciadorConexao.conectar();
@@ -148,11 +156,12 @@ public class RepositorioFuncionario implements IRepositorioFuncionario{
                         rs.getString("Fone"), rs.getString("Email"));
                 lista.add(f);
             }
+            rs.close();
             pstmt.close();
             return lista;
         }
         catch(SQLException e){
-            throw new RepositorioException(e);
+            throw new RepositorioPesquisarException(e, "RepositorioFuncionario");
         }
         finally{
             gerenciadorConexao.desconectar(c);
@@ -160,7 +169,7 @@ public class RepositorioFuncionario implements IRepositorioFuncionario{
     }
     
     public Funcionario pesqCpf(String cpf) throws ConexaoException, 
-            RepositorioException{
+            RepositorioPesquisarException{
         Funcionario f= null;
         Connection c= gerenciadorConexao.conectar();
         String sql= "select * from funcionario where cpf=?";        
@@ -176,11 +185,12 @@ public class RepositorioFuncionario implements IRepositorioFuncionario{
                         rs.getString("UF"), rs.getString("CEP"), 
                         rs.getString("Fone"), rs.getString("Email"));
             }
+            rs.close();
             pstmt.close();
             return f;
         }
         catch(SQLException e){
-            throw new RepositorioException(e);
+            throw new RepositorioPesquisarException(e, "RepositorioFuncionario");
         }
         finally{
             gerenciadorConexao.desconectar(c);
