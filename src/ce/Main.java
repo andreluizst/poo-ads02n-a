@@ -7,6 +7,11 @@ import ce.erro.RepositorioAlterarException;
 import ce.erro.RepositorioExcluirException;
 import ce.erro.RepositorioListarException;
 import ce.erro.RepositorioPesquisarException;
+import ce.erro.ControladorInserirException;
+import ce.erro.ControladorAlterarException;
+import ce.erro.ControladorExcluirException;
+import ce.erro.ControladorValidarException;
+import ce.erro.ControladorVerificarException;
 import ce.model.basica.Categoria;
 import ce.model.basica.Unidade;
 import ce.model.basica.Produto;
@@ -31,6 +36,7 @@ import ce.model.dao.IRepositorioPerfil;
 import ce.model.dao.RepositorioPerfil;
 import ce.model.dao.IRepositorioUsuario;
 import ce.model.dao.RepositorioUsuario;
+import ce.model.regra.ControladorCategoria;
 import java.util.ArrayList;
 
 /**
@@ -38,6 +44,7 @@ import java.util.ArrayList;
  * @author professor
  */
 public class Main {
+    //Para testar os repositórios
     private static IRepositorioCategoria rpCateg;
     private static IRepositorioUnidade rpUnid;
     private static IRepositorioProduto rpProd;
@@ -46,11 +53,15 @@ public class Main {
     private static IRepositorioFuncionario rpFun;
     private static IRepositorioPerfil rpPer;
     private static IRepositorioUsuario rpUser;
+    
+    //Para testar os controladores
+    private static ControladorCategoria ctrlCateg;
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        //Testando repositórios
         rpCateg = new RepositorioCategoria();
         rpProd= new RepositorioProduto();
         rpUnid=new RepositorioUnidade();
@@ -62,6 +73,30 @@ public class Main {
         //testaInserir(); testaListar();
         testaAlterar(); testaListar();
         //testaExcluir(); testaListar();
+        
+        //TESTANDO CONTROLADORES
+        ctrlCateg= new ControladorCategoria();
+    }
+    
+    private static void ctrlTestaInserir() {
+        Categoria c;
+        try {
+            //ControladorCategoria.validar()\.verificar()\.inserir()
+            c = new Categoria("Roupa");
+            ctrlCateg.validar(c);
+            ctrlCateg.verificar(c);
+            ctrlCateg.inserir(c);
+            System.out.println("Inserido com sucesso!");
+        }
+        catch (ControladorValidarException ex) {
+            System.out.println("ERRO: " + ex.getMessage());
+        }
+        catch (ControladorVerificarException ex) {
+            System.out.println("ERRO: " + ex.getMessage());
+        }
+        catch (ControladorInserirException ex) {
+            System.out.println("ERRO: " + ex.getMessage());
+        }
     }
 
     private static void testaInserir() {
