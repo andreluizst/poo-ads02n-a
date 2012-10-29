@@ -48,8 +48,8 @@ public class Entrada {
      * @param produto
      * @param fornecedor 
      */
-    public Entrada(Integer codEntrada, Double qtde, String dataEntrada,
-            String lote, Produto produto, Fornecedor fornecedor){
+    public Entrada(Integer codEntrada, Produto produto, Fornecedor fornecedor, 
+            String dataEntrada, String lote, Double qtde){
         this.codEntrada = codEntrada;
         this.qtde = qtde;
         this.dataEntrada = dataEntrada;
@@ -66,8 +66,8 @@ public class Entrada {
      * @param produto
      * @param fornecedor 
      */
-    public Entrada(Double qtde, String dataEntrada, String lote, 
-            Produto produto, Fornecedor fornecedor){
+    public Entrada(Produto produto, Fornecedor fornecedor, 
+            String dataEntrada, String lote, Double qtde){
         this.codEntrada = 0;
         this.qtde = qtde;
         this.dataEntrada = dataEntrada;

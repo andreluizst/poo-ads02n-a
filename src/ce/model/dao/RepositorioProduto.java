@@ -341,5 +341,45 @@ public class RepositorioProduto implements IRepositorioProduto{
             gc.desconectar(c);
         }
     }
-  
+    
+    @Override
+    public void atualizarQtde(Produto p) throws ConexaoException, 
+            RepositorioAlterarException{
+        Double qtdeAtual= 0.00;
+        Connection c = gc.conectar();
+        String sql= "Update Produto set qtdeEstoq=? where codProd=?";
+        String sqlEntrada= "select soma(qtde) as qtdeTotal from Entrada"
+                + " where codProd=? group by codProd";
+        String sqlSaida= "Select soma(qtde) as qtdeTotal from Saida"
+                +" where codProd=? Group By codProd";
+        try{
+            PreparedStatement pstmtEnt= c.prepareStatement(sqlEntrada);
+            pstmtEnt.setInt(1, p.getCodProd());
+            ResultSet rsEnt= pstmtEnt.executeQuery();
+            while (rsEnt.next()){
+                qtdeAtual= rsEnt.getDouble("qtdeTotal");
+            }
+            rsEnt.close();
+            pstmtEnt.close();
+            PreparedStatement pstmtSai= c.prepareStatement(sqlSaida);
+            pstmtSai.setInt(1, p.getCodProd());
+            ResultSet rsSai= pstmtSai.executeQuery(sqlSaida);
+            while (rsSai.next()){
+                qtdeAtual-= rsSai.getDouble("qtdeTotal");
+            }
+            rsSai.close();
+            pstmtSai.close();
+            PreparedStatement pstmt= c.prepareStatement(sql);
+            pstmt.setDouble(1, qtdeAtual);
+            pstmt.setInt(2, p.getCodProd());
+            pstmt.executeUpdate();
+            pstmt.close();
+        }
+        catch(SQLException e){
+            throw new RepositorioAlterarException(e, "RepositorioProduto.atualizarQtde()");
+        }
+        finally{
+            gc.desconectar(c);
+        }
+    }
 }
