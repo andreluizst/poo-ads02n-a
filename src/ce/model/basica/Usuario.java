@@ -109,6 +109,11 @@ public class Usuario {
     public void setSenha(String senha) {
         this.senha = senha;
     }
-
+    
+    @Override
+    public String toString(){
+        return codUsuario + " - CPF " + funcionario.getCpf()+ " - " + nome +
+                " - " + perfil.getNome() + " - "+ senha;
+    }
     
 }

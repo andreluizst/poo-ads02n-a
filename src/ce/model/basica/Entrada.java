@@ -17,16 +17,63 @@ public class Entrada {
     private String lote;
     private Produto produto;
     private Fornecedor fornecedor;
-
+    /**
+     * Construtor pardão
+     */
     public Entrada(){
         fornecedor=new Fornecedor();
         produto=new Produto();
     }
+    
+    /**
+     * 
+     * @param codEntrada
+     * @param qtde
+     * @param dataEntrada
+     * @param lote 
+     */
     public Entrada(Integer codEntrada, Double qtde, String dataEntrada, String lote){
         this.codEntrada = codEntrada;
         this.qtde = qtde;
         this.dataEntrada = dataEntrada;
         this.lote = lote;
+    }
+    
+    /**
+     * 
+     * @param codEntrada
+     * @param qtde
+     * @param dataEntrada
+     * @param lote
+     * @param produto
+     * @param fornecedor 
+     */
+    public Entrada(Integer codEntrada, Double qtde, String dataEntrada,
+            String lote, Produto produto, Fornecedor fornecedor){
+        this.codEntrada = codEntrada;
+        this.qtde = qtde;
+        this.dataEntrada = dataEntrada;
+        this.lote = lote;
+        this.produto=produto;
+        this.fornecedor=fornecedor;
+    }
+    
+    /**
+     * 
+     * @param qtde
+     * @param dataEntrada
+     * @param lote
+     * @param produto
+     * @param fornecedor 
+     */
+    public Entrada(Double qtde, String dataEntrada, String lote, 
+            Produto produto, Fornecedor fornecedor){
+        this.codEntrada = 0;
+        this.qtde = qtde;
+        this.dataEntrada = dataEntrada;
+        this.lote = lote;
+        this.produto=produto;
+        this.fornecedor=fornecedor;
     }
 
     /**

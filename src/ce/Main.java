@@ -13,6 +13,8 @@ import ce.model.basica.Produto;
 import ce.model.basica.Fornecedor;
 import ce.model.basica.LocalEstoque;
 import ce.model.basica.Funcionario;
+import ce.model.basica.Perfil;
+import ce.model.basica.Usuario;
 import ce.model.dao.IRepositorioCategoria;
 import ce.model.dao.RepositorioCategoria;
 import ce.model.dao.IRepositorioUnidade;
@@ -25,6 +27,10 @@ import ce.model.dao.IRepositorioLocalEstoque;
 import ce.model.dao.RepositorioLocalEstoque;
 import ce.model.dao.IRepositorioFuncionario;
 import ce.model.dao.RepositorioFuncionario;
+import ce.model.dao.IRepositorioPerfil;
+import ce.model.dao.RepositorioPerfil;
+import ce.model.dao.IRepositorioUsuario;
+import ce.model.dao.RepositorioUsuario;
 import java.util.ArrayList;
 
 /**
@@ -38,6 +44,8 @@ public class Main {
     private static IRepositorioFornecedor rpForn;
     private static IRepositorioLocalEstoque rpLclEstoque;
     private static IRepositorioFuncionario rpFun;
+    private static IRepositorioPerfil rpPer;
+    private static IRepositorioUsuario rpUser;
 
     /**
      * @param args the command line arguments
@@ -49,7 +57,9 @@ public class Main {
         rpForn= new RepositorioFornecedor();
         rpLclEstoque= new RepositorioLocalEstoque();
         rpFun= new RepositorioFuncionario();
-        testaInserir(); testaListar();
+        rpPer= new RepositorioPerfil();
+        rpUser= new RepositorioUsuario();
+        //testaInserir(); testaListar();
         testaAlterar(); testaListar();
         //testaExcluir(); testaListar();
     }
@@ -101,6 +111,20 @@ public class Main {
                     "13/09/1980", "Av Brasil", 840, "", "Prazeres",
                     "Jaboarão dos Guararapes", "PE", "52032024", "8134656987", 
                     "milena.tavares@hotmail.com"));*/
+            /*Perfil.inserrir() - TESTADO E OK
+            rpPer.inserir(new Perfil("Administrador"));
+            rpPer.inserir(new Perfil("Estoquista"));
+            rpPer.inserir(new Perfil("Gerente"));
+            rpPer.inserir(new Perfil("Me exclua"));
+            */
+            /*Usuario.inserir() - TESTATO E OK
+            rpUser.inserir(new Usuario("maria.silva",
+                    rpPer.pesqCod(2), rpFun.pesqCpf("98512536598"), "maria"));
+            rpUser.inserir(new Usuario("joao.souza",
+                    rpPer.pesqCod(3), rpFun.pesqCpf("25648712341"), "joao"));
+            rpUser.inserir(new Usuario("milena.tavares",
+                    rpPer.pesqCod(3), rpFun.pesqCpf("00011122200"), "milena"));
+            */
             System.out.println("Inserido com sucesso!");
         } catch (ConexaoException ex) {
             System.out.println("ERRO de conexão: " + ex.getMessage());
@@ -117,6 +141,8 @@ public class Main {
         //Produto p1;
         Fornecedor f=null;
         Funcionario fun=null;
+        Perfil per=null;
+        Usuario u=null;
         try{
             /*
             //Produto.alterar() - TESTADO E OK.
@@ -138,12 +164,20 @@ public class Main {
             rpForn.alterar(f);
             */
             //Funcionario.alterar() - TESTADO E OK
-            fun= rpFun.pesqCpf("00011122200");
-            /*fun.setNome("Milena Tavares");
+            /*fun= rpFun.pesqCpf("00011122200");
+            //fun.setNome("Milena Tavares");
             fun.setNome("fui alterado");
+            rpFun.alterar(fun);*/
+            /*Perfil.alterar() - TESTADO E OK
+            per= rpPer.pesqCod(2);
+            //per.setNome("Fui alterado");
+            per.setNome("Estoquista");
+            rpPer.alterar(per);
             */
-            rpFun.alterar(fun);
-            
+            u= rpUser.pesqCpf("00011122200");
+            u.setNome("Fui alterado");
+            //u.setNome("Milena Tavares");
+            rpUser.alterar(u);
             System.out.println("Alterado com sucesso!");
         }
         catch(ConexaoException ec){
@@ -173,12 +207,12 @@ public class Main {
                 System.out.println(item.getCodUnid() + " - " + item.getDescricao());
             }//*/
             
-            //Produto - parcialmente ok. Falta testar a lista de fornecedores
-            //dessa classe
+            /*Produto.listar() - TESTATO E OK
             for (Produto item : (ArrayList<Produto>) rpProd.listar()) {
                 System.out.println(item.getCategoria().getDescricao() + " - "
                         + item.getCodProd() + " - " + item.getDescProd());
             }
+            */
             //LocalEstoque - TESTADA E OK
             //Fornecedor - TESTADA E OK
             System.out.println("Listando LocalEstoque...");
@@ -193,10 +227,20 @@ public class Main {
                         + " - " + item.getNum() + " - " + item.getBairro()
                         + " - " + item.getMunicipio() + " - " + item.getUf());
             }*/
-            //Funcionario.listar() - TESTADO E OK
+            /*Funcionario.listar() - TESTADO E OK
             System.out.println("Listando Funcionario...");
             for (Funcionario fun: rpFun.listar()){
                 System.out.println(fun.toString());
+            }*/
+            //*Perfil.listar() - TESTADO E OK
+            System.out.println("Listando Perfil...");
+            for (Perfil per: rpPer.listar()){
+                System.out.println(per.toString());
+            }
+            
+            System.out.println("Listando Usuario...");
+            for (Usuario u: rpUser.listar()){
+                System.out.println(u.toString());
             }
         }
         catch (ConexaoException ex) {
@@ -211,9 +255,18 @@ public class Main {
     }
     
     public static void testaExcluir(){
-        
+        Perfil per=null;
+        Usuario u=null;
         try{
-            rpFun.excluir("25648712341");
+            //Funcionario.excluir() - TESTADO E OK
+            //rpFun.excluir("25648712341");
+            /*Perfil.excluir() - TESTADO E OK
+            per= rpPer.pesqCod(4);
+            rpPer.excluir(per);
+            */
+            //Usuario.excluir() - TESTADO E OK
+            u= rpUser.pesqCpf("00011122200");
+            rpUser.excluir(u);
         }
         catch (ConexaoException ex) {
             System.out.println("ERRO conexão: " + ex.getMessage());

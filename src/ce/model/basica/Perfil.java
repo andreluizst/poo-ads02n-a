@@ -40,4 +40,9 @@ public class Perfil {
     public void setCodPerfil(int codPerfil){
         this.codPerfil = codPerfil;
     }
+    
+    @Override
+    public String toString(){
+        return codPerfil + " - " + nome;
+    }
 }
