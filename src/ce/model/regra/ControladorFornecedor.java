@@ -12,6 +12,7 @@ import ce.erro.ControladorExcluirException;
 import ce.erro.ControladorValidarException;
 import ce.erro.ControladorVerificarException;
 import ce.erro.RepositorioException;
+import ce.erro.RepositorioAlterarException;
 import ce.erro.RepositorioInserirException;
 import ce.model.basica.Fornecedor;
 //import ce.model.dao.RepositorioProduto;
@@ -66,6 +67,24 @@ public class ControladorFornecedor {
         }
         catch(RepositorioInserirException | ConexaoException e){
             throw new ControladorInserirException(e, "ControladorFornecedor.inserir()");
+        }
+    }
+    
+    public void alterar(Fornecedor f) throws ControladorAlterarException{
+        try{
+            rpForn.alterar(f);
+        }
+        catch(RepositorioAlterarException | ConexaoException e){
+            throw new ControladorAlterarException(e, "ControladorFornecedor.alterar()");
+        }
+    }
+    
+    public void excluir(Fornecedor f) throws ControladorAlterarException{
+        try{
+            rpForn.excluir(f.getCodForn());
+        }
+        catch(RepositorioException | ConexaoException e){
+            throw new ControladorAlterarException(e, "ControladorFornecedor.excluir()");
         }
     }
 }
