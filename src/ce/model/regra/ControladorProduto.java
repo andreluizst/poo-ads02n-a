@@ -6,11 +6,6 @@ package ce.model.regra;
 
 import ce.erro.ConexaoException;
 import ce.erro.ControladorException;
-import ce.erro.ControladorInserirException;
-import ce.erro.ControladorAlterarException;
-import ce.erro.ControladorExcluirException;
-import ce.erro.ControladorValidarException;
-import ce.erro.ControladorVerificarException;
 import ce.erro.RepositorioException;
 import ce.erro.RepositorioInserirException;
 import ce.model.basica.Categoria;
@@ -28,9 +23,9 @@ public class ControladorProduto {
     private RepositorioCategoria rpCateg= new RepositorioCategoria();
     private RepositorioProduto rpProd= new RepositorioProduto();
     
-    public void validar(Produto p) throws ControladorValidarException{
+    public void validar(Produto p) throws ControladorException{
         if (p.getDescProd() == null){
-            throw new ControladorValidarException(
+            throw new ControladorException(
                     "O campo descrição deve ser preenchido", 
                     "ControladorProduto"); 
         }
@@ -38,51 +33,51 @@ public class ControladorProduto {
     
     //public void verificar(Produto p)
     
-    public void inserir(Produto p) throws ControladorInserirException{
+    public void inserir(Produto p) throws ControladorException{
         try{
             rpProd.inserir(p);
         }
         catch(ConexaoException e){
-            throw new ControladorInserirException("Não foi possível estabelecer conexão.");
+            throw new ControladorException("Não foi possível estabelecer conexão.");
         }
         catch(RepositorioInserirException ie){
-            throw new ControladorInserirException(ie, "ControladorProduto.inserir()");
+            throw new ControladorException(ie, "ControladorProduto.inserir()");
         }
     }
     
-    public void alterar(Produto p) throws ControladorAlterarException{
+    public void alterar(Produto p) throws ControladorException{
         try{
             rpProd.alterar(p);
         }
         catch(ConexaoException e){
-            throw new ControladorAlterarException("Não foi possível estabelecer conexão.");
+            throw new ControladorException("Não foi possível estabelecer conexão.");
         }
         catch(RepositorioException ie){
-            throw new ControladorAlterarException(ie, "ControladorProduto.alterar()");
+            throw new ControladorException(ie, "ControladorProduto.alterar()");
         }
     }
     
-    public void atualizarQtde(Produto p) throws ControladorAlterarException{
+    public void atualizarQtde(Produto p) throws ControladorException{
         try{
             rpProd.atualizarQtde(p);
         }
         catch(ConexaoException e){
-            throw new ControladorAlterarException("Não foi possível estabelecer conexão.");
+            throw new ControladorException("Não foi possível estabelecer conexão.");
         }
         catch(RepositorioException ie){
-            throw new ControladorAlterarException(ie, "ControladorProduto.atualizarQtde()");
+            throw new ControladorException(ie, "ControladorProduto.atualizarQtde()");
         }
     }
     
-    public void excluir(Produto p) throws ControladorExcluirException{
+    public void excluir(Produto p) throws ControladorException{
         try{
             rpProd.excluir(p.getCodProd());
         }
         catch(ConexaoException e){
-            throw new ControladorExcluirException("Não foi possível estabelecer conexão.");
+            throw new ControladorException("Não foi possível estabelecer conexão.");
         }
         catch(RepositorioException ie){
-            throw new ControladorExcluirException(ie, "ControladorProduto.excluir()");
+            throw new ControladorException(ie, "ControladorProduto.excluir()");
         }
     }
     

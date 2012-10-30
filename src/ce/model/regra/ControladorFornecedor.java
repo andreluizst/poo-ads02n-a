@@ -6,11 +6,6 @@ package ce.model.regra;
 
 import ce.erro.ConexaoException;
 import ce.erro.ControladorException;
-import ce.erro.ControladorInserirException;
-import ce.erro.ControladorAlterarException;
-import ce.erro.ControladorExcluirException;
-import ce.erro.ControladorValidarException;
-import ce.erro.ControladorVerificarException;
 import ce.erro.RepositorioException;
 import ce.erro.RepositorioAlterarException;
 import ce.erro.RepositorioInserirException;
@@ -26,7 +21,7 @@ import java.util.ArrayList;
 public class ControladorFornecedor {
     private RepositorioFornecedor rpForn= new RepositorioFornecedor();
     
-    public void validar(Fornecedor f) throws ControladorValidarException{
+    public void validar(Fornecedor f) throws ControladorException{
         /*boolean contemErro= false;
         List fieldsName= new ArrayList();
         List fieldsMsg= new ArrayList();
@@ -36,55 +31,55 @@ public class ControladorFornecedor {
             contemErro=true;
         }*/
         if (f.getNome() == null){
-            throw new ControladorValidarException("O campo nome deve ser preenchido.");
+            throw new ControladorException("O campo nome deve ser preenchido.");
         }
         if (f.getCnpj() == null){
-            throw new ControladorValidarException("CNPJ inválido.");
+            throw new ControladorException("CNPJ inválido.");
         }
         if (f.getLogradouro() == null){
-            throw new ControladorValidarException("Informe o logradouro do fornecedor");
+            throw new ControladorException("Informe o logradouro do fornecedor");
         }
         if (f.getBairro() == null){
-            throw new ControladorValidarException("Informe o Bairro do fornecedor");
+            throw new ControladorException("Informe o Bairro do fornecedor");
         }
         if (f.getMunicipio() == null){
-            throw new ControladorValidarException("Informe o municipio do fornecedor");
+            throw new ControladorException("Informe o municipio do fornecedor");
         }
         if (f.getUf() == null){
-            throw new ControladorValidarException("Informe a sigla do estado do fornecedor");
+            throw new ControladorException("Informe a sigla do estado do fornecedor");
         }
         if (f.getCep() == null){
-            throw new ControladorValidarException("Informe o CEP");
+            throw new ControladorException("Informe o CEP");
         }
         if (f.getFone() == null){
-            throw new ControladorValidarException("Informe o número do telefone do fornecedor");
+            throw new ControladorException("Informe o número do telefone do fornecedor");
         }
     }
     
-    public void inserir(Fornecedor f) throws ControladorInserirException{
+    public void inserir(Fornecedor f) throws ControladorException{
         try{
             rpForn.inserir(f);
         }
         catch(RepositorioInserirException | ConexaoException e){
-            throw new ControladorInserirException(e, "ControladorFornecedor.inserir()");
+            throw new ControladorException(e, "ControladorFornecedor.inserir()");
         }
     }
     
-    public void alterar(Fornecedor f) throws ControladorAlterarException{
+    public void alterar(Fornecedor f) throws ControladorException{
         try{
             rpForn.alterar(f);
         }
         catch(RepositorioAlterarException | ConexaoException e){
-            throw new ControladorAlterarException(e, "ControladorFornecedor.alterar()");
+            throw new ControladorException(e, "ControladorFornecedor.alterar()");
         }
     }
     
-    public void excluir(Fornecedor f) throws ControladorAlterarException{
+    public void excluir(Fornecedor f) throws ControladorException{
         try{
             rpForn.excluir(f.getCodForn());
         }
         catch(RepositorioException | ConexaoException e){
-            throw new ControladorAlterarException(e, "ControladorFornecedor.excluir()");
+            throw new ControladorException(e, "ControladorFornecedor.excluir()");
         }
     }
 }

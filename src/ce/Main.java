@@ -7,11 +7,7 @@ import ce.erro.RepositorioAlterarException;
 import ce.erro.RepositorioExcluirException;
 import ce.erro.RepositorioListarException;
 import ce.erro.RepositorioPesquisarException;
-import ce.erro.ControladorInserirException;
-import ce.erro.ControladorAlterarException;
-import ce.erro.ControladorExcluirException;
-import ce.erro.ControladorValidarException;
-import ce.erro.ControladorVerificarException;
+import ce.erro.ControladorException;
 import ce.model.basica.Categoria;
 import ce.model.basica.Unidade;
 import ce.model.basica.Produto;
@@ -88,13 +84,7 @@ public class Main {
             ctrlCateg.inserir(c);
             System.out.println("Inserido com sucesso!");
         }
-        catch (ControladorValidarException ex) {
-            System.out.println("ERRO: " + ex.getMessage());
-        }
-        catch (ControladorVerificarException ex) {
-            System.out.println("ERRO: " + ex.getMessage());
-        }
-        catch (ControladorInserirException ex) {
+        catch (ControladorException ex) {
             System.out.println("ERRO: " + ex.getMessage());
         }
     }
