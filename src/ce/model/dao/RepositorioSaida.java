@@ -35,6 +35,7 @@ public class RepositorioSaida implements IRepositorioSaida{
         gerenciadorConexao= GerenciadorConexao.getInstancia();
     }
     
+    @Override
     public void inserir(Saida s) throws ConexaoException, 
             RepositorioInserirException{
         Connection c= gerenciadorConexao.conectar();
@@ -55,6 +56,7 @@ public class RepositorioSaida implements IRepositorioSaida{
         }
     }
     
+    @Override
     public void alterar(Saida s) throws ConexaoException, 
             RepositorioAlterarException{
         Connection c= gerenciadorConexao.conectar();
@@ -76,6 +78,7 @@ public class RepositorioSaida implements IRepositorioSaida{
         }
     }
     
+    @Override
     public void excluir(Saida s) throws ConexaoException, 
             RepositorioExcluirException{
         Connection c= gerenciadorConexao.conectar();
@@ -94,6 +97,7 @@ public class RepositorioSaida implements IRepositorioSaida{
         }
     }
     
+    @Override
     public List<Saida> listar() throws ConexaoException, 
             RepositorioListarException{
         List<Saida> lista= new ArrayList<Saida>();
@@ -118,10 +122,10 @@ public class RepositorioSaida implements IRepositorioSaida{
                 e.setQtde(rs.getDouble("qtdeEnt"));
                 p= new Produto();
                 p.setCodProd(rs.getInt("codProd"));
-                p.setDescProd("descprod");
+                p.setDescProd(rs.getString("descprod"));
                 f= new Fornecedor();
                 f.setCodForn(rs.getInt("codForn"));
-                f.setNome("nome");
+                f.setNome(rs.getString("nome"));
                 f.setCnpj(rs.getString("CNPJ"));
                 e.setFornecedor(f);
                 e.setProduto(p);
@@ -139,6 +143,7 @@ public class RepositorioSaida implements IRepositorioSaida{
         }
     }
     
+    @Override
     public Saida pesqNum(Integer Num) 
             throws ConexaoException, RepositorioPesquisarException{
         Connection c= gerenciadorConexao.conectar();
@@ -152,10 +157,25 @@ public class RepositorioSaida implements IRepositorioSaida{
                 + " inner join produto as p where p.codProd = e.codProd"
                 + " inner join Fornecedor as f where f.codForn = e.codForn";
         try{
-            Statement stmt= c.createStatement();
-            ResultSet rs= stmt.executeQuery(sql);
-            // implementar o restante do código...zzzzZZZZ
-            
+            PreparedStatement pstmt= c.prepareStatement(sql);
+            ResultSet rs= pstmt.executeQuery();
+            while (rs.next()){
+                s= new Saida(rs.getInt("codSaida"), rs.getDouble("qtde"), rs.getString("dtSaida"));
+                e= new Entrada();
+                e.setCodEntrada(rs.getInt("codEnt"));
+                e.setLote(rs.getString("lote"));
+                e.setQtde(rs.getDouble("qtdeEnt"));
+                p= new Produto();
+                p.setCodProd(rs.getInt("codProd"));
+                p.setDescProd(rs.getString("descprod"));
+                f= new Fornecedor();
+                f.setCodForn(rs.getInt("codForn"));
+                f.setNome(rs.getString("nome"));
+                f.setCnpj(rs.getString("CNPJ"));
+                e.setFornecedor(f);
+                e.setProduto(p);
+                s.setEntrada(e);
+            }
             return s;
         }
         catch(SQLException ex){
