@@ -60,6 +60,23 @@ public class Entrada {
     
     /**
      * 
+     * @param codEntrada
+     * @param dataEntrada
+     * @param lote
+     * @param qtde 
+     */
+    public Entrada(Integer codEntrada, String dataEntrada, String lote, 
+            Double qtde){
+        this.codEntrada = codEntrada;
+        this.qtde = qtde;
+        this.dataEntrada = dataEntrada;
+        this.lote = lote;
+        //this.produto=produto;
+        //this.fornecedor=fornecedor;
+    }
+    
+    /**
+     * 
      * @param qtde
      * @param dataEntrada
      * @param lote

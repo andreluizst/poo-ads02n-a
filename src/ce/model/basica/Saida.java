@@ -14,14 +14,38 @@ public class Saida {
     private Integer codSaida;
     private Double qtde;
     private String dataSaida;
+    private Entrada entrada;
 
     public Saida(){
-
+        entrada= new Entrada();
     }
+    
+    public Saida(Integer codSaida, Double qtde, String dataSaida, Entrada entrada){
+        this.codSaida = codSaida;
+        this.qtde = qtde;
+        this.dataSaida = dataSaida;
+        this.entrada=entrada;
+    }
+    
     public Saida(Integer codSaida, Double qtde, String dataSaida){
         this.codSaida = codSaida;
         this.qtde = qtde;
         this.dataSaida = dataSaida;
+        //this.entrada=entrada;
+    }
+    
+    public Saida(Double qtde, String dataSaida, Entrada entrada){
+        this.codSaida = codSaida;
+        this.qtde = qtde;
+        this.dataSaida = dataSaida;
+        this.entrada=entrada;
+    }
+    
+    public Saida(Double qtde, String dataSaida){
+        this.codSaida = 0;
+        this.qtde = qtde;
+        this.dataSaida = dataSaida;
+        //this.entrada=entrada;
     }
 
     /**
@@ -64,6 +88,20 @@ public class Saida {
      */
     public void setDataSaida(String dataSaida) {
         this.dataSaida = dataSaida;
+    }
+
+    /**
+     * @return the entrada
+     */
+    public Entrada getEntrada() {
+        return entrada;
+    }
+
+    /**
+     * @param entrada the entrada to set
+     */
+    public void setEntrada(Entrada entrada) {
+        this.entrada = entrada;
     }
 
     
