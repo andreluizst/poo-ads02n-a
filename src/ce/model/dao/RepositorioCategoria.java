@@ -2,6 +2,11 @@ package ce.model.dao;
 
 import ce.erro.ConexaoException;
 import ce.erro.RepositorioException;
+import ce.erro.RepositorioListarException;
+import ce.erro.RepositorioInserirException;
+import ce.erro.RepositorioAlterarException;
+import ce.erro.RepositorioExcluirException;
+import ce.erro.RepositorioPesquisarException;
 import ce.model.basica.Categoria;
 import ce.util.GerenciadorConexao;
 import ce.util.IGerenciadorConexao;
@@ -19,8 +24,10 @@ public class RepositorioCategoria implements IRepositorioCategoria{
     public RepositorioCategoria(){
          gc = GerenciadorConexao.getInstancia();
     }
-
-    public List<Categoria> listar()throws ConexaoException,RepositorioException{
+    
+    @Override
+    public List<Categoria> listar()throws ConexaoException,
+            RepositorioListarException{
         List<Categoria> lista = new ArrayList<Categoria>();
         Categoria cat = null;
         Connection c = gc.conectar();
@@ -40,13 +47,15 @@ public class RepositorioCategoria implements IRepositorioCategoria{
 
             return lista;
         }catch(SQLException e){
-            throw new RepositorioException(e, "RepositorioCategoria");
+            throw new RepositorioListarException(e, "RepositorioCategoria");
         }finally{
             gc.desconectar(c);
         }
     }
-
-    public void incluir(Categoria obj)throws ConexaoException,RepositorioException{
+    
+    @Override
+    public void incluir(Categoria obj)throws ConexaoException,
+            RepositorioInserirException{
         Connection c = gc.conectar();
         String sql = "INSERT INTO categoria (Descricao) VALUES (?)";
         try{
@@ -55,13 +64,15 @@ public class RepositorioCategoria implements IRepositorioCategoria{
             pstm.execute();
             pstm.close();
         }catch(SQLException e){
-            throw new RepositorioException(e, "RepositorioCategoria");
+            throw new RepositorioInserirException(e, "RepositorioCategoria");
         }finally{
             gc.desconectar(c);
         }
     }
-
-    public void alterar(Categoria obj)throws ConexaoException,RepositorioException{
+    
+    @Override
+    public void alterar(Categoria obj)throws ConexaoException,
+            RepositorioAlterarException{
         Connection c = gc.conectar();
         String sql = "UPDATE categoria SET descricao=? WHERE codCateg=?";
         try{
@@ -71,13 +82,15 @@ public class RepositorioCategoria implements IRepositorioCategoria{
             pstm.execute();
             pstm.close();
         }catch(SQLException e){
-            throw new RepositorioException(e, "RepositorioCategoria");
+            throw new RepositorioAlterarException(e, "RepositorioCategoria");
         }finally{
             gc.desconectar(c);
         }
     }
-
-    public void excluir(Integer codCateg)throws ConexaoException,RepositorioException{
+    
+    @Override
+    public void excluir(Integer codCateg)throws ConexaoException,
+            RepositorioExcluirException{
         Connection c = gc.conectar();
         String sql = "DELETE FROM categoria WHERE codCateg=?";
         try{
@@ -86,13 +99,15 @@ public class RepositorioCategoria implements IRepositorioCategoria{
             pstm.execute();
             pstm.close();
         }catch(SQLException e){
-            throw new RepositorioException(e, "RepositorioCategoria");
+            throw new RepositorioExcluirException(e, "RepositorioCategoria");
         }finally{
             gc.desconectar(c);
         }
     }
 
-    public Categoria pesquisar(String descricao)throws ConexaoException,RepositorioException{
+    @Override
+    public Categoria pesquisar(String descricao)throws ConexaoException,
+            RepositorioPesquisarException{
         Categoria cat = null;
         Connection c = gc.conectar();
         String sql = "SELECT codCateg, descricao FROM categoria WHERE descricao=?";
@@ -106,18 +121,19 @@ public class RepositorioCategoria implements IRepositorioCategoria{
                 cat.setCodCateg( rs.getInt("codCateg") );
                 cat.setDescricao( rs.getString("Descricao") );
             }
-
+            rs.close();
             pstm.close();
-
             return cat;
         }catch(SQLException e){
-            throw new RepositorioException(e, "RepositorioCategoria");
+            throw new RepositorioPesquisarException(e, "RepositorioCategoria");
         }finally{
             gc.desconectar(c);
         }
     }
     
-    public Categoria pesqPorCod(Integer codCateg)throws ConexaoException,RepositorioException{
+    @Override
+    public Categoria pesqPorCod(Integer codCateg)throws ConexaoException,
+            RepositorioPesquisarException{
         Categoria categoria = null;
         Connection c = gc.conectar();
         String sql = "select codCateg, descricao from categoria where codCateg=?";
@@ -135,7 +151,7 @@ public class RepositorioCategoria implements IRepositorioCategoria{
             return categoria;
         }
         catch(SQLException e){
-            throw new RepositorioException(e, "RepositorioCategoria");
+            throw new RepositorioPesquisarException(e, "RepositorioCategoria");
         }
         finally{
             gc.desconectar(c);

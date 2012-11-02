@@ -33,6 +33,7 @@ public class Entrada {
      * @param lote 
      */
     public Entrada(Integer codEntrada, Double qtde, String dataEntrada, String lote){
+        this();
         this.codEntrada = codEntrada;
         this.qtde = qtde;
         this.dataEntrada = dataEntrada;
@@ -67,12 +68,11 @@ public class Entrada {
      */
     public Entrada(Integer codEntrada, String dataEntrada, String lote, 
             Double qtde){
+        this();
         this.codEntrada = codEntrada;
         this.qtde = qtde;
         this.dataEntrada = dataEntrada;
         this.lote = lote;
-        //this.produto=produto;
-        //this.fornecedor=fornecedor;
     }
     
     /**

@@ -33,6 +33,7 @@ public class Fornecedor {
             String logradouro, int num, String comp, String bairro,
             String municipio, String uf, String cep, String fone,
             String email){
+        this();
         this.codForn= codForn;
         this.nome=nome;
         this.cnpj=cnpj;
@@ -50,6 +51,7 @@ public class Fornecedor {
     public Fornecedor(String nome, String cnpj, String logradouro, int num,
             String comp, String bairro, String municipio, String uf, String cep,
             String fone, String email){
+        this();
         this.codForn= 0;
         this.nome=nome;
         this.cnpj=cnpj;
@@ -65,6 +67,7 @@ public class Fornecedor {
     }
     
     public Fornecedor(Integer codForn, String nome){
+        this();
         this.codForn= codForn;
         this.nome=nome;
         this.cnpj="";
@@ -80,6 +83,7 @@ public class Fornecedor {
     }
 
     public Fornecedor(Integer codForn, String nome, String cnpj){
+        this();
         this.codForn= codForn;
         this.nome=nome;
         this.cnpj=cnpj;

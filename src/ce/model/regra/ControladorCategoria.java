@@ -7,6 +7,11 @@ package ce.model.regra;
 import ce.erro.ConexaoException;
 import ce.erro.ControladorException;
 import ce.erro.RepositorioException;
+import ce.erro.RepositorioInserirException;
+import ce.erro.RepositorioAlterarException;
+import ce.erro.RepositorioExcluirException;
+import ce.erro.RepositorioListarException;
+import ce.erro.RepositorioPesquisarException;
 import ce.model.basica.Categoria;
 import ce.model.dao.RepositorioCategoria;
 /**
@@ -42,6 +47,30 @@ public class ControladorCategoria {
             throw new ControladorException("Estou indisponível.");
         } catch (RepositorioException ex) {
             throw new ControladorException("Fiz bestera.");
+        }
+    }
+    
+    public void alterar(Categoria c) throws ControladorException {
+        try{
+            rpCateg.alterar(c);
+        }
+        catch(ConexaoException ce){
+            throw new ControladorException("O comando de alteração não está disponível no momento.");
+        }
+        catch(RepositorioAlterarException rae){
+            throw new ControladorException(rae, "Controlador.alterar()");
+        }
+    }
+    
+    public void excluir(Categoria c) throws ControladorException{
+        try{
+            rpCateg.excluir(c.getCodCateg());
+        }
+        catch(ConexaoException ce){
+            throw new ControladorException("O comando de exclusão não está disponível no momento.");
+        }
+        catch(RepositorioExcluirException re){
+            throw new ControladorException(re, "Controlador.excluir()");
         }
     }
 }

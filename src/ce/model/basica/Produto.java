@@ -41,7 +41,6 @@ public class Produto {
     public Produto(String descProd, Double qtdeEstoq, 
             Double qtdeMin, Double qtdeIdeal, int statusProd, 
             Categoria categoria, Unidade unidade){
-            //List<Fornecedor> fornecedores){
         this();
         this.codProd= 0;
         this.descProd= descProd;

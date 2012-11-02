@@ -28,24 +28,24 @@ public class Saida {
     }
     
     public Saida(Integer codSaida, Double qtde, String dataSaida){
+        this();
         this.codSaida = codSaida;
         this.qtde = qtde;
         this.dataSaida = dataSaida;
-        //this.entrada=entrada;
     }
     
     public Saida(Double qtde, String dataSaida, Entrada entrada){
-        this.codSaida = codSaida;
+        this.codSaida = 0;
         this.qtde = qtde;
         this.dataSaida = dataSaida;
         this.entrada=entrada;
     }
     
     public Saida(Double qtde, String dataSaida){
+        this();
         this.codSaida = 0;
         this.qtde = qtde;
         this.dataSaida = dataSaida;
-        //this.entrada=entrada;
     }
 
     /**
