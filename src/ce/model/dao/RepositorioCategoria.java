@@ -28,7 +28,7 @@ public class RepositorioCategoria implements IRepositorioCategoria{
     @Override
     public List<Categoria> listar()throws ConexaoException,
             RepositorioListarException{
-        List<Categoria> lista = new ArrayList<Categoria>();
+        List<Categoria> lista = new ArrayList();
         Categoria cat = null;
         Connection c = gc.conectar();
         String sql = "SELECT codCateg, Descricao FROM categoria";
@@ -42,9 +42,8 @@ public class RepositorioCategoria implements IRepositorioCategoria{
                 cat.setDescricao( rs.getString("Descricao") );
                 lista.add(cat);
             }
-
+            rs.close();
             stm.close();
-
             return lista;
         }catch(SQLException e){
             throw new RepositorioListarException(e, "RepositorioCategoria");
@@ -147,6 +146,7 @@ public class RepositorioCategoria implements IRepositorioCategoria{
                 categoria.setCodCateg( resultSet.getInt("codCateg") );
                 categoria.setDescricao( resultSet.getString("Descricao") );
             }
+            resultSet.close();
             pstm.close();
             return categoria;
         }

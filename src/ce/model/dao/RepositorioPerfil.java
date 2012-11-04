@@ -129,10 +129,39 @@ public class RepositorioPerfil implements IRepositorioPerfil {
             }
             rs.close();
             pstmt.close();
-            if (p==null){
+            /*if (p==null){
                 throw new RepositorioPesquisarException("Perfl."+codPerfil+" não encontrado!",
                         "RepositorioPerfil.pesqCod()");
+            }*/
+            return p;
+        }
+        catch(SQLException e){
+            throw new RepositorioPesquisarException(e, "RepositorioPerfil.pesqCod()");
+        }
+        finally{
+            gerenciadorConexao.desconectar(c);
+        }
+    }
+    
+    @Override
+    public Perfil pesquisar(String nome) throws ConexaoException, 
+            RepositorioPesquisarException{
+        Connection c= gerenciadorConexao.conectar();
+        Perfil p=null;
+        String sql= "Select * from Perfil where nome=?";
+        try{
+            PreparedStatement pstmt= c.prepareStatement(sql);
+            pstmt.setString(1, nome);
+            ResultSet rs= pstmt.executeQuery();
+            while (rs.next()){
+                p= new Perfil(rs.getInt("codPerfil"), rs.getString("nome"));
             }
+            rs.close();
+            pstmt.close();
+            /*if (p==null){
+                throw new RepositorioPesquisarException("Perfl."+nome+" não encontrado!",
+                        "RepositorioPerfil.pesqCod()");
+            }*/
             return p;
         }
         catch(SQLException e){

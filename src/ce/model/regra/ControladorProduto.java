@@ -4,10 +4,7 @@
  */
 package ce.model.regra;
 
-import ce.erro.ConexaoException;
-import ce.erro.ControladorException;
-import ce.erro.RepositorioException;
-import ce.erro.RepositorioInserirException;
+import ce.erro.*;
 import ce.model.basica.Categoria;
 import ce.model.basica.Produto;
 //import ce.model.dao.IRepositorioCategoria;
@@ -15,6 +12,8 @@ import ce.model.dao.RepositorioCategoria;
 //import ce.model.dao.IRepositorioProduto;
 import ce.model.dao.RepositorioProduto;
 import java.util.List;
+import java.util.ResourceBundle;
+
 /**
  *
  * @author andreluiz
@@ -22,26 +21,48 @@ import java.util.List;
 public class ControladorProduto {
     private RepositorioCategoria rpCateg= new RepositorioCategoria();
     private RepositorioProduto rpProd= new RepositorioProduto();
+    private ResourceBundle rb= ResourceBundle.getBundle("ce.util.Erro");
     
-    public void validar(Produto p) throws ControladorException{
+    public void validarDados(Produto p) throws ControladorException{
         if (p.getDescProd() == null){
-            throw new ControladorException(
-                    "O campo descrição deve ser preenchido", 
-                    "ControladorProduto"); 
+            throw new ControladorException(rb.getString("CtrlErroValInvalido"));
         }
     }
     
-    //public void verificar(Produto p)
+    public void verificarSePodeExcluir(Produto p) throws ControladorException {
+        try{
+            Produto prod= rpProd.pesqCodProd(p.getCodProd(), false);
+            if (prod == null){
+                throw new ControladorException(rb.getString("CtrlProdNaoExiste"));
+            }
+            //Verificar se este produto está em uso nos reposiórios e entrada ou saída
+            //RepositorioEntrada rpEnt= new RepositorioEntrada();
+        }
+        catch(ConexaoException e){
+            throw new ControladorException(
+                    rb.getString("CtrlErroDelIndisp") + " produto.",
+                    "ControladorProduto.verificarSePodeExcluir()");
+        }
+        catch(RepositorioPesquisarException ie){
+            throw new ControladorException(
+                    rb.getString("CtrlErroExcluir") + " produto.",
+                    "ControladorProduto.verificarSePodeExcluir()");
+        }
+    }
     
     public void inserir(Produto p) throws ControladorException{
         try{
             rpProd.inserir(p);
         }
         catch(ConexaoException e){
-            throw new ControladorException("Não foi possível estabelecer conexão.");
+            throw new ControladorException(
+                    rb.getString("CtrlErroInsIndisp") + " produto.",
+                    "ControladorProduto.inserir()");
         }
         catch(RepositorioInserirException ie){
-            throw new ControladorException(ie, "ControladorProduto.inserir()");
+            throw new ControladorException(
+                    rb.getString("CtrlErroInserir") + " produto.",
+                    "ControladorProduto.inserir()");
         }
     }
     
@@ -50,10 +71,14 @@ public class ControladorProduto {
             rpProd.alterar(p);
         }
         catch(ConexaoException e){
-            throw new ControladorException("Não foi possível estabelecer conexão.");
+            throw new ControladorException(
+                    rb.getString("CtrlErroAltIndisp") + " produto.",
+                    "ControladorProduto.alterar()");
         }
         catch(RepositorioException ie){
-            throw new ControladorException(ie, "ControladorProduto.alterar()");
+            throw new ControladorException(
+                    rb.getString("CtrlErroAlterar") + " produto.",
+                    "ControladorProduto.alterar()");
         }
     }
     
@@ -62,10 +87,14 @@ public class ControladorProduto {
             rpProd.atualizarQtde(p);
         }
         catch(ConexaoException e){
-            throw new ControladorException("Não foi possível estabelecer conexão.");
+            throw new ControladorException(
+                    rb.getString("CtrlErroAtlzQtdeIndisp"),
+                    "ControladorProduto.altualizarQtde()");
         }
         catch(RepositorioException ie){
-            throw new ControladorException(ie, "ControladorProduto.atualizarQtde()");
+            throw new ControladorException(
+                    rb.getString("CtrlErroAtlzQtde"),
+                    "ControladorProduto.altualizarQtde()");
         }
     }
     
@@ -74,10 +103,14 @@ public class ControladorProduto {
             rpProd.excluir(p.getCodProd());
         }
         catch(ConexaoException e){
-            throw new ControladorException("Não foi possível estabelecer conexão.");
+            throw new ControladorException(
+                    rb.getString("CtrlErroDelIndisp") + " produto.",
+                    "ControladorProduto.excluir()");
         }
         catch(RepositorioException ie){
-            throw new ControladorException(ie, "ControladorProduto.excluir()");
+            throw new ControladorException(
+                    rb.getString("CtrlErroExcluir") + " produto.",
+                    "ControladorProduto.excluir()");
         }
     }
     
@@ -86,10 +119,14 @@ public class ControladorProduto {
             return rpProd.listar();
         }
         catch(ConexaoException e){
-            throw new ControladorException("Não foi possível estabelecer conexão.");
+            throw new ControladorException(
+                    rb.getString("CtrlErroListIndisp") + " produto.",
+                    "ControladorProduto.listar()");
         }
         catch(RepositorioException e){
-            throw new ControladorException(e, "ControladorProduto.listar()");
+            throw new ControladorException(
+                    rb.getString("CtrlErroListar") + " produto.",
+                    "ControladorProduto.listar()");
         }
     }
     
@@ -98,22 +135,49 @@ public class ControladorProduto {
             return rpProd.pesquisar(descricao);
         }
         catch(ConexaoException e){
-            throw new ControladorException("Não foi possível estabelecer conexão.");
+            throw new ControladorException(
+                    rb.getString("CtrlErroPesqIndisp") + " produto.",
+                    "ControladorProduto.pesquisar()");
         }
         catch(RepositorioException e){
-            throw new ControladorException(e, "ControladorProduto.pesquisar()");
+            throw new ControladorException(
+                    rb.getString("CtrlErroPesquisar") + " produto.",
+                    "ControladorProduto.pesquisar()");
         }
     }
     
-    public Produto pesqCod(Integer cod, boolean listarForns) throws ControladorException{
+    public Produto trazerProduto(Integer cod, boolean listarForns) throws ControladorException{
         try{
             return rpProd.pesqCodProd(cod, listarForns);
         }
         catch(ConexaoException e){
-            throw new ControladorException("Não foi possível estabelecer conexão.");
+            throw new ControladorException(
+                    rb.getString("CtrlErroTrazerIndisp") + " produto.",
+                    "ControladorProduto.trazerProduto()");
         }
         catch(RepositorioException e){
-            throw new ControladorException(e, "ControladorProduto.alterar()");
+            throw new ControladorException(
+                    rb.getString("CtrlErroTrazer") + " produto.",
+                    "ControladorProduto.trazerProduto()");
+        }
+    }
+    
+    public void verificarSePodeInserir(Produto p) throws ControladorException{
+        try{
+            List<Produto> lista= rpProd.pesquisar(p.getDescProd());
+            if (lista.size() > 0){
+                throw new ControladorException(rb.getString("CtrlProdExiste"));
+            }
+        }
+        catch(ConexaoException ce){
+            throw new ControladorException(
+                    rb.getString("CtrlErroVerifIndisp") + " produto.",
+                    "ControladorProduto.verificarSePodeInserir()");
+        }
+        catch(RepositorioPesquisarException re){
+            throw new ControladorException(
+                    rb.getString("CtrlErroVerificar") + " produto.",
+                    "ControladorProduto.verificarSePodeInserir()");
         }
     }
 }

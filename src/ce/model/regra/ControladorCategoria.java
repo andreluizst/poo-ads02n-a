@@ -14,29 +14,32 @@ import ce.erro.RepositorioListarException;
 import ce.erro.RepositorioPesquisarException;
 import ce.model.basica.Categoria;
 import ce.model.dao.RepositorioCategoria;
+import java.util.ResourceBundle;
 /**
  *
  * @author Andre
  */
 public class ControladorCategoria {
     private RepositorioCategoria rpCateg = new RepositorioCategoria();
+    private ResourceBundle rb= ResourceBundle.getBundle("ce.ultil.Erro");
     
-    public void validar(Categoria c) throws ControladorException{
+    public void validarDados(Categoria c) throws ControladorException{
         if(c.getDescricao()==null){
-            throw new ControladorException("Campo com valor invalido.");
+            throw new ControladorException(rb.getString("CtrlErroValInvalido"));
         }
     }
 
-    public void verificar(Categoria c) throws ControladorException{
+    public void verificarSePodeInserir(Categoria c) throws ControladorException{
         try {
             Categoria aux = rpCateg.pesquisar(c.getDescricao());
             if(aux!=null){
-                throw new ControladorException("Registro já existe.");
+                throw new ControladorException(rb.getString("CtrlErroCategExiste"));
             }
         } catch (ConexaoException ex) {
-            throw new ControladorException("VERIF Estou indisponível.");
+            throw new ControladorException(rb.getString("CtrlErroVerifIndisp") + " categoria.");
         } catch (RepositorioException ex) {
-            throw new ControladorException("VERIF Fiz bestera.");
+            throw new ControladorException(rb.getString("CtrlErroVerificar") + " categoria.",
+                    "ControladorCategoria.verificarSePodeInserir()");
         }
     }
 
@@ -44,9 +47,10 @@ public class ControladorCategoria {
         try {
             rpCateg.incluir(c);
         } catch (ConexaoException ex) {
-            throw new ControladorException("Estou indisponível.");
+            throw new ControladorException(rb.getString("CtrlErroInsIndisp") + " categoria.");
         } catch (RepositorioException ex) {
-            throw new ControladorException("Fiz bestera.");
+            throw new ControladorException(rb.getString("CtrlErroInseir") + " categoria.",
+                    "ControladorCategoria.inserir()");
         }
     }
     
@@ -55,11 +59,20 @@ public class ControladorCategoria {
             rpCateg.alterar(c);
         }
         catch(ConexaoException ce){
-            throw new ControladorException("O comando de alteração não está disponível no momento.");
+            throw new ControladorException(
+                    rb.getString("CtrlErroAltIndisp") + " categoria.",
+                    "ControladorCategoria.alterar()");
         }
         catch(RepositorioAlterarException rae){
-            throw new ControladorException(rae, "Controlador.alterar()");
+            throw new ControladorException(
+                    rb.getString("CtrlErroAlterar") + " categoria.",
+                    "ControladorCategoria.alterar()");
         }
+    }
+    
+    public void verificarSePodeExcluir(Categoria c) throws ControladorException{
+        //É preciso verificar se algum produto pertence a categroria que será exluida
+        //caso afirmativo, abortar exclusão
     }
     
     public void excluir(Categoria c) throws ControladorException{
@@ -67,10 +80,46 @@ public class ControladorCategoria {
             rpCateg.excluir(c.getCodCateg());
         }
         catch(ConexaoException ce){
-            throw new ControladorException("O comando de exclusão não está disponível no momento.");
+            throw new ControladorException(
+                    rb.getString("CtrlErroDelIndisp") + " categoria.",
+                    "ControladorCategoria.excluir()");
         }
         catch(RepositorioExcluirException re){
-            throw new ControladorException(re, "Controlador.excluir()");
+            throw new ControladorException(
+                    rb.getString("CtrlErroExcluir") + " categoria.",
+                    "ControladorCategoria.excluir()");
+        }
+    }
+    
+    public Categoria pesquisar(String descCateg) throws ControladorException{
+        try{
+            return rpCateg.pesquisar(descCateg);
+        }
+        catch(ConexaoException ce){
+            throw new ControladorException(
+                    rb.getString("CtrlErroPesqIndisp") + " categoria.",
+                    "ControladorCategoria.pesquisar()");
+        }
+        catch(RepositorioPesquisarException re){
+            throw new ControladorException(
+                    rb.getString("CtrlErroPesquisar") + " categoria.",
+                    "ControladorCategoria.pesquisar()");
+        }
+    }
+    
+    public Categoria trazerCategoria(Integer cod) throws ControladorException{
+        try{
+            return rpCateg.pesqPorCod(cod);
+        }
+        catch(ConexaoException ce){
+            throw new ControladorException(
+                    rb.getString("CtrlErroTrazerIndisp") + " categoria.",
+                    "ControladorCategoria.trazerCategoria()");
+        }
+        catch(RepositorioPesquisarException re){
+            throw new ControladorException(
+                    rb.getString("CtrlErroTrazer") + " categoria.",
+                    "ControladorCategoria.trazerCategoria()");
         }
     }
 }

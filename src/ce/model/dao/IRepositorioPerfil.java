@@ -25,8 +25,8 @@ public interface IRepositorioPerfil {
             RepositorioExcluirException;
     public List<Perfil> listar() throws ConexaoException, 
             RepositorioListarException;
-    /*public List<Perfil> pesquisar(String nome) throws ConexaoException, 
-            RepositorioPesquisarException;*/
+    public Perfil pesquisar(String nome) throws ConexaoException, 
+            RepositorioPesquisarException;
     public Perfil pesqCod(int codPerfil) throws ConexaoException, 
             RepositorioPesquisarException;
 }

@@ -33,6 +33,7 @@ import ce.model.dao.RepositorioPerfil;
 import ce.model.dao.IRepositorioUsuario;
 import ce.model.dao.RepositorioUsuario;
 import ce.model.regra.ControladorCategoria;
+import ce.util.VerificarCpfCnpj;
 import java.util.ArrayList;
 
 /**
@@ -67,11 +68,20 @@ public class Main {
         rpPer= new RepositorioPerfil();
         rpUser= new RepositorioUsuario();
         //testaInserir(); testaListar();
-        testaAlterar(); testaListar();
+        //testaAlterar(); testaListar();
         //testaExcluir(); testaListar();
+        //verificarCpfOuCnpj("96584265845");
         
         //TESTANDO CONTROLADORES
         ctrlCateg= new ControladorCategoria();
+    }
+    
+    private static void verificarCpfOuCnpj(String s){
+        if (VerificarCpfCnpj.executar(s)){
+            System.out.println("CPF ou CNPJ OK!");
+        }else{
+            System.out.println("CPF ou CNPJ INVÁLIDO");
+        }
     }
     
     private static void ctrlTestaInserir() {
@@ -79,8 +89,8 @@ public class Main {
         try {
             //ControladorCategoria.validar()\.verificar()\.inserir()
             c = new Categoria("Roupa");
-            ctrlCateg.validar(c);
-            ctrlCateg.verificar(c);
+            ctrlCateg.validarDados(c);
+            ctrlCateg.verificarSePodeInserir(c);
             ctrlCateg.inserir(c);
             System.out.println("Inserido com sucesso!");
         }
