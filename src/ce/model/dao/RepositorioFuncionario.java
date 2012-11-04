@@ -193,9 +193,9 @@ public class RepositorioFuncionario implements IRepositorioFuncionario{
             }
             rs.close();
             pstmt.close();
-            if (f==null){
+            /*if (f==null){
                 throw new RepositorioPesquisarException("Funcionario."+cpf+" não encontrado!" );
-            }
+            }*/
             return f;
         }
         catch(SQLException e){

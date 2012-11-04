@@ -5,7 +5,11 @@
 package ce.model.dao;
 
 import ce.erro.ConexaoException;
-import ce.erro.RepositorioException;
+import ce.erro.RepositorioInserirException;
+import ce.erro.RepositorioAlterarException;
+import ce.erro.RepositorioExcluirException;
+import ce.erro.RepositorioListarException;
+import ce.erro.RepositorioPesquisarException;
 import ce.model.basica.Unidade;
 import java.util.List;
 
@@ -14,10 +18,16 @@ import java.util.List;
  * @author Andre
  */
 public interface IRepositorioUnidade {
-    public void inserir(Unidade u) throws ConexaoException, RepositorioException;
-    public void alterar(Unidade u) throws ConexaoException, RepositorioException;
-    public void excluir(Integer codUnid) throws ConexaoException, RepositorioException;
-    public List<Unidade> listar() throws ConexaoException, RepositorioException;
-    public List<Unidade> pesquisar(String descricao) throws ConexaoException, RepositorioException;
-    public Unidade pesqCodUnid(Integer codUnid) throws ConexaoException, RepositorioException; 
+    public void inserir(Unidade u) throws ConexaoException, 
+            RepositorioInserirException;
+    public void alterar(Unidade u) throws ConexaoException, 
+            RepositorioAlterarException;
+    public void excluir(Integer codUnid) throws ConexaoException, 
+            RepositorioExcluirException;
+    public List<Unidade> listar() throws ConexaoException, 
+            RepositorioListarException;
+    public List<Unidade> pesquisar(String descricao) throws ConexaoException, 
+            RepositorioPesquisarException;
+    public Unidade pesqCod(Integer codUnid) throws ConexaoException, 
+            RepositorioPesquisarException; 
 }

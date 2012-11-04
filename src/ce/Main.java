@@ -114,7 +114,7 @@ public class Main {
             p= new Produto("Monitor LCD 22", 100.00, 
                     50.00, 100.00, 0,
                     rpCateg.pesquisar("Informática"), 
-                    rpUnid.pesqCodUnid(1));
+                    rpUnid.pesqCod(1));
             /*rpProd.inserir(p);
             rpProd.inserir(new Produto("Notebook DELL Inspiron 14r", 200.00,
                     40.00, 80.00, 0, rpCateg.pesquisar("Informática"),
@@ -164,9 +164,9 @@ public class Main {
         } catch (ConexaoException ex) {
             System.out.println("ERRO de conexão: " + ex.getMessage());
         }
-        catch(RepositorioInserirException e){
+        /*catch(RepositorioInserirException e){
             System.out.println("ERRO de inclusao " + e.getPathClassCall() + ": " + e.getMessage());
-        }
+        }*/
         catch (RepositorioException ex) {
             System.out.println("ERRO " + ex.getPathClassCall() + ": " + ex.getMessage());
         }

@@ -115,19 +115,19 @@ public class ControladorPerfil {
         }
     }
     
-    public Perfil trazerPerfil(Integer cod) throws ControladorException{
+    public Perfil trazer(Integer cod) throws ControladorException{
         try{
             return rpPer.pesqCod(cod);
         }
         catch(ConexaoException ce){
             throw new ControladorException(
                     rb.getString("CtrlErroTrazerIndisp") + " perfil.",
-                    "ControladorPerfil.trazerCategoria()");
+                    "ControladorPerfil.trazer()");
         }
         catch(RepositorioPesquisarException re){
             throw new ControladorException(
                     rb.getString("CtrlErroTrazer") + " perfil.",
-                    "ControladorPerfil.trazerCategoria()");
+                    "ControladorPerfil.trazer()");
         }
     }
     

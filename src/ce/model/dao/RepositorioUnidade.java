@@ -6,6 +6,11 @@ package ce.model.dao;
 
 import ce.erro.ConexaoException;
 import ce.erro.RepositorioException;
+import ce.erro.RepositorioInserirException;
+import ce.erro.RepositorioAlterarException;
+import ce.erro.RepositorioExcluirException;
+import ce.erro.RepositorioListarException;
+import ce.erro.RepositorioPesquisarException;
 import ce.model.basica.Unidade;
 import ce.util.GerenciadorConexao;
 import ce.util.IGerenciadorConexao;
@@ -23,7 +28,9 @@ public class RepositorioUnidade implements IRepositorioUnidade{
         gerenciadorConexao= GerenciadorConexao.getInstancia();
     }
     
-    public void inserir(Unidade u) throws ConexaoException, RepositorioException{
+    @Override
+    public void inserir(Unidade u) throws ConexaoException,
+            RepositorioInserirException{
         Connection c= gerenciadorConexao.conectar();
         String sql = "insert into unidade(descricao) values(?)";
         try{
@@ -33,14 +40,16 @@ public class RepositorioUnidade implements IRepositorioUnidade{
             pstmt.close();
         }
         catch(SQLException e){
-            throw new RepositorioException(e, "RepositorioUnidade");
+            throw new RepositorioInserirException(e, "RepositorioUnidade.inserir()");
         }
         finally{
             gerenciadorConexao.desconectar(c);
         }
     }
     
-    public void alterar(Unidade u)throws ConexaoException, RepositorioException{
+    @Override
+    public void alterar(Unidade u)throws ConexaoException, 
+            RepositorioAlterarException{
         Connection c= gerenciadorConexao.conectar();
         String sql = "update unidade set descricao=? where codUnid=?";
         try{
@@ -51,14 +60,16 @@ public class RepositorioUnidade implements IRepositorioUnidade{
             pstmt.close();
         }
         catch(SQLException e){
-            throw new RepositorioException(e, "RepositorioUnidade");
+            throw new RepositorioAlterarException(e, "RepositorioUnidade.alterar()");
         }
         finally{
             gerenciadorConexao.desconectar(c);
         }
     }
     
-    public void excluir(Integer codUnid)throws ConexaoException, RepositorioException{
+    @Override
+    public void excluir(Integer codUnid)throws ConexaoException, 
+            RepositorioExcluirException{
         Connection c= gerenciadorConexao.conectar();
         String sql = "delete from unidade where codUnid=?";
         try{
@@ -68,15 +79,16 @@ public class RepositorioUnidade implements IRepositorioUnidade{
             pstmt.close();
         }
         catch(SQLException e){
-            throw new RepositorioException(e, "RepositorioUnidade");
+            throw new RepositorioExcluirException(e, "RepositorioUnidade.excluir()");
         }
         finally{
             gerenciadorConexao.desconectar(c);
         }
     }
     
+    @Override
     public List<Unidade> listar() throws ConexaoException,
-            RepositorioException{
+            RepositorioListarException{
         List<Unidade> lista = new ArrayList<Unidade>();
         Unidade u;
         Connection c= gerenciadorConexao.conectar();
@@ -92,15 +104,16 @@ public class RepositorioUnidade implements IRepositorioUnidade{
             return lista;
         }
         catch(SQLException e){
-            throw new RepositorioException(e, "RepositorioUnidade");
+            throw new RepositorioListarException(e, "RepositorioUnidade.listar()");
         }
         finally{
             gerenciadorConexao.desconectar(c);
         }
     }
     
+    @Override
     public List<Unidade> pesquisar(String descricao) throws ConexaoException,
-            RepositorioException{
+            RepositorioPesquisarException{
                 List<Unidade> lista = new ArrayList<Unidade>();
         Unidade u;
         Connection c= gerenciadorConexao.conectar();
@@ -117,15 +130,16 @@ public class RepositorioUnidade implements IRepositorioUnidade{
             return lista;
         }
         catch(SQLException e){
-            throw new RepositorioException(e, "RepositorioUnidade");
+            throw new RepositorioPesquisarException(e, "RepositorioUnidade.pesquisar()");
         }
         finally{
             gerenciadorConexao.desconectar(c);
         }
     }
     
-    public Unidade pesqCodUnid(Integer codUnid) throws ConexaoException, 
-            RepositorioException{
+    @Override
+    public Unidade pesqCod(Integer codUnid) throws ConexaoException, 
+            RepositorioPesquisarException{
         Unidade u= null;
         Connection c= gerenciadorConexao.conectar();
         String sql= "SELECT * FROM unidade WHERE codUnid=?";        
@@ -142,7 +156,7 @@ public class RepositorioUnidade implements IRepositorioUnidade{
             return u;
         }
         catch(SQLException e){
-            throw new RepositorioException(e, "RepositorioUnidade");
+            throw new RepositorioPesquisarException(e, "RepositorioUnidade.pesqCod()");
         }
         finally{
             gerenciadorConexao.desconectar(c);

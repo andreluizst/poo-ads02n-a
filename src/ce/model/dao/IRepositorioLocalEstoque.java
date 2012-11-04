@@ -5,7 +5,11 @@
 package ce.model.dao;
 
 import ce.erro.ConexaoException;
-import ce.erro.RepositorioException;
+import ce.erro.RepositorioInserirException;
+import ce.erro.RepositorioAlterarException;
+import ce.erro.RepositorioExcluirException;
+import ce.erro.RepositorioListarException;
+import ce.erro.RepositorioPesquisarException;
 import ce.model.basica.LocalEstoque;
 import java.util.List;
 
@@ -14,10 +18,16 @@ import java.util.List;
  * @author Andre
  */
 public interface IRepositorioLocalEstoque {
-    public void inserir(LocalEstoque le) throws ConexaoException, RepositorioException;
-    public void alterar(LocalEstoque le) throws ConexaoException, RepositorioException;
-    public void excluir(int codLocal) throws ConexaoException, RepositorioException;
-    public List<LocalEstoque> listar() throws ConexaoException, RepositorioException;
-    public List<LocalEstoque> pesquisar(String descricao) throws ConexaoException, RepositorioException;
-    public LocalEstoque pesqCodForn(int codLocal) throws ConexaoException, RepositorioException;
+    public void inserir(LocalEstoque le) throws ConexaoException, 
+            RepositorioInserirException;
+    public void alterar(LocalEstoque le) throws ConexaoException, 
+            RepositorioAlterarException;
+    public void excluir(int codLocal) throws ConexaoException, 
+            RepositorioExcluirException;
+    public List<LocalEstoque> listar() throws ConexaoException, 
+            RepositorioListarException;
+    public List<LocalEstoque> pesquisar(String descricao) throws ConexaoException, 
+            RepositorioPesquisarException;
+    public LocalEstoque pesqCod(int codLocal) throws ConexaoException, 
+            RepositorioPesquisarException;
 }

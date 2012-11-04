@@ -175,24 +175,24 @@ public class ControladorFornecedor {
         }
     }
     
-    public Fornecedor trazerFornecedor(Integer cod) throws ControladorException{
+    public Fornecedor trazer(Integer cod) throws ControladorException{
         try{
             Fornecedor forn= rpForn.pesqCodForn(cod, false);
             if (forn == null){
                 throw new ControladorException(rb.getString("CtrlFornNaoExiste"),
-                        "ControladorFornecedor.trazerFornecedor()");
+                        "ControladorFornecedor.trazer()");
             }
             return forn;
         }
         catch(ConexaoException ce){
             throw new ControladorException(
                     rb.getString("CtrlErroTrazerIndisp") + " fornecedor.",
-                    "ControladorFornecedor.trazerFornecedor()");
+                    "ControladorFornecedor.trazer()");
         }
         catch(RepositorioPesquisarException re){
             throw new ControladorException(
                     rb.getString("CtrlErroTrazer") + " fornecedor.",
-                    "ControladorFornecedor.trazerFornecedor()");
+                    "ControladorFornecedor.trazer()");
         }
     }
     
@@ -201,10 +201,13 @@ public class ControladorFornecedor {
             return rpForn.pesquisar(nome);
         }
         catch(ConexaoException e){
-            throw new ControladorException("Não é possível pesquisar os fornecedores no momento.");
+            throw new ControladorException(
+                    rb.getString("CtrlErroPesqIndisp") + " fornecedor.",
+                    "ControladorFornecedor.pesquisar()");
         }
         catch(RepositorioPesquisarException re){
-            throw new ControladorException("Erro ao pesquisar fornecedores.",
+            throw new ControladorException(
+                    rb.getString("CtrlErroPesquisar") + " fornecedor.",
                     "ControladorFornecedor.pesquisar()");
         }
     }

@@ -192,7 +192,7 @@ public class RepositorioProduto implements IRepositorioProduto{
                         rs.getDouble("qtdeEstoq"), rs.getDouble("qtdeMin"),
                         rs.getDouble("qtdeIdeal"), rs.getInt("statusProd"),
                         rpCateg.pesqPorCod(rs.getInt("codCateg")),
-                        rpUnid.pesqCodUnid(rs.getInt("codUnid")));
+                        rpUnid.pesqCod(rs.getInt("codUnid")));
                 //PreparedStatement pstmtForns= c.prepareStatement(sqlForns);
                 PreparedStatement pstmtForns= c.prepareStatement(sqlForns);
                 pstmtForns.setInt(1, p.getCodProd());
@@ -248,7 +248,7 @@ public class RepositorioProduto implements IRepositorioProduto{
                         rs.getDouble("qtdeEstoq"), rs.getDouble("qtdeMin"),
                         rs.getDouble("qtdeIdeal"), rs.getInt("statusProd"),
                         rpCateg.pesqPorCod(rs.getInt("codCateg")),
-                        rpUnid.pesqCodUnid(rs.getInt("codUnid")));
+                        rpUnid.pesqCod(rs.getInt("codUnid")));
                 pstmtForns.setInt(1, p.getCodProd());
                 ResultSet rsForns= pstmtForns.executeQuery();
                 while (rsForns.next()){
@@ -309,7 +309,7 @@ public class RepositorioProduto implements IRepositorioProduto{
                         rs.getDouble("qtdeEstoq"), rs.getDouble("qtdeMin"),
                         rs.getDouble("qtdeIdeal"), rs.getInt("statusProd"),
                         rpCateg.pesqPorCod(rs.getInt("codCateg")),
-                        rpUnid.pesqCodUnid(rs.getInt("codUnid")));
+                        rpUnid.pesqCod(rs.getInt("codUnid")));
                 if (comForns){
                     PreparedStatement pstmtForns= c.prepareStatement(sqlForns);
                     pstmtForns.setInt(1, codProd);

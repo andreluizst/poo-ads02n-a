@@ -6,6 +6,11 @@ package ce.model.dao;
 
 import ce.erro.ConexaoException;
 import ce.erro.RepositorioException;
+import ce.erro.RepositorioInserirException;
+import ce.erro.RepositorioAlterarException;
+import ce.erro.RepositorioExcluirException;
+import ce.erro.RepositorioListarException;
+import ce.erro.RepositorioPesquisarException;
 import ce.model.basica.LocalEstoque;
 import ce.util.GerenciadorConexao;
 import ce.util.IGerenciadorConexao;
@@ -24,7 +29,8 @@ public class RepositorioLocalEstoque implements IRepositorioLocalEstoque{
         gerenciadorConexao= GerenciadorConexao.getInstancia();
     }
     
-    public void inserir(LocalEstoque le) throws ConexaoException, RepositorioException{
+    public void inserir(LocalEstoque le) throws ConexaoException, 
+            RepositorioInserirException{
         Connection c= gerenciadorConexao.conectar();
         String sql = "insert into LocalEstoque(descricao) values(?)";
         try{
@@ -34,14 +40,15 @@ public class RepositorioLocalEstoque implements IRepositorioLocalEstoque{
             pstmt.close();
         }
         catch(SQLException e){
-            throw new RepositorioException(e);
+            throw new RepositorioInserirException(e);
         }
         finally{
             gerenciadorConexao.desconectar(c);
         }
     }
     
-    public void alterar(LocalEstoque le)throws ConexaoException, RepositorioException{
+    public void alterar(LocalEstoque le)throws ConexaoException, 
+            RepositorioAlterarException{
         Connection c= gerenciadorConexao.conectar();
         String sql = "update LocalEstoque set descricao=? where codUnid=?";
         try{
@@ -52,14 +59,15 @@ public class RepositorioLocalEstoque implements IRepositorioLocalEstoque{
             pstmt.close();
         }
         catch(SQLException e){
-            throw new RepositorioException(e);
+            throw new RepositorioAlterarException(e);
         }
         finally{
             gerenciadorConexao.desconectar(c);
         }
     }
     
-    public void excluir(int codLocal)throws ConexaoException, RepositorioException{
+    public void excluir(int codLocal)throws ConexaoException, 
+            RepositorioExcluirException{
         Connection c= gerenciadorConexao.conectar();
         String sql = "delete from LocalEstoque where codLocal=?";
         try{
@@ -69,7 +77,7 @@ public class RepositorioLocalEstoque implements IRepositorioLocalEstoque{
             pstmt.close();
         }
         catch(SQLException e){
-            throw new RepositorioException(e);
+            throw new RepositorioExcluirException(e);
         }
         finally{
             gerenciadorConexao.desconectar(c);
@@ -77,7 +85,7 @@ public class RepositorioLocalEstoque implements IRepositorioLocalEstoque{
     }
     
     public List<LocalEstoque> listar() throws ConexaoException,
-            RepositorioException{
+            RepositorioListarException{
         List<LocalEstoque> lista = new ArrayList<LocalEstoque>();
         LocalEstoque le;
         Connection c= gerenciadorConexao.conectar();
@@ -94,7 +102,7 @@ public class RepositorioLocalEstoque implements IRepositorioLocalEstoque{
             return lista;
         }
         catch(SQLException e){
-            throw new RepositorioException(e);
+            throw new RepositorioListarException(e);
         }
         finally{
             gerenciadorConexao.desconectar(c);
@@ -102,7 +110,7 @@ public class RepositorioLocalEstoque implements IRepositorioLocalEstoque{
     }
     
     public List<LocalEstoque> pesquisar(String descricao) throws ConexaoException,
-            RepositorioException{
+            RepositorioPesquisarException{
                 List<LocalEstoque> lista = new ArrayList<LocalEstoque>();
         LocalEstoque le;
         Connection c= gerenciadorConexao.conectar();
@@ -119,15 +127,15 @@ public class RepositorioLocalEstoque implements IRepositorioLocalEstoque{
             return lista;
         }
         catch(SQLException e){
-            throw new RepositorioException(e);
+            throw new RepositorioPesquisarException(e);
         }
         finally{
             gerenciadorConexao.desconectar(c);
         }
     }
     
-    public LocalEstoque pesqCodForn(int codLocal) throws ConexaoException, 
-            RepositorioException{
+    public LocalEstoque pesqCod(int codLocal) throws ConexaoException, 
+            RepositorioPesquisarException{
         LocalEstoque le= null;
         Connection c= gerenciadorConexao.conectar();
         String sql= "select * from LocalEstoque where codLocal=?";        
@@ -143,7 +151,7 @@ public class RepositorioLocalEstoque implements IRepositorioLocalEstoque{
             return le;
         }
         catch(SQLException e){
-            throw new RepositorioException(e);
+            throw new RepositorioPesquisarException(e);
         }
         finally{
             gerenciadorConexao.desconectar(c);
