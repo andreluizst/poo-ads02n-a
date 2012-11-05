@@ -17,6 +17,7 @@ import ce.model.dao.RepositorioFuncionario;
 import java.util.List;
 import java.util.ResourceBundle;
 import ce.util.ValidarStringData;
+import ce.util.VerificarCpfCnpj;
 
 /**
  *
@@ -29,34 +30,37 @@ public class ControladorFuncionario {
     
     public void validarDados(Funcionario f) throws ControladorException{
         //String sPath="ControladorFuncionario.validarDados()";
-        if (f.getNome() == null){
+        if ((f.getNome() == null) || (f.getNome().compareTo("")==0)){
             throw new ControladorException("O campo nome deve ser preenchido.");
                     //sPath);
         }
-        if (f.getCpf() == null){
+        if ((f.getCpf() == null) || (f.getCpf().compareTo("")==0)){
             throw new ControladorException("O campo CPF deve ser preenchido.");
                     //sPath);
+        }
+        if (!VerificarCpfCnpj.executar(f.getCpf())){
+            throw new ControladorException("CPF inválido!");
         }
         if (!ValidarStringData.execute(f.getDtNasc())){
            throw new ControladorException("O campo data deve ser preenchido com uma data válida.");
         }
-        if (f.getLogradouro() == null){
+        if ((f.getLogradouro() == null) || (f.getLogradouro().compareTo("")==0)){
             throw new ControladorException("O campo logradouro deve ser preenchido.");
                     //sPath);
         }
-        if (f.getBairro() == null){
+        if ((f.getBairro() == null) || (f.getBairro().compareTo("")==0)){
             throw new ControladorException("O campo bairro deve ser preenchido.");
         }
-        if (f.getMunicipio() == null){
+        if ((f.getMunicipio() == null) || (f.getMunicipio().compareTo("")==0)){
             throw new ControladorException("O campo municipio deve ser preenchido.");
         }
-        if (f.getUf() == null){
+        if ((f.getUf() == null) || (f.getUf().compareTo("")==0)){
             throw new ControladorException("O campo UF deve ser preenchido.");
         }
-        if (f.getCep() == null){
+        if ((f.getCep() == null) || (f.getCep().compareTo("")==0)){
             throw new ControladorException("O campo CEP deve ser preenchido.");
         }
-        if (f.getFone() == null){
+        if ((f.getFone() == null) || (f.getFone().compareTo("")==0)){
             throw new ControladorException("O campo fone deve ser preenchido.");
         }
     }

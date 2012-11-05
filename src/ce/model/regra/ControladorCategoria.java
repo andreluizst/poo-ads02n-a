@@ -21,10 +21,13 @@ import java.util.ResourceBundle;
  */
 public class ControladorCategoria {
     private RepositorioCategoria rpCateg = new RepositorioCategoria();
-    private ResourceBundle rb= ResourceBundle.getBundle("ce.ultil.Erro");
+    private ResourceBundle rb= ResourceBundle.getBundle("ce.util.Erro");
     
     public void validarDados(Categoria c) throws ControladorException{
         if(c.getDescricao()==null){
+            throw new ControladorException(rb.getString("CtrlErroValInvalido"));
+        }
+        if(c.getDescricao().compareTo("") == 0){
             throw new ControladorException(rb.getString("CtrlErroValInvalido"));
         }
     }
@@ -33,7 +36,7 @@ public class ControladorCategoria {
         try {
             Categoria aux = rpCateg.pesquisar(c.getDescricao());
             if(aux!=null){
-                throw new ControladorException(rb.getString("CtrlErroCategExiste"));
+                throw new ControladorException(rb.getString("CtrlCategExiste"));
             }
         } catch (ConexaoException ex) {
             throw new ControladorException(rb.getString("CtrlErroVerifIndisp") + " categoria.");
@@ -107,19 +110,19 @@ public class ControladorCategoria {
         }
     }
     
-    public Categoria trazerCategoria(Integer cod) throws ControladorException{
+    public Categoria trazer(Integer cod) throws ControladorException{
         try{
             return rpCateg.pesqPorCod(cod);
         }
         catch(ConexaoException ce){
             throw new ControladorException(
                     rb.getString("CtrlErroTrazerIndisp") + " categoria.",
-                    "ControladorCategoria.trazerCategoria()");
+                    "ControladorCategoria.trazer()");
         }
         catch(RepositorioPesquisarException re){
             throw new ControladorException(
                     rb.getString("CtrlErroTrazer") + " categoria.",
-                    "ControladorCategoria.trazerCategoria()");
+                    "ControladorCategoria.trazer()");
         }
     }
 }

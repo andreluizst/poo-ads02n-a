@@ -165,7 +165,7 @@ public class Funcionario {
      * @param uf the uf to set
      */
     public void setUf(String uf) {
-        this.uf = uf;
+        this.uf = uf.toUpperCase();
     }
 
     /**
@@ -207,7 +207,7 @@ public class Funcionario {
      * @param email the email to set
      */
     public void setEmail(String email) {
-        this.email = email;
+        this.email = email.toLowerCase();
     }
     
     @Override

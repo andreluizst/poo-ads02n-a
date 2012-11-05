@@ -15,6 +15,7 @@ import ce.erro.RepositorioListarException;
 import ce.model.basica.Fornecedor;
 //import ce.model.dao.RepositorioProduto;
 import ce.model.dao.RepositorioFornecedor;
+import ce.util.VerificarCpfCnpj;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -36,33 +37,35 @@ public class ControladorFornecedor {
             contemErro=true;
         }*/
         String sPath="ControladorFornecedor.validarDados()";
-        if (f.getNome() == null){
+        if ((f.getNome() == null) || (f.getNome().compareTo("")==0)){
             throw new ControladorException("O campo nome deve ser preenchido.",
                     sPath);
         }
-        if (f.getCnpj() == null){
+        //Substituir pela linha abaixo após os testes
+        //if (!VerificarCpfCnpj.executar(f.getCnpj())){
+        if ((f.getCnpj() == null) || (f.getCnpj().compareTo("")==0)){
             throw new ControladorException("CNPJ inválido.", sPath);
         }
-        if (f.getLogradouro() == null){
+        if ((f.getLogradouro() == null)||(f.getLogradouro().compareTo("")==0)){
             throw new ControladorException("Informe o logradouro do fornecedor",
                     sPath);
         }
-        if (f.getBairro() == null){
+        if ((f.getBairro() == null) || (f.getBairro().compareTo("")==0)){
             throw new ControladorException("Informe o Bairro do fornecedor", 
                     sPath);
         }
-        if (f.getMunicipio() == null){
+        if ((f.getMunicipio() == null) || (f.getMunicipio().compareTo("")==0)){
             throw new ControladorException(
                     "Informe o municipio do fornecedor", sPath);
         }
-        if (f.getUf() == null){
+        if ((f.getUf() == null) || (f.getUf().compareTo("")==0)){
             throw new ControladorException(
                     "Informe a sigla do estado do fornecedor", sPath);
         }
-        if (f.getCep() == null){
+        if ((f.getCep() == null) || (f.getCep().compareTo("")==0)){
             throw new ControladorException("Informe o CEP", sPath);
         }
-        if (f.getFone() == null){
+        if ((f.getFone() == null) || (f.getFone().compareTo("")==0)){
             throw new ControladorException(
                     "Informe o número do telefone do fornecedor", sPath);
         }

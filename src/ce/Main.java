@@ -32,7 +32,7 @@ import ce.model.dao.IRepositorioPerfil;
 import ce.model.dao.RepositorioPerfil;
 import ce.model.dao.IRepositorioUsuario;
 import ce.model.dao.RepositorioUsuario;
-import ce.model.regra.ControladorCategoria;
+import ce.model.regra.*;
 import ce.util.VerificarCpfCnpj;
 import java.util.ArrayList;
 
@@ -53,6 +53,14 @@ public class Main {
     
     //Para testar os controladores
     private static ControladorCategoria ctrlCateg;
+    private static ControladorFornecedor ctrlForn;
+    private static ControladorProduto ctrlProd;
+    private static ControladorUnidade ctrlUnid;
+    private static ControladorPerfil ctrlPer;
+    private static ControladorUsuario ctrlUsr;
+    private static ControladorFuncionario ctrlFun;
+    private static ControladorLocalEstoque ctrlLocalE;
+    private static ControladorEntrada ctrlEnt;
 
     /**
      * @param args the command line arguments
@@ -74,6 +82,19 @@ public class Main {
         
         //TESTANDO CONTROLADORES
         ctrlCateg= new ControladorCategoria();
+        ctrlForn= new ControladorFornecedor();
+        ctrlProd= new ControladorProduto();
+        ctrlUnid= new ControladorUnidade();
+        ctrlLocalE= new ControladorLocalEstoque();
+        ctrlPer= new ControladorPerfil();
+        ctrlUsr= new ControladorUsuario();
+        ctrlFun= new ControladorFuncionario();
+        ctrlEnt= new ControladorEntrada();
+        //FALTA o controlador de saida
+        
+        //ctrlTestaInserir();
+        //ctrlTestaAlterar();
+        //ctrlTestaExcluir();
     }
     
     private static void verificarCpfOuCnpj(String s){
@@ -86,15 +107,70 @@ public class Main {
     
     private static void ctrlTestaInserir() {
         Categoria c;
+        Produto prod;
+        Fornecedor forn;
         try {
             //ControladorCategoria.validar()\.verificar()\.inserir()
-            c = new Categoria("Roupa");
+            /*c = new Categoria("Roupa");
             ctrlCateg.validarDados(c);
             ctrlCateg.verificarSePodeInserir(c);
             ctrlCateg.inserir(c);
-            System.out.println("Inserido com sucesso!");
+            System.out.println("Categoria inserida com sucesso!");*/
+            /*ControladorFornecedor.validarDados()\verificarSePodeInserir()
+             * \inserir() - testado e ok*/
+            forn= new Fornecedor();
+            forn.setCnpj("10999888000206");
+            forn.setNome("Me exclua");
+            forn.setLogradouro("Rua 21");
+            forn.setBairro("Vila Nova");
+            forn.setMunicipio("Recife");
+            forn.setUf("pe");
+            forn.setCep("02333444");
+            forn.setFone("8133334444");
+            ctrlForn.validarDados(forn);
+            ctrlForn.verificarSePodeInserir(forn);
+            ctrlForn.inserir(forn);
+            System.out.println("Fornecedor inserido com sucesso!");
         }
         catch (ControladorException ex) {
+            System.out.println("ERRO: " + ex.getMessage());
+        }
+    }
+    
+    private static void ctrlTestaAlterar(){
+        Categoria c;
+        Fornecedor forn;
+        try{
+            /*ControladorCategoria.alterar() - testado e ok
+            c= ctrlCateg.trazer(4);
+            c.setDescricao("Roupa");
+            ctrlCateg.alterar(c);
+            System.out.println("Categoria alterada com sucesso!");*/
+            /*ControladorFornecedor.alterar() - testado e ok*/
+            forn= ctrlForn.trazer(6);
+            forn.setNome("C&A");
+            ctrlForn.alterar(forn);
+            System.out.println("Fornecedor alterado com sucesso!");
+        }
+        catch(ControladorException ex){
+            System.out.println("ERRO: " + ex.getMessage());
+        }
+    }
+    
+    private static void ctrlTestaExcluir(){
+        Categoria c;
+        Fornecedor forn;
+        try{
+            /*ControladorCategoria.alterar() - TESTADO E OK
+            c= ctrlCateg.trazer(4);
+            ctrlCateg.excluir(c);
+            System.out.println("Categoria excluida com sucesso!");*/
+            /*ControladorFornecedor.excluir() - testado e ok*/
+            forn= ctrlForn.trazer(7);
+            ctrlForn.excluir(forn);
+            System.out.println("Fornecedor excluido com sucesso!");
+        }
+        catch(ControladorException ex){
             System.out.println("ERRO: " + ex.getMessage());
         }
     }
