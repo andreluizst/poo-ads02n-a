@@ -146,19 +146,19 @@ public class ControladorProduto {
         }
     }
     
-    public Produto trazerProduto(Integer cod, boolean listarForns) throws ControladorException{
+    public Produto trazer(Integer cod, boolean listarForns) throws ControladorException{
         try{
             return rpProd.pesqCodProd(cod, listarForns);
         }
         catch(ConexaoException e){
             throw new ControladorException(
                     rb.getString("CtrlErroTrazerIndisp") + " produto.",
-                    "ControladorProduto.trazerProduto()");
+                    "ControladorProduto.trazer()");
         }
         catch(RepositorioException e){
             throw new ControladorException(
                     rb.getString("CtrlErroTrazer") + " produto.",
-                    "ControladorProduto.trazerProduto()");
+                    "ControladorProduto.trazer()");
         }
     }
     

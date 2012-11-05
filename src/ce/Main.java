@@ -16,6 +16,8 @@ import ce.model.basica.LocalEstoque;
 import ce.model.basica.Funcionario;
 import ce.model.basica.Perfil;
 import ce.model.basica.Usuario;
+import ce.model.basica.Entrada;
+import ce.model.basica.Saida;
 import ce.model.dao.IRepositorioCategoria;
 import ce.model.dao.RepositorioCategoria;
 import ce.model.dao.IRepositorioUnidade;
@@ -92,7 +94,7 @@ public class Main {
         ctrlEnt= new ControladorEntrada();
         //FALTA o controlador de saida
         
-        //ctrlTestaInserir();
+        ctrlTestaInserir();
         //ctrlTestaAlterar();
         //ctrlTestaExcluir();
     }
@@ -108,7 +110,14 @@ public class Main {
     private static void ctrlTestaInserir() {
         Categoria c;
         Produto prod;
+        Unidade unid;
+        LocalEstoque le;
         Fornecedor forn;
+        Perfil per;
+        Usuario usu;
+        Funcionario fun;
+        Entrada e;
+        Saida s;
         try {
             //ControladorCategoria.validar()\.verificar()\.inserir()
             /*c = new Categoria("Roupa");
@@ -118,6 +127,12 @@ public class Main {
             System.out.println("Categoria inserida com sucesso!");*/
             /*ControladorFornecedor.validarDados()\verificarSePodeInserir()
              * \inserir() - testado e ok*/
+            /*forn= new Fornecedor("Infohouse", "35456123000102",
+                    "Av Cons. Aguiar", 1002, "", "Boa Viagem",
+                    "Recife", "PE", "51055060", "8134622233", "vendas@infohouse.com.br");
+            ctrlForn.validarDados(forn);
+            ctrlForn.verificarSePodeInserir(forn);
+            ctrlForn.inserir(forn);
             forn= new Fornecedor();
             forn.setCnpj("10999888000206");
             forn.setNome("Me exclua");
@@ -130,7 +145,35 @@ public class Main {
             ctrlForn.validarDados(forn);
             ctrlForn.verificarSePodeInserir(forn);
             ctrlForn.inserir(forn);
-            System.out.println("Fornecedor inserido com sucesso!");
+            System.out.println("Fornecedor inserido com sucesso!");*/
+            //ControladorLocalEstoque.inserir() - testado e ok
+            /*le=new LocalEstoque("SA-C04P03V01");
+            ctrlLocalE.validarDados(le);
+            ctrlLocalE.verificarSePodeInserir(le);
+            ctrlLocalE.inserir(le);
+            le=new LocalEstoque("SA-C05P04V02");
+            ctrlLocalE.validarDados(le);
+            ctrlLocalE.verificarSePodeInserir(le);
+            ctrlLocalE.inserir(le);
+            System.out.println("LocalEstoque inserido com sucesso!");*/
+            //ControladorUnidade.inserir() - testado e ok
+            /*unid= new Unidade("Metro");
+            ctrlUnid.validarDados(unid);
+            ctrlUnid.verificarSePodeInserir(unid);
+            ctrlUnid.inserir(unid);
+            unid= new Unidade("Caixa");
+            ctrlUnid.validarDados(unid);
+            ctrlUnid.verificarSePodeInserir(unid);
+            ctrlUnid.inserir(unid);
+            System.out.println("Unidade inserida com sucesso!");*/
+            prod= new Produto("Monitor LCD 22", 100.00, 
+                    50.00, 100.00, 0,
+                    ctrlCateg.pesquisar("Informática"), 
+                    ctrlUnid.trazer(1));
+            ctrlProd.validarDados(prod);
+            ctrlProd.verificarSePodeInserir(prod);
+            ctrlProd.inserir(prod);
+            System.out.println("Produto inserido com sucesso!");
         }
         catch (ControladorException ex) {
             System.out.println("ERRO: " + ex.getMessage());
@@ -147,7 +190,7 @@ public class Main {
             ctrlCateg.alterar(c);
             System.out.println("Categoria alterada com sucesso!");*/
             /*ControladorFornecedor.alterar() - testado e ok*/
-            forn= ctrlForn.trazer(6);
+            forn= ctrlForn.trazer("10999888000206", false);
             forn.setNome("C&A");
             ctrlForn.alterar(forn);
             System.out.println("Fornecedor alterado com sucesso!");
@@ -166,7 +209,7 @@ public class Main {
             ctrlCateg.excluir(c);
             System.out.println("Categoria excluida com sucesso!");*/
             /*ControladorFornecedor.excluir() - testado e ok*/
-            forn= ctrlForn.trazer(7);
+            forn= ctrlForn.trazer(7, false);
             ctrlForn.excluir(forn);
             System.out.println("Fornecedor excluido com sucesso!");
         }

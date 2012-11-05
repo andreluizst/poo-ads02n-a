@@ -15,6 +15,7 @@ import ce.erro.RepositorioPesquisarException;
 import ce.model.basica.Categoria;
 import ce.model.dao.RepositorioCategoria;
 import java.util.ResourceBundle;
+import java.util.List;
 /**
  *
  * @author Andre
@@ -123,6 +124,22 @@ public class ControladorCategoria {
             throw new ControladorException(
                     rb.getString("CtrlErroTrazer") + " categoria.",
                     "ControladorCategoria.trazer()");
+        }
+    }
+    
+    public List<Categoria> listar() throws ControladorException{
+        try{
+            return rpCateg.listar();
+        }
+        catch(ConexaoException ce){
+            throw new ControladorException(
+                    rb.getString("CtrlErroListIndisp") + " categoria.",
+                    "ControladorCategoria.listar()");
+        }
+        catch(RepositorioListarException re){
+            throw new ControladorException(
+                    rb.getString("CtrlErroListar") + " categoria.",
+                    "ControladorCategoria.listar()");
         }
     }
 }

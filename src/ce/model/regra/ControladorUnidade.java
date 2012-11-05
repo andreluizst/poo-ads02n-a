@@ -37,7 +37,7 @@ public class ControladorUnidade {
         try {
             lista = rpUnid.pesquisar(u.getDescricao());
             if(lista.size() > 0){
-                throw new ControladorException(rb.getString("CtrlErroUnidExiste"),
+                throw new ControladorException(rb.getString("CtrlUnidExiste"),
                         "ControladorUnidade.verificarSePodeInserir()");
             }
         } catch (ConexaoException ex) {

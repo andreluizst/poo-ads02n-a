@@ -178,9 +178,30 @@ public class ControladorFornecedor {
         }
     }
     
-    public Fornecedor trazer(Integer cod) throws ControladorException{
+    public Fornecedor trazer(Integer cod, boolean comProds) throws ControladorException{
         try{
-            Fornecedor forn= rpForn.pesqCodForn(cod, false);
+            Fornecedor forn= rpForn.pesqCodForn(cod, comProds);
+            if (forn == null){
+                throw new ControladorException(rb.getString("CtrlFornNaoExiste"),
+                        "ControladorFornecedor.trazer()");
+            }
+            return forn;
+        }
+        catch(ConexaoException ce){
+            throw new ControladorException(
+                    rb.getString("CtrlErroTrazerIndisp") + " fornecedor.",
+                    "ControladorFornecedor.trazer()");
+        }
+        catch(RepositorioPesquisarException re){
+            throw new ControladorException(
+                    rb.getString("CtrlErroTrazer") + " fornecedor.",
+                    "ControladorFornecedor.trazer()");
+        }
+    }
+    
+    public Fornecedor trazer(String cnpj, boolean comProds) throws ControladorException{
+        try{
+            Fornecedor forn= rpForn.pesqCnpj(cnpj, comProds);
             if (forn == null){
                 throw new ControladorException(rb.getString("CtrlFornNaoExiste"),
                         "ControladorFornecedor.trazer()");

@@ -37,7 +37,7 @@ public class ControladorLocalEstoque {
         try {
             lista = rpLocalE.pesquisar(le.getDescricao());
             if(lista.size() > 0){
-                throw new ControladorException(rb.getString("CtrlErroLocalEstExiste"),
+                throw new ControladorException(rb.getString("CtrlLocalEstExiste"),
                         "ControladorLocalEstoque.verificarSePodeInserir()");
             }
         } catch (ConexaoException ex) {
