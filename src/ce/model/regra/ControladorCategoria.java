@@ -14,6 +14,7 @@ import ce.erro.RepositorioListarException;
 import ce.erro.RepositorioPesquisarException;
 import ce.model.basica.Categoria;
 import ce.model.dao.RepositorioCategoria;
+import ce.model.dao.IRepositorioCategoria;
 import java.util.ResourceBundle;
 import java.util.List;
 /**
@@ -21,7 +22,7 @@ import java.util.List;
  * @author Andre
  */
 public class ControladorCategoria {
-    private RepositorioCategoria rpCateg = new RepositorioCategoria();
+    private IRepositorioCategoria rpCateg = new RepositorioCategoria();
     private ResourceBundle rb= ResourceBundle.getBundle("ce.util.Erro");
     
     public void validarDados(Categoria c) throws ControladorException{

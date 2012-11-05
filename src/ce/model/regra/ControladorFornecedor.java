@@ -15,6 +15,7 @@ import ce.erro.RepositorioListarException;
 import ce.model.basica.Fornecedor;
 //import ce.model.dao.RepositorioProduto;
 import ce.model.dao.RepositorioFornecedor;
+import ce.model.dao.IRepositorioFornecedor;
 import ce.util.VerificarCpfCnpj;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -24,7 +25,7 @@ import java.util.ResourceBundle;
  * @author andreluiz
  */
 public class ControladorFornecedor {
-    private RepositorioFornecedor rpForn= new RepositorioFornecedor();
+    private IRepositorioFornecedor rpForn= new RepositorioFornecedor();
     private ResourceBundle rb= ResourceBundle.getBundle("ce.util.Erro");
     
     public void validarDados(Fornecedor f) throws ControladorException{

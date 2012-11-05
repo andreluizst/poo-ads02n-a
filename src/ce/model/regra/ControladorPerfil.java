@@ -13,6 +13,7 @@ import ce.erro.RepositorioExcluirException;
 import ce.erro.RepositorioListarException;
 import ce.erro.RepositorioPesquisarException;
 import ce.model.basica.Perfil;
+import ce.model.dao.IRepositorioPerfil;
 import ce.model.dao.RepositorioPerfil;
 import java.util.ResourceBundle;
 /**
@@ -20,7 +21,7 @@ import java.util.ResourceBundle;
  * @author Andre
  */
 public class ControladorPerfil {
-    private RepositorioPerfil rpPer= new RepositorioPerfil();
+    private IRepositorioPerfil rpPer= new RepositorioPerfil();
     private ResourceBundle rb= ResourceBundle.getBundle("ce.util.Erro");
     
     public void validarDados(Perfil p) throws ControladorException{

@@ -13,6 +13,9 @@ import ce.erro.RepositorioExcluirException;
 import ce.erro.RepositorioListarException;
 import ce.erro.RepositorioPesquisarException;
 import ce.model.basica.Usuario;
+import ce.model.dao.IRepositorioPerfil;
+import ce.model.dao.RepositorioPerfil;
+import ce.model.dao.IRepositorioUsuario;
 import ce.model.dao.RepositorioUsuario;
 import java.util.ResourceBundle;
 import java.util.List;
@@ -21,9 +24,10 @@ import java.util.List;
  * @author Andre
  */
 public class ControladorUsuario {
-    private RepositorioUsuario rpUsr= new RepositorioUsuario();
+    private IRepositorioUsuario rpUsr= new RepositorioUsuario();
+    private IRepositorioPerfil rpPer= new RepositorioPerfil();
     private ResourceBundle rb= ResourceBundle.getBundle("ce.util.Erro");
-    //private ControladorPerfil ctrlPer= new ControladorPerfil();
+    private ControladorPerfil ctrlPer= new ControladorPerfil();
     
     public void validarDados(Usuario u) throws ControladorException{
         if (u.getNome() == null){

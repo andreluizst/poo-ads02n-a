@@ -7,9 +7,9 @@ package ce.model.regra;
 import ce.erro.*;
 import ce.model.basica.Categoria;
 import ce.model.basica.Produto;
-//import ce.model.dao.IRepositorioCategoria;
+import ce.model.dao.IRepositorioCategoria;
 import ce.model.dao.RepositorioCategoria;
-//import ce.model.dao.IRepositorioProduto;
+import ce.model.dao.IRepositorioProduto;
 import ce.model.dao.RepositorioProduto;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -19,8 +19,8 @@ import java.util.ResourceBundle;
  * @author andreluiz
  */
 public class ControladorProduto {
-    private RepositorioCategoria rpCateg= new RepositorioCategoria();
-    private RepositorioProduto rpProd= new RepositorioProduto();
+    private IRepositorioCategoria rpCateg= new RepositorioCategoria();
+    private IRepositorioProduto rpProd= new RepositorioProduto();
     private ResourceBundle rb= ResourceBundle.getBundle("ce.util.Erro");
     
     public void validarDados(Produto p) throws ControladorException{

@@ -13,6 +13,7 @@ import ce.erro.RepositorioExcluirException;
 import ce.erro.RepositorioPesquisarException;
 import ce.erro.RepositorioListarException;
 import ce.model.basica.Unidade;
+import ce.model.dao.IRepositorioUnidade;
 import ce.model.dao.RepositorioUnidade;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -22,7 +23,7 @@ import java.util.ResourceBundle;
  * @author Andre
  */
 public class ControladorUnidade {
-    private RepositorioUnidade rpUnid= new RepositorioUnidade();
+    private IRepositorioUnidade rpUnid= new RepositorioUnidade();
     private ResourceBundle rb= ResourceBundle.getBundle("ce.util.Erro");
     
     public void validarDados(Unidade u) throws ControladorException{

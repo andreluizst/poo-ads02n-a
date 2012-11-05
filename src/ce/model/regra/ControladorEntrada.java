@@ -14,6 +14,7 @@ import ce.erro.RepositorioPesquisarException;
 import ce.erro.RepositorioListarException;
 import ce.model.basica.Entrada;
 import ce.model.dao.RepositorioEntrada;
+import ce.model.dao.IRepositorioEntrada;
 import java.util.List;
 import java.util.ResourceBundle;
 /**

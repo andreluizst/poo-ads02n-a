@@ -14,6 +14,7 @@ import ce.erro.RepositorioPesquisarException;
 import ce.erro.RepositorioListarException;
 import ce.model.basica.Funcionario;
 import ce.model.dao.RepositorioFuncionario;
+import ce.model.dao.IRepositorioFuncionario;
 import java.util.List;
 import java.util.ResourceBundle;
 import ce.util.ValidarStringData;
@@ -24,7 +25,7 @@ import ce.util.VerificarCpfCnpj;
  * @author Andre
  */
 public class ControladorFuncionario {
-    private RepositorioFuncionario rpFun= new RepositorioFuncionario();
+    private IRepositorioFuncionario rpFun= new RepositorioFuncionario();
     private ResourceBundle rb= ResourceBundle.getBundle("ce.util.Erro");
     
     

@@ -14,6 +14,7 @@ import ce.erro.RepositorioPesquisarException;
 import ce.erro.RepositorioListarException;
 import ce.model.basica.LocalEstoque;
 import ce.model.dao.RepositorioLocalEstoque;
+import ce.model.dao.IRepositorioLocalEstoque;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -22,7 +23,7 @@ import java.util.ResourceBundle;
  * @author Andre
  */
 public class ControladorLocalEstoque {
-    private RepositorioLocalEstoque rpLocalE= new RepositorioLocalEstoque();
+    private IRepositorioLocalEstoque rpLocalE= new RepositorioLocalEstoque();
     private ResourceBundle rb= ResourceBundle.getBundle("ce.util.Erro");
     
     public void validarDados(LocalEstoque le) throws ControladorException{
