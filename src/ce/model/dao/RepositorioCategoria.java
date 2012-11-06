@@ -2,6 +2,7 @@ package ce.model.dao;
 
 import ce.erro.ConexaoException;
 import ce.erro.RepositorioException;
+import ce.erro.RepositorioForeignKeyException;
 import ce.erro.RepositorioListarException;
 import ce.erro.RepositorioInserirException;
 import ce.erro.RepositorioAlterarException;
@@ -89,7 +90,7 @@ public class RepositorioCategoria implements IRepositorioCategoria{
     
     @Override
     public void excluir(Integer codCateg)throws ConexaoException,
-            RepositorioExcluirException{
+            RepositorioExcluirException, RepositorioForeignKeyException{
         Connection c = gc.conectar();
         String sql = "DELETE FROM categoria WHERE codCateg=?";
         try{
@@ -98,6 +99,10 @@ public class RepositorioCategoria implements IRepositorioCategoria{
             pstm.execute();
             pstm.close();
         }catch(SQLException e){
+            String msg= e.getMessage();
+            if (msg!=null && msg.contains("foreign key constraint fails")){
+                throw new RepositorioForeignKeyException(e, "RepositorioCategoria.excluir()");
+            }
             throw new RepositorioExcluirException(e, "RepositorioCategoria");
         }finally{
             gc.desconectar(c);

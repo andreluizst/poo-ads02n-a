@@ -7,6 +7,7 @@ package ce.model.regra;
 import ce.erro.ConexaoException;
 import ce.erro.ControladorException;
 import ce.erro.RepositorioException;
+import ce.erro.RepositorioForeignKeyException;
 import ce.erro.RepositorioInserirException;
 import ce.erro.RepositorioAlterarException;
 import ce.erro.RepositorioExcluirException;
@@ -87,6 +88,11 @@ public class ControladorCategoria {
         catch(ConexaoException ce){
             throw new ControladorException(
                     rb.getString("CtrlErroDelIndisp") + " categoria.",
+                    "ControladorCategoria.excluir()");
+        }
+        catch(RepositorioForeignKeyException rfke){
+            throw new ControladorException(
+                    rb.getString("CtrlErroForeignKeyCateg"),
                     "ControladorCategoria.excluir()");
         }
         catch(RepositorioExcluirException re){

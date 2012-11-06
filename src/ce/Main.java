@@ -79,7 +79,7 @@ public class Main {
         rpUser= new RepositorioUsuario();
         //testaInserir(); testaListar();
         //testaAlterar(); testaListar();
-        //testaExcluir(); testaListar();
+        testaExcluir(); //testaListar();
         //verificarCpfOuCnpj("96584265845");
         
         //TESTANDO CONTROLADORES
@@ -94,7 +94,7 @@ public class Main {
         ctrlEnt= new ControladorEntrada();
         //FALTA o controlador de saida
         
-        ctrlTestaInserir();
+        //ctrlTestaInserir();
         //ctrlTestaAlterar();
         //ctrlTestaExcluir();
     }
@@ -411,6 +411,7 @@ public class Main {
     public static void testaExcluir(){
         Perfil per=null;
         Usuario u=null;
+        Categoria c=null;
         try{
             //Funcionario.excluir() - TESTADO E OK
             //rpFun.excluir("25648712341");
@@ -419,8 +420,10 @@ public class Main {
             rpPer.excluir(per);
             */
             //Usuario.excluir() - TESTADO E OK
-            u= rpUser.pesqCpf("00011122200");
-            rpUser.excluir(u);
+            //u= rpUser.pesqCpf("00011122200");
+            //rpUser.excluir(u);
+            rpCateg.excluir(1);
+            System.out.println("Categoria excluida com sucesso.");
         }
         catch (ConexaoException ex) {
             System.out.println("ERRO conexão: " + ex.getMessage());
