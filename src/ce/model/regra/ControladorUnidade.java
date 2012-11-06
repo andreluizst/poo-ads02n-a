@@ -24,7 +24,7 @@ import java.util.ResourceBundle;
  */
 public class ControladorUnidade {
     private IRepositorioUnidade rpUnid= new RepositorioUnidade();
-    private ResourceBundle rb= ResourceBundle.getBundle("ce.util.Erro");
+    private ResourceBundle rb= ResourceBundle.getBundle("ce.erro.Erro");
     
     public void validarDados(Unidade u) throws ControladorException{
         if (u.getDescricao() == null){

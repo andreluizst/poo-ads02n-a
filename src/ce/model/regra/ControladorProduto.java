@@ -21,7 +21,7 @@ import java.util.ResourceBundle;
 public class ControladorProduto {
     private IRepositorioCategoria rpCateg= new RepositorioCategoria();
     private IRepositorioProduto rpProd= new RepositorioProduto();
-    private ResourceBundle rb= ResourceBundle.getBundle("ce.util.Erro");
+    private ResourceBundle rb= ResourceBundle.getBundle("ce.erro.Erro");
     
     public void validarDados(Produto p) throws ControladorException{
         if (p.getDescProd() == null){

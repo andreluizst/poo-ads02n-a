@@ -23,5 +23,5 @@ import java.util.ResourceBundle;
  */
 public class ControladorEntrada {
     private RepositorioEntrada rpEnt= new RepositorioEntrada();
-    private ResourceBundle rb= ResourceBundle.getBundle("ce.util.Erro");
+    private ResourceBundle rb= ResourceBundle.getBundle("ce.erro.Erro");
 }

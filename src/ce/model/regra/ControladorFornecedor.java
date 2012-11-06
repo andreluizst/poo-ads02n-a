@@ -26,7 +26,7 @@ import java.util.ResourceBundle;
  */
 public class ControladorFornecedor {
     private IRepositorioFornecedor rpForn= new RepositorioFornecedor();
-    private ResourceBundle rb= ResourceBundle.getBundle("ce.util.Erro");
+    private ResourceBundle rb= ResourceBundle.getBundle("ce.erro.Erro");
     
     public void validarDados(Fornecedor f) throws ControladorException{
         /*boolean contemErro= false;

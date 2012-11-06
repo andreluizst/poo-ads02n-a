@@ -26,7 +26,7 @@ import ce.util.VerificarCpfCnpj;
  */
 public class ControladorFuncionario {
     private IRepositorioFuncionario rpFun= new RepositorioFuncionario();
-    private ResourceBundle rb= ResourceBundle.getBundle("ce.util.Erro");
+    private ResourceBundle rb= ResourceBundle.getBundle("ce.erro.Erro");
     
     
     public void validarDados(Funcionario f) throws ControladorException{

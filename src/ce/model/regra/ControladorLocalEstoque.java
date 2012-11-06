@@ -24,7 +24,7 @@ import java.util.ResourceBundle;
  */
 public class ControladorLocalEstoque {
     private IRepositorioLocalEstoque rpLocalE= new RepositorioLocalEstoque();
-    private ResourceBundle rb= ResourceBundle.getBundle("ce.util.Erro");
+    private ResourceBundle rb= ResourceBundle.getBundle("ce.erro.Erro");
     
     public void validarDados(LocalEstoque le) throws ControladorException{
         if (le.getDescricao() == null){

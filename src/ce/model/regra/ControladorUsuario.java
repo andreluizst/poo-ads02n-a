@@ -26,7 +26,7 @@ import java.util.List;
 public class ControladorUsuario {
     private IRepositorioUsuario rpUsr= new RepositorioUsuario();
     private IRepositorioPerfil rpPer= new RepositorioPerfil();
-    private ResourceBundle rb= ResourceBundle.getBundle("ce.util.Erro");
+    private ResourceBundle rb= ResourceBundle.getBundle("ce.erro.Erro");
     private ControladorPerfil ctrlPer= new ControladorPerfil();
     
     public void validarDados(Usuario u) throws ControladorException{

@@ -22,7 +22,7 @@ import java.util.ResourceBundle;
  */
 public class ControladorPerfil {
     private IRepositorioPerfil rpPer= new RepositorioPerfil();
-    private ResourceBundle rb= ResourceBundle.getBundle("ce.util.Erro");
+    private ResourceBundle rb= ResourceBundle.getBundle("ce.erro.Erro");
     
     public void validarDados(Perfil p) throws ControladorException{
         if (p.getNome() == null){

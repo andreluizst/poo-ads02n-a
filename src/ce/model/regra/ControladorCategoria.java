@@ -24,7 +24,7 @@ import java.util.List;
  */
 public class ControladorCategoria {
     private IRepositorioCategoria rpCateg = new RepositorioCategoria();
-    private ResourceBundle rb= ResourceBundle.getBundle("ce.util.Erro");
+    private ResourceBundle rb= ResourceBundle.getBundle("ce.erro.Erro");
     
     public void validarDados(Categoria c) throws ControladorException{
         if(c.getDescricao()==null){
