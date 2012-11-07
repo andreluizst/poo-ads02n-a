@@ -9,6 +9,7 @@ import ce.erro.RepositorioException;
 import ce.erro.RepositorioInserirException;
 import ce.erro.RepositorioAlterarException;
 import ce.erro.RepositorioExcluirException;
+import ce.erro.RepositorioForeignKeyException;
 import ce.erro.RepositorioListarException;
 import ce.erro.RepositorioPesquisarException;
 import ce.model.basica.LocalEstoque;
@@ -29,6 +30,7 @@ public class RepositorioLocalEstoque implements IRepositorioLocalEstoque{
         gerenciadorConexao= GerenciadorConexao.getInstancia();
     }
     
+    @Override
     public void inserir(LocalEstoque le) throws ConexaoException, 
             RepositorioInserirException{
         Connection c= gerenciadorConexao.conectar();
@@ -47,6 +49,7 @@ public class RepositorioLocalEstoque implements IRepositorioLocalEstoque{
         }
     }
     
+    @Override
     public void alterar(LocalEstoque le)throws ConexaoException, 
             RepositorioAlterarException{
         Connection c= gerenciadorConexao.conectar();
@@ -66,8 +69,9 @@ public class RepositorioLocalEstoque implements IRepositorioLocalEstoque{
         }
     }
     
+    @Override
     public void excluir(int codLocal)throws ConexaoException, 
-            RepositorioExcluirException{
+            RepositorioForeignKeyException, RepositorioExcluirException{
         Connection c= gerenciadorConexao.conectar();
         String sql = "delete from LocalEstoque where codLocal=?";
         try{
@@ -77,6 +81,11 @@ public class RepositorioLocalEstoque implements IRepositorioLocalEstoque{
             pstmt.close();
         }
         catch(SQLException e){
+            String msg= e.getMessage().toLowerCase();
+            if (msg!=null && msg.contains("foreign key constraint fails")){
+                throw new RepositorioForeignKeyException(e,
+                        "RepositorioLocalEstoque.excluir()");
+            }
             throw new RepositorioExcluirException(e);
         }
         finally{
@@ -84,6 +93,7 @@ public class RepositorioLocalEstoque implements IRepositorioLocalEstoque{
         }
     }
     
+    @Override
     public List<LocalEstoque> listar() throws ConexaoException,
             RepositorioListarException{
         List<LocalEstoque> lista = new ArrayList<LocalEstoque>();
@@ -109,6 +119,7 @@ public class RepositorioLocalEstoque implements IRepositorioLocalEstoque{
         }
     }
     
+    @Override
     public List<LocalEstoque> pesquisar(String descricao) throws ConexaoException,
             RepositorioPesquisarException{
                 List<LocalEstoque> lista = new ArrayList<LocalEstoque>();
@@ -134,6 +145,7 @@ public class RepositorioLocalEstoque implements IRepositorioLocalEstoque{
         }
     }
     
+    @Override
     public LocalEstoque pesqCod(int codLocal) throws ConexaoException, 
             RepositorioPesquisarException{
         LocalEstoque le= null;

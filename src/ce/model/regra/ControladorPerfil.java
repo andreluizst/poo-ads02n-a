@@ -10,6 +10,7 @@ import ce.erro.RepositorioException;
 import ce.erro.RepositorioInserirException;
 import ce.erro.RepositorioAlterarException;
 import ce.erro.RepositorioExcluirException;
+import ce.erro.RepositorioForeignKeyException;
 import ce.erro.RepositorioListarException;
 import ce.erro.RepositorioPesquisarException;
 import ce.model.basica.Perfil;
@@ -79,9 +80,25 @@ public class ControladorPerfil {
         }
     }
     
-    public void verificarSePodeExcluir(Perfil p) throws ControladorException{
-        //É preciso verificar se algum produto pertence a categroria que será exluida
-        //caso afirmativo, abortar exclusão
+    public void verificarSeExiste(Perfil p) throws ControladorException{
+        Perfil per=null;
+        try{
+            per= rpPer.pesquisar(p.getNome());
+            if (per == null){
+                throw new ControladorException(rb.getString("CtrlPerNaoExiste"),
+                        "ControladorPerfil.verificarSeExiste()");
+            }
+        }
+        catch(ConexaoException e){
+            throw new ControladorException(
+                    rb.getString("CtrlErroVerifIndisp") + " perfil.",
+                    "ControladorPerfil.verificarSeExiste()");
+        }
+        catch(RepositorioPesquisarException ie){
+            throw new ControladorException(
+                    rb.getString("CtrlErroVerificar") + " perfil.",
+                    "ControladorPerfil.verificarSeExiste()");
+        }
     }
     
     public void excluir(Perfil p) throws ControladorException{
@@ -91,6 +108,11 @@ public class ControladorPerfil {
         catch(ConexaoException ce){
             throw new ControladorException(
                     rb.getString("CtrlErroDelIndisp") + " perfil.",
+                    "ControladorPerfil.excluir()");
+        }
+        catch(RepositorioForeignKeyException rfke){
+            throw new ControladorException(
+                    rb.getString("CtrlErroForeignKeyPer"),
                     "ControladorPerfil.excluir()");
         }
         catch(RepositorioExcluirException re){

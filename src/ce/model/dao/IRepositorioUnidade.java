@@ -10,6 +10,7 @@ import ce.erro.RepositorioAlterarException;
 import ce.erro.RepositorioExcluirException;
 import ce.erro.RepositorioListarException;
 import ce.erro.RepositorioPesquisarException;
+import ce.erro.RepositorioForeignKeyException;
 import ce.model.basica.Unidade;
 import java.util.List;
 
@@ -23,7 +24,7 @@ public interface IRepositorioUnidade {
     public void alterar(Unidade u) throws ConexaoException, 
             RepositorioAlterarException;
     public void excluir(Integer codUnid) throws ConexaoException, 
-            RepositorioExcluirException;
+            RepositorioForeignKeyException, RepositorioExcluirException;
     public List<Unidade> listar() throws ConexaoException, 
             RepositorioListarException;
     public List<Unidade> pesquisar(String descricao) throws ConexaoException, 

@@ -99,7 +99,7 @@ public class RepositorioCategoria implements IRepositorioCategoria{
             pstm.execute();
             pstm.close();
         }catch(SQLException e){
-            String msg= e.getMessage();
+            String msg= e.getMessage().toLowerCase();
             if (msg!=null && msg.contains("foreign key constraint fails")){
                 throw new RepositorioForeignKeyException(e, "RepositorioCategoria.excluir()");
             }

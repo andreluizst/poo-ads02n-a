@@ -8,6 +8,7 @@ import ce.erro.ConexaoException;
 import ce.erro.RepositorioInserirException;
 import ce.erro.RepositorioAlterarException;
 import ce.erro.RepositorioExcluirException;
+import ce.erro.RepositorioForeignKeyException;
 import ce.erro.RepositorioListarException;
 import ce.erro.RepositorioPesquisarException;
 import ce.model.basica.Perfil;
@@ -69,7 +70,7 @@ public class RepositorioPerfil implements IRepositorioPerfil {
     
     @Override
     public void excluir(Perfil p)throws ConexaoException, 
-            RepositorioExcluirException{
+            RepositorioForeignKeyException, RepositorioExcluirException{
         Connection c= gerenciadorConexao.conectar();
         String sql= "Delete from Perfil where codPerfil=?";
         try{
@@ -79,6 +80,11 @@ public class RepositorioPerfil implements IRepositorioPerfil {
             pstmt.close();
         }
         catch(SQLException e){
+            String msg= e.getMessage().toLowerCase();
+            if (msg!=null && msg.contains("foreign key constraint fails")){
+                throw new RepositorioForeignKeyException(e,
+                        "RepositorioPerfil.excluir()");
+            }
             throw new RepositorioExcluirException(e, "RepositorioPerfil.excluir()");
         }
         finally{

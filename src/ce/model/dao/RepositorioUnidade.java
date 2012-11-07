@@ -9,6 +9,7 @@ import ce.erro.RepositorioException;
 import ce.erro.RepositorioInserirException;
 import ce.erro.RepositorioAlterarException;
 import ce.erro.RepositorioExcluirException;
+import ce.erro.RepositorioForeignKeyException;
 import ce.erro.RepositorioListarException;
 import ce.erro.RepositorioPesquisarException;
 import ce.model.basica.Unidade;
@@ -69,7 +70,7 @@ public class RepositorioUnidade implements IRepositorioUnidade{
     
     @Override
     public void excluir(Integer codUnid)throws ConexaoException, 
-            RepositorioExcluirException{
+            RepositorioForeignKeyException, RepositorioExcluirException{
         Connection c= gerenciadorConexao.conectar();
         String sql = "delete from unidade where codUnid=?";
         try{
@@ -79,6 +80,11 @@ public class RepositorioUnidade implements IRepositorioUnidade{
             pstmt.close();
         }
         catch(SQLException e){
+            String msg= e.getMessage().toLowerCase();
+            if (msg!=null && msg.contains("foreign key constraint fails")){
+                throw new RepositorioForeignKeyException(e,
+                        "RepositorioUnidade.excluir()");
+            }
             throw new RepositorioExcluirException(e, "RepositorioUnidade.excluir()");
         }
         finally{

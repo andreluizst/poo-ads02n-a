@@ -76,9 +76,25 @@ public class ControladorCategoria {
         }
     }
     
-    public void verificarSePodeExcluir(Categoria c) throws ControladorException{
-        //É preciso verificar se algum produto pertence a categroria que será exluida
-        //caso afirmativo, abortar exclusão
+    public void verificarSeExiste(Categoria c) throws ControladorException{
+        Categoria categ=null;
+        try{
+            categ= rpCateg.pesqPorCod(c.getCodCateg());
+            if (categ == null){
+                throw new ControladorException(rb.getString("CtrlCategNaoExiste"),
+                        "ControladorCategoria.verificarSeExiste()");
+            }
+        }
+        catch(ConexaoException ce){
+            throw new ControladorException(
+                    rb.getString("CtrlErroPesqIndisp") + " categoria.",
+                    "ControladorCategoria.verificarSeExiste()");
+        }
+        catch(RepositorioPesquisarException re){
+            throw new ControladorException(
+                    rb.getString("CtrlErroPesquisar") + " categoria.",
+                    "ControladorCategoria.verificarSeExiste()");
+        }
     }
     
     public void excluir(Categoria c) throws ControladorException{

@@ -10,6 +10,7 @@ import ce.erro.RepositorioException;
 import ce.erro.RepositorioAlterarException;
 import ce.erro.RepositorioInserirException;
 import ce.erro.RepositorioExcluirException;
+import ce.erro.RepositorioForeignKeyException;
 import ce.erro.RepositorioPesquisarException;
 import ce.erro.RepositorioListarException;
 import ce.model.basica.Fornecedor;
@@ -125,25 +126,23 @@ public class ControladorFornecedor {
         }
     }
     
-    public void verificarSePodeExcluir(Fornecedor f) throws ControladorException {
+    public void verificarSeExiste(Fornecedor f) throws ControladorException {
         try{
             Fornecedor forn= rpForn.pesqCodForn(f.getCodForn(), false);
             if (forn == null){
                 throw new ControladorException(rb.getString("CtrlFornNaoExiste"),
-                        "ControladorFornecedor.verificarSePodeExcluir()");
+                        "ControladorFornecedor.verificarSeExiste()");
             }
-            //Verificar se este fornecedor está em uso nos reposiórios e entrada ou saída
-            //RepositorioEntrada rpEnt= new RepositorioEntrada();
         }
         catch(ConexaoException e){
             throw new ControladorException(
                     rb.getString("CtrlErroVerifIndisp") + " fornecedor.",
-                    "ControladorFornecedor.verificarSePodeExcluir()");
+                    "ControladorFornecedor.verificarSeExiste()");
         }
         catch(RepositorioPesquisarException ie){
             throw new ControladorException(
                     rb.getString("CtrlErroVerificar") + " fornecedor.",
-                    "ControladorFornecedor.verificarSePodeExcluir()");
+                    "ControladorFornecedor.verificarSeExiste()");
         }
     }
     
@@ -154,6 +153,11 @@ public class ControladorFornecedor {
         catch(ConexaoException e){
             throw new ControladorException(
                     rb.getString("CtrlErroDelIndisp") + " fornecedor.",
+                    "ControladorFornecedor.excluir()");
+        }
+        catch(RepositorioForeignKeyException rfke){
+            throw new ControladorException(
+                    rb.getString("CtrlErroForeignKeyForn"),
                     "ControladorFornecedor.excluir()");
         }
         catch(RepositorioExcluirException re){

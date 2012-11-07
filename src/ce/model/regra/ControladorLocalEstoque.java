@@ -10,6 +10,7 @@ import ce.erro.RepositorioException;
 import ce.erro.RepositorioAlterarException;
 import ce.erro.RepositorioInserirException;
 import ce.erro.RepositorioExcluirException;
+import ce.erro.RepositorioForeignKeyException;
 import ce.erro.RepositorioPesquisarException;
 import ce.erro.RepositorioListarException;
 import ce.model.basica.LocalEstoque;
@@ -82,9 +83,24 @@ public class ControladorLocalEstoque {
         }
     }
     
-    public void verificarSePodeExcluir(LocalEstoque le) throws ControladorException{
-        //É preciso verificar se alguma entrada está usando o local que será excluido
-        //caso afirmativo, abortar exclusão
+    public void verificarSeExiste(LocalEstoque le) throws ControladorException{
+        try{
+            List<LocalEstoque> lista= rpLocalE.pesquisar(le.getDescricao());
+            if ((lista == null) || lista.isEmpty()){
+                throw new ControladorException(rb.getString("CtrlLocalEstNaoExiste"),
+                        "ControladorLocalEstoque.verificarSeExiste()");
+            }
+        }
+        catch(ConexaoException e){
+            throw new ControladorException(
+                    rb.getString("CtrlErroVerifIndisp") + " local de estoque.",
+                    "ControladorLocalEstoque.verificarSePodeExcluir()");
+        }
+        catch(RepositorioPesquisarException ie){
+            throw new ControladorException(
+                    rb.getString("CtrlErroVerificar") + " local de estoque.",
+                    "ControladorLocalEstoque.verificarSePodeExcluir()");
+        }
     }
     
     public void excluir(LocalEstoque le) throws ControladorException{
@@ -94,6 +110,11 @@ public class ControladorLocalEstoque {
         catch(ConexaoException ce){
             throw new ControladorException(
                     rb.getString("CtrlErroDelIndisp") + " local de estoque.",
+                    "ControladorLocalEstoque.excluir()");
+        }
+        catch(RepositorioForeignKeyException rfke){
+            throw new ControladorException(
+                    rb.getString("CtrlErroForeignKeyLocalEst"),
                     "ControladorLocalEstoque.excluir()");
         }
         catch(RepositorioExcluirException re){

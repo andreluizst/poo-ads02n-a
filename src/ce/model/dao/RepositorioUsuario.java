@@ -9,6 +9,7 @@ import ce.erro.RepositorioException;
 import ce.erro.RepositorioInserirException;
 import ce.erro.RepositorioAlterarException;
 import ce.erro.RepositorioExcluirException;
+import ce.erro.RepositorioForeignKeyException;
 import ce.erro.RepositorioListarException;
 import ce.erro.RepositorioPesquisarException;
 import ce.model.basica.Perfil;
@@ -83,7 +84,7 @@ public class RepositorioUsuario implements IRepositorioUsuario{
     
     @Override
     public void excluir(Usuario u) throws ConexaoException, 
-            RepositorioExcluirException{
+            RepositorioForeignKeyException, RepositorioExcluirException{
         Connection c= gerenciadorConexao.conectar();
         String sql= "delete from usuario where codUsr=?";
         try{
@@ -93,6 +94,11 @@ public class RepositorioUsuario implements IRepositorioUsuario{
             pstmt.close();
         }
         catch(SQLException e){
+            String msg= e.getMessage().toLowerCase();
+            if (msg!=null && msg.contains("foreign key constraint fails")){
+                throw new RepositorioForeignKeyException(e,
+                        "RepositorioUsuario.excluir()");
+            }
             throw new RepositorioExcluirException(e, "RepositorioUsuario.excluir()");
         }
         finally{

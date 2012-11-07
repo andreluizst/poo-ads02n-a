@@ -11,6 +11,7 @@ import ce.erro.RepositorioAlterarException;
 import ce.erro.RepositorioExcluirException;
 import ce.erro.RepositorioListarException;
 import ce.erro.RepositorioPesquisarException;
+import ce.erro.RepositorioForeignKeyException;
 import ce.model.basica.Produto;
 import java.util.List;
 
@@ -24,7 +25,7 @@ public interface IRepositorioProduto {
     public void alterar(Produto p) throws ConexaoException, 
             RepositorioAlterarException;
     public void excluir(Integer codProd) throws ConexaoException, 
-            RepositorioExcluirException;
+            RepositorioForeignKeyException, RepositorioExcluirException;
     public List<Produto> listar() throws ConexaoException, 
             RepositorioListarException;
     public List<Produto> pesquisar(String descProd) throws ConexaoException, 

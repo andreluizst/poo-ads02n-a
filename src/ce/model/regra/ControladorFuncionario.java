@@ -10,6 +10,7 @@ import ce.erro.RepositorioException;
 import ce.erro.RepositorioAlterarException;
 import ce.erro.RepositorioInserirException;
 import ce.erro.RepositorioExcluirException;
+import ce.erro.RepositorioForeignKeyException;
 import ce.erro.RepositorioPesquisarException;
 import ce.erro.RepositorioListarException;
 import ce.model.basica.Funcionario;
@@ -118,25 +119,23 @@ public class ControladorFuncionario {
         }
     }
     
-    public void verificarSePodeExcluir(Funcionario f) throws ControladorException {
+    public void verificarSeExiste(Funcionario f) throws ControladorException {
         try{
             Funcionario fun= rpFun.pesqCpf(f.getCpf());
             if (fun == null){
                 throw new ControladorException(rb.getString("CtrlFunNaoExiste"),
-                        "ControladorFuncionario.verificarSePodeExcluir()");
+                        "ControladorFuncionario.verificarSeExiste()");
             }
-            //Verificar se este funcionário está em uso nos reposiórios de usuário, entrada ou saída
-            //RepositorioEntrada rpEnt= new RepositorioEntrada();
         }
         catch(ConexaoException e){
             throw new ControladorException(
                     rb.getString("CtrlErroVerifIndisp") + " funcionário.",
-                    "ControladorFuncionario.verificarSePodeExcluir()");
+                    "ControladorFuncionario.verificarSeExiste()");
         }
         catch(RepositorioPesquisarException ie){
             throw new ControladorException(
                     rb.getString("CtrlErroVerificar") + " funcionário.",
-                    "ControladorFuncionario.verificarSePodeExcluir()");
+                    "ControladorFuncionario.verificarSeExiste()");
         }
     }
     
@@ -147,6 +146,11 @@ public class ControladorFuncionario {
         catch(ConexaoException e){
             throw new ControladorException(
                     rb.getString("CtrlErroDelIndisp") + " funcionário.",
+                    "ControladorFuncionario.excluir()");
+        }
+        catch(RepositorioForeignKeyException rfke){
+            throw new ControladorException(
+                    rb.getString("CtrlErroForeignKeyFun"),
                     "ControladorFuncionario.excluir()");
         }
         catch(RepositorioExcluirException re){

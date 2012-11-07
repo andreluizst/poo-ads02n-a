@@ -9,6 +9,7 @@ import ce.erro.RepositorioException;
 import ce.erro.RepositorioInserirException;
 import ce.erro.RepositorioAlterarException;
 import ce.erro.RepositorioExcluirException;
+import ce.erro.RepositorioForeignKeyException;
 import ce.erro.RepositorioListarException;
 import ce.erro.RepositorioPesquisarException;
 import ce.model.basica.Fornecedor;
@@ -148,7 +149,8 @@ public class RepositorioProduto implements IRepositorioProduto{
     }
     
     @Override
-    public void excluir(Integer codProd)throws ConexaoException, RepositorioExcluirException{
+    public void excluir(Integer codProd)throws ConexaoException, 
+        RepositorioForeignKeyException, RepositorioExcluirException{
         Connection conexao = gc.conectar();
         String sql= "delete from Produto where codProd=?";
         String sqlFrons= "delete from FornXProd where codProd=?";
@@ -162,6 +164,11 @@ public class RepositorioProduto implements IRepositorioProduto{
             pstmtFp.close();
         }
         catch(SQLException e){
+            String msg= e.getMessage().toLowerCase();
+            if (msg!=null && msg.contains("foreign key constraint fails")){
+                throw new RepositorioForeignKeyException(e,
+                        "RepositorioProduto.excluir()");
+            }
             throw new RepositorioExcluirException(e, "RepositorioProduto.excluir()");
         }
         finally{

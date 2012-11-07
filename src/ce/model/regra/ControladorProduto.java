@@ -66,6 +66,27 @@ public class ControladorProduto {
         }
     }
     
+    public void verificarSeExiste(Produto p) throws ControladorException{
+        Produto prod=null;
+        try{
+            prod= rpProd.pesqCodProd(p.getCodProd(), false);
+            if (prod == null){
+                throw new ControladorException(rb.getString("CtrlPordNaoExiste"),
+                        "ControladorProduto.verificarSeExiste()");
+            }
+        }
+        catch(ConexaoException e){
+            throw new ControladorException(
+                    rb.getString("CtrlErroVerifIndisp") + " produto.",
+                    "ControladorProduto.verificarSeExiste()");
+        }
+        catch(RepositorioPesquisarException ie){
+            throw new ControladorException(
+                    rb.getString("CtrlErroVerificar") + " produto.",
+                    "ControladorProduto.verificarSeExiste()");
+        }
+    }
+    
     public void alterar(Produto p) throws ControladorException{
         try{
             rpProd.alterar(p);
@@ -105,6 +126,11 @@ public class ControladorProduto {
         catch(ConexaoException e){
             throw new ControladorException(
                     rb.getString("CtrlErroDelIndisp") + " produto.",
+                    "ControladorProduto.excluir()");
+        }
+        catch(RepositorioForeignKeyException rfke){
+            throw new ControladorException(
+                    rb.getString("CtrlErroForeignKeyProd"),
                     "ControladorProduto.excluir()");
         }
         catch(RepositorioException ie){
