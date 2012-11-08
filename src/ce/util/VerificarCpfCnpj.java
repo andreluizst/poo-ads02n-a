@@ -8,8 +8,19 @@ import java.util.*;
 /**
  *
  * @author Andre
+ * 
+ * Como o nome da classe sugere, faz a verificação de CPF ou CNPJ
  */
 public class VerificarCpfCnpj {
+    /**
+     * Executa o processo de verificação do CPF ou CNPJ
+     * 
+     * @param cpfOuCnpj
+     * Texto numérico sem caracteres especiais para validação do CPF ou CNPJ
+     * 
+     * @return 
+     * Caso o CPF ou CNPJ informado for válido será retornado true ou false caso contrário
+     */
     public static boolean executar(String cpfOuCnpj){
         Integer k=0, dig=0;
         Integer soma=0;
