@@ -30,11 +30,21 @@ import java.util.List;
  */
 public class RepositorioSaida implements IRepositorioSaida{
     private IGerenciadorConexao gerenciadorConexao;
-    
+    /**
+     * Construtor padrão
+     */
     public RepositorioSaida(){
         gerenciadorConexao= GerenciadorConexao.getInstancia();
     }
-    
+    /**
+     * Inclui uma nova saída.
+     * @param s
+     * Objeto da classe Saida que deseja incluir
+     * @throws ConexaoException
+     * Se houver algum problema com a conexão será lançada uma ConexaoException 
+     * @throws RepositorioInserirException 
+     * Se houver algum erro na execução do SQL será lançada uma exceção.
+     */
     @Override
     public void inserir(Saida s) throws ConexaoException, 
             RepositorioInserirException{
@@ -55,7 +65,18 @@ public class RepositorioSaida implements IRepositorioSaida{
             gerenciadorConexao.desconectar(c);
         }
     }
-    
+    /**
+     * Altera uma saída.
+     * @param s
+     * Objeto da classe Saida com as alterações desejadas.
+     * O número da saída constante neste objeto deve ser o número da saída
+     * que sofrerá as alterações e os demais atribudos devem conter os valores
+     * que foram modificados.
+     * @throws ConexaoException
+     * Se houver algum problema com a conexão será lançada uma ConexaoException 
+     * @throws RepositorioAlterarException 
+     * Se houver algum erro na execução do SQL será lançada uma exceção.
+     */
     @Override
     public void alterar(Saida s) throws ConexaoException, 
             RepositorioAlterarException{
@@ -77,7 +98,15 @@ public class RepositorioSaida implements IRepositorioSaida{
             gerenciadorConexao.desconectar(c);
         }
     }
-    
+    /**
+     * Excui uma saída.
+     * @param s
+     * Objeto da classe Saida que deseja exluir.
+     * @throws ConexaoException
+     * Se houver algum problema com a conexão será lançada uma ConexaoException 
+     * @throws RepositorioExcluirException 
+     * Se houver algum erro na execução do SQL será lançada uma exceção.
+     */
     @Override
     public void excluir(Saida s) throws ConexaoException, 
             RepositorioExcluirException{
@@ -96,11 +125,19 @@ public class RepositorioSaida implements IRepositorioSaida{
             gerenciadorConexao.desconectar(c);
         }
     }
-    
+    /**
+     * Lista todas as saídas existentes.
+     * @return
+     * Retorna uma lista com as saídas.
+     * @throws ConexaoException
+     * Se houver algum problema com a conexão será lançada uma ConexaoException
+     * @throws RepositorioListarException 
+     * Se houver algum erro na execução do SQL será lançada uma exceção.
+     */
     @Override
     public List<Saida> listar() throws ConexaoException, 
             RepositorioListarException{
-        List<Saida> lista= new ArrayList<Saida>();
+        List<Saida> lista= new ArrayList();
         Saida s= null;
         Entrada e= null;
         Produto p= null;
@@ -142,9 +179,19 @@ public class RepositorioSaida implements IRepositorioSaida{
             gerenciadorConexao.desconectar(c);
         }
     }
-    
+    /**
+     * Pesquisa saída pelo número.
+     * @param num
+     * Número da saída.
+     * @return
+     * Retorna um objeto Saida.
+     * @throws ConexaoException
+     * Se houver algum problema com a conexão será lançada uma ConexaoException
+     * @throws RepositorioPesquisarException 
+     * Se houver algum erro na execução do SQL será lançada uma exceção.
+     */
     @Override
-    public Saida pesqNum(Integer Num) 
+    public Saida pesqNum(Integer num) 
             throws ConexaoException, RepositorioPesquisarException{
         Connection c= gerenciadorConexao.conectar();
         Saida s= null;
@@ -153,11 +200,13 @@ public class RepositorioSaida implements IRepositorioSaida{
         Produto p= null;
         String sql= "select s.codSaida, s.codEnt, s.dtSaida, s.qtde, e.codProd,"
                 + " e.codForn, e.qtde as qtdeEnt, e.lote, p.descProd, f.nome, f.CNPJ"
-                + " from Saida as s inner join entrada as e where e.codEnt = s.codEnt"
+                + " from Saida as s inner join entrada as e"
+                + " where s.codSaida = ? and e.codEnt = s.codEnt"
                 + " inner join produto as p where p.codProd = e.codProd"
                 + " inner join Fornecedor as f where f.codForn = e.codForn";
         try{
             PreparedStatement pstmt= c.prepareStatement(sql);
+            pstmt.setInt(1, num);
             ResultSet rs= pstmt.executeQuery();
             while (rs.next()){
                 s= new Saida(rs.getInt("codSaida"), rs.getDouble("qtde"), rs.getString("dtSaida"));

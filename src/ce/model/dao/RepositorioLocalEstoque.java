@@ -25,11 +25,21 @@ import java.util.List;
  */
 public class RepositorioLocalEstoque implements IRepositorioLocalEstoque{
     private IGerenciadorConexao gerenciadorConexao;
-    
+    /**
+     * Construtor padrão
+     */
     public RepositorioLocalEstoque(){
         gerenciadorConexao= GerenciadorConexao.getInstancia();
     }
-    
+    /**
+     * Inclui um novo local de estoque
+     * @param le
+     * Objeto da classe LocalEstoque que deseja incluir
+     * @throws ConexaoException
+     * Se houver algum problema com a conexão será lançada uma ConexaoException 
+     * @throws RepositorioInserirException 
+     * Se houver algum erro na execução do SQL será lançada uma exceção.
+     */
     @Override
     public void inserir(LocalEstoque le) throws ConexaoException, 
             RepositorioInserirException{
@@ -48,7 +58,17 @@ public class RepositorioLocalEstoque implements IRepositorioLocalEstoque{
             gerenciadorConexao.desconectar(c);
         }
     }
-    
+    /**
+     * Altera um local de estoque
+     * @param le
+     * Objeto da classe LocalEstoque com as alterações desejadas. O código constante
+     * neste objeto deve ser o código do local que sofrerá as alterações
+     * e os demais atribudos devem conter os valores que foram modificados.
+     * @throws ConexaoException
+     * Se houver algum problema com a conexão será lançada uma ConexaoException 
+     * @throws RepositorioAlterarException 
+     * Se houver algum erro na execução do SQL será lançada uma exceção.
+     */
     @Override
     public void alterar(LocalEstoque le)throws ConexaoException, 
             RepositorioAlterarException{
@@ -68,7 +88,19 @@ public class RepositorioLocalEstoque implements IRepositorioLocalEstoque{
             gerenciadorConexao.desconectar(c);
         }
     }
-    
+    /**
+     * Exclui um local de estoque
+     * @param codLocal
+     * Código do local de estoque que deseja exclluir
+     * @throws ConexaoException
+     * Se houver algum problema com a conexão será lançada uma ConexaoException 
+     * @throws RepositorioForeignKeyException
+     * Se houver algum erro de chave estrangeira como por exemplo, ao tentar excluir
+     * um local de estoque que está sendo referenciado por uma outra tabela do banco 
+     * como a tabela de Entrada, será lançada uma exceção.
+     * @throws RepositorioExcluirException 
+     * Se houver algum erro na execução do SQL será lançada uma exceção.
+     */
     @Override
     public void excluir(int codLocal)throws ConexaoException, 
             RepositorioForeignKeyException, RepositorioExcluirException{
@@ -92,7 +124,15 @@ public class RepositorioLocalEstoque implements IRepositorioLocalEstoque{
             gerenciadorConexao.desconectar(c);
         }
     }
-    
+    /**
+     * Lista todos os locais de estoque existentes.
+     * @return
+     * Retorna uma lista com os locais de estoque.
+     * @throws ConexaoException
+     * Se houver algum problema com a conexão será lançada uma ConexaoException
+     * @throws RepositorioListarException 
+     * Se houver algum erro na execução do SQL será lançada uma exceção.
+     */
     @Override
     public List<LocalEstoque> listar() throws ConexaoException,
             RepositorioListarException{
@@ -118,11 +158,22 @@ public class RepositorioLocalEstoque implements IRepositorioLocalEstoque{
             gerenciadorConexao.desconectar(c);
         }
     }
-    
+    /**
+     * Pesquisa locais de estoque pela descrição.
+     * @param descricao
+     * Descrição do local desejado. É possível a utilização de caracteres coringa
+     * no parâmetro nome dando maior flexibilidade a pesquisa. Ex: "%S-03%".
+     * @return
+     * Retorna uma lista com o(s) local(is) de estoque encontrado(s).
+     * @throws ConexaoException
+     * Se houver algum problema com a conexão será lançada uma ConexaoException
+     * @throws RepositorioPesquisarException 
+     * Se houver algum erro na execução do SQL será lançada uma exceção.
+     */
     @Override
     public List<LocalEstoque> pesquisar(String descricao) throws ConexaoException,
             RepositorioPesquisarException{
-                List<LocalEstoque> lista = new ArrayList<LocalEstoque>();
+                List<LocalEstoque> lista = new ArrayList();
         LocalEstoque le;
         Connection c= gerenciadorConexao.conectar();
         String sql= "select * from LocalEstoque where descricao like ?";
@@ -144,7 +195,17 @@ public class RepositorioLocalEstoque implements IRepositorioLocalEstoque{
             gerenciadorConexao.desconectar(c);
         }
     }
-    
+    /**
+     * Pesquisa local de estoque pelo código.
+     * @param codLocal
+     * Código do local de estoque.
+     * @return
+     * Retorna um objeto LocalEstoque
+     * @throws ConexaoException
+     * Se houver algum problema com a conexão será lançada uma ConexaoException
+     * @throws RepositorioPesquisarException 
+     * Se houver algum erro na execução do SQL será lançada uma exceção.
+     */
     @Override
     public LocalEstoque pesqCod(int codLocal) throws ConexaoException, 
             RepositorioPesquisarException{

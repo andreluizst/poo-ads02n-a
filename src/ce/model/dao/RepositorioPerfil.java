@@ -23,11 +23,21 @@ import java.util.List;
  */
 public class RepositorioPerfil implements IRepositorioPerfil {
     private IGerenciadorConexao gerenciadorConexao;
-    
+    /**
+     * Contrutor padrão
+     */
     public RepositorioPerfil(){
         gerenciadorConexao= GerenciadorConexao.getInstancia();
     }
-    
+    /**
+     * Inclui um novo perfil
+     * @param p
+     * Objeto da classe Perfil que deseja incluir
+     * @throws ConexaoException
+     * Se houver algum problema com a conexão será lançada uma ConexaoException 
+     * @throws RepositorioInserirException 
+     * Se houver algum erro na execução do SQL será lançada uma exceção.
+     */
     @Override
     public void inserir(Perfil p) throws ConexaoException, 
             RepositorioInserirException{
@@ -47,7 +57,17 @@ public class RepositorioPerfil implements IRepositorioPerfil {
         }
         
     }
-    
+    /**
+     * Altera um perfil
+     * @param p
+     * Objeto da classe Perfil com as alterações desejadas. O código constante
+     * neste objeto deve ser o código do perfil que sofrerá as alterações
+     * e os demais atribudos devem conter os valores que foram modificados.
+     * @throws ConexaoException
+     * Se houver algum problema com a conexão será lançada uma ConexaoException 
+     * @throws RepositorioAlterarException 
+     * Se houver algum erro na execução do SQL será lançada uma exceção.
+     */
     @Override
     public void alterar(Perfil p)throws ConexaoException, 
             RepositorioAlterarException{
@@ -67,7 +87,19 @@ public class RepositorioPerfil implements IRepositorioPerfil {
             gerenciadorConexao.desconectar(c);
         }
     }
-    
+    /**
+     * Exclui um local de estoque
+     * @param p
+     * Perfil que deseja exclluir
+     * @throws ConexaoException
+     * Se houver algum problema com a conexão será lançada uma ConexaoException 
+     * @throws RepositorioForeignKeyException
+     * Se houver algum erro de chave estrangeira como por exemplo, ao tentar excluir
+     * um perfil que está sendo referenciado por uma outra tabela do banco 
+     * como a tabela Usuario, será lançada uma exceção.
+     * @throws RepositorioExcluirException 
+     * Se houver algum erro na execução do SQL será lançada uma exceção.
+     */
     @Override
     public void excluir(Perfil p)throws ConexaoException, 
             RepositorioForeignKeyException, RepositorioExcluirException{
@@ -91,11 +123,19 @@ public class RepositorioPerfil implements IRepositorioPerfil {
             gerenciadorConexao.desconectar(c);
         }
     }
-    
+    /**
+     * Lista todos os perfis existentes.
+     * @return
+     * Retorna uma lista com os perfis.
+     * @throws ConexaoException
+     * Se houver algum problema com a conexão será lançada uma ConexaoException
+     * @throws RepositorioListarException 
+     * Se houver algum erro na execução do SQL será lançada uma exceção.
+     */
     @Override
     public List<Perfil> listar()throws ConexaoException, 
             RepositorioListarException{
-        List<Perfil> lista= new ArrayList<Perfil>();
+        List<Perfil> lista= new ArrayList();
         Perfil p= null;
         Connection c= gerenciadorConexao.conectar();
         String sql= "Select * from Perfil";
@@ -108,6 +148,7 @@ public class RepositorioPerfil implements IRepositorioPerfil {
                     lista.add(p);
                 }
             }
+            rs.close();
             stmt.close();
             return lista;
         }
@@ -119,7 +160,17 @@ public class RepositorioPerfil implements IRepositorioPerfil {
         }
         
     }
-    
+    /**
+     * Pesquisa perfil pelo código.
+     * @param codPerfil
+     * Código do perfil.
+     * @return
+     * Retorna um objeto Perfil
+     * @throws ConexaoException
+     * Se houver algum problema com a conexão será lançada uma ConexaoException
+     * @throws RepositorioPesquisarException 
+     * Se houver algum erro na execução do SQL será lançada uma exceção.
+     */
     @Override
     public Perfil pesqCod(int codPerfil)throws ConexaoException, 
             RepositorioPesquisarException{
@@ -148,7 +199,17 @@ public class RepositorioPerfil implements IRepositorioPerfil {
             gerenciadorConexao.desconectar(c);
         }
     }
-    
+    /**
+     * Pesquisa perfil pelo nome
+     * @param nome
+     * Nome do perfil desejado
+     * @return
+     * Retorna um objeto Perfil
+     * @throws ConexaoException
+     * Se houver algum problema com a conexão será lançada uma ConexaoException
+     * @throws RepositorioPesquisarException 
+     * Se houver algum erro na execução do SQL será lançada uma exceção.
+     */
     @Override
     public Perfil pesquisar(String nome) throws ConexaoException, 
             RepositorioPesquisarException{

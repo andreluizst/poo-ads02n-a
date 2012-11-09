@@ -29,7 +29,15 @@ public class RepositorioFornecedor implements IRepositorioFornecedor{
     public RepositorioFornecedor(){
         gerenciadorConexao = GerenciadorConexao.getInstancia();
     }
-    
+    /**
+     * Inclui um novo fornecedor
+     * @param f
+     * Objeto da classe Fornecedor que deseja incluir
+     * @throws ConexaoException
+     * Se houver algum problema com a conexão será lançada uma ConexaoException 
+     * @throws RepositorioInserirException 
+     * Se houver algum erro na execução do SQL será lançada uma exceção.
+     */
     @Override
     public void inserir(Fornecedor f) throws ConexaoException, RepositorioInserirException{
         Connection c= gerenciadorConexao.conectar();
@@ -59,7 +67,17 @@ public class RepositorioFornecedor implements IRepositorioFornecedor{
             gerenciadorConexao.desconectar(c);
         }
     }
-    
+    /**
+     * Altera um fornecedor
+     * @param f
+     * Objeto da classe Fornecedor com as alterações desejadas. O código constante
+     * neste objeto deve ser o código do fornecedor que sofrerá as alterações
+     * e os demais atribudos devem conter os valores que foram modificados.
+     * @throws ConexaoException
+     * Se houver algum problema com a conexão será lançada uma ConexaoException 
+     * @throws RepositorioAlterarException 
+     * Se houver algum erro na execução do SQL será lançada uma exceção.
+     */
     @Override
     public void alterar(Fornecedor f)throws ConexaoException, RepositorioAlterarException{
         Connection c= gerenciadorConexao.conectar();
@@ -140,7 +158,19 @@ public class RepositorioFornecedor implements IRepositorioFornecedor{
             gerenciadorConexao.desconectar(c);
         }
     }
-    
+    /**
+     * Exclui um fornecedor
+     * @param codForn
+     * Código do fornecedor que deseja excluir
+     * @throws ConexaoException
+     * Se houver algum problema com a conexão será lançada uma ConexaoException 
+     * @throws RepositorioForeignKeyException
+     * Se houver algum erro de chave estrangeira como por exemplo, ao tentar excluir
+     * um Fornecedor que está sendo referenciado por uma outra tabela do banco como
+     * a tabela de Entrada, será lançada uma exceção.
+     * @throws RepositorioExcluirException 
+     * Se houver algum erro na execução do SQL será lançada uma exceção.
+     */
     @Override
     public void excluir(Integer codForn)throws ConexaoException, 
             RepositorioForeignKeyException, RepositorioExcluirException{
@@ -164,7 +194,17 @@ public class RepositorioFornecedor implements IRepositorioFornecedor{
             gerenciadorConexao.desconectar(c);
         }
     }
-    
+    /**
+     * Lista todos os fornecedores existentes.
+     * @return
+     * Retorna uma lista com os Fornecedores
+     * 
+     * @throws ConexaoException
+     * Se houver algum problema com a conexão será lançada uma ConexaoException
+     * 
+     * @throws RepositorioListarException 
+     * Se houver algum erro na execução do SQL será lançada uma exceção.
+     */
     @Override
     public List<Fornecedor> listar() throws ConexaoException,
             RepositorioListarException{
@@ -215,7 +255,22 @@ public class RepositorioFornecedor implements IRepositorioFornecedor{
             gerenciadorConexao.desconectar(c);
         }
     }
-    
+    /**
+     * Pesquisa fornecedores por nome
+     * @param nome
+     * Nome do fornecedor desejado.
+     * É possível a utilização de caracteres coringas no parâmetro nome dando
+     * maior flexibilidade a pesquisa. Ex: "comer%"
+     * 
+     * @return
+     * Retorna uma lista com o(s) Fornecedor(es) encontrado(s).
+     * 
+     * @throws ConexaoException
+     * Se houver algum problema com a conexão será lançada uma ConexaoException
+     * 
+     * @throws RepositorioPesquisarException 
+     * Se houver algum erro na execução do SQL será lançada uma exceção.
+     */
     @Override
     public List<Fornecedor> pesquisar(String nome) throws ConexaoException,
             RepositorioPesquisarException{
@@ -277,7 +332,7 @@ public class RepositorioFornecedor implements IRepositorioFornecedor{
      * protudos do fornecedor dentro do fornecedor por exemplo.
      */
     /**
-     * 
+     * Pesquisa fornecedor pelo código
      * @param codForn
      * Código do Fornecedor desejado
      * @param comProds
@@ -289,7 +344,9 @@ public class RepositorioFornecedor implements IRepositorioFornecedor{
      * @return
      * Retorna um Fornecedor com todos os seus atributos preenchidos
      * @throws ConexaoException
-     * @throws RepositorioException 
+     * Se houver algum problema com a conexão será lançada uma ConexaoException
+     * @throws RepositorioPesquisaException 
+     * Se houver algum erro na execução do SQL será lançada uma exceção.
      */
     @Override
     public Fornecedor pesqCodForn(Integer codForn, boolean comProds) throws ConexaoException, 
@@ -345,7 +402,23 @@ public class RepositorioFornecedor implements IRepositorioFornecedor{
             gerenciadorConexao.desconectar(c);
         }
     }
-    
+    /**
+     * Pesquisa fonrcedor pelo CNPJ
+     * @param cnpj
+     * CNPJ do Fornecedor desejado
+     * @param comProds
+     * Se false a lista de produtos do Fornecedor não será preenchida. Este
+     * parametro deve ser false se o método estiver sendo chamado de dentro
+     * do repositório de produtos, pois gerará erro de conexão:
+     *      com.mysql.jdbc.exceptions.jdbc4.MySQLNonTransientConnectionException: 
+     *              Data source rejected establishment of connection,  message from server: "Too many connections"
+     * @return
+     * Retorna um Fornecedor com todos os seus atributos preenchidos
+     * @throws ConexaoException
+     * Se houver algum problema com a conexão será lançada uma ConexaoException
+     * @throws RepositorioPesquisarException 
+     * Se houver algum erro na execução do SQL será lançada uma exceção.
+     */
     @Override
     public Fornecedor pesqCnpj(String cnpj, boolean comProds) 
             throws ConexaoException, RepositorioPesquisarException{

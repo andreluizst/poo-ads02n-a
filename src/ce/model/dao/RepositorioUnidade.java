@@ -24,11 +24,21 @@ import java.util.List;
  */
 public class RepositorioUnidade implements IRepositorioUnidade{
     private IGerenciadorConexao gerenciadorConexao;
-    
+    /**
+     * Constgrutor padrão
+     */
     public RepositorioUnidade(){
         gerenciadorConexao= GerenciadorConexao.getInstancia();
     }
-    
+    /**
+     * Inclui uma nova unidade.
+     * @param u
+     * Objeto da classe Unidade que deseja incluir.
+     * @throws ConexaoException
+     * Se houver algum problema com a conexão será lançada uma ConexaoException 
+     * @throws RepositorioInserirException 
+     * Se houver algum erro na execução do SQL será lançada uma exceção.
+     */
     @Override
     public void inserir(Unidade u) throws ConexaoException,
             RepositorioInserirException{
@@ -47,7 +57,17 @@ public class RepositorioUnidade implements IRepositorioUnidade{
             gerenciadorConexao.desconectar(c);
         }
     }
-    
+    /**
+     * Altera uma unidade.
+     * @param u
+     * Objeto da classe Unidade com as alterações desejadas. O código constante
+     * neste objeto deve ser o código da unidade que sofrerá as alterações
+     * e os demais atribudos devem conter os valores que foram modificados.
+     * @throws ConexaoException
+     * Se houver algum problema com a conexão será lançada uma ConexaoException 
+     * @throws RepositorioAlterarException 
+     * Se houver algum erro na execução do SQL será lançada uma exceção.
+     */
     @Override
     public void alterar(Unidade u)throws ConexaoException, 
             RepositorioAlterarException{
@@ -67,7 +87,19 @@ public class RepositorioUnidade implements IRepositorioUnidade{
             gerenciadorConexao.desconectar(c);
         }
     }
-    
+    /**
+     * Exclui uma unidade.
+     * @param codUnid
+     * Código da unidade que deseja exclluir
+     * @throws ConexaoException
+     * Se houver algum problema com a conexão será lançada uma ConexaoException 
+     * @throws RepositorioForeignKeyException
+     * Se houver algum erro de chave estrangeira como por exemplo, ao tentar excluir
+     * uma unidade que está sendo referenciado por uma outra tabela do banco 
+     * como a tabela Produto, será lançada uma exceção.
+     * @throws RepositorioExcluirException 
+     * Se houver algum erro na execução do SQL será lançada uma exceção.
+     */
     @Override
     public void excluir(Integer codUnid)throws ConexaoException, 
             RepositorioForeignKeyException, RepositorioExcluirException{
@@ -91,7 +123,15 @@ public class RepositorioUnidade implements IRepositorioUnidade{
             gerenciadorConexao.desconectar(c);
         }
     }
-    
+    /**
+     * Lista todas as unidades existentes.
+     * @return
+     * Retorna uma lista com as unidades.
+     * @throws ConexaoException
+     * Se houver algum problema com a conexão será lançada uma ConexaoException
+     * @throws RepositorioListarException 
+     * Se houver algum erro na execução do SQL será lançada uma exceção.
+     */
     @Override
     public List<Unidade> listar() throws ConexaoException,
             RepositorioListarException{
@@ -116,11 +156,22 @@ public class RepositorioUnidade implements IRepositorioUnidade{
             gerenciadorConexao.desconectar(c);
         }
     }
-    
+    /**
+     * Pesquisa unidade(s) pela descrição.
+     * @param descricao
+     * Descrição da unidade desejada. É possível a utilização de caracteres coringa
+     * no parâmetro nome dando maior flexibilidade a pesquisa. Ex: "Pe%".
+     * @return
+     * Retorna uma lista com a(s) unidade(s) encontrada(s).
+     * @throws ConexaoException
+     * Se houver algum problema com a conexão será lançada uma ConexaoException
+     * @throws RepositorioPesquisarException 
+     * Se houver algum erro na execução do SQL será lançada uma exceção.
+     */
     @Override
     public List<Unidade> pesquisar(String descricao) throws ConexaoException,
             RepositorioPesquisarException{
-                List<Unidade> lista = new ArrayList<Unidade>();
+                List<Unidade> lista = new ArrayList();
         Unidade u;
         Connection c= gerenciadorConexao.conectar();
         String sql= "select * from unidade where descricao like ?";
@@ -142,7 +193,17 @@ public class RepositorioUnidade implements IRepositorioUnidade{
             gerenciadorConexao.desconectar(c);
         }
     }
-    
+    /**
+     * Pesquisa unidade pelo código.
+     * @param codUnid
+     * Código da unidade.
+     * @return
+     * Retorna um objeto Unidade.
+     * @throws ConexaoException
+     * Se houver algum problema com a conexão será lançada uma ConexaoException
+     * @throws RepositorioPesquisarException 
+     * Se houver algum erro na execução do SQL será lançada uma exceção.
+     */
     @Override
     public Unidade pesqCod(Integer codUnid) throws ConexaoException, 
             RepositorioPesquisarException{

@@ -30,11 +30,21 @@ import java.util.List;
  */
 public class RepositorioUsuario implements IRepositorioUsuario{
     private IGerenciadorConexao gerenciadorConexao;
-    
+    /**
+     * Construtor padrão
+     */
     public RepositorioUsuario(){
         gerenciadorConexao= GerenciadorConexao.getInstancia();
     }
-    
+    /**
+     * Inclui um novo usuário.
+     * @param u
+     * Objeto da classe Usuario que deseja incluir
+     * @throws ConexaoException
+     * Se houver algum problema com a conexão será lançada uma ConexaoException 
+     * @throws RepositorioInserirException 
+     * Se houver algum erro na execução do SQL será lançada uma exceção.
+     */
     @Override
     public void inserir(Usuario u) throws ConexaoException, 
             RepositorioInserirException{
@@ -57,7 +67,17 @@ public class RepositorioUsuario implements IRepositorioUsuario{
             gerenciadorConexao.desconectar(c);
         }
     }
-    
+    /**
+     * Altera um usuário.
+     * @param u
+     * Objeto da classe Usuario com as alterações desejadas. O código constante
+     * neste objeto deve ser o código do usuário que sofrerá as alterações
+     * e os demais atribudos devem conter os valores que foram modificados.
+     * @throws ConexaoException
+     * Se houver algum problema com a conexão será lançada uma ConexaoException 
+     * @throws RepositorioAlterarException 
+     * Se houver algum erro na execução do SQL será lançada uma exceção.
+     */
     @Override
     public void alterar(Usuario u) throws ConexaoException, 
             RepositorioAlterarException{
@@ -81,7 +101,19 @@ public class RepositorioUsuario implements IRepositorioUsuario{
             gerenciadorConexao.desconectar(c);
         }
     }
-    
+    /**
+     * Exclui um usuário.
+     * @param u
+     * Usuário que deseja exclluir
+     * @throws ConexaoException
+     * Se houver algum problema com a conexão será lançada uma ConexaoException 
+     * @throws RepositorioForeignKeyException
+     * Se houver algum erro de chave estrangeira como por exemplo, ao tentar excluir
+     * um usuário que está sendo referenciado por uma outra tabela do banco 
+     * como a tabela Entrada ou Saida, será lançada uma exceção.
+     * @throws RepositorioExcluirException 
+     * Se houver algum erro na execução do SQL será lançada uma exceção.
+     */
     @Override
     public void excluir(Usuario u) throws ConexaoException, 
             RepositorioForeignKeyException, RepositorioExcluirException{
@@ -105,11 +137,19 @@ public class RepositorioUsuario implements IRepositorioUsuario{
             gerenciadorConexao.desconectar(c);
         }
     }
-    
+    /**
+     * Lista todos os usuários existentes.
+     * @return
+     * Retorna uma lista com os usuários.
+     * @throws ConexaoException
+     * Se houver algum problema com a conexão será lançada uma ConexaoException
+     * @throws RepositorioListarException 
+     * Se houver algum erro na execução do SQL será lançada uma exceção.
+     */
     @Override
     public List<Usuario> listar() throws ConexaoException, 
             RepositorioListarException{
-        List<Usuario> lista= new ArrayList<Usuario>();
+        List<Usuario> lista= new ArrayList();
         Usuario u= null;
         String sql= "Select * from Usuario";
         Connection c= gerenciadorConexao.conectar();
@@ -141,7 +181,17 @@ public class RepositorioUsuario implements IRepositorioUsuario{
             gerenciadorConexao.desconectar(c);
         }
     }
-    
+    /**
+     * Pesquisa usuário pelo código.
+     * @param cod
+     * Código do usuário.
+     * @return
+     * Retorna um objeto Usuario.
+     * @throws ConexaoException
+     * Se houver algum problema com a conexão será lançada uma ConexaoException
+     * @throws RepositorioPesquisarException 
+     * Se houver algum erro na execução do SQL será lançada uma exceção.
+     */
     @Override
     public Usuario pesqCod(int cod)throws ConexaoException, 
             RepositorioPesquisarException{
@@ -162,10 +212,10 @@ public class RepositorioUsuario implements IRepositorioUsuario{
             }
             rs.close();
             pstmt.close();
-            if (u==null){
+            /*if (u==null){
                 throw new RepositorioPesquisarException("Usuario."+cod+" não encontrado!",
                         "RepositorioUsuario.pesqCod()");
-            }
+            }*/
             return u;
         }
         catch(SQLException e){
@@ -179,7 +229,17 @@ public class RepositorioUsuario implements IRepositorioUsuario{
             gerenciadorConexao.desconectar(c);
         }
     }
-    
+    /**
+     * Pesquisa usuário pelo CPF.
+     * @param cpf
+     * CPF do usuário.
+     * @return
+     * Retorna um objeto Usuario.
+     * @throws ConexaoException
+     * Se houver algum problema com a conexão será lançada uma ConexaoException
+     * @throws RepositorioPesquisarException 
+     * Se houver algum erro na execução do SQL será lançada uma exceção.
+     */
     @Override
     public Usuario pesqCpf(String cpf)throws ConexaoException, 
             RepositorioPesquisarException{
@@ -200,10 +260,10 @@ public class RepositorioUsuario implements IRepositorioUsuario{
             }
             rs.close();
             pstmt.close();
-            if (u==null){
+            /*if (u==null){
                 throw new RepositorioPesquisarException("Usuario."+cpf+" não encontrado!",
                         "RepositorioUsuario.pesqCod()");
-            }
+            }*/
             return u;
         }
         catch(SQLException e){

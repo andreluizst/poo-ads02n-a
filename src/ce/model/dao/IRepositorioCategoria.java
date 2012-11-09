@@ -20,7 +20,7 @@ public interface IRepositorioCategoria {
     public void incluir(Categoria obj) throws ConexaoException,RepositorioInserirException;
     public void alterar(Categoria obj) throws ConexaoException,RepositorioAlterarException;
     public void excluir(Integer codCateg) throws ConexaoException,
-            RepositorioExcluirException, RepositorioForeignKeyException;
+            RepositorioForeignKeyException, RepositorioExcluirException;
     public Categoria pesquisar(String descricao) throws ConexaoException,RepositorioPesquisarException;
     public Categoria pesqPorCod(Integer codCateg) throws ConexaoException,RepositorioPesquisarException;
 }

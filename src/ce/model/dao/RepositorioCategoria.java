@@ -17,7 +17,10 @@ import java.util.List;
 
 /**
  *
- * @author professor
+ * @author Andre
+ * 
+ * RepositorioCategoria implementada a interface IRepositorioCategoria e é
+ * reponsável pela atualização e manipulação dos dados da tabela Categoria
  */
 public class RepositorioCategoria implements IRepositorioCategoria{
     private IGerenciadorConexao gc;
@@ -25,7 +28,17 @@ public class RepositorioCategoria implements IRepositorioCategoria{
     public RepositorioCategoria(){
          gc = GerenciadorConexao.getInstancia();
     }
-    
+    /**
+     * Lista todas as categorias existentes.
+     * @return
+     * Retorna uma lista com as categorias
+     * 
+     * @throws ConexaoException
+     * Se houver algum problema com a conexão será lançada uma ConexaoException
+     * 
+     * @throws RepositorioListarException 
+     * Se houver algum erro na execução do SQL será lançada uma exceção do tipo RepositorioListarException
+     */
     @Override
     public List<Categoria> listar()throws ConexaoException,
             RepositorioListarException{
@@ -52,7 +65,18 @@ public class RepositorioCategoria implements IRepositorioCategoria{
             gc.desconectar(c);
         }
     }
-    
+    /**
+     * Inclui uma nova categoria.
+     * 
+     * @param obj
+     * Objeto da classe Categoria que deverá ser incluido
+     * 
+     * @throws ConexaoException
+     * Se houver algum problema com a conexão será lançada uma ConexaoException
+     * 
+     * @throws RepositorioInserirException 
+     * Se houver algum erro na execução do SQL será lançada uma exceção.
+     */
     @Override
     public void incluir(Categoria obj)throws ConexaoException,
             RepositorioInserirException{
@@ -69,7 +93,16 @@ public class RepositorioCategoria implements IRepositorioCategoria{
             gc.desconectar(c);
         }
     }
-    
+    /**
+     * Altera uma categoria.
+     * @param obj
+     * Objeto da classe Categoria que deverá ser incluido
+     * 
+     * @throws ConexaoException
+     * Se houver algum problema com a conexão será lançada uma ConexaoException 
+     * @throws RepositorioAlterarException 
+     * Se houver algum erro na execução do SQL será lançada uma exceção. 
+     */
     @Override
     public void alterar(Categoria obj)throws ConexaoException,
             RepositorioAlterarException{
@@ -87,10 +120,26 @@ public class RepositorioCategoria implements IRepositorioCategoria{
             gc.desconectar(c);
         }
     }
-    
+    /**
+     * Exclui uma categoria
+     * 
+     * @param codCateg
+     * Código da cagetoria que deverá ser excluida.
+     * 
+     * @throws ConexaoException
+     * Se houver algum problema com a conexão será lançada uma ConexaoException 
+     * 
+     * @throws RepositorioForeignKeyException
+     * Se houver algum erro de chave estrangeira como por exemplo, ao tentar excluir
+     * uma Categoria que está sendo referenciada por uma outra tabela do banco como
+     * a tabela de Produtos, será lançada uma exceção.
+     * 
+     * @throws RepositorioExcluirException
+     * Se houver algum erro na execução do SQL será lançada uma exceção. 
+     */
     @Override
     public void excluir(Integer codCateg)throws ConexaoException,
-            RepositorioExcluirException, RepositorioForeignKeyException{
+            RepositorioForeignKeyException, RepositorioExcluirException{
         Connection c = gc.conectar();
         String sql = "DELETE FROM categoria WHERE codCateg=?";
         try{
@@ -108,7 +157,19 @@ public class RepositorioCategoria implements IRepositorioCategoria{
             gc.desconectar(c);
         }
     }
-
+    /**
+     * Pesquisa uma categoria pela descrição
+     * 
+     * @param descricao
+     * @return
+     * Retorna a Categoria encontrada
+     * 
+     * @throws ConexaoException
+     * Se houver algum problema com a conexão será lançada uma ConexaoException 
+     * 
+     * @throws RepositorioPesquisarException 
+     * Se houver algum erro na execução do SQL será lançada uma exceção. 
+     */
     @Override
     public Categoria pesquisar(String descricao)throws ConexaoException,
             RepositorioPesquisarException{
@@ -134,7 +195,19 @@ public class RepositorioCategoria implements IRepositorioCategoria{
             gc.desconectar(c);
         }
     }
-    
+    /**
+     * Pesquisa uma categoria pelo código
+     * 
+     * @param codCateg
+     * @return
+     * Retorna a Categoria encontrada
+     * 
+     * @throws ConexaoException
+     * Se houver algum problema com a conexão será lançada uma ConexaoException 
+     * 
+     * @throws RepositorioPesquisarException 
+     * Se houver algum erro na execução do SQL será lançada uma exceção. 
+     */
     @Override
     public Categoria pesqPorCod(Integer codCateg)throws ConexaoException,
             RepositorioPesquisarException{

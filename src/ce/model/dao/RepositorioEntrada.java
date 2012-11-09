@@ -30,11 +30,21 @@ import java.util.List;
  */
 public class RepositorioEntrada implements IRepositorioEntrada{
     private IGerenciadorConexao gerenciadorConexao;
-    
+    /**
+     * Construtor padrão
+     */
     public RepositorioEntrada(){
         gerenciadorConexao = GerenciadorConexao.getInstancia();
     }
-    
+    /**
+     * Inclui uma nova entrada.
+     * @param e
+     * Objeto da classe Entrada que deseja incluir
+     * @throws ConexaoException
+     * Se houver algum problema com a conexão será lançada uma ConexaoException 
+     * @throws RepositorioInserirException 
+     * Se houver algum erro na execução do SQL será lançada uma exceção.
+     */
     @Override
     public void inserir(Entrada e) throws ConexaoException, 
             RepositorioInserirException{
@@ -69,7 +79,18 @@ public class RepositorioEntrada implements IRepositorioEntrada{
             gerenciadorConexao.desconectar(c);
         }
     }
-    
+    /**
+     * Altera uma entrada.
+     * @param e
+     * Objeto da classe Entrada com as alterações desejadas.
+     * O número da entrada constante neste objeto deve ser o número da entrada
+     * que sofrerá as alterações e os demais atribudos devem conter os valores
+     * que foram modificados.
+     * @throws ConexaoException
+     * Se houver algum problema com a conexão será lançada uma ConexaoException 
+     * @throws RepositorioAlterarException 
+     * Se houver algum erro na execução do SQL será lançada uma exceção.
+     */
     @Override
     public void alterar(Entrada e) throws ConexaoException, 
             RepositorioAlterarException{
@@ -96,7 +117,19 @@ public class RepositorioEntrada implements IRepositorioEntrada{
             gerenciadorConexao.desconectar(c);
         }
     }
-    
+    /**
+     * Exclui uma entrada.
+     * @param e
+     * Entrada que deseja exclluir
+     * @throws ConexaoException
+     * Se houver algum problema com a conexão será lançada uma ConexaoException 
+     * @throws RepositorioForeignKeyException
+     * Se houver algum erro de chave estrangeira como por exemplo, ao tentar excluir
+     * uma entrada que está sendo referenciado por uma outra tabela do banco 
+     * como a tabela Saida, será lançada uma exceção.
+     * @throws RepositorioExcluirException 
+     * Se houver algum erro na execução do SQL será lançada uma exceção.
+     */
     @Override
     public void excluir(Entrada e) throws ConexaoException, 
             RepositorioForeignKeyException, RepositorioExcluirException{
@@ -127,11 +160,19 @@ public class RepositorioEntrada implements IRepositorioEntrada{
             gerenciadorConexao.desconectar(c);
         }
     }
-    
+    /**
+     * Lista todas as entradas existentes.
+     * @return
+     * Retorna uma lista com as entradas.
+     * @throws ConexaoException
+     * Se houver algum problema com a conexão será lançada uma ConexaoException
+     * @throws RepositorioListarException 
+     * Se houver algum erro na execução do SQL será lançada uma exceção.
+     */
     @Override
     public List<Entrada> listar() throws ConexaoException, 
             RepositorioListarException{
-         List<Entrada> lista = new ArrayList<Entrada>();
+         List<Entrada> lista = new ArrayList();
         Entrada e=null;
         Connection c= gerenciadorConexao.conectar();
         String sql= "select * from Entrada";
@@ -165,7 +206,17 @@ public class RepositorioEntrada implements IRepositorioEntrada{
             gerenciadorConexao.desconectar(c);
         }
     }
-    
+    /**
+     * Pesquisa entrada pelo número.
+     * @param num
+     * Número da entrada.
+     * @return
+     * Retorna um objeto Entrada.
+     * @throws ConexaoException
+     * Se houver algum problema com a conexão será lançada uma ConexaoException
+     * @throws RepositorioPesquisarException 
+     * Se houver algum erro na execução do SQL será lançada uma exceção.
+     */
     @Override
     public Entrada pesqNum(Integer num) throws ConexaoException, 
             RepositorioPesquisarException{
@@ -202,7 +253,7 @@ public class RepositorioEntrada implements IRepositorioEntrada{
         }
     }
     
-    private boolean reverterInserir(Entrada e)throws ConexaoException, 
+    /*private boolean reverterInserir(Entrada e)throws ConexaoException, 
             RepositorioInserirException {
         Connection c= gerenciadorConexao.conectar();
         String sql= "Delete from Entrada where codEnt=?";
@@ -221,9 +272,9 @@ public class RepositorioEntrada implements IRepositorioEntrada{
         }
         
         return true;
-    }
+    }*/
     
-    private boolean reverterAlterar(Entrada e) throws ConexaoException, 
+    /*private boolean reverterAlterar(Entrada e) throws ConexaoException, 
             RepositorioAlterarException{
         Connection c= gerenciadorConexao.conectar();
         String sql="Update entrada set codProd=?, codForn=?, dtEnt=?, lote=?,"
@@ -246,5 +297,5 @@ public class RepositorioEntrada implements IRepositorioEntrada{
             gerenciadorConexao.desconectar(c);
         }
         return true;
-    }
+    }*/
 }

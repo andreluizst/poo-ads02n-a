@@ -26,11 +26,21 @@ import java.util.List;
  */
 public class RepositorioProduto implements IRepositorioProduto{
     private IGerenciadorConexao gc;
-    
+    /**
+     * Construtor padrão
+     */
     public RepositorioProduto(){
         gc= GerenciadorConexao.getInstancia();
     }
-    
+    /**
+     * Inclui um novo produto
+     * @param p
+     * Objeto da classe Produto que deseja incluir
+     * @throws ConexaoException
+     * Se houver algum problema com a conexão será lançada uma ConexaoException 
+     * @throws RepositorioInserirException 
+     * Se houver algum erro na execução do SQL será lançada uma exceção.
+     */
     @Override
     public void inserir(Produto p) throws ConexaoException, RepositorioInserirException{
         Connection conexao = gc.conectar();
@@ -67,12 +77,22 @@ public class RepositorioProduto implements IRepositorioProduto{
             gc.desconectar(conexao);
         }
     }
-
+    /**
+     * Altera um produto
+     * @param p
+     * Objeto da classe Produto com as alterações desejadas. O código constante
+     * neste objeto deve ser o código do produto que sofrerá as alterações
+     * e os demais atribudos devem conter os valores que foram modificados.
+     * @throws ConexaoException
+     * Se houver algum problema com a conexão será lançada uma ConexaoException 
+     * @throws RepositorioAlterarException 
+     * Se houver algum erro na execução do SQL será lançada uma exceção.
+     */
     @Override
     public void alterar(Produto p) throws ConexaoException, RepositorioAlterarException{
         Connection conexao = gc.conectar();
         boolean atualizaFornXProd= false;
-        List<Fornecedor> fornsDB= new ArrayList<Fornecedor>();
+        List<Fornecedor> fornsDB= new ArrayList();
         Fornecedor f= null;
         String sql= "update Produto set descProd=?, qtdeEstoq=?, qtdeMin=?,"
                 + " qtdeIdeal=?, codCateg=?, statusProd=?, codUnid=?"
@@ -147,7 +167,19 @@ public class RepositorioProduto implements IRepositorioProduto{
             gc.desconectar(conexao);
         }
     }
-    
+    /**
+     * Exclui um produto
+     * @param codProd
+     * Código do produto que deseja exclluir
+     * @throws ConexaoException
+     * Se houver algum problema com a conexão será lançada uma ConexaoException 
+     * @throws RepositorioForeignKeyException
+     * Se houver algum erro de chave estrangeira como por exemplo, ao tentar excluir
+     * um produto que está sendo referenciado por uma outra tabela do banco 
+     * como a tabela Entrada, será lançada uma exceção.
+     * @throws RepositorioExcluirException 
+     * Se houver algum erro na execução do SQL será lançada uma exceção.
+     */
     @Override
     public void excluir(Integer codProd)throws ConexaoException, 
         RepositorioForeignKeyException, RepositorioExcluirException{
@@ -175,11 +207,19 @@ public class RepositorioProduto implements IRepositorioProduto{
             gc.desconectar(conexao);
         }
     }
-    
+    /**
+     * Lista todos os produtos existentes.
+     * @return
+     * Retorna uma lista com os produtos.
+     * @throws ConexaoException
+     * Se houver algum problema com a conexão será lançada uma ConexaoException
+     * @throws RepositorioListarException 
+     * Se houver algum erro na execução do SQL será lançada uma exceção.
+     */
     @Override
     public List<Produto> listar()throws ConexaoException, RepositorioListarException{
-        List<Produto> lista = new ArrayList<Produto>();
-        List<Fornecedor> fornecedores= new ArrayList<Fornecedor>();
+        List<Produto> lista = new ArrayList();
+        List<Fornecedor> fornecedores= new ArrayList();
         Produto p= null;
         Fornecedor f= null;
         //Unidade u= null;
@@ -229,12 +269,23 @@ public class RepositorioProduto implements IRepositorioProduto{
             gc.desconectar(c);
         }
     }
-    
+    /**
+     * Pesquisa produto(s) pela descrição.
+     * @param descProd
+     * Descrição do produto desejado. É possível a utilização de caracteres coringa
+     * no parâmetro nome dando maior flexibilidade a pesquisa. Ex: "%Samsung%".
+     * @return
+     * Retorna uma lista com o(s) produto(s) encontrado(s).
+     * @throws ConexaoException
+     * Se houver algum problema com a conexão será lançada uma ConexaoException
+     * @throws RepositorioPesquisarException 
+     * Se houver algum erro na execução do SQL será lançada uma exceção.
+     */
     @Override
     public List<Produto> pesquisar(String descProd) throws ConexaoException, 
             RepositorioPesquisarException{
-        List<Produto> lista = new ArrayList<Produto>();
-        List<Fornecedor> fornecedores= new ArrayList<Fornecedor>();
+        List<Produto> lista = new ArrayList();
+        List<Fornecedor> fornecedores= new ArrayList();
         Produto p = null;
         Fornecedor f= null;
         Connection c = gc.conectar();
@@ -280,7 +331,7 @@ public class RepositorioProduto implements IRepositorioProduto{
         }
     }
     /**
-     * 
+     * Pesquisa produto pelo código
      * @param codProd
      * Código do Produto desejado
      * @param comForns
@@ -292,7 +343,9 @@ public class RepositorioProduto implements IRepositorioProduto{
      * @return
      * Retorna um Produto com todos os seus atributos preenchidos
      * @throws ConexaoException
-     * @throws RepositorioException 
+     * Se houver algum problema com a conexão será lançada uma ConexaoException
+     * @throws RepositorioPesquisarException 
+     * Se houver algum erro na execução do SQL será lançada uma exceção.
      */
     @Override
     public Produto pesqCodProd(Integer codProd, boolean comForns) throws ConexaoException, 
@@ -332,10 +385,10 @@ public class RepositorioProduto implements IRepositorioProduto{
             }
             rs.close();
             pstmt.close();
-            if (f==null){
+            /*if (f==null){
                 throw new RepositorioPesquisarException("Produto."+codProd+" não encontrado!",
                         "RepositoroiFornecedor.pesqCodProd()");
-            }
+            }*/
             return p;
         }
         catch(SQLException e){
@@ -348,7 +401,14 @@ public class RepositorioProduto implements IRepositorioProduto{
             gc.desconectar(c);
         }
     }
-    
+    /**
+     * Atualiza a quantidade do produto.
+     * @param p
+     * @throws ConexaoException
+     * Se houver algum problema com a conexão será lançada uma ConexaoException
+     * @throws RepositorioAlterarException 
+     * Se houver algum erro na execução do SQL será lançada uma exceção.
+     */
     @Override
     public void atualizarQtde(Produto p) throws ConexaoException, 
             RepositorioAlterarException{
