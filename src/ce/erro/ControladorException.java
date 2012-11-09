@@ -8,15 +8,7 @@ package ce.erro;
  *
  * @author Andre
  */
-public class ControladorException extends Exception {
-    /**
-     * Esta propriedade contém a classe que lançou a exceção. Se a classe B
-     * capturar a exceção da classe A e por sua vez relançar para uma outra
-     * class, por exemplo C, que ao tratar esta exceção poderá verificar que
-     * esta propriedade terá o seguinte caminho: A.B
-     *
-     */
-    private String pathClassCall= "";
+public class ControladorException extends GeralException {
     
     public ControladorException(){
         super();
@@ -36,12 +28,7 @@ public class ControladorException extends Exception {
      * Nome da classe que está lançando a exceção
      * */
     public ControladorException(Exception e, String nameClassCall){
-        super(e);
-        if (pathClassCall.compareTo("") == 0){
-            pathClassCall= nameClassCall;
-        }else{
-            pathClassCall= nameClassCall + "." + pathClassCall;
-        }
+        super(e, nameClassCall);
     }
     
     /**
@@ -60,12 +47,7 @@ public class ControladorException extends Exception {
      * Nome da classe que está lançando a exceção
      */
     public ControladorException(String s, String nameClassCall){
-        super(s);
-        if (pathClassCall.compareTo("") == 0){
-            pathClassCall= nameClassCall;
-        }else{
-            pathClassCall= nameClassCall + "." + pathClassCall;
-        }
+        super(s, nameClassCall);
     }
 
     public ControladorException(Throwable t){
