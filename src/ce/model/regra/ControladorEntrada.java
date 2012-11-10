@@ -15,6 +15,10 @@ import ce.erro.RepositorioListarException;
 import ce.model.basica.Entrada;
 import ce.model.dao.RepositorioEntrada;
 import ce.model.dao.IRepositorioEntrada;
+import ce.model.dao.RepositorioProduto;
+import ce.model.dao.IRepositorioProduto;
+import ce.model.dao.RepositorioFornecedor;
+import ce.model.dao.IRepositorioFornecedor;
 import java.util.List;
 import java.util.ResourceBundle;
 /**
@@ -23,5 +27,11 @@ import java.util.ResourceBundle;
  */
 public class ControladorEntrada {
     private IRepositorioEntrada rpEnt= new RepositorioEntrada();
+    private IRepositorioProduto rpProd= new RepositorioProduto();
+    private IRepositorioFornecedor rpForn= new RepositorioFornecedor();
     private ResourceBundle rb= ResourceBundle.getBundle("ce.erro.Erro");
+    
+    public void validarDados(Entrada e) throws ControladorException{
+        //entrar código
+    }
 }

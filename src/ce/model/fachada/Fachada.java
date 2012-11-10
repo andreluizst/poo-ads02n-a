@@ -13,18 +13,34 @@ import ce.model.regra.*;
  * @author andreluiz
  */
 public class Fachada {
-    private ControladorCategoria ctrlCateg= new ControladorCategoria();
-    private ControladorProduto ctrlProd= new ControladorProduto();
-    private ControladorFornecedor ctrlForn= new ControladorFornecedor();
-    private ControladorFuncionario ctrlFun= new ControladorFuncionario();
-    private ControladorPerfil ctrlPer= new ControladorPerfil();
-    private ControladorUsuario ctrlUsu= new ControladorUsuario();
-    private ControladorLocalEstoque ctrlLocalE= new ControladorLocalEstoque();
-    private ControladorEntrada ctrlE= new ControladorEntrada();
-    //private ControladorSaida ctrlS= new ControladorSaida();
+    private static Fachada instancia;
+    private ControladorCategoria ctrlCateg;
+    private ControladorProduto ctrlProd;
+    private ControladorFornecedor ctrlForn;
+    private ControladorFuncionario ctrlFun;
+    private ControladorPerfil ctrlPer;
+    private ControladorUsuario ctrlUsu;
+    private ControladorLocalEstoque ctrlLocalE;
+    private ControladorEntrada ctrlE;
+    //private ControladorSaida ctrlS;
     
-    public Fachada(){
-        
+    private Fachada(){
+        ctrlCateg= new ControladorCategoria();
+        ctrlProd= new ControladorProduto();
+        ctrlForn= new ControladorFornecedor();
+        ctrlFun= new ControladorFuncionario();
+        ctrlPer= new ControladorPerfil();
+        ctrlUsu= new ControladorUsuario();
+        ctrlLocalE= new ControladorLocalEstoque();
+        ctrlE= new ControladorEntrada();
+        //ctrlS= new ControladorSaida();
+    }
+    
+    public Fachada getInstancia(){
+        if (instancia == null){
+            instancia= new Fachada();
+        }
+        return instancia;
     }
     
     public void incluir(Categoria c) throws GeralException{
@@ -101,5 +117,20 @@ public class Fachada {
     public void alterar(Funcionario f) throws GeralException{
         ctrlFun.verificarSeExiste(f);
         ctrlFun.alterar(f);
+    }
+    
+    public void alterar(Perfil p) throws GeralException{
+        ctrlPer.verificarSeExiste(p);
+        ctrlPer.alterar(p);
+    }
+    
+    public void alterar(Usuario u) throws GeralException{
+        ctrlUsu.verificarSeExiste(u);
+        ctrlUsu.alterar(u);
+    }
+    
+    public void alterar(LocalEstoque le) throws GeralException{
+        ctrlLocalE.verificarSeExiste(le);
+        ctrlLocalE.alterar(le);
     }
 }
