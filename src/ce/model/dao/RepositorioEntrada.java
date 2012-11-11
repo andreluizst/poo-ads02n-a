@@ -24,12 +24,14 @@ import ce.model.dao.RepositorioProduto;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 /**
  *
  * @author Andre
  */
 public class RepositorioEntrada implements IRepositorioEntrada{
     private IGerenciadorConexao gerenciadorConexao;
+    private ResourceBundle rb= ResourceBundle.getBundle("ce.erro.Erro");
     /**
      * Construtor padrão
      */
@@ -71,7 +73,7 @@ public class RepositorioEntrada implements IRepositorioEntrada{
         catch(RepositorioAlterarException ae){
             //if (reverterInserir(e))
                 throw new RepositorioInserirException(
-                        "Não foi possível atualizar a quantidade do protudo em estoque",
+                        rb.getString("CtrlErroAtlzQtde"),
                         "RepositorioEntrada.inserir()");
 
         }
@@ -113,6 +115,12 @@ public class RepositorioEntrada implements IRepositorioEntrada{
         catch(SQLException sqlE){
             throw new RepositorioAlterarException(sqlE, "RepositorioEntrada.alterar()");
         }
+        catch(RepositorioAlterarException ae){
+                throw new RepositorioAlterarException(
+                        rb.getString("CtrlErroAtlzQtde"),
+                        "RepositorioEntrada.alterar()");
+
+        }
         finally{
             gerenciadorConexao.desconectar(c);
         }
@@ -153,7 +161,7 @@ public class RepositorioEntrada implements IRepositorioEntrada{
         }
         catch(RepositorioAlterarException ae){
             throw new RepositorioExcluirException(
-                    "Não foi possível atualizar a quantidade do produto",
+                    rb.getString("CtrlErroAtlzQtde"),
                     "RepositorioEntrada.excluir()");
         }
         finally{
