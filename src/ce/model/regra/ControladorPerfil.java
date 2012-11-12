@@ -81,10 +81,10 @@ public class ControladorPerfil {
         }
     }
     
-    public void verificarSeExiste(Perfil p) throws ControladorException{
+    public void verificarSeExiste(Integer cod) throws ControladorException{
         Perfil per=null;
         try{
-            per= rpPer.pesquisar(p.getNome());
+            per= rpPer.pesqCod(cod);
             if (per == null){
                 throw new ControladorException(rb.getString("CtrlPerNaoExiste"),
                         "ControladorPerfil.verificarSeExiste()");
@@ -100,6 +100,31 @@ public class ControladorPerfil {
                     rb.getString("CtrlErroVerificar") + " perfil.",
                     "ControladorPerfil.verificarSeExiste()");
         }
+    }
+    
+    public void verificarSeExiste(String nome) throws ControladorException{
+        Perfil per=null;
+        try{
+            per= rpPer.pesquisar(nome);
+            if (per == null){
+                throw new ControladorException(rb.getString("CtrlPerNaoExiste"),
+                        "ControladorPerfil.verificarSeExiste()");
+            }
+        }
+        catch(ConexaoException e){
+            throw new ControladorException(
+                    rb.getString("CtrlErroVerifIndisp") + " perfil.",
+                    "ControladorPerfil.verificarSeExiste()");
+        }
+        catch(RepositorioPesquisarException ie){
+            throw new ControladorException(
+                    rb.getString("CtrlErroVerificar") + " perfil.",
+                    "ControladorPerfil.verificarSeExiste()");
+        }
+    }
+    
+    public void verificarSeExiste(Perfil p) throws ControladorException{
+        verificarSeExiste(p.getCodPerfil());
     }
     
     public void excluir(Perfil p) throws ControladorException{
@@ -158,6 +183,22 @@ public class ControladorPerfil {
     public Perfil trazer(Integer cod) throws ControladorException{
         try{
             return rpPer.pesqCod(cod);
+        }
+        catch(ConexaoException ce){
+            throw new ControladorException(
+                    rb.getString("CtrlErroTrazerIndisp") + " perfil.",
+                    "ControladorPerfil.trazer()");
+        }
+        catch(RepositorioPesquisarException re){
+            throw new ControladorException(
+                    rb.getString("CtrlErroTrazer") + " perfil.",
+                    "ControladorPerfil.trazer()");
+        }
+    }
+    
+    public Perfil trazer(String descricao) throws ControladorException{
+        try{
+            return rpPer.pesquisar(descricao);
         }
         catch(ConexaoException ce){
             throw new ControladorException(

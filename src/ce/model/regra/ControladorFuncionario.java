@@ -120,23 +120,7 @@ public class ControladorFuncionario {
     }
     
     public void verificarSeExiste(Funcionario f) throws ControladorException {
-        try{
-            Funcionario fun= rpFun.pesqCpf(f.getCpf());
-            if (fun == null){
-                throw new ControladorException(rb.getString("CtrlFunNaoExiste"),
-                        "ControladorFuncionario.verificarSeExiste()");
-            }
-        }
-        catch(ConexaoException e){
-            throw new ControladorException(
-                    rb.getString("CtrlErroVerifIndisp") + " funcionário.",
-                    "ControladorFuncionario.verificarSeExiste()");
-        }
-        catch(RepositorioPesquisarException ie){
-            throw new ControladorException(
-                    rb.getString("CtrlErroVerificar") + " funcionário.",
-                    "ControladorFuncionario.verificarSeExiste()");
-        }
+        verificarSeExiste(f.getCpf());
     }
     
     public void verificarSeExiste(String cpf) throws ControladorException {
@@ -199,10 +183,6 @@ public class ControladorFuncionario {
     public Funcionario trazer(String cpf) throws ControladorException{
         try{
             Funcionario fun= rpFun.pesqCpf(cpf);
-            /*if (fun == null){
-                throw new ControladorException(rb.getString("CtrlFunNaoExiste"),
-                        "ControladorFuncionario.trazer()");
-            }*/
             return fun;
         }
         catch(ConexaoException ce){

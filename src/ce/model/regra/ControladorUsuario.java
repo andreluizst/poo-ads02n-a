@@ -137,24 +137,7 @@ public class ControladorUsuario {
     }
     
     public void verificarSeExiste(Usuario u) throws ControladorException{
-        Usuario usu=null;
-        try{
-            usu= rpUsr.pesqCod(u.getCodUsuario());
-            if (usu == null){
-                throw new ControladorException(rb.getString("CtrlUsuNaoExiste"),
-                        "ControladorUsuario.verificarSeExiste()");
-            }
-        }
-        catch(ConexaoException e){
-            throw new ControladorException(
-                    rb.getString("CtrlErroVerifIndisp") + " usuário.",
-                    "ControladorUsuario.verificarSeExiste()");
-        }
-        catch(RepositorioPesquisarException ie){
-            throw new ControladorException(
-                    rb.getString("CtrlErroVerificar") + " usuário.",
-                    "ControladorUsuario.verificarSeExiste()");
-        }
+        verificarSeExiste(u.getCodUsuario());
     }
     
     public void excluir(Usuario u) throws ControladorException{

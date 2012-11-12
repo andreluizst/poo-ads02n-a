@@ -73,6 +73,7 @@ public class Fachada {
     }
     
     public Categoria trazerCategoria(Integer cod) throws GeralException{
+        ctrlCateg.verificarSeExiste(cod);
         return ctrlCateg.trazer(cod);
     }
     
@@ -105,6 +106,7 @@ public class Fachada {
     }
     
     public Unidade trazerUnidade(Integer cod) throws GeralException{
+        ctrlUnid.verificarSeExiste(cod);
         return ctrlUnid.trazer(cod);
     }
     
@@ -138,6 +140,7 @@ public class Fachada {
     
     public Produto trazerProduto(Integer cod, boolean comFornecedores) 
             throws GeralException{
+        ctrlProd.verificarSeExiste(cod);
         return ctrlProd.trazer(cod, comFornecedores);
     }
     
@@ -172,6 +175,7 @@ public class Fachada {
     
     public Fornecedor trazerFornecedor(Integer cod, boolean comProdutos)
             throws GeralException{
+        ctrlForn.verificarSeExiste(cod);
         return ctrlForn.trazer(cod, comProdutos);
     }
     
@@ -230,7 +234,13 @@ public class Fachada {
     }
     
     public Perfil trazerPerfil(Integer cod)throws GeralException{
+        ctrlPer.verificarSeExiste(cod);
         return ctrlPer.trazer(cod);
+    }
+    
+    public Perfil trazerPerfil(String descricao)throws GeralException{
+        ctrlPer.verificarSeExiste(descricao);
+        return ctrlPer.trazer(descricao);
     }
     
     
@@ -269,7 +279,7 @@ public class Fachada {
     
     
     /*
-     * ************************ L O C A L E S T O Q U E ******************
+     * ******************* L O C A L  E S T O Q U E **********************
      */
     public void incluir(LocalEstoque le) throws GeralException{
         ctrlLocalE.validarDados(le);
@@ -297,6 +307,7 @@ public class Fachada {
     }
     
     public LocalEstoque trazerLocalEstoque(Integer cod)throws GeralException{
+        ctrlLocalE.verificarSeExiste(cod);
         return ctrlLocalE.trazer(cod);
     }
     
@@ -325,12 +336,13 @@ public class Fachada {
     }
     
     public Entrada trazerEntrada(Integer num) throws GeralException{
+        ctrlE.verificarSeExiste(num);
         return ctrlE.trazer(num);
     }
     
     
     /*
-     * *********************** S A I D A *********************************
+     * *********************** S A Í D A *********************************
      */
     public void incluir(Saida s) throws GeralException{
         ctrlS.validarDados(s);
@@ -353,6 +365,7 @@ public class Fachada {
     }
     
     public Saida trazerSaida(Integer num) throws GeralException{
+        ctrlS.verificarSeExiste(num);
         return ctrlS.trazer(num);
     }
     

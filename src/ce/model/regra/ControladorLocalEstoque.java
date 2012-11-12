@@ -83,6 +83,31 @@ public class ControladorLocalEstoque {
         }
     }
     
+    public void verificarSeExiste(Integer cod) throws ControladorException{
+        try{
+            LocalEstoque local= rpLocalE.pesqCod(cod);
+            if (local == null){
+                throw new ControladorException(rb.getString("CtrlLocalEstNaoExiste"),
+                        "ControladorLocalEstoque.verificarSeExiste()");
+            }
+        }
+        catch(ConexaoException e){
+            throw new ControladorException(
+                    rb.getString("CtrlErroVerifIndisp") + " local de estoque.",
+                    "ControladorLocalEstoque.verificarSePodeExcluir()");
+        }
+        catch(RepositorioPesquisarException ie){
+            throw new ControladorException(
+                    rb.getString("CtrlErroVerificar") + " local de estoque.",
+                    "ControladorLocalEstoque.verificarSePodeExcluir()");
+        }
+    }
+    
+    public void verificarSeExiste(LocalEstoque le) throws ControladorException{
+        verificarSeExiste(le.getCodLocal());
+    }
+    
+    /*Marcado para exclusão futura
     public void verificarSeExiste(LocalEstoque le) throws ControladorException{
         try{
             List<LocalEstoque> lista= rpLocalE.pesquisar(le.getDescricao());
@@ -101,7 +126,7 @@ public class ControladorLocalEstoque {
                     rb.getString("CtrlErroVerificar") + " local de estoque.",
                     "ControladorLocalEstoque.verificarSePodeExcluir()");
         }
-    }
+    }*/
     
     public void excluir(LocalEstoque le) throws ControladorException{
         try{

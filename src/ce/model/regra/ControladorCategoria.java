@@ -76,10 +76,10 @@ public class ControladorCategoria {
         }
     }
     
-    public void verificarSeExiste(Categoria c) throws ControladorException{
+    public void verificarSeExiste(Integer cod) throws ControladorException{
         Categoria categ=null;
         try{
-            categ= rpCateg.pesqPorCod(c.getCodCateg());
+            categ= rpCateg.pesqPorCod(cod);
             if (categ == null){
                 throw new ControladorException(rb.getString("CtrlCategNaoExiste"),
                         "ControladorCategoria.verificarSeExiste()");
@@ -95,6 +95,10 @@ public class ControladorCategoria {
                     rb.getString("CtrlErroPesquisar") + " categoria.",
                     "ControladorCategoria.verificarSeExiste()");
         }
+    }
+    
+    public void verificarSeExiste(Categoria c) throws ControladorException{
+        verificarSeExiste(c.getCodCateg());
     }
     
     public void excluir(Categoria c) throws ControladorException{

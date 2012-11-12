@@ -126,9 +126,9 @@ public class ControladorFornecedor {
         }
     }
     
-    public void verificarSeExiste(Fornecedor f) throws ControladorException {
+    public void verificarSeExiste(Integer cod) throws ControladorException {
         try{
-            Fornecedor forn= rpForn.pesqCodForn(f.getCodForn(), false);
+            Fornecedor forn= rpForn.pesqCodForn(cod, false);
             if (forn == null){
                 throw new ControladorException(rb.getString("CtrlFornNaoExiste"),
                         "ControladorFornecedor.verificarSeExiste()");
@@ -144,6 +144,10 @@ public class ControladorFornecedor {
                     rb.getString("CtrlErroVerificar") + " fornecedor.",
                     "ControladorFornecedor.verificarSeExiste()");
         }
+    }
+    
+    public void verificarSeExiste(Fornecedor f) throws ControladorException {
+        verificarSeExiste(f.getCodForn());
     }
     
     public void excluir(Fornecedor f) throws ControladorException{
@@ -207,10 +211,6 @@ public class ControladorFornecedor {
     public Fornecedor trazer(String cnpj, boolean comProds) throws ControladorException{
         try{
             Fornecedor forn= rpForn.pesqCnpj(cnpj, comProds);
-            if (forn == null){
-                throw new ControladorException(rb.getString("CtrlFornNaoExiste"),
-                        "ControladorFornecedor.trazer()");
-            }
             return forn;
         }
         catch(ConexaoException ce){

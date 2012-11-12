@@ -83,10 +83,10 @@ public class ControladorUnidade {
         }
     }
     
-    public void verificarSeExiste(Unidade u) throws ControladorException{
+    public void verificarSeExiste(Integer cod) throws ControladorException{
         Unidade unid=null;
         try{
-            unid= rpUnid.pesqCod(u.getCodUnid());
+            unid= rpUnid.pesqCod(cod);
             if (unid == null){
                 throw new ControladorException(rb.getString("CtrlUnidNaoExiste"),
                         "ControladorUnidade.verificarSeExiste()");
@@ -102,6 +102,10 @@ public class ControladorUnidade {
                     rb.getString("CtrlErroVerificar") + " unidade.",
                     "ControladorUnidade.verificarSeExiste()");
         }
+    }
+    
+    public void verificarSeExiste(Unidade u) throws ControladorException{
+        verificarSeExiste(u.getCodUnid());
     }
     
     public void excluir(Unidade u) throws ControladorException{

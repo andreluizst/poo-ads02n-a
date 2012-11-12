@@ -91,9 +91,9 @@ public class ControladorEntrada {
         }
     }
     
-    public void verificarSeExiste(Entrada e) throws ControladorException {
+    public void verificarSeExiste(Integer num) throws ControladorException {
         try{
-            Entrada ent= rpEnt.pesqNum(e.getCodEntrada());
+            Entrada ent= rpEnt.pesqNum(num);
             if (ent == null){
                 throw new ControladorException(rb.getString("CtrlEntNaoExiste"),
                         "ControladorEntrada.verificarSeExiste()");
@@ -109,6 +109,10 @@ public class ControladorEntrada {
                     rb.getString("CtrlErroVerificar") + " entrada.",
                     "ControladorEntrada.verificarSeExiste()");
         }
+    }
+    
+    public void verificarSeExiste(Entrada e) throws ControladorException {
+        verificarSeExiste(e.getCodEntrada());
     }
     
     public void excluir(Entrada e) throws ControladorException{

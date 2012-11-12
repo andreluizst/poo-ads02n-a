@@ -29,14 +29,12 @@ public class ControladorProduto {
         }
     }
     
-    public void verificarSePodeExcluir(Produto p) throws ControladorException {
+    /*public void verificarSePodeExcluir(Produto p) throws ControladorException {
         try{
             Produto prod= rpProd.pesqCodProd(p.getCodProd(), false);
             if (prod == null){
                 throw new ControladorException(rb.getString("CtrlProdNaoExiste"));
             }
-            //Verificar se este produto está em uso nos reposiórios e entrada ou saída
-            //RepositorioEntrada rpEnt= new RepositorioEntrada();
         }
         catch(ConexaoException e){
             throw new ControladorException(
@@ -48,7 +46,7 @@ public class ControladorProduto {
                     rb.getString("CtrlErroExcluir") + " produto.",
                     "ControladorProduto.verificarSePodeExcluir()");
         }
-    }
+    }*/
     
     public void inserir(Produto p) throws ControladorException{
         try{
@@ -66,10 +64,10 @@ public class ControladorProduto {
         }
     }
     
-    public void verificarSeExiste(Produto p) throws ControladorException{
+    public void verificarSeExiste(Integer cod) throws ControladorException{
         Produto prod=null;
         try{
-            prod= rpProd.pesqCodProd(p.getCodProd(), false);
+            prod= rpProd.pesqCodProd(cod, false);
             if (prod == null){
                 throw new ControladorException(rb.getString("CtrlPordNaoExiste"),
                         "ControladorProduto.verificarSeExiste()");
@@ -85,6 +83,10 @@ public class ControladorProduto {
                     rb.getString("CtrlErroVerificar") + " produto.",
                     "ControladorProduto.verificarSeExiste()");
         }
+    }
+    
+    public void verificarSeExiste(Produto p) throws ControladorException{
+        verificarSeExiste(p.getCodProd());
     }
     
     public void alterar(Produto p) throws ControladorException{

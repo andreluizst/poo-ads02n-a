@@ -76,9 +76,9 @@ public class ControladorSaida {
         }
     }
     
-    public void verificarSeExiste(Saida s) throws ControladorException {
+    public void verificarSeExiste(Integer num) throws ControladorException {
         try{
-            Saida saida= rpSaida.pesqNum(s.getCodSaida());
+            Saida saida= rpSaida.pesqNum(num);
             if (saida == null){
                 throw new ControladorException(rb.getString("CtrlSaiNaoExiste"),
                         "ControladorSaida.verificarSeExiste()");
@@ -94,6 +94,10 @@ public class ControladorSaida {
                     rb.getString("CtrlErroVerificar") + " saída.",
                     "ControladorSaida.verificarSeExiste()");
         }
+    }
+    
+    public void verificarSeExiste(Saida s) throws ControladorException {
+        verificarSeExiste(s.getCodSaida());
     }
     
     public void excluir(Saida s) throws ControladorException{
