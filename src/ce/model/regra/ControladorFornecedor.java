@@ -157,7 +157,7 @@ public class ControladorFornecedor {
         }
         catch(RepositorioForeignKeyException rfke){
             throw new ControladorException(
-                    rb.getString("CtrlErroForeignKeyForn"),
+                    rb.getString("CtrlNaoPodeExcluirForn"),
                     "ControladorFornecedor.excluir()");
         }
         catch(RepositorioExcluirException re){

@@ -139,6 +139,26 @@ public class ControladorFuncionario {
         }
     }
     
+    public void verificarSeExiste(String cpf) throws ControladorException {
+        try{
+            Funcionario fun= rpFun.pesqCpf(cpf);
+            if (fun == null){
+                throw new ControladorException(rb.getString("CtrlFunNaoExiste"),
+                        "ControladorFuncionario.verificarSeExiste()");
+            }
+        }
+        catch(ConexaoException e){
+            throw new ControladorException(
+                    rb.getString("CtrlErroVerifIndisp") + " funcionário.",
+                    "ControladorFuncionario.verificarSeExiste()");
+        }
+        catch(RepositorioPesquisarException ie){
+            throw new ControladorException(
+                    rb.getString("CtrlErroVerificar") + " funcionário.",
+                    "ControladorFuncionario.verificarSeExiste()");
+        }
+    }
+    
     public void excluir(Funcionario f) throws ControladorException{
         try{
             rpFun.excluir(f.getCpf());
@@ -150,7 +170,7 @@ public class ControladorFuncionario {
         }
         catch(RepositorioForeignKeyException rfke){
             throw new ControladorException(
-                    rb.getString("CtrlErroForeignKeyFun"),
+                    rb.getString("CtrlNaoPodeExcluirFun"),
                     "ControladorFuncionario.excluir()");
         }
         catch(RepositorioExcluirException re){
@@ -179,10 +199,10 @@ public class ControladorFuncionario {
     public Funcionario trazer(String cpf) throws ControladorException{
         try{
             Funcionario fun= rpFun.pesqCpf(cpf);
-            if (fun == null){
+            /*if (fun == null){
                 throw new ControladorException(rb.getString("CtrlFunNaoExiste"),
                         "ControladorFuncionario.trazer()");
-            }
+            }*/
             return fun;
         }
         catch(ConexaoException ce){

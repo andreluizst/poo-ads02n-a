@@ -17,6 +17,7 @@ import ce.model.basica.Perfil;
 import ce.model.dao.IRepositorioPerfil;
 import ce.model.dao.RepositorioPerfil;
 import java.util.ResourceBundle;
+import java.util.List;
 /**
  *
  * @author Andre
@@ -112,13 +113,29 @@ public class ControladorPerfil {
         }
         catch(RepositorioForeignKeyException rfke){
             throw new ControladorException(
-                    rb.getString("CtrlErroForeignKeyPer"),
+                    rb.getString("CtrlNaoPodeExcluirPer"),
                     "ControladorPerfil.excluir()");
         }
         catch(RepositorioExcluirException re){
             throw new ControladorException(
                     rb.getString("CtrlErroExcluir") + " perfil.",
                     "ControladorPerfil.excluir()");
+        }
+    }
+    
+    public List<Perfil> listar() throws ControladorException{
+        try{
+            return rpPer.listar();
+        }
+        catch(ConexaoException ce){
+            throw new ControladorException(
+                    rb.getString("CtrlErroListIndisp") + " perfil.",
+                    "ControladorPerfil.listar()");
+        }
+        catch(RepositorioListarException re){
+            throw new ControladorException(
+                    rb.getString("CtrlErroListar") + " perfil.",
+                    "ControladorPerfil.listar()");
         }
     }
     

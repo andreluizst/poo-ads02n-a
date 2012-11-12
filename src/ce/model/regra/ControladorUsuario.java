@@ -35,14 +35,15 @@ public class ControladorUsuario {
             throw new ControladorException(rb.getString("CtrlErroValInvalido"),
                     "ControladorUsuario.validarDados()");
         }
-        /*if (u.getFuncionario() == null){
+        if ((u.getFuncionario() == null) || 
+                (u.getFuncionario().getCpf().compareTo("")==0)){
             throw new ControladorException(rb.getString("CtrlErroValInvalido"),
                     "ControladorUsuario.validarDados()");
         }
-        if (ctrlPer.trazer(u.getPerfil().getCodPerfil()) == null){
+        if ((u.getPerfil() == null) || (u.getPerfil().getCodPerfil() <= 0)){
             throw new ControladorException(rb.getString("CtrlErroValInvalido"),
                     "ControladorUsuario.validarDados()");
-        }*/
+        }
     }
     
     public void verificarSePodeInserir(Usuario u) throws ControladorException{
@@ -93,6 +94,48 @@ public class ControladorUsuario {
         }
     }
     
+    public void verificarSeExiste(String cpf) throws ControladorException{
+        Usuario usu=null;
+        try{
+            usu= rpUsr.pesqCpf(cpf);
+            if (usu == null){
+                throw new ControladorException(rb.getString("CtrlUsuNaoExiste"),
+                        "ControladorUsuario.verificarSeExiste()");
+            }
+        }
+        catch(ConexaoException e){
+            throw new ControladorException(
+                    rb.getString("CtrlErroVerifIndisp") + " usuário.",
+                    "ControladorUsuario.verificarSeExiste()");
+        }
+        catch(RepositorioPesquisarException ie){
+            throw new ControladorException(
+                    rb.getString("CtrlErroVerificar") + " usuário.",
+                    "ControladorUsuario.verificarSeExiste()");
+        }
+    }
+    
+    public void verificarSeExiste(Integer cod) throws ControladorException{
+        Usuario usu=null;
+        try{
+            usu= rpUsr.pesqCod(cod);
+            if (usu == null){
+                throw new ControladorException(rb.getString("CtrlUsuNaoExiste"),
+                        "ControladorUsuario.verificarSeExiste()");
+            }
+        }
+        catch(ConexaoException e){
+            throw new ControladorException(
+                    rb.getString("CtrlErroVerifIndisp") + " usuário.",
+                    "ControladorUsuario.verificarSeExiste()");
+        }
+        catch(RepositorioPesquisarException ie){
+            throw new ControladorException(
+                    rb.getString("CtrlErroVerificar") + " usuário.",
+                    "ControladorUsuario.verificarSeExiste()");
+        }
+    }
+    
     public void verificarSeExiste(Usuario u) throws ControladorException{
         Usuario usu=null;
         try{
@@ -125,7 +168,7 @@ public class ControladorUsuario {
         }
         catch(RepositorioForeignKeyException rfke){
             throw new ControladorException(
-                    rb.getString("CtrlErroForeignKeyUsu"),
+                    rb.getString("CtrlNaoPodeExcluirUsu"),
                     "ControladorUsuario.excluir()");
         }
         catch(RepositorioExcluirException re){
@@ -154,10 +197,10 @@ public class ControladorUsuario {
     public Usuario trazer(String cpf) throws ControladorException{
         try{
             Usuario usu= rpUsr.pesqCpf(cpf);
-            if (usu == null){
+            /*if (usu == null){
                 throw new ControladorException(rb.getString("CtrlUsuNaoExiste"),
                         "ControladorUsuario.trazer()");
-            }
+            }*/
             return usu;
         }
         catch(ConexaoException ce){
@@ -175,10 +218,10 @@ public class ControladorUsuario {
     public Usuario trazer(Integer cod) throws ControladorException{
         try{
             Usuario usu= rpUsr.pesqCod(cod);
-            if (usu == null){
+            /*if (usu == null){
                 throw new ControladorException(rb.getString("CtrlUsuNaoExiste"),
                         "ControladorUsuario.trazer()");
-            }
+            }*/
             return usu;
         }
         catch(ConexaoException ce){

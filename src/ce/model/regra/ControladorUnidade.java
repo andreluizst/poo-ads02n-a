@@ -115,13 +115,29 @@ public class ControladorUnidade {
         }
         catch(RepositorioForeignKeyException rfke){
             throw new ControladorException(
-                    rb.getString("CtrlErroForeignKeyUnid"),
+                    rb.getString("CtrlNaoPodeExcluirUnid"),
                     "ControladorUnidade.excluir()");
         }
         catch(RepositorioExcluirException re){
             throw new ControladorException(
                     rb.getString("CtrlErroExcluir") + " unidade.",
                     "ControladorUnidade.excluir()");
+        }
+    }
+    
+    public List<Unidade> listar() throws ControladorException{
+        try{
+            return rpUnid.listar();
+        }
+        catch(ConexaoException ce){
+            throw new ControladorException(
+                    rb.getString("CtrlErroListIndisp") + " unidade.",
+                    "ControladorUnidade.listar()");
+        }
+        catch(RepositorioListarException re){
+            throw new ControladorException(
+                    rb.getString("CtrlErroListar") + " unidade.",
+                    "ControladorUnidade.listar()");
         }
     }
     

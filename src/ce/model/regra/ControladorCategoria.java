@@ -108,7 +108,7 @@ public class ControladorCategoria {
         }
         catch(RepositorioForeignKeyException rfke){
             throw new ControladorException(
-                    rb.getString("CtrlErroForeignKeyCateg"),
+                    rb.getString("CtrlNaoPodeExcluirCateg"),
                     "ControladorCategoria.excluir()");
         }
         catch(RepositorioExcluirException re){

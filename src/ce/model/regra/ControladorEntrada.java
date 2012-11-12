@@ -122,7 +122,7 @@ public class ControladorEntrada {
         }
         catch(RepositorioForeignKeyException rfke){
             throw new ControladorException(
-                    rb.getString("CtrlErroForeignKeyForn"),
+                    rb.getString("CtrlNaoPodeExcluirEnt"),
                     "ControladorEntrada.excluir()");
         }
         catch(RepositorioExcluirException re){

@@ -130,7 +130,7 @@ public class ControladorProduto {
         }
         catch(RepositorioForeignKeyException rfke){
             throw new ControladorException(
-                    rb.getString("CtrlErroForeignKeyProd"),
+                    rb.getString("CtrlNaoPodeExcluirProd"),
                     "ControladorProduto.excluir()");
         }
         catch(RepositorioException ie){

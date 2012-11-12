@@ -114,13 +114,29 @@ public class ControladorLocalEstoque {
         }
         catch(RepositorioForeignKeyException rfke){
             throw new ControladorException(
-                    rb.getString("CtrlErroForeignKeyLocalEst"),
+                    rb.getString("CtrlNaoPodeExcluirLocalEst"),
                     "ControladorLocalEstoque.excluir()");
         }
         catch(RepositorioExcluirException re){
             throw new ControladorException(
                     rb.getString("CtrlErroExcluir") + " local de estoque.",
                     "ControladorLocalEstoque.excluir()");
+        }
+    }
+    
+    public List<LocalEstoque> listar() throws ControladorException{
+        try{
+            return rpLocalE.listar();
+        }
+        catch(ConexaoException ce){
+            throw new ControladorException(
+                    rb.getString("CtrlErroListIndisp") + " local de estoque.",
+                    "ControladorLocalEstoque.listar()");
+        }
+        catch(RepositorioListarException re){
+            throw new ControladorException(
+                    rb.getString("CtrlErroListar") + " local de estoque.",
+                    "ControladorLocalEstoque.listar()");
         }
     }
     
