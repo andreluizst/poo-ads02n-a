@@ -4,6 +4,8 @@
  */
 package ce.erro;
 
+import java.util.logging.Logger;
+
 /**
  *
  * @author Andre
@@ -22,6 +24,10 @@ public class ControladorException extends GeralException {
         super(e);
     }
     
+    public ControladorException(Exception e, Logger logger){
+        super(e, logger);
+    }
+    
     /**
      * Abilita o rastreamento da(s) classe(s) chamadora(s)
      * @param nameClassCall
@@ -29,6 +35,10 @@ public class ControladorException extends GeralException {
      * */
     public ControladorException(Exception e, String nameClassCall){
         super(e, nameClassCall);
+    }
+    
+    public ControladorException(String s, Logger logger){
+        super(s, logger);
     }
     
     /**

@@ -1,11 +1,15 @@
 package ce.erro;
 
+import ce.util.LogGenerator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 /**
  *
  * @author professor
  * @author André Luiz S. Teotônio
  */
 public class RepositorioException extends Exception{
+    private LogGenerator log= LogGenerator.getInstancia();
     /**
      * Esta propriedade contém a classe que lançou a exceção. Se a classe B
      * capturar a exceção da classe A e por sua vez relançar para uma outra
@@ -21,6 +25,11 @@ public class RepositorioException extends Exception{
 
     public RepositorioException(Exception e){
         super(e);
+    }
+    
+    public RepositorioException(Exception e, Logger logger){
+        super(e);
+        log.log(logger, Level.WARNING, getMessage());
     }
     
     /**

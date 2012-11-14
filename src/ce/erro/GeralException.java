@@ -4,11 +4,16 @@
  */
 package ce.erro;
 
+import ce.util.LogGenerator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author andreluiz
  */
 public class GeralException extends Exception {
+    private LogGenerator log=null;//LogGenerator.getInstancia();
     /**
      * Esta propriedade contém a classe que lançou a exceção. Se a classe B
      * capturar a exceção da classe A e por sua vez relançar para uma outra
@@ -30,6 +35,16 @@ public class GeralException extends Exception {
         super(e);
     }
     
+    public GeralException(Exception e, Logger logger){
+        super(e);
+        log= new LogGenerator(logger);
+        if (pathClassCall.compareTo("")==0){
+            log.log(Level.WARNING, getMessage());
+        }else{
+            log.log(Level.WARNING, pathClassCall +": " + getMessage());
+        }
+    }
+    
     /**
      * Abilita o rastreamento da(s) classe(s) chamadora(s)
      * @param nameClassCall
@@ -41,6 +56,17 @@ public class GeralException extends Exception {
             pathClassCall= nameClassCall;
         }else{
             pathClassCall= nameClassCall + "." + pathClassCall;
+        }
+    }
+    
+    public GeralException(String s, Logger logger){
+        super(s);
+        log= new LogGenerator(logger);
+        String msg= getStackTrace().toString() + "\n" + getLocalizedMessage();
+        if (pathClassCall.compareTo("")==0){
+            log.log(Level.WARNING, getMessage() + " - "+ msg);
+        }else{
+            log.log(Level.WARNING, pathClassCall +": " + getMessage() + " - "+ msg);
         }
     }
     
@@ -70,5 +96,19 @@ public class GeralException extends Exception {
 
     public GeralException(Throwable t){
         super(t);
+    }
+
+    /**
+     * @return the pathClassCall
+     */
+    public String getPathClassCall() {
+        return pathClassCall;
+    }
+
+    /**
+     * @param pathClassCall the pathClassCall to set
+     */
+    public void setPathClassCall(String pathClassCall) {
+        this.pathClassCall = pathClassCall;
     }
 }

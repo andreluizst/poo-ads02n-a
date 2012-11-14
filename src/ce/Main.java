@@ -37,6 +37,8 @@ import ce.model.dao.RepositorioUsuario;
 import ce.model.regra.*;
 import ce.util.VerificarCpfCnpj;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -79,7 +81,7 @@ public class Main {
         rpUser= new RepositorioUsuario();
         //testaInserir(); testaListar();
         //testaAlterar(); testaListar();
-        testaExcluir(); //testaListar();
+        //testaExcluir(); //testaListar();
         //verificarCpfOuCnpj("96584265845");
         
         //TESTANDO CONTROLADORES
@@ -94,7 +96,7 @@ public class Main {
         ctrlEnt= new ControladorEntrada();
         //FALTA o controlador de saida
         
-        //ctrlTestaInserir();
+        ctrlTestaInserir();
         //ctrlTestaAlterar();
         //ctrlTestaExcluir();
     }
@@ -120,11 +122,11 @@ public class Main {
         Saida s;
         try {
             //ControladorCategoria.validar()\.verificar()\.inserir()
-            /*c = new Categoria("Roupa");
+            c = new Categoria("");
             ctrlCateg.validarDados(c);
             ctrlCateg.verificarSePodeInserir(c);
             ctrlCateg.inserir(c);
-            System.out.println("Categoria inserida com sucesso!");*/
+            System.out.println("Categoria inserida com sucesso!");//*/
             /*ControladorFornecedor.validarDados()\verificarSePodeInserir()
              * \inserir() - testado e ok*/
             /*forn= new Fornecedor("Infohouse", "35456123000102",
@@ -166,7 +168,7 @@ public class Main {
             ctrlUnid.verificarSePodeInserir(unid);
             ctrlUnid.inserir(unid);
             System.out.println("Unidade inserida com sucesso!");*/
-            prod= new Produto("Monitor LCD 22", 100.00, 
+            /*prod= new Produto("Monitor LCD 22", 100.00, 
                     50.00, 100.00, 0,
                     ctrlCateg.pesquisar("Informática"), 
                     ctrlUnid.trazer(1));
@@ -174,9 +176,18 @@ public class Main {
             ctrlProd.verificarSePodeInserir(prod);
             ctrlProd.inserir(prod);
             System.out.println("Produto inserido com sucesso!");
+            */
         }
         catch (ControladorException ex) {
-            System.out.println("ERRO: " + ex.getMessage());
+            System.out.println(ex.getPathClassCall() + ": "+ ex.getMessage()
+                    + "\n"+ ex);
+            System.out.println("ERRO: " + ex.getMessage() + " - "+"\n"
+                    //+ ex.getLocalizedMessage()+"\n"
+                    //+ ex.getStackTrace().toString()+"\n"
+                    + ex.toString());
+            //ex.getStackTrace();
+            //ex.getLocalizedMessage()
+            //Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     

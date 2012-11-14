@@ -18,6 +18,7 @@ import ce.model.dao.RepositorioCategoria;
 import ce.model.dao.IRepositorioCategoria;
 import java.util.ResourceBundle;
 import java.util.List;
+
 /**
  *
  * @author Andre
@@ -28,10 +29,12 @@ public class ControladorCategoria {
     
     public void validarDados(Categoria c) throws ControladorException{
         if(c.getDescricao()==null){
-            throw new ControladorException(rb.getString("CtrlErroValInvalido"));
+            throw new ControladorException(rb.getString("CtrlErroValInvalido"),
+                    ControladorCategoria.class.getName()+".validarDados()");
         }
         if(c.getDescricao().compareTo("") == 0){
-            throw new ControladorException(rb.getString("CtrlErroValInvalido"));
+            throw new ControladorException(rb.getString("CtrlErroValInvalido"),
+                    ControladorCategoria.class.getName()+".validarDados()");
         }
     }
 
