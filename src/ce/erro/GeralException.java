@@ -5,8 +5,6 @@
 package ce.erro;
 
 import ce.util.LogGenerator;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -23,6 +21,9 @@ public class GeralException extends Exception {
      */
     private String pathClassCall= "";
     
+    /**
+     * Construtor padrão
+     */
     public GeralException(){
         super();
     }
@@ -35,49 +36,32 @@ public class GeralException extends Exception {
         super(e);
     }
     
-    public GeralException(Exception e, Logger logger){
-        super(e);
-        if (pathClassCall.compareTo("")==0){
-            log.log("root", GeralException.class.getName(), getMessage());
-        }else{
-            log.log("root",  pathClassCall, getMessage());
-        }
-    }
-    
+
     /**
      * Abilita o rastreamento da(s) classe(s) chamadora(s)
      * @param nameClassCall
      * Nome da classe que está lançando a exceção
      * */
-    public GeralException(Exception e, String nameClassCall){
+    public GeralException(String userName, Exception e, String nameClassCall){
         super(e);
         if (pathClassCall.compareTo("") == 0){
             pathClassCall= nameClassCall;
         }else{
             pathClassCall= nameClassCall + "." + pathClassCall;
         }
-        log.log("root",  pathClassCall, getMessage());
-    }
-    
-    public GeralException(String s, Logger logger){
-        super(s);
-        if (pathClassCall.compareTo("")==0){
-            log.log("root", GeralException.class.getName(), getMessage());
-        }else{
-            log.log("root",  pathClassCall, getMessage());
-        }
+        log.log(userName,  pathClassCall, getMessage());
     }
     
     /**
      * 
      * @param s 
      */
-    public GeralException(String s){
+    public GeralException(String userName, String s){
         super(s);
         if (pathClassCall.compareTo("") == 0){
-            log.log("root",  GeralException.class.getName(), getMessage());
+            log.log(userName,  GeralException.class.getName(), getMessage());
         }else{
-            log.log("root",  pathClassCall, getMessage());
+            log.log(userName,  pathClassCall, getMessage());
         }
     }
     
@@ -88,18 +72,24 @@ public class GeralException extends Exception {
      * @param nameClassCall 
      * Nome da classe que está lançando a exceção
      */
-    public GeralException(String s, String nameClassCall){
+    public GeralException(String userName, String s, String nameClassCall){
         super(s);
         if (pathClassCall.compareTo("") == 0){
             pathClassCall= nameClassCall;
         }else{
             pathClassCall= nameClassCall + "." + pathClassCall;
         }
-        log.log("root",  pathClassCall, getMessage());
+        log.log(userName,  pathClassCall, getMessage());
     }
-
-    public GeralException(Throwable t){
+    
+    /**
+     * 
+     * @param userName
+     * @param t 
+     */
+    public GeralException(String userName, Throwable t){
         super(t);
+        log.log(userName,  GeralException.class.getName(), getMessage());
     }
 
     /**

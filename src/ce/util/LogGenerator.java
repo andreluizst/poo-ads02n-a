@@ -14,13 +14,14 @@ import java.util.Date;
  */
 public class LogGenerator {
     private static LogGenerator instancia=null;
-    private static String fileName="ce.util.erros.log";
+    private static String fileName="erros.log";
     private ArrayList erros;
     
     /**
      * Construtor padrão
      */
     private LogGenerator(){
+        
         erros= new ArrayList();
         String slinha="";
         File file= new File(fileName);
@@ -90,8 +91,9 @@ public class LogGenerator {
      * @param msg 
      */
     public void log(String userName, String classPath, String msg){
-        erros.add(userName + " -> " + new SimpleDateFormat("dd/MM/yyyy").format(new Date()));
-        erros.add("   " + classPath + ": "+msg);
+        erros.add(userName + " -> " 
+            + new SimpleDateFormat("dd/MM/yyyy - HH:mm:ss").format(new Date()));
+        erros.add("\t" + classPath + ": " + msg);
         BufferedWriter buffer;
         try {
             FileWriter fileWriter= new FileWriter(fileName);

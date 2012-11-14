@@ -63,7 +63,8 @@ public class GerenciadorConexao implements IGerenciadorConexao {
             Connection c = DriverManager.getConnection(local, usuario, senha);
             return c;
         }catch(  ClassNotFoundException | SQLException e){
-            throw new ConexaoException(e);
+            throw new ConexaoException(usuario, e,
+                    GerenciadorConexao.class.getName()+".conectar()");
         }
     }
 
@@ -72,21 +73,25 @@ public class GerenciadorConexao implements IGerenciadorConexao {
      * driver e local constantes no arquivo Banco.properties mas o usuário a senha
      * devem ser informados no momento da conexão
      * 
-     * @param usuario
+     * @param nomeUsuario
      * @param senha
      * @return
      * Se o processo por bem sucedido retona uma conexão que foi estabelecida.
      * @throws ConexaoException 
      * Caso ocorra algum problema na execução do método será lançada a exceção ConexaoException
      */
-    public Connection conectar(String usuario, String senha) 
+    @Override
+    public Connection conectar(String nomeUsuario, String senha) 
             throws ConexaoException{
         try{
             Class.forName(driver);
-            Connection c = DriverManager.getConnection(local, usuario, senha);
+            Connection c = DriverManager.getConnection(local, nomeUsuario, senha);
+            this.usuario=nomeUsuario;
+            this.senha=senha;
             return c;
         }catch(  ClassNotFoundException | SQLException e){
-            throw new ConexaoException(e);
+            throw new ConexaoException(nomeUsuario, e,
+                    GerenciadorConexao.class.getName()+".conectar()");
         }
     }
     
@@ -103,15 +108,33 @@ public class GerenciadorConexao implements IGerenciadorConexao {
         try{
             c.close();
         }catch(SQLException e){
-            throw new ConexaoException(e);
+            throw new ConexaoException(usuario, e,
+                    GerenciadorConexao.class.getName()+".desconectar()");
         }
     }
     
+    /**
+     * 
+     * @param driver
+     * @param local
+     * @param usuario
+     * @param senha 
+     */
     public void setConfig(String driver, String local, String usuario,
             String senha){
         this.driver=driver;
         this.local=local;
         this.usuario=usuario;
+        this.senha=senha;
+    }
+    
+    /**
+     * 
+     * @param userName
+     * @param senha 
+     */
+    public void setLogin(String userName, String senha){
+        this.usuario=userName;
         this.senha=senha;
     }
     

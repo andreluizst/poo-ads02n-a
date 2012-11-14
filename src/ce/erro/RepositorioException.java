@@ -1,8 +1,6 @@
 package ce.erro;
 
 import ce.util.LogGenerator;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 /**
  *
  * @author professor
@@ -19,17 +17,19 @@ public class RepositorioException extends Exception{
      */
     private String pathClassCall= "";
     
+    /**
+     * Construtor padrão
+     */
     public RepositorioException(){
         super();
     }
-
+    
+    /**
+     * 
+     * @param e 
+     */
     public RepositorioException(Exception e){
         super(e);
-    }
-    
-    public RepositorioException(Exception e, Logger logger){
-        super(e);
-        log.log("root", pathClassCall, getMessage());
     }
     
     /**
@@ -37,22 +37,27 @@ public class RepositorioException extends Exception{
      * @param nameClassCall
      * Nome da classe que está lançando a exceção
      * */
-    public RepositorioException(Exception e, String nameClassCall){
+    public RepositorioException(String userName, Exception e, String nameClassCall){
         super(e);
         if (pathClassCall.compareTo("") == 0){
             pathClassCall= nameClassCall;
         }else{
             pathClassCall= nameClassCall + "." + pathClassCall;
         }
-        log.log("root",  pathClassCall, getMessage());
+        log.log(userName,  pathClassCall, getMessage());
     }
-
-    public RepositorioException(String s){
+    
+    /**
+     * 
+     * @param userName
+     * @param s 
+     */
+    public RepositorioException(String userName, String s){
         super(s);
         if (pathClassCall.compareTo("") == 0){
-            log.log("root",  RepositorioException.class.getName(), getMessage());
+            log.log(userName,  RepositorioException.class.getName(), getMessage());
         }else{
-            log.log("root",  pathClassCall, getMessage());
+            log.log(userName,  pathClassCall, getMessage());
         }
     }
     
@@ -63,18 +68,24 @@ public class RepositorioException extends Exception{
      * @param nameClassCall 
      * Nome da classe que está lançando a exceção
      */
-    public RepositorioException(String s, String nameClassCall){
+    public RepositorioException(String userName, String s, String nameClassCall){
         super(s);
         if (pathClassCall.compareTo("") == 0){
             pathClassCall= nameClassCall;
         }else{
             pathClassCall= nameClassCall + "." + pathClassCall;
         }
-        log.log("root",  pathClassCall, getMessage());
+        log.log(userName,  pathClassCall, getMessage());
     }
-
-    public RepositorioException(Throwable t){
+    
+    /**
+     * 
+     * @param userName
+     * @param t 
+     */
+    public RepositorioException(String userName, Throwable t){
         super(t);
+        log.log(userName,  RepositorioException.class.getName(), getMessage());
     }
     
     public void addClassCallToPath(String name){
@@ -98,5 +109,6 @@ public class RepositorioException extends Exception{
     public void setPathClassCall(String pathClassCall) {
         this.pathClassCall = pathClassCall;
     }
+
     
 }

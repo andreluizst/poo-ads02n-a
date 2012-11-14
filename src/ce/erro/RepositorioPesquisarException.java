@@ -13,16 +13,16 @@ public class RepositorioPesquisarException extends RepositorioException{
         super();
     }
 
-    public RepositorioPesquisarException(Exception e){
-        super(e);
+    public RepositorioPesquisarException(String userName, Exception e){
+        super(userName, e);
     }
     
-    public RepositorioPesquisarException(Exception e, String nameClassCall){
-        super(e, nameClassCall);
+    public RepositorioPesquisarException(String userName, Exception e, String nameClassCall){
+        super(userName, e, nameClassCall);
     }
 
-    public RepositorioPesquisarException(String s){
-        super(s);
+    public RepositorioPesquisarException(String userName, String s){
+        super(userName, s);
     }
     
     /**
@@ -32,11 +32,11 @@ public class RepositorioPesquisarException extends RepositorioException{
      * @param nameClassCall 
      * Nome da classe que está lançando a exceção
      */
-    public RepositorioPesquisarException(String s, String nameClassCall){
-        super(s, nameClassCall);
+    public RepositorioPesquisarException(String userName, String s, String nameClassCall){
+        super(userName, s, nameClassCall);
     }
 
-    public RepositorioPesquisarException(Throwable t){
-        super(t);
+    public RepositorioPesquisarException(String userName, Throwable t){
+        super(userName, t);
     }
 }

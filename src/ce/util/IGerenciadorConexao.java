@@ -9,5 +9,6 @@ import java.sql.Connection;
  */
 public interface IGerenciadorConexao {
     public Connection conectar() throws ConexaoException;
+    public Connection conectar(String nomeUsuario, String senha) throws ConexaoException;
     public void desconectar(Connection c) throws ConexaoException;
 }

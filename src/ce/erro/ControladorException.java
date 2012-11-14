@@ -1,10 +1,8 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Classe de exceção para os controladores
+ * 
  */
 package ce.erro;
-
-import java.util.logging.Logger;
 
 /**
  *
@@ -12,6 +10,9 @@ import java.util.logging.Logger;
  */
 public class ControladorException extends GeralException {
     
+    /**
+     * Construtor padrão
+     */
     public ControladorException(){
         super();
     }
@@ -20,12 +21,8 @@ public class ControladorException extends GeralException {
      * 
      * @param e 
      */
-    public ControladorException(Exception e){
-        super(e);
-    }
-    
-    public ControladorException(Exception e, Logger logger){
-        super(e, logger);
+    public ControladorException(String userName, Exception e){
+        super(userName, e);
     }
     
     /**
@@ -33,20 +30,16 @@ public class ControladorException extends GeralException {
      * @param nameClassCall
      * Nome da classe que está lançando a exceção
      * */
-    public ControladorException(Exception e, String nameClassCall){
-        super(e, nameClassCall);
-    }
-    
-    public ControladorException(String s, Logger logger){
-        super(s, logger);
+    public ControladorException(String userName, Exception e, String nameClassCall){
+        super(userName, e, nameClassCall);
     }
     
     /**
      * 
      * @param s 
      */
-    public ControladorException(String s){
-        super(s);
+    public ControladorException(String userName, String s){
+        super(userName, s);
     }
     
     /**
@@ -56,12 +49,17 @@ public class ControladorException extends GeralException {
      * @param nameClassCall 
      * Nome da classe que está lançando a exceção
      */
-    public ControladorException(String s, String nameClassCall){
-        super(s, nameClassCall);
+    public ControladorException(String userName, String s, String nameClassCall){
+        super(userName, s, nameClassCall);
     }
-
-    public ControladorException(Throwable t){
-        super(t);
+    
+    /**
+     * 
+     * @param userName
+     * @param t 
+     */
+    public ControladorException(String userName, Throwable t){
+        super(userName, t);
     }
     
 }

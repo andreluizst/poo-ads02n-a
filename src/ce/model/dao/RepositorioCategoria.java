@@ -9,8 +9,10 @@ import ce.erro.RepositorioAlterarException;
 import ce.erro.RepositorioExcluirException;
 import ce.erro.RepositorioPesquisarException;
 import ce.model.basica.Categoria;
+import ce.model.basica.Usuario;
 import ce.util.GerenciadorConexao;
 import ce.util.IGerenciadorConexao;
+import ce.util.LogGenerator;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,11 +25,20 @@ import java.util.List;
  * reponsável pela atualização e manipulação dos dados da tabela Categoria
  */
 public class RepositorioCategoria implements IRepositorioCategoria{
+    private Usuario user;
+    private LogGenerator log;
     private IGerenciadorConexao gc;
 
-    public RepositorioCategoria(){
+    private RepositorioCategoria(){
          gc = GerenciadorConexao.getInstancia();
     }
+    
+    public RepositorioCategoria(Usuario user){
+        this.user=user;
+        log= LogGenerator.getInstancia();
+        gc = GerenciadorConexao.getInstancia();
+    }
+    
     /**
      * Lista todas as categorias existentes.
      * @return
@@ -60,7 +71,8 @@ public class RepositorioCategoria implements IRepositorioCategoria{
             stm.close();
             return lista;
         }catch(SQLException e){
-            throw new RepositorioListarException(e, "RepositorioCategoria");
+            throw new RepositorioListarException(getUser().getNome(), e,
+                    RepositorioCategoria.class.getName()+".listar()");
         }finally{
             gc.desconectar(c);
         }
@@ -88,7 +100,8 @@ public class RepositorioCategoria implements IRepositorioCategoria{
             pstm.execute();
             pstm.close();
         }catch(SQLException e){
-            throw new RepositorioInserirException(e, "RepositorioCategoria");
+            throw new RepositorioInserirException(getUser().getNome(), e,
+                    RepositorioCategoria.class.getName()+".incluir()");
         }finally{
             gc.desconectar(c);
         }
@@ -115,7 +128,8 @@ public class RepositorioCategoria implements IRepositorioCategoria{
             pstm.execute();
             pstm.close();
         }catch(SQLException e){
-            throw new RepositorioAlterarException(e, "RepositorioCategoria");
+            throw new RepositorioAlterarException(getUser().getNome(), e,
+                    RepositorioCategoria.class.getName()+".alterar()");
         }finally{
             gc.desconectar(c);
         }
@@ -150,9 +164,11 @@ public class RepositorioCategoria implements IRepositorioCategoria{
         }catch(SQLException e){
             String msg= e.getMessage().toLowerCase();
             if (msg!=null && msg.contains("foreign key constraint fails")){
-                throw new RepositorioForeignKeyException(e, "RepositorioCategoria.excluir()");
+                throw new RepositorioForeignKeyException(getUser().getNome(), e,
+                    RepositorioCategoria.class.getName()+".excluir()");
             }
-            throw new RepositorioExcluirException(e, "RepositorioCategoria");
+            throw new RepositorioExcluirException(getUser().getNome(), e,
+                    RepositorioCategoria.class.getName()+".excluir()");
         }finally{
             gc.desconectar(c);
         }
@@ -190,7 +206,8 @@ public class RepositorioCategoria implements IRepositorioCategoria{
             pstm.close();
             return cat;
         }catch(SQLException e){
-            throw new RepositorioPesquisarException(e, "RepositorioCategoria");
+            throw new RepositorioPesquisarException(getUser().getNome(), e,
+                    RepositorioCategoria.class.getName()+".pesquisar()");
         }finally{
             gc.desconectar(c);
         }
@@ -229,10 +246,25 @@ public class RepositorioCategoria implements IRepositorioCategoria{
             return categoria;
         }
         catch(SQLException e){
-            throw new RepositorioPesquisarException(e, "RepositorioCategoria");
+            throw new RepositorioPesquisarException(getUser().getNome(), e,
+                    RepositorioCategoria.class.getName()+".pesqPorCod()");
         }
         finally{
             gc.desconectar(c);
         }
+    }
+
+    /**
+     * @return the user
+     */
+    public Usuario getUser() {
+        return user;
+    }
+
+    /**
+     * @param user the user to set
+     */
+    public void setUser(Usuario user) {
+        this.user = user;
     }
 }

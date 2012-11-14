@@ -65,6 +65,8 @@ public class Main {
     private static ControladorFuncionario ctrlFun;
     private static ControladorLocalEstoque ctrlLocalE;
     private static ControladorEntrada ctrlEnt;
+    //Apenas para teste.
+    public static Usuario user=new Usuario("root", null, null, "root");
 
     /**
      * @param args the command line arguments

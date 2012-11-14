@@ -15,8 +15,8 @@ public class RepositorioForeignKeyException extends RepositorioException{
         super();
     }
 
-    public RepositorioForeignKeyException(Exception e){
-        super(e);
+    public RepositorioForeignKeyException(String userName, Exception e){
+        super(userName, e);
     }
     
     /**
@@ -24,12 +24,12 @@ public class RepositorioForeignKeyException extends RepositorioException{
      * @param nameClassCall
      * Nome da classe que está lançando a exceção
      * */
-    public RepositorioForeignKeyException(Exception e, String nameClassCall){
-        super(e, nameClassCall);
+    public RepositorioForeignKeyException(String userName, Exception e, String nameClassCall){
+        super(userName, e, nameClassCall);
     }
 
-    public RepositorioForeignKeyException(String s){
-        super(s);
+    public RepositorioForeignKeyException(String userName, String s){
+        super(userName, s);
     }
     
     /**
@@ -39,12 +39,12 @@ public class RepositorioForeignKeyException extends RepositorioException{
      * @param nameClassCall 
      * Nome da classe que está lançando a exceção
      */
-    public RepositorioForeignKeyException(String s, String nameClassCall){
-        super(s, nameClassCall);
+    public RepositorioForeignKeyException(String userName, String s, String nameClassCall){
+        super(userName, s, nameClassCall);
     }
 
-    public RepositorioForeignKeyException(Throwable t){
-        super(t);
+    public RepositorioForeignKeyException(String userName, Throwable t){
+        super(userName, t);
     }
     
 }

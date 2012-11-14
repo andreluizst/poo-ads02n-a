@@ -17,12 +17,12 @@ public class RepositorioInserirException extends RepositorioException{
         super(e);
     }
     
-    public RepositorioInserirException(Exception e, String nameClassCall){
-        super(e, nameClassCall);
+    public RepositorioInserirException(String userName, Exception e, String nameClassCall){
+        super(userName, e, nameClassCall);
     }
 
-    public RepositorioInserirException(String s){
-        super(s);
+    public RepositorioInserirException(String userName, String s){
+        super(userName, s);
     }
     
     /**
@@ -32,11 +32,11 @@ public class RepositorioInserirException extends RepositorioException{
      * @param nameClassCall 
      * Nome da classe que está lançando a exceção
      */
-    public RepositorioInserirException(String s, String nameClassCall){
-        super(s, nameClassCall);
+    public RepositorioInserirException(String userName, String s, String nameClassCall){
+        super(userName, s, nameClassCall);
     }
 
-    public RepositorioInserirException(Throwable t){
-        super(t);
+    public RepositorioInserirException(String userName, Throwable t){
+        super(userName, t);
     }
 }

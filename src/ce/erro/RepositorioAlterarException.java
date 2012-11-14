@@ -24,19 +24,19 @@ public class RepositorioAlterarException extends RepositorioException {
      * @param nameClassCall 
      * Nome da classe que está lançando a exceção
      */
-    public RepositorioAlterarException(String s, String nameClassCall){
-        super(s, nameClassCall);
+    public RepositorioAlterarException(String userName, String s, String nameClassCall){
+        super(userName, s, nameClassCall);
     }
     
-    public RepositorioAlterarException(Exception e, String nameClassCall){
-        super(e, nameClassCall);
+    public RepositorioAlterarException(String userName, Exception e, String nameClassCall){
+        super(userName, e, nameClassCall);
     }
 
-    public RepositorioAlterarException(String s){
-        super(s);
+    public RepositorioAlterarException(String userName, String s){
+        super(userName, s);
     }
 
-    public RepositorioAlterarException(Throwable t){
-        super(t);
+    public RepositorioAlterarException(String userName, Throwable t){
+        super(userName, t);
     }
 }

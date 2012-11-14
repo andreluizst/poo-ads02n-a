@@ -13,16 +13,16 @@ public class RepositorioExcluirException extends RepositorioException{
         super();
     }
 
-    public RepositorioExcluirException(Exception e){
-        super(e);
+    public RepositorioExcluirException(String userName, Exception e){
+        super(userName, e);
     }
     
-    public RepositorioExcluirException(Exception e, String nameClassCall){
-        super(e, nameClassCall);
+    public RepositorioExcluirException(String userName, Exception e, String nameClassCall){
+        super(userName, e, nameClassCall);
     }
 
-    public RepositorioExcluirException(String s){
-        super(s);
+    public RepositorioExcluirException(String userName, String s){
+        super(userName, s);
     }
     
     /**
@@ -32,11 +32,11 @@ public class RepositorioExcluirException extends RepositorioException{
      * @param nameClassCall 
      * Nome da classe que está lançando a exceção
      */
-    public RepositorioExcluirException(String s, String nameClassCall){
-        super(s, nameClassCall);
+    public RepositorioExcluirException(String userName, String s, String nameClassCall){
+        super(userName, s, nameClassCall);
     }
 
-    public RepositorioExcluirException(Throwable t){
-        super(t);
+    public RepositorioExcluirException(String userName, Throwable t){
+        super(userName, t);
     }
 }

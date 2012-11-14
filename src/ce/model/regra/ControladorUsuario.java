@@ -25,10 +25,19 @@ import java.util.List;
  * @author Andre
  */
 public class ControladorUsuario {
+    private Usuario user=null;
     private IRepositorioUsuario rpUsr= new RepositorioUsuario();
     private IRepositorioPerfil rpPer= new RepositorioPerfil();
     private ResourceBundle rb= ResourceBundle.getBundle("ce.erro.Erro");
     private ControladorPerfil ctrlPer= new ControladorPerfil();
+    
+    public ControladorUsuario(){
+        
+    }
+    
+    public void login(Usuario user) throws ControladorException{
+        
+    }
     
     public void validarDados(Usuario u) throws ControladorException{
         if (u.getNome() == null){
