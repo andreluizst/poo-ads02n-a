@@ -4,74 +4,41 @@
  */
 package ce.util;
 
-import java.io.IOException;
-import java.util.logging.FileHandler;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
+import java.io.*;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 /**
  *
  * @author andreluiz
  */
 public class LogGenerator {
     private static LogGenerator instancia=null;
-    private String fileName="e:\\log.txt";
-    private Logger logger=null;
-    private Level level=null;
-    private FileHandler fileHandler=null;
+    private static String fileName="ce.util.erros.log";
+    private ArrayList erros;
     
     /**
      * Construtor padrão
      */
     private LogGenerator(){
-        if (level == null){
-            level= Level.ALL;
-        }
-        logger= Logger.getLogger("LogGeneratorXYZ");
-        try{
-            fileHandler= new FileHandler(fileName, true);
-            SimpleFormatter formato= new SimpleFormatter();
-            fileHandler.setFormatter(formato);
-            logger.setUseParentHandlers(true);
-            logger.addHandler(fileHandler);
-            logger.setLevel(level);
-            
-        }
-        catch(SecurityException | IOException e){
-        }
-    }
-    
-    public LogGenerator(Logger logger){
-        if (level == null){
-            level= Level.ALL;
-        }
-        this.logger= logger;
-        try{
-            fileHandler= new FileHandler(fileName, true);
-            SimpleFormatter formato= new SimpleFormatter();
-            fileHandler.setFormatter(formato);
-            logger.setUseParentHandlers(true);
-            logger.addHandler(fileHandler);
-            logger.setLevel(level);
-            
-        }
-        catch(SecurityException | IOException e){
-        }
-    }
-    
-    public LogGenerator(Level level){
-        this.level= level;
-        logger= Logger.getLogger("LogGenerator");
-        try{
-            fileHandler= new FileHandler(fileName, true);
-            SimpleFormatter formato= new SimpleFormatter();
-            fileHandler.setFormatter(formato);
-            logger.setUseParentHandlers(true);
-            logger.addHandler(fileHandler);
-            logger.setLevel(level);
-            
-        }
-        catch(SecurityException | IOException e){
+        erros= new ArrayList();
+        String slinha="";
+        File file= new File(fileName);
+        if (file.exists()){
+            try{
+                FileReader fileReader= new FileReader(fileName);
+                BufferedReader buffer= new BufferedReader(fileReader);
+                if (erros.size() > 0){
+                    erros.clear();
+                }
+                while ((slinha = buffer.readLine()) != null){
+                    erros.add(slinha);
+                }
+                buffer.close();
+                fileReader.close();
+            }
+            catch(SecurityException | IOException e){
+            }
         }
     }
     
@@ -79,43 +46,66 @@ public class LogGenerator {
      * Retorna uma instância do gerador de log
      * @return LogGenerator
      */
-    public synchronized static LogGenerator getInstancia(){
+    public static LogGenerator getInstancia(){
         if (instancia == null){
             instancia= new LogGenerator();
         }
         return instancia;
     }
-
     /**
-     * @return the level
+     * Configura um novo nome do arquivo de log
+     * @param fileName 
      */
-    public Level getLevel() {
-        return logger.getLevel();
+    public static void setFileName(String fileName){
+        LogGenerator.fileName= fileName;
+    }
+    /**
+     * Carrega o arquivo de log
+     */
+    public void loadFile(){
+        String slinha="";
+        File file= new File(fileName);
+        if (file.exists()){
+            try{
+                FileReader fileReader= new FileReader(fileName);
+                BufferedReader buffer= new BufferedReader(fileReader);
+                if (erros.size() > 0){
+                    erros.clear();
+                }
+                while ((slinha = buffer.readLine()) != null){
+                    erros.add(slinha);
+                }
+                buffer.close();
+                fileReader.close();
+            }
+            catch(SecurityException | IOException e){
+            }
+        }
+    }
+    
+    /**
+     * Escreve no arquivo de log
+     * @param userName
+     * @param classPath
+     * @param msg 
+     */
+    public void log(String userName, String classPath, String msg){
+        erros.add(userName + " -> " + new SimpleDateFormat("dd/MM/yyyy").format(new Date()));
+        erros.add("   " + classPath + ": "+msg);
+        BufferedWriter buffer;
+        try {
+            FileWriter fileWriter= new FileWriter(fileName);
+            buffer = new BufferedWriter(fileWriter);
+            for (int i=0;i<erros.size();i++){
+                buffer.write(erros.get(i).toString());
+                buffer.newLine();
+            }
+            buffer.close();
+            fileWriter.close();
+        } catch (IOException ex) {
+            //Logger.getLogger(LogGenerator.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        //loadFile();
     }
 
-    /**
-     * @param level the level to set
-     */
-    public void setLevel(Level level) {
-        this.level= level;
-        logger.setLevel(level);
-    }
-    
-    public void log(Level level, String msg){
-        logger.log(level, msg);
-    }
-    
-    /*public void log(String loggerName, Level level, String msg){
-        logger= Logger.getLogger(loggerName);
-        instancia.logger= logger;
-        logger.log(level, msg);
-    }*/
-    
-    public void log(Logger logger, Level level, String msg){
-        this.logger= logger;
-        this.logger.setUseParentHandlers(true);
-        this.logger.addHandler(this.fileHandler);
-        this.logger.setLevel(this.level);
-        this.logger.log(level, msg);
-    }
 }

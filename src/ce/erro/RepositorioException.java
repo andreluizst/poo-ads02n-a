@@ -29,7 +29,7 @@ public class RepositorioException extends Exception{
     
     public RepositorioException(Exception e, Logger logger){
         super(e);
-        log.log(logger, Level.WARNING, getMessage());
+        log.log("root", pathClassCall, getMessage());
     }
     
     /**
@@ -44,10 +44,16 @@ public class RepositorioException extends Exception{
         }else{
             pathClassCall= nameClassCall + "." + pathClassCall;
         }
+        log.log("root",  pathClassCall, getMessage());
     }
 
     public RepositorioException(String s){
         super(s);
+        if (pathClassCall.compareTo("") == 0){
+            log.log("root",  RepositorioException.class.getName(), getMessage());
+        }else{
+            log.log("root",  pathClassCall, getMessage());
+        }
     }
     
     /**
@@ -64,6 +70,7 @@ public class RepositorioException extends Exception{
         }else{
             pathClassCall= nameClassCall + "." + pathClassCall;
         }
+        log.log("root",  pathClassCall, getMessage());
     }
 
     public RepositorioException(Throwable t){
