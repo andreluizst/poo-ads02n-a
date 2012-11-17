@@ -63,7 +63,8 @@ public class RepositorioFuncionario implements IRepositorioFuncionario{
             pstmt.close();
         }
         catch(SQLException e){
-            throw new RepositorioInserirException(e, "RepositorioFuncionario");
+            throw new RepositorioInserirException(e, 
+                    RepositorioFuncionario.class.getName()+".inserir()");
         }
         finally{
             gerenciadorConexao.desconectar(c);
@@ -105,7 +106,8 @@ public class RepositorioFuncionario implements IRepositorioFuncionario{
             pstmt.close();
         }
         catch(SQLException e){
-            throw new RepositorioAlterarException(e, "RepositorioFuncionario");
+            throw new RepositorioAlterarException(e, 
+                    RepositorioFuncionario.class.getName()+".alterar()");
         }
         finally{
             gerenciadorConexao.desconectar(c);
@@ -139,9 +141,10 @@ public class RepositorioFuncionario implements IRepositorioFuncionario{
             String msg= e.getMessage().toLowerCase();
             if (msg!=null && msg.contains("foreign key constraint fails")){
                 throw new RepositorioForeignKeyException(e,
-                        "RepositorioFuncionario.excluir()");
+                        RepositorioFuncionario.class.getName()+".excluir()");
             }
-            throw new RepositorioExcluirException(e, "RepositorioFuncionario");
+            throw new RepositorioExcluirException(e, 
+                    RepositorioFuncionario.class.getName()+".excluir()");
         }
         finally{
             gerenciadorConexao.desconectar(c);
@@ -159,7 +162,7 @@ public class RepositorioFuncionario implements IRepositorioFuncionario{
     @Override
     public List<Funcionario> listar() throws ConexaoException,
             RepositorioListarException{
-        List<Funcionario> lista = new ArrayList<Funcionario>();
+        List<Funcionario> lista = new ArrayList();
         Funcionario f;
         Connection c= gerenciadorConexao.conectar();
         String sql= "select * from funcionario";
@@ -180,7 +183,8 @@ public class RepositorioFuncionario implements IRepositorioFuncionario{
             return lista;
         }
         catch(SQLException e){
-            throw new RepositorioListarException(e, "RepositorioFuncionario");
+            throw new RepositorioListarException(e, 
+                    RepositorioFuncionario.class.getName()+".listar()");
         }
         finally{
             gerenciadorConexao.desconectar(c);
@@ -202,7 +206,7 @@ public class RepositorioFuncionario implements IRepositorioFuncionario{
     @Override
     public List<Funcionario> pesquisar(String nome) throws ConexaoException,
             RepositorioPesquisarException{
-                List<Funcionario> lista = new ArrayList<Funcionario>();
+                List<Funcionario> lista = new ArrayList();
         Funcionario f;
         Connection c= gerenciadorConexao.conectar();
         String sql= "select * from funcionario where nome like ?";
@@ -224,7 +228,8 @@ public class RepositorioFuncionario implements IRepositorioFuncionario{
             return lista;
         }
         catch(SQLException e){
-            throw new RepositorioPesquisarException(e, "RepositorioFuncionario");
+            throw new RepositorioPesquisarException(e, 
+                    RepositorioFuncionario.class.getName()+".pesquisar()");
         }
         finally{
             gerenciadorConexao.desconectar(c);
@@ -267,7 +272,8 @@ public class RepositorioFuncionario implements IRepositorioFuncionario{
             return f;
         }
         catch(SQLException e){
-            throw new RepositorioPesquisarException(e, "RepositorioFuncionario");
+            throw new RepositorioPesquisarException(e, 
+                    RepositorioFuncionario.class.getName()+".pesqCpf()");
         }
         finally{
             gerenciadorConexao.desconectar(c);

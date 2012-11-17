@@ -12,6 +12,7 @@ import ce.erro.RepositorioExcluirException;
 import ce.erro.RepositorioPesquisarException;
 import ce.erro.RepositorioListarException;
 import ce.model.basica.Saida;
+import ce.model.basica.Usuario;
 import ce.model.dao.RepositorioSaida;
 import ce.model.dao.IRepositorioSaida;
 import ce.model.dao.RepositorioProduto;
@@ -24,19 +25,35 @@ import java.util.ResourceBundle;
  * @author Andre
  */
 public class ControladorSaida {
+    private Usuario user;
     private IRepositorioSaida rpSaida= new RepositorioSaida();
     private IRepositorioProduto rpProd= new RepositorioProduto();
     private ResourceBundle rb= ResourceBundle.getBundle("ce.erro.Erro");
     
+    public ControladorSaida(){
+        user= new Usuario();
+    }
+    
+    
+    public ControladorSaida(Usuario user){
+        this.user=user;
+    }
+    
     public void validarDados(Saida s) throws ControladorException{
         if (!ValidarStringData.execute(s.getDataSaida())){
-            throw new ControladorException(rb.getString("CtrlErroValInvalido"));
+            throw new ControladorException(user.getNome(),
+                    rb.getString("CtrlErroValInvalido"),
+                    ControladorSaida.class.getName()+".validarDados()");
         }
         if ((s.getQtde() == null) || (s.getQtde() <= 0)){
-            throw new ControladorException(rb.getString("CtrlErroValInvalido"));
+            throw new ControladorException(user.getNome(),
+                    rb.getString("CtrlErroValInvalido"),
+                    ControladorSaida.class.getName()+".validarDados()");
         }
         if ((s.getEntrada() == null) || (s.getEntrada().getCodEntrada() == 0)){
-            throw new ControladorException(rb.getString("CtrlErroValInvalido"));
+            throw new ControladorException(user.getNome(),
+                    rb.getString("CtrlErroValInvalido"),
+                    ControladorSaida.class.getName()+".validarDados()");
         }
     }
     
@@ -45,14 +62,14 @@ public class ControladorSaida {
             rpSaida.inserir(s);
         }
         catch(ConexaoException ce){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroInsIndisp") + " saída.",
-                    "ControladorSaida.inserir()");
+                    ControladorSaida.class.getName()+".inserir()");
         }
         catch(RepositorioInserirException re){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroInserir") + " saída.",
-                    "ControladorSaida.inserir()");
+                    ControladorSaida.class.getName()+".inserir()");
         }
     }
     
@@ -61,18 +78,19 @@ public class ControladorSaida {
             rpSaida.alterar(s);
         }
         catch(ConexaoException ce){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroAltIndisp") + " saída.",
-                    "ControladorSaida.alterar()");
+                    ControladorSaida.class.getName()+".alterar()");
         }
         catch(RepositorioAlterarException rae){
             String msg= rae.getMessage();
             if (msg == null || msg.contains(rb.getString("CtrlErroAtlzQtde"))){
-                throw new ControladorException(rae, "ControladorSaida.alterar()");
+                throw new ControladorException(user.getNome(), rae,
+                        ControladorSaida.class.getName()+".alterar()");
             }
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroAlterar" + " saída."),
-                    "ControladorSaida.alterar()");
+                    ControladorSaida.class.getName()+".alterar()");
         }
     }
     
@@ -80,19 +98,20 @@ public class ControladorSaida {
         try{
             Saida saida= rpSaida.pesqNum(num);
             if (saida == null){
-                throw new ControladorException(rb.getString("CtrlSaiNaoExiste"),
-                        "ControladorSaida.verificarSeExiste()");
+                throw new ControladorException(user.getNome(),
+                        rb.getString("CtrlSaiNaoExiste"),
+                        ControladorSaida.class.getName()+".verificarSeExiste()");
             }
         }
         catch(ConexaoException ce){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroVerifIndisp") + " saída.",
-                    "ControladorSaida.verificarSeExiste()");
+                    ControladorSaida.class.getName()+".verificarSeExiste()");
         }
         catch(RepositorioPesquisarException pe){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroVerificar") + " saída.",
-                    "ControladorSaida.verificarSeExiste()");
+                    ControladorSaida.class.getName()+".verificarSeExiste()");
         }
     }
     
@@ -105,9 +124,9 @@ public class ControladorSaida {
             rpSaida.excluir(s);
         }
         catch(ConexaoException ce){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroDelIndisp") + " saída.",
-                    "ControladorSaida.excluir()");
+                    ControladorSaida.class.getName()+".excluir()");
         }
         /*catch(RepositorioForeignKeyException rfke){
             throw new ControladorException(
@@ -117,11 +136,12 @@ public class ControladorSaida {
         catch(RepositorioExcluirException re){
             String msg= re.getMessage();
             if (msg == null || msg.contains(rb.getString("CtrlErroAtlzQtde"))){
-                throw new ControladorException(re, "ControladorEntrada.excluir()");
+                throw new ControladorException(user.getNome(), re,
+                        ControladorSaida.class.getName()+".excluir()");
             }
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroExcluir") + " saída.",
-                    "ControladorSaida.excluir()");
+                    ControladorSaida.class.getName()+".excluir()");
         }
     }
     
@@ -130,14 +150,14 @@ public class ControladorSaida {
             return rpSaida.listar();
         }
         catch(ConexaoException e){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroListIndisp") + " saída.",
-                    "ControladorSaida.listar()");
+                    ControladorSaida.class.getName()+".listar()");
         }
         catch(RepositorioListarException re){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroListar") + " saída.",
-                    "ControladorSaida.listar()");
+                    ControladorSaida.class.getName()+".listar()");
         }
     }
     
@@ -147,15 +167,29 @@ public class ControladorSaida {
             return saida;
         }
         catch(ConexaoException ce){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroTrazerIndisp") + " saída.",
-                    "ControladorSaida.trazer()");
+                    ControladorSaida.class.getName()+".trazer()");
         }
         catch(RepositorioPesquisarException re){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroTrazer") + " saída.",
-                    "ControladorSaida.trazer()");
+                    ControladorSaida.class.getName()+".trazer()");
         }
+    }
+
+    /**
+     * @return the user
+     */
+    public Usuario getUser() {
+        return user;
+    }
+
+    /**
+     * @param user the user to set
+     */
+    public void setUser(Usuario user) {
+        this.user = user;
     }
     
 }

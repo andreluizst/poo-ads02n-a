@@ -37,6 +37,22 @@ public class RepositorioException extends Exception{
      * @param nameClassCall
      * Nome da classe que está lançando a exceção
      * */
+    public RepositorioException(Exception e, String nameClassCall){
+        super(e);
+        if (pathClassCall.compareTo("") == 0){
+            pathClassCall= nameClassCall;
+        }else{
+            pathClassCall= nameClassCall + "." + pathClassCall;
+        }
+        log.log(pathClassCall, getMessage());
+    }
+    
+    /**
+     * 
+     * @param userName
+     * @param e
+     * @param nameClassCall 
+     */
     public RepositorioException(String userName, Exception e, String nameClassCall){
         super(e);
         if (pathClassCall.compareTo("") == 0){
@@ -47,11 +63,7 @@ public class RepositorioException extends Exception{
         log.log(userName,  pathClassCall, getMessage());
     }
     
-    /**
-     * 
-     * @param userName
-     * @param s 
-     */
+    /*Estava dando conflito devido de assinatura
     public RepositorioException(String userName, String s){
         super(s);
         if (pathClassCall.compareTo("") == 0){
@@ -59,6 +71,29 @@ public class RepositorioException extends Exception{
         }else{
             log.log(userName,  pathClassCall, getMessage());
         }
+    }*/
+    
+    /**
+     * 
+     * @param s 
+     */
+    public RepositorioException(String s){
+        super(s);
+        /*if (pathClassCall.compareTo("") == 0){
+            log.log(RepositorioException.class.getName(), getMessage());
+        }else{
+            log.log(pathClassCall, getMessage());
+        }*/
+    }
+    
+    public RepositorioException(String s, String nameClassCall){
+        super(s);
+        if (pathClassCall.compareTo("") == 0){
+            pathClassCall= nameClassCall;
+        }else{
+            pathClassCall= nameClassCall + "." + pathClassCall;
+        }
+        log.log(pathClassCall, getMessage());
     }
     
     /**

@@ -50,7 +50,8 @@ public class RepositorioPerfil implements IRepositorioPerfil {
             pstmt.close();
         }
         catch(SQLException e){
-            throw new RepositorioInserirException(e, "RepositorioPerfil.inserir()");
+            throw new RepositorioInserirException(e, 
+                    RepositorioPerfil.class.getName()+".inserir()");
         }
         finally{
             gerenciadorConexao.desconectar(c);
@@ -81,7 +82,8 @@ public class RepositorioPerfil implements IRepositorioPerfil {
             pstmt.close();
         }
         catch(SQLException e){
-            throw new RepositorioAlterarException(e, "RepositorioPerfil.alterar()");
+            throw new RepositorioAlterarException(e, 
+                    RepositorioPerfil.class.getName()+".alterar()");
         }
         finally{
             gerenciadorConexao.desconectar(c);
@@ -115,9 +117,10 @@ public class RepositorioPerfil implements IRepositorioPerfil {
             String msg= e.getMessage().toLowerCase();
             if (msg!=null && msg.contains("foreign key constraint fails")){
                 throw new RepositorioForeignKeyException(e,
-                        "RepositorioPerfil.excluir()");
+                        RepositorioPerfil.class.getName()+".excluir()");
             }
-            throw new RepositorioExcluirException(e, "RepositorioPerfil.excluir()");
+            throw new RepositorioExcluirException(e, 
+                    RepositorioPerfil.class.getName()+".excluir()");
         }
         finally{
             gerenciadorConexao.desconectar(c);
@@ -153,7 +156,8 @@ public class RepositorioPerfil implements IRepositorioPerfil {
             return lista;
         }
         catch(SQLException e){
-            throw new RepositorioListarException(e, "RepositorioPerfil.listar()");
+            throw new RepositorioListarException(e, 
+                    RepositorioPerfil.class.getName()+".listar()");
         }
         finally{
             gerenciadorConexao.desconectar(c);
@@ -193,7 +197,8 @@ public class RepositorioPerfil implements IRepositorioPerfil {
             return p;
         }
         catch(SQLException e){
-            throw new RepositorioPesquisarException(e, "RepositorioPerfil.pesqCod()");
+            throw new RepositorioPesquisarException(e, 
+                    RepositorioPerfil.class.getName()+".pesqCod()");
         }
         finally{
             gerenciadorConexao.desconectar(c);
@@ -232,7 +237,8 @@ public class RepositorioPerfil implements IRepositorioPerfil {
             return p;
         }
         catch(SQLException e){
-            throw new RepositorioPesquisarException(e, "RepositorioPerfil.pesqCod()");
+            throw new RepositorioPesquisarException(e, 
+                    RepositorioPerfil.class.getName()+".pesquisar()");
         }
         finally{
             gerenciadorConexao.desconectar(c);

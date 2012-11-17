@@ -14,6 +14,7 @@ import ce.erro.RepositorioForeignKeyException;
 import ce.erro.RepositorioPesquisarException;
 import ce.erro.RepositorioListarException;
 import ce.model.basica.LocalEstoque;
+import ce.model.basica.Usuario;
 import ce.model.dao.RepositorioLocalEstoque;
 import ce.model.dao.IRepositorioLocalEstoque;
 import java.util.List;
@@ -24,13 +25,23 @@ import java.util.ResourceBundle;
  * @author Andre
  */
 public class ControladorLocalEstoque {
+    private Usuario user;
     private IRepositorioLocalEstoque rpLocalE= new RepositorioLocalEstoque();
     private ResourceBundle rb= ResourceBundle.getBundle("ce.erro.Erro");
     
+    public ControladorLocalEstoque(){
+        user= new Usuario();
+    }
+    
+    public ControladorLocalEstoque(Usuario user){
+        this.user=user;
+    }
+    
     public void validarDados(LocalEstoque le) throws ControladorException{
         if (le.getDescricao() == null){
-            throw new ControladorException(rb.getString("CtrlErroValInvalido"),
-                    "ControladorLocalEstoque.validarDados()");
+            throw new ControladorException(getUser().getNome(),
+                    rb.getString("CtrlErroValInvalido"),
+                    ControladorLocalEstoque.class.getName()+".validarDados()");
         }
     }
     
@@ -39,17 +50,18 @@ public class ControladorLocalEstoque {
         try {
             lista = rpLocalE.pesquisar(le.getDescricao());
             if(lista.size() > 0){
-                throw new ControladorException(rb.getString("CtrlLocalEstExiste"),
-                        "ControladorLocalEstoque.verificarSePodeInserir()");
+                throw new ControladorException(getUser().getNome(),
+                        rb.getString("CtrlLocalEstExiste"),
+                        ControladorLocalEstoque.class.getName()+".verificarSePodeInserir()");
             }
         } catch (ConexaoException ex) {
-            throw new ControladorException(
+            throw new ControladorException(getUser().getNome(),
                     rb.getString("CtrlErroVerifIndisp") + " local de estoque.",
-                    "ControladorLocalEstoque.verificarSePodeInserir()");
+                    ControladorLocalEstoque.class.getName()+".verificarSePodeInserir()");
         } catch (RepositorioException ex) {
-            throw new ControladorException(
+            throw new ControladorException(getUser().getNome(),
                     rb.getString("CtrlErroVerificar") + " local de estoque.",
-                    "ControladorLocalEstoque.verificarSePodeInserir()");
+                    ControladorLocalEstoque.class.getName()+".verificarSePodeInserir()");
         }
     }
     
@@ -57,13 +69,13 @@ public class ControladorLocalEstoque {
         try {
             rpLocalE.inserir(le);
         } catch (ConexaoException ce) {
-            throw new ControladorException(
+            throw new ControladorException(getUser().getNome(),
                     rb.getString("CtrlErroInsIndisp") + " local de estoque.",
-                    "ControladorLocalEstoque.inserir()");
+                    ControladorLocalEstoque.class.getName()+".inserir()");
         } catch (RepositorioInserirException re) {
-            throw new ControladorException(
+            throw new ControladorException(getUser().getNome(),
                     rb.getString("CtrlErroInseir") + " local de estoque.",
-                    "ControladorLocalEstoque.inserir()");
+                    ControladorLocalEstoque.class.getName()+".inserir()");
         }
     }
     
@@ -72,14 +84,14 @@ public class ControladorLocalEstoque {
             rpLocalE.alterar(le);
         }
         catch(ConexaoException ce){
-            throw new ControladorException(
+            throw new ControladorException(getUser().getNome(),
                     rb.getString("CtrlErroAltIndisp") + " local de estoque.",
-                    "ControladorLocalEstoque.alterar()");
+                    ControladorLocalEstoque.class.getName()+".alterar()");
         }
         catch(RepositorioAlterarException rae){
-            throw new ControladorException(
+            throw new ControladorException(getUser().getNome(),
                     rb.getString("CtrlErroAlterar") + " local de estoque.",
-                    "ControladorLocalEstoque.alterar()");
+                    ControladorLocalEstoque.class.getName()+".alterar()");
         }
     }
     
@@ -87,19 +99,20 @@ public class ControladorLocalEstoque {
         try{
             LocalEstoque local= rpLocalE.pesqCod(cod);
             if (local == null){
-                throw new ControladorException(rb.getString("CtrlLocalEstNaoExiste"),
-                        "ControladorLocalEstoque.verificarSeExiste()");
+                throw new ControladorException(getUser().getNome(),
+                        rb.getString("CtrlLocalEstNaoExiste"),
+                        ControladorLocalEstoque.class.getName()+".verificarSeExiste()");
             }
         }
         catch(ConexaoException e){
-            throw new ControladorException(
+            throw new ControladorException(getUser().getNome(),
                     rb.getString("CtrlErroVerifIndisp") + " local de estoque.",
-                    "ControladorLocalEstoque.verificarSePodeExcluir()");
+                    ControladorLocalEstoque.class.getName()+".verificarSePodeExcluir()");
         }
         catch(RepositorioPesquisarException ie){
-            throw new ControladorException(
+            throw new ControladorException(getUser().getNome(),
                     rb.getString("CtrlErroVerificar") + " local de estoque.",
-                    "ControladorLocalEstoque.verificarSePodeExcluir()");
+                    ControladorLocalEstoque.class.getName()+".verificarSePodeExcluir()");
         }
     }
     
@@ -133,19 +146,19 @@ public class ControladorLocalEstoque {
             rpLocalE.excluir(le.getCodLocal());
         }
         catch(ConexaoException ce){
-            throw new ControladorException(
+            throw new ControladorException(getUser().getNome(),
                     rb.getString("CtrlErroDelIndisp") + " local de estoque.",
-                    "ControladorLocalEstoque.excluir()");
+                    ControladorLocalEstoque.class.getName()+".excluir()");
         }
         catch(RepositorioForeignKeyException rfke){
-            throw new ControladorException(
+            throw new ControladorException(getUser().getNome(),
                     rb.getString("CtrlNaoPodeExcluirLocalEst"),
-                    "ControladorLocalEstoque.excluir()");
+                    ControladorLocalEstoque.class.getName()+".excluir()");
         }
         catch(RepositorioExcluirException re){
-            throw new ControladorException(
+            throw new ControladorException(getUser().getNome(),
                     rb.getString("CtrlErroExcluir") + " local de estoque.",
-                    "ControladorLocalEstoque.excluir()");
+                    ControladorLocalEstoque.class.getName()+".excluir()");
         }
     }
     
@@ -154,14 +167,14 @@ public class ControladorLocalEstoque {
             return rpLocalE.listar();
         }
         catch(ConexaoException ce){
-            throw new ControladorException(
+            throw new ControladorException(getUser().getNome(),
                     rb.getString("CtrlErroListIndisp") + " local de estoque.",
-                    "ControladorLocalEstoque.listar()");
+                    ControladorLocalEstoque.class.getName()+".listar()");
         }
         catch(RepositorioListarException re){
-            throw new ControladorException(
+            throw new ControladorException(getUser().getNome(),
                     rb.getString("CtrlErroListar") + " local de estoque.",
-                    "ControladorLocalEstoque.listar()");
+                    ControladorLocalEstoque.class.getName()+".listar()");
         }
     }
     
@@ -170,14 +183,14 @@ public class ControladorLocalEstoque {
             return rpLocalE.pesquisar(nome);
         }
         catch(ConexaoException ce){
-            throw new ControladorException(
+            throw new ControladorException(getUser().getNome(),
                     rb.getString("CtrlErroPesqIndisp") + " local de estoque.",
-                    "ControladorLocalEstoque.pesquisar()");
+                    ControladorLocalEstoque.class.getName()+".pesquisar()");
         }
         catch(RepositorioPesquisarException re){
-            throw new ControladorException(
+            throw new ControladorException(getUser().getNome(),
                     rb.getString("CtrlErroPesquisar") + " local de estoque.",
-                    "ControladorLocalEstoque.pesquisar()");
+                    ControladorLocalEstoque.class.getName()+".pesquisar()");
         }
     }
     
@@ -186,15 +199,29 @@ public class ControladorLocalEstoque {
             return rpLocalE.pesqCod(cod);
         }
         catch(ConexaoException ce){
-            throw new ControladorException(
+            throw new ControladorException(getUser().getNome(),
                     rb.getString("CtrlErroTrazerIndisp") + " local de estoque.",
-                    "ControladorLocalEstoque.trazer()");
+                    ControladorLocalEstoque.class.getName()+".trazer()");
         }
         catch(RepositorioPesquisarException re){
-            throw new ControladorException(
+            throw new ControladorException(getUser().getNome(),
                     rb.getString("CtrlErroTrazer") + " local de estoque.",
-                    "ControladorLocalEstoque.trazer()");
+                    ControladorLocalEstoque.class.getName()+".trazer()");
         }
+    }
+
+    /**
+     * @return the user
+     */
+    public Usuario getUser() {
+        return user;
+    }
+
+    /**
+     * @param user the user to set
+     */
+    public void setUser(Usuario user) {
+        this.user = user;
     }
     
 }

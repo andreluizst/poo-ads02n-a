@@ -29,7 +29,7 @@ public class RepositorioCategoria implements IRepositorioCategoria{
     private LogGenerator log;
     private IGerenciadorConexao gc;
 
-    private RepositorioCategoria(){
+    public RepositorioCategoria(){
          gc = GerenciadorConexao.getInstancia();
     }
     
@@ -71,7 +71,7 @@ public class RepositorioCategoria implements IRepositorioCategoria{
             stm.close();
             return lista;
         }catch(SQLException e){
-            throw new RepositorioListarException(getUser().getNome(), e,
+            throw new RepositorioListarException(e,
                     RepositorioCategoria.class.getName()+".listar()");
         }finally{
             gc.desconectar(c);
@@ -100,7 +100,7 @@ public class RepositorioCategoria implements IRepositorioCategoria{
             pstm.execute();
             pstm.close();
         }catch(SQLException e){
-            throw new RepositorioInserirException(getUser().getNome(), e,
+            throw new RepositorioInserirException(e, 
                     RepositorioCategoria.class.getName()+".incluir()");
         }finally{
             gc.desconectar(c);
@@ -128,7 +128,7 @@ public class RepositorioCategoria implements IRepositorioCategoria{
             pstm.execute();
             pstm.close();
         }catch(SQLException e){
-            throw new RepositorioAlterarException(getUser().getNome(), e,
+            throw new RepositorioAlterarException(e, 
                     RepositorioCategoria.class.getName()+".alterar()");
         }finally{
             gc.desconectar(c);
@@ -167,8 +167,8 @@ public class RepositorioCategoria implements IRepositorioCategoria{
                 throw new RepositorioForeignKeyException(getUser().getNome(), e,
                     RepositorioCategoria.class.getName()+".excluir()");
             }
-            throw new RepositorioExcluirException(getUser().getNome(), e,
-                    RepositorioCategoria.class.getName()+".excluir()");
+            throw new RepositorioExcluirException(e, 
+                    RepositorioCategoria.class.getName()+".exluir()");
         }finally{
             gc.desconectar(c);
         }
@@ -206,7 +206,7 @@ public class RepositorioCategoria implements IRepositorioCategoria{
             pstm.close();
             return cat;
         }catch(SQLException e){
-            throw new RepositorioPesquisarException(getUser().getNome(), e,
+            throw new RepositorioPesquisarException(e, 
                     RepositorioCategoria.class.getName()+".pesquisar()");
         }finally{
             gc.desconectar(c);
@@ -246,7 +246,7 @@ public class RepositorioCategoria implements IRepositorioCategoria{
             return categoria;
         }
         catch(SQLException e){
-            throw new RepositorioPesquisarException(getUser().getNome(), e,
+            throw new RepositorioPesquisarException(e, 
                     RepositorioCategoria.class.getName()+".pesqPorCod()");
         }
         finally{

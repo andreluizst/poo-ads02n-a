@@ -109,5 +109,29 @@ public class LogGenerator {
         }
         //loadFile();
     }
+    
+    /**
+     * Escreve no arquivo de log
+     * @param classPath
+     * @param msg 
+     */
+    public void log(String classPath, String msg){
+        erros.add(" Sistema -> " 
+            + new SimpleDateFormat("dd/MM/yyyy - HH:mm:ss").format(new Date()));
+        erros.add("\t" + classPath + ": " + msg);
+        BufferedWriter buffer;
+        try {
+            FileWriter fileWriter= new FileWriter(fileName);
+            buffer = new BufferedWriter(fileWriter);
+            for (int i=0;i<erros.size();i++){
+                buffer.write(erros.get(i).toString());
+                buffer.newLine();
+            }
+            buffer.close();
+            fileWriter.close();
+        } catch (IOException ex) {
+            //Logger.getLogger(LogGenerator.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
 }

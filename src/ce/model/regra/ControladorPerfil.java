@@ -14,6 +14,7 @@ import ce.erro.RepositorioForeignKeyException;
 import ce.erro.RepositorioListarException;
 import ce.erro.RepositorioPesquisarException;
 import ce.model.basica.Perfil;
+import ce.model.basica.Usuario;
 import ce.model.dao.IRepositorioPerfil;
 import ce.model.dao.RepositorioPerfil;
 import java.util.ResourceBundle;
@@ -23,13 +24,24 @@ import java.util.List;
  * @author Andre
  */
 public class ControladorPerfil {
+    private Usuario user;
     private IRepositorioPerfil rpPer= new RepositorioPerfil();
     private ResourceBundle rb= ResourceBundle.getBundle("ce.erro.Erro");
     
+    
+    public ControladorPerfil(){
+        user= new Usuario();
+    }
+    
+    public ControladorPerfil(Usuario user){
+        this.user=user;
+    }
+    
     public void validarDados(Perfil p) throws ControladorException{
         if (p.getNome() == null){
-            throw new ControladorException(rb.getString("CtrlErroValInvalido"),
-                    "ControladorPerfil.validarDados()");
+            throw new ControladorException(user.getNome(),
+                    rb.getString("CtrlErroValInvalido"),
+                    ControladorPerfil.class.getName()+".validarDados()");
         }
     }
     
@@ -37,17 +49,18 @@ public class ControladorPerfil {
         try {
             Perfil per = rpPer.pesquisar(p.getNome());
             if(per != null){
-                throw new ControladorException(rb.getString("CtrlErroPerExiste"),
-                        "ControladorPerfil.verificarSePodeInserir()");
+                throw new ControladorException(user.getNome(),
+                        rb.getString("CtrlErroPerExiste"),
+                        ControladorPerfil.class.getName()+".verificarSePodeInserir()");
             }
         } catch (ConexaoException ex) {
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroVerifIndisp") + " perfil.",
-                    "ControladorPerfil.verificarSePodeInserir()");
+                    ControladorPerfil.class.getName()+".verificarSePodeInserir()");
         } catch (RepositorioException ex) {
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroVerificar") + " perfil.",
-                    "ControladorPerfil.verificarSePodeInserir()");
+                    ControladorPerfil.class.getName()+".verificarSePodeInserir()");
         }
     }
     
@@ -55,13 +68,13 @@ public class ControladorPerfil {
         try {
             rpPer.inserir(p);
         } catch (ConexaoException ce) {
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroInsIndisp") + " perfil.",
-                    "ControladorPerfil.inserir()");
+                    ControladorPerfil.class.getName()+".inserir()");
         } catch (RepositorioInserirException re) {
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroInseir") + " perfil.",
-                    "ControladorPerfil.inserir()");
+                    ControladorPerfil.class.getName()+".inserir()");
         }
     }
     
@@ -70,14 +83,14 @@ public class ControladorPerfil {
             rpPer.alterar(p);
         }
         catch(ConexaoException ce){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroAltIndisp") + " perfil.",
-                    "ControladorPerfil.alterar()");
+                    ControladorPerfil.class.getName()+".alterar()");
         }
         catch(RepositorioAlterarException rae){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroAlterar") + " perfil.",
-                    "ControladorPerfil.alterar()");
+                    ControladorPerfil.class.getName()+".alterar()");
         }
     }
     
@@ -86,19 +99,20 @@ public class ControladorPerfil {
         try{
             per= rpPer.pesqCod(cod);
             if (per == null){
-                throw new ControladorException(rb.getString("CtrlPerNaoExiste"),
-                        "ControladorPerfil.verificarSeExiste()");
+                throw new ControladorException(user.getNome(),
+                        rb.getString("CtrlPerNaoExiste"),
+                        ControladorPerfil.class.getName()+".verificarSeExiste()");
             }
         }
         catch(ConexaoException e){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroVerifIndisp") + " perfil.",
-                    "ControladorPerfil.verificarSeExiste()");
+                    ControladorPerfil.class.getName()+".verificarSeExiste()");
         }
         catch(RepositorioPesquisarException ie){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroVerificar") + " perfil.",
-                    "ControladorPerfil.verificarSeExiste()");
+                    ControladorPerfil.class.getName()+".verificarSeExiste()");
         }
     }
     
@@ -107,19 +121,20 @@ public class ControladorPerfil {
         try{
             per= rpPer.pesquisar(nome);
             if (per == null){
-                throw new ControladorException(rb.getString("CtrlPerNaoExiste"),
-                        "ControladorPerfil.verificarSeExiste()");
+                throw new ControladorException(user.getNome(),
+                        rb.getString("CtrlPerNaoExiste"),
+                        ControladorPerfil.class.getName()+".verificarSeExiste()");
             }
         }
         catch(ConexaoException e){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroVerifIndisp") + " perfil.",
-                    "ControladorPerfil.verificarSeExiste()");
+                    ControladorPerfil.class.getName()+".verificarSeExiste()");
         }
         catch(RepositorioPesquisarException ie){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroVerificar") + " perfil.",
-                    "ControladorPerfil.verificarSeExiste()");
+                    ControladorPerfil.class.getName()+".verificarSeExiste()");
         }
     }
     
@@ -132,19 +147,19 @@ public class ControladorPerfil {
             rpPer.excluir(p);
         }
         catch(ConexaoException ce){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroDelIndisp") + " perfil.",
-                    "ControladorPerfil.excluir()");
+                    ControladorPerfil.class.getName()+".excluir()");
         }
         catch(RepositorioForeignKeyException rfke){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlNaoPodeExcluirPer"),
-                    "ControladorPerfil.excluir()");
+                    ControladorPerfil.class.getName()+".excluir()");
         }
         catch(RepositorioExcluirException re){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroExcluir") + " perfil.",
-                    "ControladorPerfil.excluir()");
+                    ControladorPerfil.class.getName()+".excluir()");
         }
     }
     
@@ -153,14 +168,14 @@ public class ControladorPerfil {
             return rpPer.listar();
         }
         catch(ConexaoException ce){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroListIndisp") + " perfil.",
-                    "ControladorPerfil.listar()");
+                    ControladorPerfil.class.getName()+".listar()");
         }
         catch(RepositorioListarException re){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroListar") + " perfil.",
-                    "ControladorPerfil.listar()");
+                    ControladorPerfil.class.getName()+".listar()");
         }
     }
     
@@ -169,14 +184,14 @@ public class ControladorPerfil {
             return rpPer.pesquisar(nome);
         }
         catch(ConexaoException ce){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroPesqIndisp") + " perfil.",
-                    "ControladorPerfil.pesquisar()");
+                    ControladorPerfil.class.getName()+".pesquisar()");
         }
         catch(RepositorioPesquisarException re){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroPesquisar") + " perfil.",
-                    "ControladorPerfil.pesquisar()");
+                    ControladorPerfil.class.getName()+".pesquisar()");
         }
     }
     
@@ -185,14 +200,14 @@ public class ControladorPerfil {
             return rpPer.pesqCod(cod);
         }
         catch(ConexaoException ce){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroTrazerIndisp") + " perfil.",
-                    "ControladorPerfil.trazer()");
+                    ControladorPerfil.class.getName()+".trazer()");
         }
         catch(RepositorioPesquisarException re){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroTrazer") + " perfil.",
-                    "ControladorPerfil.trazer()");
+                    ControladorPerfil.class.getName()+".trazer()");
         }
     }
     
@@ -201,15 +216,29 @@ public class ControladorPerfil {
             return rpPer.pesquisar(descricao);
         }
         catch(ConexaoException ce){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroTrazerIndisp") + " perfil.",
-                    "ControladorPerfil.trazer()");
+                    ControladorPerfil.class.getName()+".trazer()");
         }
         catch(RepositorioPesquisarException re){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroTrazer") + " perfil.",
-                    "ControladorPerfil.trazer()");
+                    ControladorPerfil.class.getName()+".trazer()");
         }
+    }
+
+    /**
+     * @return the user
+     */
+    public Usuario getUser() {
+        return user;
+    }
+
+    /**
+     * @param user the user to set
+     */
+    public void setUser(Usuario user) {
+        this.user = user;
     }
     
 }

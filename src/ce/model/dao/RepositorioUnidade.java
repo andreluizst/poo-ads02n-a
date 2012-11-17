@@ -51,7 +51,8 @@ public class RepositorioUnidade implements IRepositorioUnidade{
             pstmt.close();
         }
         catch(SQLException e){
-            throw new RepositorioInserirException(e, "RepositorioUnidade.inserir()");
+            throw new RepositorioInserirException(e, 
+                    RepositorioUnidade.class.getName()+".inserir()");
         }
         finally{
             gerenciadorConexao.desconectar(c);
@@ -81,7 +82,8 @@ public class RepositorioUnidade implements IRepositorioUnidade{
             pstmt.close();
         }
         catch(SQLException e){
-            throw new RepositorioAlterarException(e, "RepositorioUnidade.alterar()");
+            throw new RepositorioAlterarException(e, 
+                    RepositorioUnidade.class.getName()+".alterar()");
         }
         finally{
             gerenciadorConexao.desconectar(c);
@@ -115,9 +117,10 @@ public class RepositorioUnidade implements IRepositorioUnidade{
             String msg= e.getMessage().toLowerCase();
             if (msg!=null && msg.contains("foreign key constraint fails")){
                 throw new RepositorioForeignKeyException(e,
-                        "RepositorioUnidade.excluir()");
+                        RepositorioUnidade.class.getName()+".excluir()");
             }
-            throw new RepositorioExcluirException(e, "RepositorioUnidade.excluir()");
+            throw new RepositorioExcluirException(e, 
+                    RepositorioUnidade.class.getName()+".excluir()");
         }
         finally{
             gerenciadorConexao.desconectar(c);
@@ -150,7 +153,8 @@ public class RepositorioUnidade implements IRepositorioUnidade{
             return lista;
         }
         catch(SQLException e){
-            throw new RepositorioListarException(e, "RepositorioUnidade.listar()");
+            throw new RepositorioListarException(e, 
+                    RepositorioUnidade.class.getName()+".listar()");
         }
         finally{
             gerenciadorConexao.desconectar(c);
@@ -187,7 +191,8 @@ public class RepositorioUnidade implements IRepositorioUnidade{
             return lista;
         }
         catch(SQLException e){
-            throw new RepositorioPesquisarException(e, "RepositorioUnidade.pesquisar()");
+            throw new RepositorioPesquisarException(e, 
+                    RepositorioUnidade.class.getName()+".pesquisar()");
         }
         finally{
             gerenciadorConexao.desconectar(c);
@@ -223,7 +228,8 @@ public class RepositorioUnidade implements IRepositorioUnidade{
             return u;
         }
         catch(SQLException e){
-            throw new RepositorioPesquisarException(e, "RepositorioUnidade.pesqCod()");
+            throw new RepositorioPesquisarException(e, 
+                    RepositorioUnidade.class.getName()+".pesqCod()");
         }
         finally{
             gerenciadorConexao.desconectar(c);

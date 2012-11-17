@@ -14,6 +14,7 @@ import ce.erro.RepositorioForeignKeyException;
 import ce.erro.RepositorioPesquisarException;
 import ce.erro.RepositorioListarException;
 import ce.model.basica.Fornecedor;
+import ce.model.basica.Usuario;
 //import ce.model.dao.RepositorioProduto;
 import ce.model.dao.RepositorioFornecedor;
 import ce.model.dao.IRepositorioFornecedor;
@@ -26,8 +27,17 @@ import java.util.ResourceBundle;
  * @author andreluiz
  */
 public class ControladorFornecedor {
+    private Usuario user;
     private IRepositorioFornecedor rpForn= new RepositorioFornecedor();
     private ResourceBundle rb= ResourceBundle.getBundle("ce.erro.Erro");
+    
+    public ControladorFornecedor(){
+        user= new Usuario();
+    }
+    
+    public ControladorFornecedor(Usuario user){
+        this.user=user;
+    }
     
     public void validarDados(Fornecedor f) throws ControladorException{
         /*boolean contemErro= false;
@@ -38,37 +48,42 @@ public class ControladorFornecedor {
             fieldsMsg.add("O campo não pode estar em branco.");
             contemErro=true;
         }*/
-        String sPath="ControladorFornecedor.validarDados()";
+        String sPath= ControladorFornecedor.class.getName()+".validarDados()";
         if ((f.getNome() == null) || (f.getNome().compareTo("")==0)){
-            throw new ControladorException("O campo nome deve ser preenchido.",
+            throw new ControladorException(user.getNome(),
+                    "O campo nome deve ser preenchido.",
                     sPath);
         }
         //Substituir pela linha abaixo após os testes
         //if (!VerificarCpfCnpj.executar(f.getCnpj())){
         if ((f.getCnpj() == null) || (f.getCnpj().compareTo("")==0)){
-            throw new ControladorException("CNPJ inválido.", sPath);
+            throw new ControladorException(user.getNome(),
+                    "CNPJ inválido.", sPath);
         }
         if ((f.getLogradouro() == null)||(f.getLogradouro().compareTo("")==0)){
-            throw new ControladorException("Informe o logradouro do fornecedor",
+            throw new ControladorException(user.getNome(),
+                    "Informe o logradouro do fornecedor",
                     sPath);
         }
         if ((f.getBairro() == null) || (f.getBairro().compareTo("")==0)){
-            throw new ControladorException("Informe o Bairro do fornecedor", 
+            throw new ControladorException(user.getNome(),
+                    "Informe o Bairro do fornecedor", 
                     sPath);
         }
         if ((f.getMunicipio() == null) || (f.getMunicipio().compareTo("")==0)){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     "Informe o municipio do fornecedor", sPath);
         }
         if ((f.getUf() == null) || (f.getUf().compareTo("")==0)){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     "Informe a sigla do estado do fornecedor", sPath);
         }
         if ((f.getCep() == null) || (f.getCep().compareTo("")==0)){
-            throw new ControladorException("Informe o CEP", sPath);
+            throw new ControladorException(user.getNome(),
+                    "Informe o CEP", sPath);
         }
         if ((f.getFone() == null) || (f.getFone().compareTo("")==0)){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     "Informe o número do telefone do fornecedor", sPath);
         }
     }
@@ -78,19 +93,20 @@ public class ControladorFornecedor {
         try{
             Fornecedor forn= rpForn.pesqCnpj(f.getCnpj(), false);
             if (forn != null){
-                throw new ControladorException(rb.getString("CtrlFornExiste"),
-                        "ControladorFornecedor.verificarSePodeInserir()");
+                throw new ControladorException(user.getNome(),
+                        rb.getString("CtrlFornExiste"),
+                        ControladorFornecedor.class.getName()+".verificarSePodeInserir()");
             }
         }
         catch(ConexaoException ce){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroVerifIndisp") + " fornecedor.",
-                    "ControladorFornecedor.verificarSePodeInserir()");
+                    ControladorFornecedor.class.getName()+".verificarSePodeInserir()");
         }
         catch(RepositorioPesquisarException re){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroVerificar") + " fornecedor.",
-                    "ControladorFornecedor.verificarSePodeInserir()");
+                    ControladorFornecedor.class.getName()+".verificarSePodeInserir()");
         }
     }
     
@@ -99,14 +115,14 @@ public class ControladorFornecedor {
             rpForn.inserir(f);
         }
         catch(ConexaoException ce){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroInsIndisp") + " fornecedor.",
-                    "ControladorFornecedor.inserir()");
+                    ControladorFornecedor.class.getName()+".inserir()");
         }
         catch(RepositorioInserirException e){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroInserir") + " fornecedor.",
-                    "ControladorFornecedor.inserir()");
+                    ControladorFornecedor.class.getName()+".inserir()");
         }
     }
     
@@ -115,14 +131,14 @@ public class ControladorFornecedor {
             rpForn.alterar(f);
         }
         catch(ConexaoException ce){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroAltIndisp") + " fornecedor.",
-                    "ControladorFornecedor.alterar()");
+                    ControladorFornecedor.class.getName()+".alterar()");
         }
         catch(RepositorioAlterarException e){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroAlterar") + " fornecedor.",
-                    "ControladorFornecedor.alterar()");
+                    ControladorFornecedor.class.getName()+".alterar()");
         }
     }
     
@@ -130,19 +146,20 @@ public class ControladorFornecedor {
         try{
             Fornecedor forn= rpForn.pesqCodForn(cod, false);
             if (forn == null){
-                throw new ControladorException(rb.getString("CtrlFornNaoExiste"),
-                        "ControladorFornecedor.verificarSeExiste()");
+                throw new ControladorException(user.getNome(),
+                        rb.getString("CtrlFornNaoExiste"),
+                        ControladorFornecedor.class.getName()+".verificarSeExiste()");
             }
         }
         catch(ConexaoException e){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroVerifIndisp") + " fornecedor.",
-                    "ControladorFornecedor.verificarSeExiste()");
+                    ControladorFornecedor.class.getName()+".verificarSeExiste()");
         }
         catch(RepositorioPesquisarException ie){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroVerificar") + " fornecedor.",
-                    "ControladorFornecedor.verificarSeExiste()");
+                    ControladorFornecedor.class.getName()+".verificarSeExiste()");
         }
     }
     
@@ -155,19 +172,19 @@ public class ControladorFornecedor {
             rpForn.excluir(f.getCodForn());
         }
         catch(ConexaoException e){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroDelIndisp") + " fornecedor.",
-                    "ControladorFornecedor.excluir()");
+                    ControladorFornecedor.class.getName()+".excluir()");
         }
         catch(RepositorioForeignKeyException rfke){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlNaoPodeExcluirForn"),
-                    "ControladorFornecedor.excluir()");
+                    ControladorFornecedor.class.getName()+".excluir()");
         }
         catch(RepositorioExcluirException re){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroExcluir") + " fornecedor.",
-                    "ControladorFornecedor.excluir()");
+                    ControladorFornecedor.class.getName()+".excluir()");
         }
     }
     
@@ -176,14 +193,14 @@ public class ControladorFornecedor {
             return rpForn.listar();
         }
         catch(ConexaoException e){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroListIndisp") + " fornecedor.",
-                    "ControladorFornecedor.listar()");
+                    ControladorFornecedor.class.getName()+".listar()");
         }
         catch(RepositorioListarException re){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroListar") + " fornecedor.",
-                    "ControladorFornecedor.listar()");
+                    ControladorFornecedor.class.getName()+".listar()");
         }
     }
     
@@ -191,20 +208,21 @@ public class ControladorFornecedor {
         try{
             Fornecedor forn= rpForn.pesqCodForn(cod, comProds);
             if (forn == null){
-                throw new ControladorException(rb.getString("CtrlFornNaoExiste"),
-                        "ControladorFornecedor.trazer()");
+                throw new ControladorException(user.getNome(),
+                        rb.getString("CtrlFornNaoExiste"),
+                        ControladorFornecedor.class.getName()+".trazer()");
             }
             return forn;
         }
         catch(ConexaoException ce){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroTrazerIndisp") + " fornecedor.",
-                    "ControladorFornecedor.trazer()");
+                    ControladorFornecedor.class.getName()+".trazer()");
         }
         catch(RepositorioPesquisarException re){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroTrazer") + " fornecedor.",
-                    "ControladorFornecedor.trazer()");
+                    ControladorFornecedor.class.getName()+".trazer()");
         }
     }
     
@@ -214,14 +232,14 @@ public class ControladorFornecedor {
             return forn;
         }
         catch(ConexaoException ce){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroTrazerIndisp") + " fornecedor.",
-                    "ControladorFornecedor.trazer()");
+                    ControladorFornecedor.class.getName()+".trazer()");
         }
         catch(RepositorioPesquisarException re){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroTrazer") + " fornecedor.",
-                    "ControladorFornecedor.trazer()");
+                    ControladorFornecedor.class.getName()+".trazer()");
         }
     }
     
@@ -230,14 +248,28 @@ public class ControladorFornecedor {
             return rpForn.pesquisar(nome);
         }
         catch(ConexaoException e){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroPesqIndisp") + " fornecedor.",
-                    "ControladorFornecedor.pesquisar()");
+                    ControladorFornecedor.class.getName()+".pesquisar()");
         }
         catch(RepositorioPesquisarException re){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroPesquisar") + " fornecedor.",
-                    "ControladorFornecedor.pesquisar()");
+                    ControladorFornecedor.class.getName()+".pesquisar()");
         }
+    }
+
+    /**
+     * @return the user
+     */
+    public Usuario getUser() {
+        return user;
+    }
+
+    /**
+     * @param user the user to set
+     */
+    public void setUser(Usuario user) {
+        this.user = user;
     }
 }

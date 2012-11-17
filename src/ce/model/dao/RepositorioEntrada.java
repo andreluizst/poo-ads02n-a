@@ -17,10 +17,6 @@ import ce.model.basica.Produto;
 import ce.model.basica.Entrada;
 import ce.util.GerenciadorConexao;
 import ce.util.IGerenciadorConexao;
-import ce.model.dao.IRepositorioFornecedor;
-import ce.model.dao.RepositorioFornecedor;
-import ce.model.dao.IRepositorioProduto;
-import ce.model.dao.RepositorioProduto;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -68,13 +64,14 @@ public class RepositorioEntrada implements IRepositorioEntrada{
             rpProd.atualizarQtde(e.getProduto());
         }
         catch(SQLException sqlE){
-            throw new RepositorioInserirException(sqlE, "RepositorioEntrada.inserir()");
+            throw new RepositorioInserirException(sqlE, 
+                    RepositorioEntrada.class.getName()+".inserir()");
         }
         catch(RepositorioAlterarException ae){
             //if (reverterInserir(e))
                 throw new RepositorioInserirException(
                         rb.getString("CtrlErroAtlzQtde"),
-                        "RepositorioEntrada.inserir()");
+                        RepositorioEntrada.class.getName()+".inserir()");
 
         }
         finally{
@@ -113,12 +110,13 @@ public class RepositorioEntrada implements IRepositorioEntrada{
             rpProd.atualizarQtde(e.getProduto());
         }
         catch(SQLException sqlE){
-            throw new RepositorioAlterarException(sqlE, "RepositorioEntrada.alterar()");
+            throw new RepositorioAlterarException(sqlE, 
+                    RepositorioEntrada.class.getName()+".alterar()");
         }
         catch(RepositorioAlterarException ae){
                 throw new RepositorioAlterarException(
                         rb.getString("CtrlErroAtlzQtde"),
-                        "RepositorioEntrada.alterar()");
+                        RepositorioEntrada.class.getName()+".alterar()");
 
         }
         finally{
@@ -155,14 +153,15 @@ public class RepositorioEntrada implements IRepositorioEntrada{
             String msg= sqlE.getMessage().toLowerCase();
             if (msg!=null && msg.contains("foreign key constraint fails")){
                 throw new RepositorioForeignKeyException(sqlE,
-                        "RepositorioEntrada.excluir()");
+                        RepositorioEntrada.class.getName()+".excluir()");
             }
-            throw new RepositorioExcluirException(sqlE, "RepositorioEntrada.excluir()");
+            throw new RepositorioExcluirException(sqlE, 
+                    RepositorioEntrada.class.getName()+".excluir()");
         }
         catch(RepositorioAlterarException ae){
             throw new RepositorioExcluirException(
                     rb.getString("CtrlErroAtlzQtde"),
-                    "RepositorioEntrada.excluir()");
+                    RepositorioEntrada.class.getName()+".excluir()");
         }
         finally{
             gerenciadorConexao.desconectar(c);
@@ -204,11 +203,11 @@ public class RepositorioEntrada implements IRepositorioEntrada{
         }
         catch(SQLException ex){
             throw new RepositorioListarException(ex,
-                    "RepositorioEntrada.listar()");
+                    RepositorioEntrada.class.getName()+".listar()");
         }
         catch(RepositorioException ex){
             throw new RepositorioListarException(ex, 
-                    "RepositorioEntrada.listar()."+ex.getPathClassCall());
+                    RepositorioEntrada.class.getName()+".listar()."+ex.getPathClassCall());
         }
         finally{
             gerenciadorConexao.desconectar(c);
@@ -250,11 +249,11 @@ public class RepositorioEntrada implements IRepositorioEntrada{
         }
         catch(SQLException ex){
             throw new RepositorioPesquisarException(ex,
-                    "RepositorioEntrada.pesqNum()");
+                    RepositorioEntrada.class.getName()+".pesqNum()");
         }
         catch(RepositorioException ex){
             throw new RepositorioPesquisarException(ex, 
-                    "RepositorioEntrada.pesqNum()."+ex.getPathClassCall());
+                    RepositorioEntrada.class.getName()+".pesqNum()."+ex.getPathClassCall());
         }
         finally{
             gerenciadorConexao.desconectar(c);

@@ -14,6 +14,7 @@ import ce.erro.RepositorioForeignKeyException;
 import ce.erro.RepositorioPesquisarException;
 import ce.erro.RepositorioListarException;
 import ce.model.basica.Unidade;
+import ce.model.basica.Usuario;
 import ce.model.dao.IRepositorioUnidade;
 import ce.model.dao.RepositorioUnidade;
 import java.util.List;
@@ -24,13 +25,23 @@ import java.util.ResourceBundle;
  * @author Andre
  */
 public class ControladorUnidade {
+    private Usuario user;
     private IRepositorioUnidade rpUnid= new RepositorioUnidade();
     private ResourceBundle rb= ResourceBundle.getBundle("ce.erro.Erro");
     
+    public ControladorUnidade(){
+        user= new Usuario();
+    }
+    
+    public ControladorUnidade(Usuario user){
+        this.user=user;
+    }
+    
     public void validarDados(Unidade u) throws ControladorException{
         if (u.getDescricao() == null){
-            throw new ControladorException(rb.getString("CtrlErroValInvalido"),
-                    "ControladorUnidade.validarDados()");
+            throw new ControladorException(user.getNome(),
+                    rb.getString("CtrlErroValInvalido"),
+                    ControladorUnidade.class.getName()+".validarDados()");
         }
     }
     
@@ -39,17 +50,18 @@ public class ControladorUnidade {
         try {
             lista = rpUnid.pesquisar(u.getDescricao());
             if(lista.size() > 0){
-                throw new ControladorException(rb.getString("CtrlUnidExiste"),
-                        "ControladorUnidade.verificarSePodeInserir()");
+                throw new ControladorException(user.getNome(),
+                        rb.getString("CtrlUnidExiste"),
+                        ControladorUnidade.class.getName()+".verificarSePodeInserir()");
             }
         } catch (ConexaoException ex) {
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroVerifIndisp") + " unidade.",
-                    "ControladorUnidade.verificarSePodeInserir()");
+                    ControladorUnidade.class.getName()+".verificarSePodeInserir()");
         } catch (RepositorioException ex) {
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroVerificar") + " unidade.",
-                    "ControladorUnidade.verificarSePodeInserir()");
+                    ControladorUnidade.class.getName()+".verificarSePodeInserir()");
         }
     }
     
@@ -57,13 +69,13 @@ public class ControladorUnidade {
         try {
             rpUnid.inserir(u);
         } catch (ConexaoException ce) {
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroInsIndisp") + " unidade.",
-                    "ControladorUnidade.inserir()");
+                    ControladorUnidade.class.getName()+".inserir()");
         } catch (RepositorioInserirException re) {
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroInseir") + " unidade.",
-                    "ControladorUnidade.inserir()");
+                    ControladorUnidade.class.getName()+".inserir()");
         }
     }
     
@@ -72,14 +84,14 @@ public class ControladorUnidade {
             rpUnid.alterar(u);
         }
         catch(ConexaoException ce){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroAltIndisp") + " unidade.",
-                    "ControladorUnidade.alterar()");
+                    ControladorUnidade.class.getName()+".alterar()");
         }
         catch(RepositorioAlterarException rae){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroAlterar") + " unidade.",
-                    "ControladorUnidade.alterar()");
+                    ControladorUnidade.class.getName()+".alterar()");
         }
     }
     
@@ -88,19 +100,20 @@ public class ControladorUnidade {
         try{
             unid= rpUnid.pesqCod(cod);
             if (unid == null){
-                throw new ControladorException(rb.getString("CtrlUnidNaoExiste"),
-                        "ControladorUnidade.verificarSeExiste()");
+                throw new ControladorException(user.getNome(),
+                        rb.getString("CtrlUnidNaoExiste"),
+                        ControladorUnidade.class.getName()+".verificarSeExiste()");
             }
         }
         catch(ConexaoException e){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroVerifIndisp") + " unidade.",
-                    "ControladorUnidade.verificarSeExiste()");
+                    ControladorUnidade.class.getName()+".verificarSeExiste()");
         }
         catch(RepositorioPesquisarException ie){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroVerificar") + " unidade.",
-                    "ControladorUnidade.verificarSeExiste()");
+                    ControladorUnidade.class.getName()+".verificarSeExiste()");
         }
     }
     
@@ -113,19 +126,19 @@ public class ControladorUnidade {
             rpUnid.excluir(u.getCodUnid());
         }
         catch(ConexaoException ce){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroDelIndisp") + " unidade.",
-                    "ControladorUnidade.excluir()");
+                    ControladorUnidade.class.getName()+".excluir()");
         }
         catch(RepositorioForeignKeyException rfke){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlNaoPodeExcluirUnid"),
-                    "ControladorUnidade.excluir()");
+                    ControladorUnidade.class.getName()+".excluir()");
         }
         catch(RepositorioExcluirException re){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroExcluir") + " unidade.",
-                    "ControladorUnidade.excluir()");
+                    ControladorUnidade.class.getName()+".excluir()");
         }
     }
     
@@ -134,14 +147,14 @@ public class ControladorUnidade {
             return rpUnid.listar();
         }
         catch(ConexaoException ce){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroListIndisp") + " unidade.",
-                    "ControladorUnidade.listar()");
+                    ControladorUnidade.class.getName()+".listar()");
         }
         catch(RepositorioListarException re){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroListar") + " unidade.",
-                    "ControladorUnidade.listar()");
+                    ControladorUnidade.class.getName()+".listar()");
         }
     }
     
@@ -150,14 +163,14 @@ public class ControladorUnidade {
             return rpUnid.pesquisar(descricao);
         }
         catch(ConexaoException ce){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroPesqIndisp") + " unidade.",
-                    "ControladorUnidade.pesquisar()");
+                    ControladorUnidade.class.getName()+".pesquisar()");
         }
         catch(RepositorioPesquisarException re){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroPesquisar") + " unidade.",
-                    "ControladorUnidade.pesquisar()");
+                    ControladorUnidade.class.getName()+".pesquisar()");
         }
     }
     
@@ -166,15 +179,29 @@ public class ControladorUnidade {
             return rpUnid.pesqCod(cod);
         }
         catch(ConexaoException ce){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroTrazerIndisp") + " unidade.",
-                    "ControladorUnidade.trazer()");
+                    ControladorUnidade.class.getName()+".trazer()");
         }
         catch(RepositorioPesquisarException re){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroTrazer") + " unidade.",
-                    "ControladorUnidade.trazer()");
+                    ControladorUnidade.class.getName()+".trazer()");
         }
+    }
+
+    /**
+     * @return the user
+     */
+    public Usuario getUser() {
+        return user;
+    }
+
+    /**
+     * @param user the user to set
+     */
+    public void setUser(Usuario user) {
+        this.user = user;
     }
     
 }

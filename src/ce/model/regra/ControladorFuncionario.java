@@ -14,6 +14,7 @@ import ce.erro.RepositorioForeignKeyException;
 import ce.erro.RepositorioPesquisarException;
 import ce.erro.RepositorioListarException;
 import ce.model.basica.Funcionario;
+import ce.model.basica.Usuario;
 import ce.model.dao.RepositorioFuncionario;
 import ce.model.dao.IRepositorioFuncionario;
 import java.util.List;
@@ -26,44 +27,69 @@ import ce.util.VerificarCpfCnpj;
  * @author Andre
  */
 public class ControladorFuncionario {
+    private Usuario user;
     private IRepositorioFuncionario rpFun= new RepositorioFuncionario();
     private ResourceBundle rb= ResourceBundle.getBundle("ce.erro.Erro");
     
     
+    public ControladorFuncionario(){
+        user= new Usuario();
+    }
+    
+    public ControladorFuncionario(Usuario user){
+        this.user=user;
+    }
+    
     public void validarDados(Funcionario f) throws ControladorException{
-        //String sPath="ControladorFuncionario.validarDados()";
+        String sPath= ControladorFuncionario.class.getName()+".validarDados()";
         if ((f.getNome() == null) || (f.getNome().compareTo("")==0)){
-            throw new ControladorException("O campo nome deve ser preenchido.");
-                    //sPath);
+            throw new ControladorException(user.getNome(),
+                    "O campo nome deve ser preenchido.",
+                    sPath);
         }
         if ((f.getCpf() == null) || (f.getCpf().compareTo("")==0)){
-            throw new ControladorException("O campo CPF deve ser preenchido.");
-                    //sPath);
+            throw new ControladorException(user.getNome(),
+                    "O campo CPF deve ser preenchido.",
+                    sPath);
         }
         if (!VerificarCpfCnpj.executar(f.getCpf())){
-            throw new ControladorException("CPF inválido!");
+            throw new ControladorException(user.getNome(),
+                    "CPF inválido!", sPath);
         }
         if (!ValidarStringData.execute(f.getDtNasc())){
-           throw new ControladorException("O campo data deve ser preenchido com uma data válida.");
+           throw new ControladorException(user.getNome(),
+                   "O campo data deve ser preenchido com uma data válida.",
+                   sPath);
         }
         if ((f.getLogradouro() == null) || (f.getLogradouro().compareTo("")==0)){
-            throw new ControladorException("O campo logradouro deve ser preenchido.");
-                    //sPath);
+            throw new ControladorException(user.getNome(),
+                    "O campo logradouro deve ser preenchido.",
+                    sPath);
         }
         if ((f.getBairro() == null) || (f.getBairro().compareTo("")==0)){
-            throw new ControladorException("O campo bairro deve ser preenchido.");
+            throw new ControladorException(user.getNome(),
+                    "O campo bairro deve ser preenchido.",
+                    sPath);
         }
         if ((f.getMunicipio() == null) || (f.getMunicipio().compareTo("")==0)){
-            throw new ControladorException("O campo municipio deve ser preenchido.");
+            throw new ControladorException(user.getNome(),
+                    "O campo municipio deve ser preenchido.",
+                    sPath);
         }
         if ((f.getUf() == null) || (f.getUf().compareTo("")==0)){
-            throw new ControladorException("O campo UF deve ser preenchido.");
+            throw new ControladorException(user.getNome(),
+                    "O campo UF deve ser preenchido.",
+                    sPath);
         }
         if ((f.getCep() == null) || (f.getCep().compareTo("")==0)){
-            throw new ControladorException("O campo CEP deve ser preenchido.");
+            throw new ControladorException(user.getNome(), 
+                    "O campo CEP deve ser preenchido.",
+                    sPath);
         }
         if ((f.getFone() == null) || (f.getFone().compareTo("")==0)){
-            throw new ControladorException("O campo fone deve ser preenchido.");
+            throw new ControladorException(user.getNome(),
+                    "O campo fone deve ser preenchido.",
+                    sPath);
         }
     }
     
@@ -71,19 +97,20 @@ public class ControladorFuncionario {
         try{
             Funcionario fun= rpFun.pesqCpf(f.getCpf());
             if (fun != null){
-                throw new ControladorException(rb.getString("CtrlFunExiste"),
-                        "ControladorFuncionario.verificarSePodeInserir()");
+                throw new ControladorException(user.getNome(),
+                        rb.getString("CtrlFunExiste"),
+                        ControladorFuncionario.class.getName()+".verificarSePodeInserir()");
             }
         }
         catch(ConexaoException ce){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroVerifIndisp") + " funcionário.",
-                    "ControladorFuncionario.verificarSePodeInserir()");
+                    ControladorFuncionario.class.getName()+".verificarSePodeInserir()");
         }
         catch(RepositorioPesquisarException re){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroVerificar") + " funcionário.",
-                    "ControladorFuncionario.verificarSePodeInserir()");
+                    ControladorFuncionario.class.getName()+".verificarSePodeInserir()");
         }
     }
     
@@ -92,14 +119,14 @@ public class ControladorFuncionario {
             rpFun.inserir(f);
         }
         catch(ConexaoException ce){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroInsIndisp") + " funcionário.",
-                    "ControladorFuncionario.inserir()");
+                    ControladorFuncionario.class.getName()+".inserir()");
         }
         catch(RepositorioInserirException e){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroInserir") + " funcionário.",
-                    "ControladorFuncionario.inserir()");
+                    ControladorFuncionario.class.getName()+".inserir()");
         }
     }
     
@@ -108,14 +135,14 @@ public class ControladorFuncionario {
             rpFun.alterar(f);
         }
         catch(ConexaoException ce){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroAltIndisp") + " funcionário.",
-                    "ControladorFuncionario.alterar()");
+                    ControladorFuncionario.class.getName()+".alterar()");
         }
         catch(RepositorioAlterarException e){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroAlterar") + " funcionário.",
-                    "ControladorFuncionario.alterar()");
+                    ControladorFuncionario.class.getName()+".alterar()");
         }
     }
     
@@ -127,19 +154,20 @@ public class ControladorFuncionario {
         try{
             Funcionario fun= rpFun.pesqCpf(cpf);
             if (fun == null){
-                throw new ControladorException(rb.getString("CtrlFunNaoExiste"),
-                        "ControladorFuncionario.verificarSeExiste()");
+                throw new ControladorException(user.getNome(),
+                        rb.getString("CtrlFunNaoExiste"),
+                        ControladorFuncionario.class.getName()+".verificarSeExiste()");
             }
         }
         catch(ConexaoException e){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroVerifIndisp") + " funcionário.",
-                    "ControladorFuncionario.verificarSeExiste()");
+                    ControladorFuncionario.class.getName()+".verificarSeExiste()");
         }
         catch(RepositorioPesquisarException ie){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroVerificar") + " funcionário.",
-                    "ControladorFuncionario.verificarSeExiste()");
+                    ControladorFuncionario.class.getName()+".verificarSeExiste()");
         }
     }
     
@@ -148,19 +176,19 @@ public class ControladorFuncionario {
             rpFun.excluir(f.getCpf());
         }
         catch(ConexaoException e){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroDelIndisp") + " funcionário.",
-                    "ControladorFuncionario.excluir()");
+                    ControladorFuncionario.class.getName()+".excluir()");
         }
         catch(RepositorioForeignKeyException rfke){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlNaoPodeExcluirFun"),
-                    "ControladorFuncionario.excluir()");
+                    ControladorFuncionario.class.getName()+".excluir()");
         }
         catch(RepositorioExcluirException re){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroExcluir") + " funcionário.",
-                    "ControladorFuncionario.excluir()");
+                    ControladorFuncionario.class.getName()+".excluir()");
         }
     }
     
@@ -169,14 +197,14 @@ public class ControladorFuncionario {
             return rpFun.listar();
         }
         catch(ConexaoException e){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroListIndisp") + " funcionários.",
-                    "ControladorFuncionario.listar()");
+                    ControladorFuncionario.class.getName()+".listar()");
         }
         catch(RepositorioListarException re){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroListar") + " funcionários.",
-                    "ControladorFuncionario.listar()");
+                    ControladorFuncionario.class.getName()+".listar()");
         }
     }
     
@@ -186,14 +214,14 @@ public class ControladorFuncionario {
             return fun;
         }
         catch(ConexaoException ce){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroTrazerIndisp") + " funcionário.",
-                    "ControladorFuncionario.trazer()");
+                    ControladorFuncionario.class.getName()+".trazer()");
         }
         catch(RepositorioPesquisarException re){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroTrazer") + " funcionario.",
-                    "ControladorFuncionario.trazer()");
+                    ControladorFuncionario.class.getName()+".trazer()");
         }
     }
     
@@ -202,15 +230,29 @@ public class ControladorFuncionario {
             return rpFun.pesquisar(nome);
         }
         catch(ConexaoException e){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroPesqIndisp") + " funcionário.",
-                    "ControladorFuncionario.pesquisar()");
+                    ControladorFuncionario.class.getName()+".pesquisar()");
         }
         catch(RepositorioPesquisarException re){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroPesquisar") + " funcionário.",
-                    "ControladorFuncionario.pesquisar()");
+                    ControladorFuncionario.class.getName()+".pesquisar()");
         }
+    }
+
+    /**
+     * @return the user
+     */
+    public Usuario getUser() {
+        return user;
+    }
+
+    /**
+     * @param user the user to set
+     */
+    public void setUser(Usuario user) {
+        this.user = user;
     }
     
 }

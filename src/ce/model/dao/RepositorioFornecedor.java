@@ -61,7 +61,8 @@ public class RepositorioFornecedor implements IRepositorioFornecedor{
             pstmt.close();
         }
         catch(SQLException e){
-            throw new RepositorioInserirException(e, "RepositorioFornecedor.inserir()");
+            throw new RepositorioInserirException(e, 
+                    RepositorioFornecedor.class.getName()+".inserir()");
         }
         finally{
             gerenciadorConexao.desconectar(c);
@@ -148,11 +149,12 @@ public class RepositorioFornecedor implements IRepositorioFornecedor{
             }
         }
         catch(SQLException e){
-            throw new RepositorioAlterarException(e, "RepositorioFornecedor.alterar()");
+            throw new RepositorioAlterarException(e, 
+                    RepositorioFornecedor.class.getName()+".alterar()");
         }
         catch(RepositorioException e){
             throw new RepositorioAlterarException(e, 
-                    "RepositorioFornecedor.alterar()."+e.getPathClassCall());
+                    RepositorioFornecedor.class.getName()+".alterar()."+e.getPathClassCall());
         }
         finally{
             gerenciadorConexao.desconectar(c);
@@ -185,9 +187,11 @@ public class RepositorioFornecedor implements IRepositorioFornecedor{
         catch(SQLException e){
             String msg= e.getMessage().toLowerCase();
             if (msg!=null && msg.contains("foreign key constraint fails")){
-                throw new RepositorioForeignKeyException(e, "RepositorioFornecedor.excluir()");
+                throw new RepositorioForeignKeyException(e, 
+                        RepositorioFornecedor.class.getName()+".excluir()");
             }
-            throw new RepositorioExcluirException(e, "RepositorioFornecedor.excluir()");
+            throw new RepositorioExcluirException(e, 
+                    RepositorioFornecedor.class.getName()+".excluir()");
         }
         finally
         {
@@ -245,11 +249,11 @@ public class RepositorioFornecedor implements IRepositorioFornecedor{
         }
         catch(SQLException e){
             throw new RepositorioListarException(e,
-                    "RepositorioFornecedor.listar()");
+                    RepositorioFornecedor.class.getName()+".listar()");
         }
         catch(RepositorioException ex){
             throw new RepositorioListarException(ex, 
-                    "RepositorioFornecedor.listar()."+ex.getPathClassCall());
+                    RepositorioFornecedor.class.getName()+".listar()."+ex.getPathClassCall());
         }
         finally{
             gerenciadorConexao.desconectar(c);
@@ -312,11 +316,11 @@ public class RepositorioFornecedor implements IRepositorioFornecedor{
         }
         catch(SQLException e){
             throw new RepositorioPesquisarException(e, 
-                    "RepositorioFornecedor.pesquisar()");
+                    RepositorioFornecedor.class.getName()+".pesquisar()");
         }
         catch(RepositorioException ex){
             throw new RepositorioPesquisarException(ex, 
-                    "RepositorioFornecedor.pesquisar()."+ex.getPathClassCall());
+                    RepositorioFornecedor.class.getName()+".pesquisar()."+ex.getPathClassCall());
         }
         finally{
             gerenciadorConexao.desconectar(c);
@@ -392,11 +396,12 @@ public class RepositorioFornecedor implements IRepositorioFornecedor{
             return f;
         }
         catch(SQLException e){
-            throw new RepositorioPesquisarException(e, "RepositoroiFornecedor.pesqCodForn()");
+            throw new RepositorioPesquisarException(e, 
+                    RepositorioFornecedor.class.getName()+".pesqCodForn()");
         }
         catch(RepositorioException ex){
             throw new RepositorioPesquisarException(ex, 
-                    "RepositorioFornecedor.pesqCodForn()."+ex.getPathClassCall());
+                    RepositorioFornecedor.class.getName()+".pesqCodForn()."+ex.getPathClassCall());
         }
         finally{
             gerenciadorConexao.desconectar(c);
@@ -463,11 +468,12 @@ public class RepositorioFornecedor implements IRepositorioFornecedor{
             return f;
         }
         catch(SQLException e){
-            throw new RepositorioPesquisarException(e, "RepositoroiFornecedor.pesqCodForn()");
+            throw new RepositorioPesquisarException(e, 
+                    RepositorioFornecedor.class.getName()+".pesqCnpj()");
         }
         catch(RepositorioException ex){
             throw new RepositorioPesquisarException(ex, 
-                    "RepositorioFornecedor.pesqCodForn()."+ex.getPathClassCall());
+                    RepositorioFornecedor.class.getName()+".pesqCnpj()."+ex.getPathClassCall());
         }
         finally{
             gerenciadorConexao.desconectar(c);

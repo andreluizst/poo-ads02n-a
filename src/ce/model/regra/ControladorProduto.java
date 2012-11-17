@@ -7,6 +7,7 @@ package ce.model.regra;
 import ce.erro.*;
 import ce.model.basica.Categoria;
 import ce.model.basica.Produto;
+import ce.model.basica.Usuario;
 import ce.model.dao.IRepositorioCategoria;
 import ce.model.dao.RepositorioCategoria;
 import ce.model.dao.IRepositorioProduto;
@@ -19,13 +20,24 @@ import java.util.ResourceBundle;
  * @author andreluiz
  */
 public class ControladorProduto {
+    private Usuario user;
     private IRepositorioCategoria rpCateg= new RepositorioCategoria();
     private IRepositorioProduto rpProd= new RepositorioProduto();
     private ResourceBundle rb= ResourceBundle.getBundle("ce.erro.Erro");
     
+    public ControladorProduto(){
+        user= new Usuario();
+    }
+    
+    public ControladorProduto(Usuario user){
+        this.user=user;
+    }
+    
     public void validarDados(Produto p) throws ControladorException{
         if (p.getDescProd() == null){
-            throw new ControladorException(rb.getString("CtrlErroValInvalido"));
+            throw new ControladorException(user.getNome(),
+                    rb.getString("CtrlErroValInvalido"),
+                    ControladorProduto.class.getName()+".validarDados()");
         }
     }
     
@@ -53,14 +65,14 @@ public class ControladorProduto {
             rpProd.inserir(p);
         }
         catch(ConexaoException e){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroInsIndisp") + " produto.",
-                    "ControladorProduto.inserir()");
+                    ControladorProduto.class.getName()+".inserir()");
         }
         catch(RepositorioInserirException ie){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroInserir") + " produto.",
-                    "ControladorProduto.inserir()");
+                    ControladorProduto.class.getName()+".inserir()");
         }
     }
     
@@ -69,19 +81,20 @@ public class ControladorProduto {
         try{
             prod= rpProd.pesqCodProd(cod, false);
             if (prod == null){
-                throw new ControladorException(rb.getString("CtrlPordNaoExiste"),
-                        "ControladorProduto.verificarSeExiste()");
+                throw new ControladorException(user.getNome(),
+                        rb.getString("CtrlPordNaoExiste"),
+                        ControladorProduto.class.getName()+".verificarSeExiste()");
             }
         }
         catch(ConexaoException e){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroVerifIndisp") + " produto.",
-                    "ControladorProduto.verificarSeExiste()");
+                    ControladorProduto.class.getName()+".verificarSeExiste()");
         }
         catch(RepositorioPesquisarException ie){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroVerificar") + " produto.",
-                    "ControladorProduto.verificarSeExiste()");
+                    ControladorProduto.class.getName()+".verificarSeExiste()");
         }
     }
     
@@ -94,14 +107,14 @@ public class ControladorProduto {
             rpProd.alterar(p);
         }
         catch(ConexaoException e){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroAltIndisp") + " produto.",
-                    "ControladorProduto.alterar()");
+                    ControladorProduto.class.getName()+".alterar()");
         }
         catch(RepositorioException ie){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroAlterar") + " produto.",
-                    "ControladorProduto.alterar()");
+                    ControladorProduto.class.getName()+".alterar()");
         }
     }
     
@@ -110,14 +123,14 @@ public class ControladorProduto {
             rpProd.atualizarQtde(p);
         }
         catch(ConexaoException e){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroAtlzQtdeIndisp"),
-                    "ControladorProduto.altualizarQtde()");
+                    ControladorProduto.class.getName()+".altualizarQtde()");
         }
         catch(RepositorioException ie){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroAtlzQtde"),
-                    "ControladorProduto.altualizarQtde()");
+                    ControladorProduto.class.getName()+".altualizarQtde()");
         }
     }
     
@@ -126,19 +139,19 @@ public class ControladorProduto {
             rpProd.excluir(p.getCodProd());
         }
         catch(ConexaoException e){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroDelIndisp") + " produto.",
-                    "ControladorProduto.excluir()");
+                    ControladorProduto.class.getName()+".excluir()");
         }
         catch(RepositorioForeignKeyException rfke){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlNaoPodeExcluirProd"),
-                    "ControladorProduto.excluir()");
+                    ControladorProduto.class.getName()+".excluir()");
         }
         catch(RepositorioException ie){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroExcluir") + " produto.",
-                    "ControladorProduto.excluir()");
+                    ControladorProduto.class.getName()+".excluir()");
         }
     }
     
@@ -147,14 +160,14 @@ public class ControladorProduto {
             return rpProd.listar();
         }
         catch(ConexaoException e){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroListIndisp") + " produto.",
-                    "ControladorProduto.listar()");
+                    ControladorProduto.class.getName()+".listar()");
         }
         catch(RepositorioException e){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroListar") + " produto.",
-                    "ControladorProduto.listar()");
+                    ControladorProduto.class.getName()+".listar()");
         }
     }
     
@@ -163,14 +176,14 @@ public class ControladorProduto {
             return rpProd.pesquisar(descricao);
         }
         catch(ConexaoException e){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroPesqIndisp") + " produto.",
-                    "ControladorProduto.pesquisar()");
+                    ControladorProduto.class.getName()+".pesquisar()");
         }
         catch(RepositorioException e){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroPesquisar") + " produto.",
-                    "ControladorProduto.pesquisar()");
+                    ControladorProduto.class.getName()+".pesquisar()");
         }
     }
     
@@ -179,14 +192,14 @@ public class ControladorProduto {
             return rpProd.pesqCodProd(cod, listarForns);
         }
         catch(ConexaoException e){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroTrazerIndisp") + " produto.",
-                    "ControladorProduto.trazer()");
+                    ControladorProduto.class.getName()+".trazer()");
         }
         catch(RepositorioException e){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroTrazer") + " produto.",
-                    "ControladorProduto.trazer()");
+                    ControladorProduto.class.getName()+".trazer()");
         }
     }
     
@@ -194,18 +207,34 @@ public class ControladorProduto {
         try{
             List<Produto> lista= rpProd.pesquisar(p.getDescProd());
             if (lista.size() > 0){
-                throw new ControladorException(rb.getString("CtrlProdExiste"));
+                throw new ControladorException(user.getNome(),
+                        rb.getString("CtrlProdExiste"),
+                        ControladorProduto.class.getName()+".verificarSePodeInserir()");
             }
         }
         catch(ConexaoException ce){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroVerifIndisp") + " produto.",
-                    "ControladorProduto.verificarSePodeInserir()");
+                    ControladorProduto.class.getName()+".verificarSePodeInserir()");
         }
         catch(RepositorioPesquisarException re){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroVerificar") + " produto.",
-                    "ControladorProduto.verificarSePodeInserir()");
+                    ControladorProduto.class.getName()+".verificarSePodeInserir()");
         }
+    }
+
+    /**
+     * @return the user
+     */
+    public Usuario getUser() {
+        return user;
+    }
+
+    /**
+     * @param user the user to set
+     */
+    public void setUser(Usuario user) {
+        this.user = user;
     }
 }

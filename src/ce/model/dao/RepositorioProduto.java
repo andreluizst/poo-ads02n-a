@@ -71,7 +71,8 @@ public class RepositorioProduto implements IRepositorioProduto{
             pstmt.close();
         }
         catch (SQLException e){
-            throw new RepositorioInserirException(e, "RepositorioProduto.inserir()");
+            throw new RepositorioInserirException(e, 
+                    RepositorioProduto.class.getName()+".inserir()");
         }
         finally{
             gc.desconectar(conexao);
@@ -157,11 +158,12 @@ public class RepositorioProduto implements IRepositorioProduto{
             
         }
         catch(SQLException e){
-            throw new RepositorioAlterarException(e, "RepositorioProduto.alterar()");
+            throw new RepositorioAlterarException(e, 
+                    RepositorioProduto.class.getName()+".alterar()");
         }
          catch(RepositorioException ex){
             throw new RepositorioAlterarException(ex, 
-                    "RepositorioProduto.alterar()."+ex.getPathClassCall());
+                    RepositorioProduto.class.getName()+".alterar()."+ex.getPathClassCall());
         }
         finally{
             gc.desconectar(conexao);
@@ -199,9 +201,10 @@ public class RepositorioProduto implements IRepositorioProduto{
             String msg= e.getMessage().toLowerCase();
             if (msg!=null && msg.contains("foreign key constraint fails")){
                 throw new RepositorioForeignKeyException(e,
-                        "RepositorioProduto.excluir()");
+                        RepositorioProduto.class.getName()+".excluir()");
             }
-            throw new RepositorioExcluirException(e, "RepositorioProduto.excluir()");
+            throw new RepositorioExcluirException(e, 
+                    RepositorioProduto.class.getName()+".excluir()");
         }
         finally{
             gc.desconectar(conexao);
@@ -259,11 +262,12 @@ public class RepositorioProduto implements IRepositorioProduto{
             return lista;
         }
         catch(SQLException e){
-            throw new RepositorioListarException(e, "RepositorioProduto.listar()");
+            throw new RepositorioListarException(e, 
+                    RepositorioProduto.class.getName()+".listar()");
         }
         catch(RepositorioException ex){
             throw new RepositorioListarException(ex,
-                    "RepositorioProduto.listar()."+ex.getPathClassCall());
+                    RepositorioProduto.class.getName()+".listar()."+ex.getPathClassCall());
         }
         finally{
             gc.desconectar(c);
@@ -321,10 +325,12 @@ public class RepositorioProduto implements IRepositorioProduto{
             return lista;
         }
         catch(SQLException e){
-            throw new RepositorioPesquisarException(e, "RepositorioProduto.pesquisar()");
+            throw new RepositorioPesquisarException(e, 
+                    RepositorioProduto.class.getName()+".pesquisar()");
         }
         catch(RepositorioException ex){
-            throw new RepositorioPesquisarException(ex, "RepositorioProduto.pesquisar()."+ex.getPathClassCall());
+            throw new RepositorioPesquisarException(ex, 
+                    RepositorioProduto.class.getName()+".pesquisar()."+ex.getPathClassCall());
         }
         finally{
             gc.desconectar(c);
@@ -352,7 +358,7 @@ public class RepositorioProduto implements IRepositorioProduto{
             RepositorioPesquisarException{
         Produto p= null;
         Fornecedor f= null;
-        List<Fornecedor> fornecedores= new ArrayList<Fornecedor>();
+        List<Fornecedor> fornecedores= new ArrayList();
         Connection c = gc.conectar();
         String sql= "Select * from Produto where codProd=?";
         String sqlForns = "SELECT DISTINCT codProd, codForn"
@@ -392,10 +398,12 @@ public class RepositorioProduto implements IRepositorioProduto{
             return p;
         }
         catch(SQLException e){
-            throw new RepositorioPesquisarException(e, "RepositorioProduto.pesqCodProd()");
+            throw new RepositorioPesquisarException(e, 
+                    RepositorioProduto.class.getName()+".pesqCodProd()");
         }
         catch(RepositorioException ex){
-            throw new RepositorioPesquisarException(ex, "RepositorioProduto.pesqCodProd()."+ex.getPathClassCall());
+            throw new RepositorioPesquisarException(ex, 
+                    RepositorioProduto.class.getName()+".pesqCodProd()."+ex.getPathClassCall());
         }
         finally{
             gc.desconectar(c);
@@ -443,7 +451,8 @@ public class RepositorioProduto implements IRepositorioProduto{
             pstmt.close();
         }
         catch(SQLException e){
-            throw new RepositorioAlterarException(e, "RepositorioProduto.atualizarQtde()");
+            throw new RepositorioAlterarException(e, 
+                    RepositorioProduto.class.getName()+".atualizarQtde()");
         }
         finally{
             gc.desconectar(c);

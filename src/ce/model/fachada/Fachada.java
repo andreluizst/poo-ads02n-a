@@ -247,6 +247,10 @@ public class Fachada {
     /*
      * ************************ U S U Á R I O ***************************
      */
+    public void login(Usuario u) throws GeralException{
+        ctrlUsu.validarLogin(u);
+    }
+    
     public void incluir(Usuario u) throws GeralException{
         ctrlUsu.validarDados(u);
         ctrlUsu.verificarSePodeInserir(u);

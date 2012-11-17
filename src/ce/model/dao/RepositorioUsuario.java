@@ -29,7 +29,7 @@ import java.util.List;
  * @author Andre
  */
 public class RepositorioUsuario implements IRepositorioUsuario{
-    private Usuario user=null;
+    //private Usuario user=null;
     private IGerenciadorConexao gerenciadorConexao;
     /**
      * Construtor padrão
@@ -49,7 +49,7 @@ public class RepositorioUsuario implements IRepositorioUsuario{
     @Override
     public void inserir(Usuario u) throws ConexaoException, 
             RepositorioInserirException{
-        Connection c= gerenciadorConexao.conectar(user.getNome(), user.getSenha());
+        Connection c= gerenciadorConexao.conectar();
         String sql= "Insert into Usuario(nome, codPerfil, cpf, senha)"
                 + " values(?,?,?, ?)";
         try{
@@ -62,7 +62,7 @@ public class RepositorioUsuario implements IRepositorioUsuario{
             pstmt.close();
         }
         catch(SQLException e){
-            throw new RepositorioInserirException(getUser().getNome(), e,
+            throw new RepositorioInserirException(e,
                     RepositorioUsuario.class.getName()+".inserir()");
         }
         finally{
@@ -83,7 +83,7 @@ public class RepositorioUsuario implements IRepositorioUsuario{
     @Override
     public void alterar(Usuario u) throws ConexaoException, 
             RepositorioAlterarException{
-        Connection c= gerenciadorConexao.conectar(user.getNome(), user.getSenha());
+        Connection c= gerenciadorConexao.conectar();
         String sql= "Update Usuario set nome=?, codPerfil=?, senha=?, cpf=?"
                 + " where codUsr=?";
         try{
@@ -97,7 +97,7 @@ public class RepositorioUsuario implements IRepositorioUsuario{
             pstmt.close();
         }
         catch(SQLException e){
-            throw new RepositorioAlterarException(getUser().getNome(), e,
+            throw new RepositorioAlterarException(e,
                     RepositorioUsuario.class.getName()+".alterar()");
         }
         finally{
@@ -120,7 +120,7 @@ public class RepositorioUsuario implements IRepositorioUsuario{
     @Override
     public void excluir(Usuario u) throws ConexaoException, 
             RepositorioForeignKeyException, RepositorioExcluirException{
-        Connection c= gerenciadorConexao.conectar(user.getNome(), user.getSenha());
+        Connection c= gerenciadorConexao.conectar();
         String sql= "delete from usuario where codUsr=?";
         try{
             PreparedStatement pstmt= c.prepareStatement(sql);
@@ -131,10 +131,10 @@ public class RepositorioUsuario implements IRepositorioUsuario{
         catch(SQLException e){
             String msg= e.getMessage().toLowerCase();
             if (msg!=null && msg.contains("foreign key constraint fails")){
-                throw new RepositorioForeignKeyException(getUser().getNome(), e,
+                throw new RepositorioForeignKeyException(e,
                     RepositorioUsuario.class.getName()+".excluir()");
             }
-            throw new RepositorioExcluirException(getUser().getNome(), e,
+            throw new RepositorioExcluirException(e,
                     RepositorioUsuario.class.getName()+".excluir()");
         }
         finally{
@@ -156,7 +156,7 @@ public class RepositorioUsuario implements IRepositorioUsuario{
         List<Usuario> lista= new ArrayList();
         Usuario u= null;
         String sql= "Select * from Usuario";
-        Connection c= gerenciadorConexao.conectar(user.getNome(), user.getSenha());
+        Connection c= gerenciadorConexao.conectar();
         try{
             Statement stmt= c.createStatement();
             ResultSet rs= stmt.executeQuery(sql);
@@ -175,12 +175,62 @@ public class RepositorioUsuario implements IRepositorioUsuario{
             return lista;
         }
         catch(SQLException e){
-            throw new RepositorioListarException(getUser().getNome(), e,
+            throw new RepositorioListarException(e,
                     RepositorioUsuario.class.getName()+".listar()");
         }
         catch(RepositorioException ex){
-            throw new RepositorioListarException(getUser().getNome(), ex,
+            throw new RepositorioListarException(ex,
                     RepositorioUsuario.class.getName()+".listar()."+ex.getPathClassCall());
+        }
+        finally{
+            gerenciadorConexao.desconectar(c);
+        }
+    }
+    /**
+     * Pesquisa usuários pelo nome
+     * @param nome
+     * Nome do usuário desejado.
+     * É possível a utilização de caracteres coringa no parâmetro nome dando
+     * maior flexibilidade a pesquisa. Ex: "%Silva".
+     * @return
+     * Retorna uma lista com o(s) usuário(s) encontrado(s).
+     * @throws ConexaoException
+     * Se houver algum problema com a conexão será lançada uma ConexaoException
+     * @throws RepositorioPesquisarException 
+     * Se houver algum erro na execução do SQL será lançada uma exceção.
+     */
+    @Override
+    public List<Usuario> pesquisar(String nome) throws ConexaoException, 
+            RepositorioPesquisarException{
+        List<Usuario> lista= new ArrayList();
+        Usuario u= null;
+        String sql= "Select * from Usuario where nome like ?";
+        Connection c= gerenciadorConexao.conectar();
+        try{
+            PreparedStatement pstmt= c.prepareStatement(sql);
+            pstmt.setString(1, nome);
+            ResultSet rs= pstmt.executeQuery();
+            IRepositorioPerfil rpPerfil= new RepositorioPerfil();
+            IRepositorioFuncionario rpFun= new RepositorioFuncionario();
+            while (rs.next()){
+                u= new Usuario(rs.getInt("codUsr"), rs.getString("nome"),
+                        rpPerfil.pesqCod(rs.getInt("codPerfil")),
+                        rpFun.pesqCpf(rs.getString("cpf")),
+                        rs.getString("senha"));
+                
+                lista.add(u);
+            }
+            rs.close();
+            pstmt.close();
+            return lista;
+        }
+        catch(SQLException e){
+            throw new RepositorioPesquisarException(e,
+                    RepositorioUsuario.class.getName()+".pesquisar()");
+        }
+        catch(RepositorioException ex){
+            throw new RepositorioPesquisarException(ex,
+                    RepositorioUsuario.class.getName()+".pesquisar()."+ex.getPathClassCall());
         }
         finally{
             gerenciadorConexao.desconectar(c);
@@ -202,7 +252,7 @@ public class RepositorioUsuario implements IRepositorioUsuario{
             RepositorioPesquisarException{
         Usuario u= null;
         String sql= "Select * from Usuario where codUsr=?";
-        Connection c= gerenciadorConexao.conectar(user.getNome(), user.getSenha());
+        Connection c= gerenciadorConexao.conectar();
         try{
             PreparedStatement pstmt= c.prepareStatement(sql);
             pstmt.setInt(1, cod);
@@ -224,11 +274,11 @@ public class RepositorioUsuario implements IRepositorioUsuario{
             return u;
         }
         catch(SQLException e){
-            throw new RepositorioPesquisarException(getUser().getNome(), e,
+            throw new RepositorioPesquisarException(e,
                     RepositorioUsuario.class.getName()+".pesqCod()");
         }
         catch(RepositorioException ex){
-            throw new RepositorioPesquisarException(getUser().getNome(), ex,
+            throw new RepositorioPesquisarException(ex,
                     RepositorioUsuario.class.getName()+".pesqCod()."+ex.getPathClassCall());
         }
         finally{
@@ -251,7 +301,7 @@ public class RepositorioUsuario implements IRepositorioUsuario{
             RepositorioPesquisarException{
         Usuario u= null;
         String sql= "Select * from Usuario where cpf=?";
-        Connection c= gerenciadorConexao.conectar(user.getNome(), user.getSenha());
+        Connection c= gerenciadorConexao.conectar();
         try{
             PreparedStatement pstmt= c.prepareStatement(sql);
             pstmt.setString(1, cpf);
@@ -273,11 +323,11 @@ public class RepositorioUsuario implements IRepositorioUsuario{
             return u;
         }
         catch(SQLException e){
-            throw new RepositorioPesquisarException(getUser().getNome(), e,
+            throw new RepositorioPesquisarException(e,
                     RepositorioUsuario.class.getName()+".pesqCpf()");
         }
         catch(RepositorioException ex){
-            throw new RepositorioPesquisarException(getUser().getNome(), ex,
+            throw new RepositorioPesquisarException(ex,
                     RepositorioUsuario.class.getName()+".pesqCpf()."+ex.getPathClassCall());
         }
         finally{
@@ -285,17 +335,4 @@ public class RepositorioUsuario implements IRepositorioUsuario{
         }
     }
 
-    /**
-     * @return o usuário do sistema
-     */
-    public Usuario getUser() {
-        return user;
-    }
-
-    /**
-     * @param user o usuário que usando o sistema
-     */
-    public void setUser(Usuario user) {
-        this.user = user;
-    }
 }

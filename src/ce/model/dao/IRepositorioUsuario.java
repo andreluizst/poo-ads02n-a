@@ -26,8 +26,8 @@ public interface IRepositorioUsuario {
             RepositorioForeignKeyException, RepositorioExcluirException;
     public List<Usuario> listar() throws ConexaoException, 
             RepositorioListarException;
-    /*public List<Usuario> pesquisar(String nome) throws ConexaoException, 
-            RepositorioPesquisarException;*/
+    public List<Usuario> pesquisar(String nome) throws ConexaoException, 
+            RepositorioPesquisarException;
     public Usuario pesqCod(int cod) throws ConexaoException, 
             RepositorioPesquisarException;
     public Usuario pesqCpf(String cpf) throws ConexaoException, 

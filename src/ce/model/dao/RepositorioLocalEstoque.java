@@ -52,7 +52,8 @@ public class RepositorioLocalEstoque implements IRepositorioLocalEstoque{
             pstmt.close();
         }
         catch(SQLException e){
-            throw new RepositorioInserirException(e);
+            throw new RepositorioInserirException(e,
+                    RepositorioLocalEstoque.class.getName()+".inserir()");
         }
         finally{
             gerenciadorConexao.desconectar(c);
@@ -82,7 +83,8 @@ public class RepositorioLocalEstoque implements IRepositorioLocalEstoque{
             pstmt.close();
         }
         catch(SQLException e){
-            throw new RepositorioAlterarException(e);
+            throw new RepositorioAlterarException(e,
+                    RepositorioLocalEstoque.class.getName()+".alterar()");
         }
         finally{
             gerenciadorConexao.desconectar(c);
@@ -116,9 +118,10 @@ public class RepositorioLocalEstoque implements IRepositorioLocalEstoque{
             String msg= e.getMessage().toLowerCase();
             if (msg!=null && msg.contains("foreign key constraint fails")){
                 throw new RepositorioForeignKeyException(e,
-                        "RepositorioLocalEstoque.excluir()");
+                        RepositorioLocalEstoque.class.getName()+".excluir()");
             }
-            throw new RepositorioExcluirException(e);
+            throw new RepositorioExcluirException(e,
+                    RepositorioLocalEstoque.class.getName()+".excluir()");
         }
         finally{
             gerenciadorConexao.desconectar(c);
@@ -136,7 +139,7 @@ public class RepositorioLocalEstoque implements IRepositorioLocalEstoque{
     @Override
     public List<LocalEstoque> listar() throws ConexaoException,
             RepositorioListarException{
-        List<LocalEstoque> lista = new ArrayList<LocalEstoque>();
+        List<LocalEstoque> lista = new ArrayList();
         LocalEstoque le;
         Connection c= gerenciadorConexao.conectar();
         String sql= "select * from LocalEstoque";
@@ -152,7 +155,8 @@ public class RepositorioLocalEstoque implements IRepositorioLocalEstoque{
             return lista;
         }
         catch(SQLException e){
-            throw new RepositorioListarException(e);
+            throw new RepositorioListarException(e,
+                    RepositorioLocalEstoque.class.getName()+".listar()");
         }
         finally{
             gerenciadorConexao.desconectar(c);
@@ -189,7 +193,8 @@ public class RepositorioLocalEstoque implements IRepositorioLocalEstoque{
             return lista;
         }
         catch(SQLException e){
-            throw new RepositorioPesquisarException(e);
+            throw new RepositorioPesquisarException(e,
+                    RepositorioLocalEstoque.class.getName()+".pesquisar()");
         }
         finally{
             gerenciadorConexao.desconectar(c);
@@ -224,7 +229,8 @@ public class RepositorioLocalEstoque implements IRepositorioLocalEstoque{
             return le;
         }
         catch(SQLException e){
-            throw new RepositorioPesquisarException(e);
+            throw new RepositorioPesquisarException(e,
+                    RepositorioLocalEstoque.class.getName()+".pesqCod()");
         }
         finally{
             gerenciadorConexao.desconectar(c);

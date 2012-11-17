@@ -26,7 +26,7 @@ public class Fornecedor {
     private List<Produto> produtos;
     
     public Fornecedor(){
-        produtos= new ArrayList<Produto>();
+        produtos= new ArrayList();
     }
     
     public Fornecedor(Integer codForn, String nome, String cnpj, 

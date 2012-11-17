@@ -14,6 +14,7 @@ import ce.erro.RepositorioPesquisarException;
 import ce.erro.RepositorioListarException;
 import ce.erro.RepositorioForeignKeyException;
 import ce.model.basica.Entrada;
+import ce.model.basica.Usuario;
 import ce.model.dao.RepositorioEntrada;
 import ce.model.dao.IRepositorioEntrada;
 import ce.model.dao.RepositorioProduto;
@@ -28,10 +29,19 @@ import java.util.ResourceBundle;
  * @author Andre
  */
 public class ControladorEntrada {
+    private Usuario user;
     private IRepositorioEntrada rpEnt= new RepositorioEntrada();
     private IRepositorioProduto rpProd= new RepositorioProduto();
     private IRepositorioFornecedor rpForn= new RepositorioFornecedor();
     private ResourceBundle rb= ResourceBundle.getBundle("ce.erro.Erro");
+    
+    public ControladorEntrada(){
+        user= new Usuario();
+    }
+    
+    public ControladorEntrada(Usuario u){
+        user=u;
+    }
     
     public void validarDados(Entrada e) throws ControladorException{
         /*O código/número da entrada é autoincrement
@@ -39,19 +49,29 @@ public class ControladorEntrada {
             throw new ControladorException(rb.getString("CtrlErroValInvalido"));
         }*/
         if (!ValidarStringData.execute(e.getDataEntrada())){
-            throw new ControladorException(rb.getString("CtrlErroValInvalido"));
+            throw new ControladorException(user.getNome(),
+                    rb.getString("CtrlErroValInvalido"),
+                    ControladorEntrada.class.getName()+".validarDados");
         }
         if ((e.getQtde() == null) || (e.getQtde() <= 0)){
-            throw new ControladorException(rb.getString("CtrlErroValInvalido"));
+            throw new ControladorException(user.getNome(),
+                    rb.getString("CtrlErroValInvalido"),
+                    ControladorEntrada.class.getName()+".validarDados");
         }
         if ((e.getFornecedor() == null) || (e.getFornecedor().getCodForn()==0)){
-            throw new ControladorException(rb.getString("CtrlErroValInvalido"));
+            throw new ControladorException(user.getNome(),
+                    rb.getString("CtrlErroValInvalido"),
+                    ControladorEntrada.class.getName()+".validarDados");
         }
         if ((e.getProduto()==null) || (e.getProduto().getCodProd()==0)){
-            throw new ControladorException(rb.getString("CtrlErroValInvalido"));
+            throw new ControladorException(user.getNome(),
+                    rb.getString("CtrlErroValInvalido"),
+                    ControladorEntrada.class.getName()+".validarDados");
         }
         if ((e.getLote() == null) || (e.getLote().compareTo("")==0)){
-            throw new ControladorException(rb.getString("CtrlErroValInvalido"));
+            throw new ControladorException(user.getNome(),
+                    rb.getString("CtrlErroValInvalido"),
+                    ControladorEntrada.class.getName()+".validarDados");
         }
     }
     
@@ -60,14 +80,14 @@ public class ControladorEntrada {
             rpEnt.inserir(e);
         }
         catch(ConexaoException ce){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroInsIndisp") + " entrada.",
-                    "ControladorEntrada.inserir()");
+                    ControladorEntrada.class.getName()+".inserir()");
         }
         catch(RepositorioInserirException re){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroInserir") + " entrada.",
-                    "ControladorEntrada.inserir()");
+                    ControladorEntrada.class.getName()+".inserir()");
         }
     }
     
@@ -83,11 +103,12 @@ public class ControladorEntrada {
         catch(RepositorioAlterarException rae){
             String msg= rae.getMessage();
             if (msg == null || msg.contains(rb.getString("CtrlErroAtlzQtde"))){
-                throw new ControladorException(rae, "ControladorEntrada.alterar()");
+                throw new ControladorException(user.getNome(), rae, 
+                        ControladorEntrada.class.getName()+".alterar()");
             }
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroAlterar" + " entrada."),
-                    "ControladorEntrada.alterar()");
+                    ControladorEntrada.class.getName()+".alterar()");
         }
     }
     
@@ -95,19 +116,20 @@ public class ControladorEntrada {
         try{
             Entrada ent= rpEnt.pesqNum(num);
             if (ent == null){
-                throw new ControladorException(rb.getString("CtrlEntNaoExiste"),
-                        "ControladorEntrada.verificarSeExiste()");
+                throw new ControladorException(user.getNome(),
+                        rb.getString("CtrlEntNaoExiste"),
+                        ControladorEntrada.class.getName()+".verificarSeExiste()");
             }
         }
         catch(ConexaoException ce){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroVerifIndisp") + " entrada.",
-                    "ControladorEntrada.verificarSeExiste()");
+                    ControladorEntrada.class.getName()+".verificarSeExiste()");
         }
         catch(RepositorioPesquisarException pe){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroVerificar") + " entrada.",
-                    "ControladorEntrada.verificarSeExiste()");
+                    ControladorEntrada.class.getName()+".verificarSeExiste()");
         }
     }
     
@@ -120,23 +142,24 @@ public class ControladorEntrada {
             rpEnt.excluir(e);
         }
         catch(ConexaoException ce){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroDelIndisp") + " entrada.",
-                    "ControladorEntrada.excluir()");
+                    ControladorEntrada.class.getName()+".excluir()");
         }
         catch(RepositorioForeignKeyException rfke){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlNaoPodeExcluirEnt"),
-                    "ControladorEntrada.excluir()");
+                    ControladorEntrada.class.getName()+".excluir()");
         }
         catch(RepositorioExcluirException re){
             String msg= re.getMessage();
             if (msg == null || msg.contains(rb.getString("CtrlErroAtlzQtde"))){
-                throw new ControladorException(re, "ControladorEntrada.excluir()");
+                throw new ControladorException(user.getNome(), re,
+                        ControladorEntrada.class.getName()+".excluir()");
             }
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroExcluir") + " entrada.",
-                    "ControladorEntrada.excluir()");
+                    ControladorEntrada.class.getName()+".excluir()");
         }
     }
     
@@ -145,14 +168,14 @@ public class ControladorEntrada {
             return rpEnt.listar();
         }
         catch(ConexaoException e){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroListIndisp") + " entrada.",
-                    "ControladorEntrada.listar()");
+                    ControladorEntrada.class.getName()+".listar()");
         }
         catch(RepositorioListarException re){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroListar") + " entrada.",
-                    "ControladorEntrada.listar()");
+                    ControladorEntrada.class.getName()+".listar()");
         }
     }
     
@@ -168,15 +191,29 @@ public class ControladorEntrada {
             return ent;
         }
         catch(ConexaoException ce){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroTrazerIndisp") + " entrada.",
-                    "ControladorEntrada.trazer()");
+                    ControladorEntrada.class.getName()+".trazer()");
         }
         catch(RepositorioPesquisarException re){
-            throw new ControladorException(
+            throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroTrazer") + " entrada.",
-                    "ControladorEntrada.trazer()");
+                    ControladorEntrada.class.getName()+".trazer()");
         }
+    }
+
+    /**
+     * @return the user
+     */
+    public Usuario getUser() {
+        return user;
+    }
+
+    /**
+     * @param user the user to set
+     */
+    public void setUser(Usuario user) {
+        this.user = user;
     }
     
 }

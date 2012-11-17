@@ -19,7 +19,7 @@ public class Produto {
 
     public Produto(){
         this.categoria=new Categoria();
-        this.fornecedores= new ArrayList<Fornecedor>();
+        this.fornecedores= new ArrayList();
         this.unidade= new Unidade();
     }
     

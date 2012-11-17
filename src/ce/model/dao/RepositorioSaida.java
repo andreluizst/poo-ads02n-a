@@ -17,10 +17,6 @@ import ce.model.basica.Entrada;
 import ce.model.basica.Saida;
 import ce.util.GerenciadorConexao;
 import ce.util.IGerenciadorConexao;
-import ce.model.dao.IRepositorioFornecedor;
-import ce.model.dao.RepositorioFornecedor;
-import ce.model.dao.IRepositorioProduto;
-import ce.model.dao.RepositorioProduto;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -59,7 +55,8 @@ public class RepositorioSaida implements IRepositorioSaida{
             pstmt.close();
         }
         catch(SQLException e){
-            throw new RepositorioInserirException(e, "RepositorioSaida.inserir()");
+            throw new RepositorioInserirException(e, 
+                    RepositorioSaida.class.getName()+".inserir()");
         }
         finally{
             gerenciadorConexao.desconectar(c);
@@ -92,7 +89,8 @@ public class RepositorioSaida implements IRepositorioSaida{
             pstmt.close();
         }
         catch(SQLException e){
-            throw new RepositorioAlterarException(e, "RepositorioSaida.alterar()");
+            throw new RepositorioAlterarException(e, 
+                    RepositorioSaida.class.getName()+".alterar()");
         }
         finally{
             gerenciadorConexao.desconectar(c);
@@ -119,7 +117,8 @@ public class RepositorioSaida implements IRepositorioSaida{
             pstmt.close();
         }
         catch(SQLException e){
-            throw new RepositorioExcluirException(e, "RepositorioSaida.excluir()");
+            throw new RepositorioExcluirException(e, 
+                    RepositorioSaida.class.getName()+".excluir()");
         }
         finally{
             gerenciadorConexao.desconectar(c);
@@ -173,7 +172,8 @@ public class RepositorioSaida implements IRepositorioSaida{
             return lista;
         }
         catch(SQLException ex){
-            throw new RepositorioListarException(ex, "RepositorioSaida.listar()");
+            throw new RepositorioListarException(ex, 
+                    RepositorioSaida.class.getName()+".listar()");
         }
         finally{
             gerenciadorConexao.desconectar(c);
@@ -228,7 +228,8 @@ public class RepositorioSaida implements IRepositorioSaida{
             return s;
         }
         catch(SQLException ex){
-            throw new RepositorioPesquisarException(ex, "RepositorioSaida.pesNum()");
+            throw new RepositorioPesquisarException(ex, 
+                    RepositorioSaida.class.getName()+".pesNum()");
         }
         finally{
             gerenciadorConexao.desconectar(c);

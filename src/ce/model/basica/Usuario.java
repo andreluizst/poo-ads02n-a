@@ -24,7 +24,6 @@ public class Usuario {
 
     public Usuario(int codUsuario, String nome, Perfil perfil,
             Funcionario funcionario, String senha){
-        this();
         this.nome = nome;
         this.perfil=perfil;
         this.codUsuario = codUsuario;
@@ -34,7 +33,6 @@ public class Usuario {
     
     public Usuario(String nome, Perfil perfil,
             Funcionario funcionario, String senha){
-        this();
         this.nome=nome;
         this.perfil=perfil;
         this.codUsuario=0;
