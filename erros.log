@@ -1,4 +1,28 @@
-root -> 14/11/2012 - 11:07
-	ce.model.regra.ControladorCategoria.validarDados(): Campo com valor inválido!
-root -> 14/11/2012 - 11:08:16
-	ce.model.regra.ControladorCategoria.validarDados(): Campo com valor inválido!
+root -> 18/11/2012 - 02:29:34
+	ce.util.GerenciadorConexao.conectar(): java.sql.SQLException: Access denied for user 'root'@'localhost' (using password: YES)
+null -> 18/11/2012 - 02:29:34
+	ce.model.regra.ControladorCategoria.verificarSePodeInserir(): No momento não é possível verificar categoria.
+null -> 18/11/2012 - 02:31:22
+	ce.model.regra.ControladorCategoria.verificarSePodeInserir(): A categoria informada já existe.
+HASDN -> 18/11/2012 - 21:25:58
+	ce.model.regra.ControladorUsuario.validarLogin(): Usuário inválido!
+null -> 18/11/2012 - 21:26:00
+	ce.model.regra.ControladorCategoria.verificarSePodeInserir(): A categoria informada já existe.
+andfadhkjhkj -> 18/11/2012 - 21:30:14
+	ce.model.regra.ControladorUsuario.validarLogin(): Usuário inválido!
+andfadhkjhkj -> 18/11/2012 - 21:30:19
+	ce.model.regra.ControladorUsuario.validarLogin(): Usuário inválido!
+maria.silva -> 18/11/2012 - 21:31:15
+	ce.model.regra.ControladorUsuario.validarLogin(): Senha inválida!
+null -> 18/11/2012 - 21:31:20
+	ce.model.regra.ControladorCategoria.verificarSePodeInserir(): A categoria informada já existe.
+null -> 18/11/2012 - 21:34:05
+	ce.model.regra.ControladorCategoria.verificarSePodeInserir(): A categoria informada já existe.
+null -> 18/11/2012 - 21:35:03
+	ce.model.regra.ControladorCategoria.verificarSePodeInserir(): A categoria informada já existe.
+maria.silvaa -> 18/11/2012 - 22:36:18
+	ce.model.regra.ControladorUsuario.validarLogin(): Usuário inválido!
+maria.silva -> 18/11/2012 - 22:36:22
+	ce.model.regra.ControladorUsuario.validarLogin(): Senha inválida!
+null -> 18/11/2012 - 22:36:30
+	ce.model.regra.ControladorCategoria.verificarSePodeInserir(): A categoria informada já existe.

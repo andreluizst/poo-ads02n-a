@@ -15,6 +15,7 @@ import java.util.List;
  */
 public class Fachada {
     private static Fachada instancia;
+    private Usuario user;
     private ControladorCategoria ctrlCateg;
     private ControladorUnidade ctrlUnid;
     private ControladorProduto ctrlProd;
@@ -37,9 +38,10 @@ public class Fachada {
         ctrlLocalE= new ControladorLocalEstoque();
         ctrlE= new ControladorEntrada();
         ctrlS= new ControladorSaida();
+        //user= new Usuario();
     }
     
-    public Fachada getInstancia(){
+    public static Fachada getInstancia(){
         if (instancia == null){
             instancia= new Fachada();
         }
@@ -249,6 +251,16 @@ public class Fachada {
      */
     public void login(Usuario u) throws GeralException{
         ctrlUsu.validarLogin(u);
+        user= u;
+        ctrlCateg.setUser(getUser());
+        ctrlUnid.setUser(getUser());
+        ctrlProd.setUser(getUser());
+        ctrlForn.setUser(getUser());
+        ctrlPer.setUser(getUser());
+        ctrlFun.setUser(getUser());
+        ctrlLocalE.setUser(getUser());
+        ctrlE.setUser(getUser());
+        ctrlS.setUser(getUser());
     }
     
     public void incluir(Usuario u) throws GeralException{
@@ -371,6 +383,13 @@ public class Fachada {
     public Saida trazerSaida(Integer num) throws GeralException{
         ctrlS.verificarSeExiste(num);
         return ctrlS.trazer(num);
+    }
+
+    /**
+     * @return the user
+     */
+    public Usuario getUser() {
+        return user;
     }
     
 }

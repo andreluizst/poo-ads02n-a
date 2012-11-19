@@ -37,14 +37,15 @@ import ce.model.dao.RepositorioUsuario;
 import ce.model.regra.*;
 import ce.util.VerificarCpfCnpj;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import ce.model.fachada.Fachada;
+import ce.gui.*;
 
 /**
  *
  * @author professor
  */
 public class Main {
+    private static Fachada f;
     //Para testar os repositórios
     private static IRepositorioCategoria rpCateg;
     private static IRepositorioUnidade rpUnid;
@@ -66,12 +67,25 @@ public class Main {
     private static ControladorLocalEstoque ctrlLocalE;
     private static ControladorEntrada ctrlEnt;
     //Apenas para teste.
-    public static Usuario user=new Usuario("root", null, null, "root");
+    public static Usuario user;//= new Usuario("root", null, null, "root");
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        f= Fachada.getInstancia();
+        
+        LoginDialog loginDialog= new LoginDialog(null, true);
+        loginDialog.setLocationRelativeTo(null);
+        loginDialog.setVisible(true);
+        if (loginDialog.getReturnStatus() == LoginDialog.RET_CANCEL){
+            System.exit(0);
+        }
+        user= f.getUser();
+        System.out.println("Usuário: " + user.getNome()+"\n"
+                + "Perfil: "+ user.getPerfil().getNome()+"\n"
+                + "CPF: " + user.getFuncionario().getCpf());
+        
         //Testando repositórios
         rpCateg = new RepositorioCategoria();
         rpProd= new RepositorioProduto();
@@ -124,7 +138,7 @@ public class Main {
         Saida s;
         try {
             //ControladorCategoria.validar()\.verificar()\.inserir()
-            c = new Categoria("");
+            c = new Categoria("Papelaria");
             ctrlCateg.validarDados(c);
             ctrlCateg.verificarSePodeInserir(c);
             ctrlCateg.inserir(c);

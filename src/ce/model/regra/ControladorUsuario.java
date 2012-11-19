@@ -272,6 +272,9 @@ public class ControladorUsuario {
                     rb.getString("CtrlUsuSenhaInvalida"),
                     ControladorUsuario.class.getName()+".validarLogin()");
             }
+            u.setCodUsuario(lista.get(0).getCodUsuario());
+            u.setPerfil(lista.get(0).getPerfil());
+            u.setFuncionario(lista.get(0).getFuncionario());
             setUser(u);
         }
         catch(ConexaoException e){

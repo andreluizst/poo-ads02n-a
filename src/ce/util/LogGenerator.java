@@ -94,20 +94,7 @@ public class LogGenerator {
         erros.add(userName + " -> " 
             + new SimpleDateFormat("dd/MM/yyyy - HH:mm:ss").format(new Date()));
         erros.add("\t" + classPath + ": " + msg);
-        BufferedWriter buffer;
-        try {
-            FileWriter fileWriter= new FileWriter(fileName);
-            buffer = new BufferedWriter(fileWriter);
-            for (int i=0;i<erros.size();i++){
-                buffer.write(erros.get(i).toString());
-                buffer.newLine();
-            }
-            buffer.close();
-            fileWriter.close();
-        } catch (IOException ex) {
-            //Logger.getLogger(LogGenerator.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        //loadFile();
+        saveLog();
     }
     
     /**
@@ -116,9 +103,37 @@ public class LogGenerator {
      * @param msg 
      */
     public void log(String classPath, String msg){
-        erros.add(" Sistema -> " 
+        erros.add("Sistema -> " 
             + new SimpleDateFormat("dd/MM/yyyy - HH:mm:ss").format(new Date()));
         erros.add("\t" + classPath + ": " + msg);
+        saveLog();
+    }
+    
+    /**
+     * Escreve no arquivo de log
+     * @param e
+     * Exceção que deverá ser registrada
+     */
+    public void log(Exception e){
+        StackTraceElement[] stackTraceElements= e.getStackTrace();
+        erros.add("Sistema -> " 
+            + new SimpleDateFormat("dd/MM/yyyy - HH:mm:ss").format(new Date()));
+        /*StackTraceElement[] elements= e.getStackTrace();
+        erros.add("\t"+elements[0].getClassName()+"."+elements[0].getMethodName()+"()"
+                    + " {linha "+elements[0].getLineNumber()+"}: " + e.getMessage());*/
+        erros.add("\tErro: "+e.getMessage());
+        //erros.add("\tCaminho");
+        for (StackTraceElement element:stackTraceElements){
+            erros.add("\t\t"+element.getClassName()+"."+element.getMethodName()+"()"
+                    + " {linha "+element.getLineNumber()+"}");
+        }
+        saveLog();
+    }
+    
+    /**
+     * Método de uso interno da classe para gravar o log no arquivo.
+     */
+    private void saveLog(){
         BufferedWriter buffer;
         try {
             FileWriter fileWriter= new FileWriter(fileName);
