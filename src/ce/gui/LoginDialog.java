@@ -5,17 +5,10 @@
 package ce.gui;
 
 import ce.erro.GeralException;
+import ce.model.basica.Usuario;
+import ce.model.fachada.Fachada;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import javax.swing.AbstractAction;
-import javax.swing.ActionMap;
-import javax.swing.InputMap;
-import javax.swing.JComponent;
-import javax.swing.KeyStroke;
-import ce.model.fachada.Fachada;
-import ce.model.basica.Usuario;
-import java.awt.Graphics;
-import java.awt.Image;
 import javax.swing.*;
 
 /**
@@ -25,6 +18,7 @@ import javax.swing.*;
 public class LoginDialog extends javax.swing.JDialog {
     private Fachada f;
     private Usuario user;
+    private Resource res;
 
     /**
      * A return status code - returned if Cancel button has been pressed
@@ -43,6 +37,8 @@ public class LoginDialog extends javax.swing.JDialog {
         initComponents();
         f= Fachada.getInstancia();
         user= new Usuario();
+        res= Resource.getInstancia();
+        lblImagem.setVisible(false);
         // Close the dialog when Esc is pressed
         String cancelName = "cancel";
         InputMap inputMap = getRootPane().getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
@@ -55,27 +51,6 @@ public class LoginDialog extends javax.swing.JDialog {
                 doClose(RET_CANCEL);
             }
         });
-        //ImageIcon imagem
-        /*
-         *     /** 
-      * Método responsável por gerar um thumbnail a partir de uma arquivo 
-      * @param arquivo Arquivo que será reduzido 
-      * @return Thumbnail da ImageIcon 
-      */
-    /*
-    public ImageIcon GeraThumbnail(File arquivo, int labelWidth){  
-         ImageIcon imagem = new ImageIcon(arquivo.getAbsolutePath());  
-         ImageIcon thumbnail = null;  
-         if(imagem.getIconWidth() > labelWidth){  
-             thumbnail = new ImageIcon(  
-             imagem.getImage().getScaledInstance(labelWidth, -1, Image.SCALE_DEFAULT));  
-         } else  
-             thumbnail = imagem;  
-      
-         return thumbnail;  
-    }  
-
-         */
     }
 
     /**
@@ -105,16 +80,9 @@ public class LoginDialog extends javax.swing.JDialog {
         setTitle("Login");
         setBackground(java.awt.Color.white);
         setMinimumSize(new java.awt.Dimension(300, 160));
-        addWindowFocusListener(new java.awt.event.WindowFocusListener() {
-            public void windowGainedFocus(java.awt.event.WindowEvent evt) {
-                formWindowGainedFocus(evt);
-            }
-            public void windowLostFocus(java.awt.event.WindowEvent evt) {
-            }
-        });
         addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowActivated(java.awt.event.WindowEvent evt) {
-                LoginDiaolgActive(evt);
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                LoginDialogOpened(evt);
             }
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 closeDialog(evt);
@@ -159,13 +127,12 @@ public class LoginDialog extends javax.swing.JDialog {
         jpfSenha.setBounds(100, 50, 170, 20);
 
         lblImagem.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblImagem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ce/gui/images/Fundo4.jpg"))); // NOI18N
         lblImagem.setLabelFor(this);
         lblImagem.setText("jLabel3");
         lblImagem.setMaximumSize(getMaximumSize());
         lblImagem.setMinimumSize(getMaximumSize());
         getContentPane().add(lblImagem);
-        lblImagem.setBounds(0, 0, 320, 160);
+        lblImagem.setBounds(0, 0, 300, 140);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -193,13 +160,17 @@ public class LoginDialog extends javax.swing.JDialog {
         doClose(RET_CANCEL);
     }//GEN-LAST:event_closeDialog
 
-    private void LoginDiaolgActive(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_LoginDiaolgActive
-        
-    }//GEN-LAST:event_LoginDiaolgActive
-
-    private void formWindowGainedFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowGainedFocus
-        
-    }//GEN-LAST:event_formWindowGainedFocus
+    private void LoginDialogOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_LoginDialogOpened
+        if (!lblImagem.isVisible()){
+            try {
+                lblImagem.setIcon(res.get("\\images\\Fundo4.jpg", this.getWidth(), this.getHeight()));
+                lblImagem.setVisible(true);
+            } catch (GeralException ex) {
+                lblImagem.setVisible(false);
+                JOptionPane.showMessageDialog(null, ex.getMessage());
+            }
+        }
+    }//GEN-LAST:event_LoginDialogOpened
     
     private void doClose(int retStatus) {
         returnStatus = retStatus;

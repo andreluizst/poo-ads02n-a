@@ -4,7 +4,6 @@
  */
 package ce.model.fachada;
 
-import ce.erro.ControladorException;
 import ce.erro.GeralException;
 import ce.model.basica.*;
 import ce.model.regra.*;

@@ -4,17 +4,30 @@
  */
 package ce.gui;
 
+import ce.erro.GeralException;
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Andre
  */
 public class MainMDIApplication extends javax.swing.JFrame {
-
+    private Resource res;
+    private ImageIcon fundo;
     /**
      * Creates new form MainMDIApplication
      */
     public MainMDIApplication() {
         initComponents();
+        res= Resource.getInstancia();
+        lblImgShell.setVisible(false);
+        try {
+            fundo= res.get("\\images\\Fundo3.jpg");
+        } catch (GeralException ex) {
+            fundo=null;
+            JOptionPane.showMessageDialog(null, ex.getMessage());
+        }
     }
 
     /**
@@ -27,6 +40,7 @@ public class MainMDIApplication extends javax.swing.JFrame {
     private void initComponents() {
 
         desktopPane = new javax.swing.JDesktopPane();
+        lblImgShell = new javax.swing.JLabel();
         menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         openMenuItem = new javax.swing.JMenuItem();
@@ -45,6 +59,15 @@ public class MainMDIApplication extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         desktopPane.setBackground(new java.awt.Color(105, 105, 105));
+        desktopPane.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentResized(java.awt.event.ComponentEvent evt) {
+                desktopPaneResized(evt);
+            }
+        });
+
+        lblImgShell.setText("jLabel1");
+        lblImgShell.setBounds(10, 10, 34, 14);
+        desktopPane.add(lblImgShell, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         fileMenu.setMnemonic('f');
         fileMenu.setText("Arquivo");
@@ -63,7 +86,7 @@ public class MainMDIApplication extends javax.swing.JFrame {
 
         mnSair.setMnemonic('x');
         mnSair.setText("Sair");
-        mnSair.setName("mnSair");
+        mnSair.setName("mnSair"); // NOI18N
         mnSair.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 mnSairActionPerformed(evt);
@@ -128,6 +151,10 @@ public class MainMDIApplication extends javax.swing.JFrame {
         System.exit(0);
     }//GEN-LAST:event_mnSairActionPerformed
 
+    private void desktopPaneResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_desktopPaneResized
+        lblImgShell.setBounds(0, 0, this.getWidth(), this.getHeight());
+    }//GEN-LAST:event_desktopPaneResized
+
     /**
      * @param args the command line arguments
      */
@@ -179,6 +206,7 @@ public class MainMDIApplication extends javax.swing.JFrame {
     private javax.swing.JMenu editMenu;
     private javax.swing.JMenu fileMenu;
     private javax.swing.JMenu helpMenu;
+    private javax.swing.JLabel lblImgShell;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenuItem mnSair;
     private javax.swing.JMenuItem openMenuItem;
