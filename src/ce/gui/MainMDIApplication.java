@@ -15,6 +15,7 @@ import javax.swing.JOptionPane;
 public class MainMDIApplication extends javax.swing.JFrame {
     private Resource res;
     private ImageIcon fundo;
+    private jifCategoria cat= new jifCategoria();
     /**
      * Creates new form MainMDIApplication
      */
@@ -45,10 +46,13 @@ public class MainMDIApplication extends javax.swing.JFrame {
         jInternalFrame1 = new javax.swing.JInternalFrame();
         menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
+        jMenu1 = new javax.swing.JMenu();
+        miCategora = new javax.swing.JMenuItem();
         openMenuItem = new javax.swing.JMenuItem();
         saveMenuItem = new javax.swing.JMenuItem();
         saveAsMenuItem = new javax.swing.JMenuItem();
         mnSair = new javax.swing.JMenuItem();
+        jMenuItem1 = new javax.swing.JMenuItem();
         editMenu = new javax.swing.JMenu();
         cutMenuItem = new javax.swing.JMenuItem();
         copyMenuItem = new javax.swing.JMenuItem();
@@ -83,7 +87,6 @@ public class MainMDIApplication extends javax.swing.JFrame {
         jInternalFrame1.setClosable(true);
         jInternalFrame1.setIconifiable(true);
         jInternalFrame1.setMaximizable(true);
-        jInternalFrame1.setResizable(true);
         jInternalFrame1.setTitle("jInternalFrame Teste");
         jInternalFrame1.setVisible(true);
 
@@ -101,11 +104,26 @@ public class MainMDIApplication extends javax.swing.JFrame {
         jInternalFrame1.setBounds(90, 70, 540, 250);
         desktopPane.add(jInternalFrame1, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-        fileMenu.setMnemonic('f');
+        fileMenu.setMnemonic('a');
         fileMenu.setText("Arquivo");
 
+        jMenu1.setMnemonic('a');
+        jMenu1.setText("Abrir");
+
+        miCategora.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        miCategora.setMnemonic('c');
+        miCategora.setText("Categoria");
+        jMenu1.add(miCategora);
+
+        fileMenu.add(jMenu1);
+
         openMenuItem.setMnemonic('o');
-        openMenuItem.setText("Abrir");
+        openMenuItem.setText("JInternalFrame");
+        openMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                openMenuItemActionPerformed(evt);
+            }
+        });
         fileMenu.add(openMenuItem);
 
         saveMenuItem.setMnemonic('s');
@@ -126,6 +144,9 @@ public class MainMDIApplication extends javax.swing.JFrame {
         });
         fileMenu.add(mnSair);
         mnSair.getAccessibleContext().setAccessibleDescription("");
+
+        jMenuItem1.setText("jMenuItem1");
+        fileMenu.add(jMenuItem1);
 
         menuBar.add(fileMenu);
 
@@ -196,6 +217,12 @@ public class MainMDIApplication extends javax.swing.JFrame {
         jInternalFrame1.setVisible(true);
     }//GEN-LAST:event_MainMDIApplicationOpened
 
+    private void openMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openMenuItemActionPerformed
+        desktopPane.add(cat, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        cat.setBounds(0, 0, 500, 300);
+        cat.setVisible(true);
+    }//GEN-LAST:event_openMenuItemActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -256,8 +283,11 @@ public class MainMDIApplication extends javax.swing.JFrame {
     private javax.swing.JMenu fileMenu;
     private javax.swing.JMenu helpMenu;
     private javax.swing.JInternalFrame jInternalFrame1;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JLabel lblImgShell;
     private javax.swing.JMenuBar menuBar;
+    private javax.swing.JMenuItem miCategora;
     private javax.swing.JMenuItem mnSair;
     private javax.swing.JMenuItem openMenuItem;
     private javax.swing.JMenuItem pasteMenuItem;

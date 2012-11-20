@@ -93,15 +93,14 @@ public class Main {
         if (loginDialog.getReturnStatus() == LoginDialog.RET_CANCEL){
             System.exit(0);
         }
-        /*user= f.getUser();
+        user= f.getUser();
         System.out.println("Usuário: " + user.getNome()+"\n"
                 + "Perfil: "+ user.getPerfil().getNome()+"\n"
-                + "CPF: " + user.getFuncionario().getCpf());*/
+                + "CPF: " + user.getFuncionario().getCpf());
         
         MainMDIApplication mdiShell= new MainMDIApplication();
         mdiShell.setLocationRelativeTo(null);
         mdiShell.setVisible(true);
-        //MainMDIApplication.main(args);
         
         //Testando repositórios
         rpCateg = new RepositorioCategoria();
