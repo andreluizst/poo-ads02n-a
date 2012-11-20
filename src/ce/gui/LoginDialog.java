@@ -9,6 +9,8 @@ import ce.model.basica.Usuario;
 import ce.model.fachada.Fachada;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 /**
@@ -78,7 +80,6 @@ public class LoginDialog extends javax.swing.JDialog {
         lblImagem = new javax.swing.JLabel();
 
         setTitle("Login");
-        setBackground(java.awt.Color.white);
         setMinimumSize(new java.awt.Dimension(300, 160));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowOpened(java.awt.event.WindowEvent evt) {
@@ -163,7 +164,7 @@ public class LoginDialog extends javax.swing.JDialog {
     private void LoginDialogOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_LoginDialogOpened
         if (!lblImagem.isVisible()){
             try {
-                lblImagem.setIcon(res.get("\\images\\Fundo4.jpg", this.getWidth(), this.getHeight()));
+                lblImagem.setIcon(res.get("\\images\\Fundo2.jpg", this.getWidth(), this.getHeight()));
                 lblImagem.setVisible(true);
             } catch (GeralException ex) {
                 lblImagem.setVisible(false);

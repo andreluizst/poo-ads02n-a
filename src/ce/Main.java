@@ -8,6 +8,7 @@ import ce.erro.RepositorioExcluirException;
 import ce.erro.RepositorioListarException;
 import ce.erro.RepositorioPesquisarException;
 import ce.erro.ControladorException;
+import ce.erro.GeralException;
 import ce.model.basica.Categoria;
 import ce.model.basica.Unidade;
 import ce.model.basica.Produto;
@@ -39,6 +40,10 @@ import ce.util.VerificarCpfCnpj;
 import java.util.ArrayList;
 import ce.model.fachada.Fachada;
 import ce.gui.*;
+import ce.util.LogGenerator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -74,17 +79,29 @@ public class Main {
      */
     public static void main(String[] args) {
         f= Fachada.getInstancia();
-        
+        try {
+            //LaF.setLookAndFeel("gtk");
+            LaF.setNativeLookAndFeel(); // funciona ok
+            //LaF.setCrossLookAndFeel(); //funciona ok
+        } catch (GeralException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage());
+        }
+        //LoginDialog.main(args);
         LoginDialog loginDialog= new LoginDialog(null, true);
         loginDialog.setLocationRelativeTo(null);
         loginDialog.setVisible(true);
         if (loginDialog.getReturnStatus() == LoginDialog.RET_CANCEL){
             System.exit(0);
         }
-        user= f.getUser();
+        /*user= f.getUser();
         System.out.println("Usuário: " + user.getNome()+"\n"
                 + "Perfil: "+ user.getPerfil().getNome()+"\n"
-                + "CPF: " + user.getFuncionario().getCpf());
+                + "CPF: " + user.getFuncionario().getCpf());*/
+        
+        MainMDIApplication mdiShell= new MainMDIApplication();
+        mdiShell.setLocationRelativeTo(null);
+        mdiShell.setVisible(true);
+        //MainMDIApplication.main(args);
         
         //Testando repositórios
         rpCateg = new RepositorioCategoria();
@@ -112,7 +129,7 @@ public class Main {
         ctrlEnt= new ControladorEntrada();
         //FALTA o controlador de saida
         
-        ctrlTestaInserir();
+        //ctrlTestaInserir();
         //ctrlTestaAlterar();
         //ctrlTestaExcluir();
     }
@@ -281,9 +298,9 @@ public class Main {
                     "Recife", "PE", "51055060", "8134622233", "vendas@infohouse.com.br"));
             */
             //Funcionario.inserir() - TESTADO E OK
-            /*rpFun.inserir(new Funcionario("98512536598", "Maria da Silva", "15/05/1965", 
+            rpFun.inserir(new Funcionario("98512536598", "Maria da Silva", "15/05/1965", 
                     "Rua Frei Damião", 20, "", "Afogados", "Recife", "PE", 
-                    "50030450", "8133442560", "maria.silva@gmail.com"));*
+                    "50030450", "8133442560", "maria.silva@gmail.com"));
             rpFun.inserir(new Funcionario("25648712341", "João Souza de Andrade",
                     "15/05/1962", "Av Recife", 1520, "", "Ipsepe",
                     "Recife", "PE", "51020310", "8132456655", 
@@ -291,21 +308,21 @@ public class Main {
             rpFun.inserir(new Funcionario("00011122200", "Milena Tavares",
                     "13/09/1980", "Av Brasil", 840, "", "Prazeres",
                     "Jaboarão dos Guararapes", "PE", "52032024", "8134656987", 
-                    "milena.tavares@hotmail.com"));*/
-            /*Perfil.inserrir() - TESTADO E OK
+                    "milena.tavares@hotmail.com"));
+            ///*Perfil.inserrir() - TESTADO E OK
             rpPer.inserir(new Perfil("Administrador"));
             rpPer.inserir(new Perfil("Estoquista"));
             rpPer.inserir(new Perfil("Gerente"));
-            rpPer.inserir(new Perfil("Me exclua"));
-            */
-            /*Usuario.inserir() - TESTATO E OK
+            //rpPer.inserir(new Perfil("Me exclua"));
+            //*/
+            //*Usuario.inserir() - TESTATO E OK
             rpUser.inserir(new Usuario("maria.silva",
                     rpPer.pesqCod(2), rpFun.pesqCpf("98512536598"), "maria"));
             rpUser.inserir(new Usuario("joao.souza",
                     rpPer.pesqCod(3), rpFun.pesqCpf("25648712341"), "joao"));
             rpUser.inserir(new Usuario("milena.tavares",
                     rpPer.pesqCod(3), rpFun.pesqCpf("00011122200"), "milena"));
-            */
+            //*/
             System.out.println("Inserido com sucesso!");
         } catch (ConexaoException ex) {
             System.out.println("ERRO de conexão: " + ex.getMessage());

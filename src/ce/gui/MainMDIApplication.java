@@ -22,8 +22,9 @@ public class MainMDIApplication extends javax.swing.JFrame {
         initComponents();
         res= Resource.getInstancia();
         lblImgShell.setVisible(false);
+        jInternalFrame1.setVisible(false);
         try {
-            fundo= res.get("\\images\\Fundo3.jpg");
+            fundo= res.get("\\images\\Fundo4.jpg");
         } catch (GeralException ex) {
             fundo=null;
             JOptionPane.showMessageDialog(null, ex.getMessage());
@@ -41,6 +42,7 @@ public class MainMDIApplication extends javax.swing.JFrame {
 
         desktopPane = new javax.swing.JDesktopPane();
         lblImgShell = new javax.swing.JLabel();
+        jInternalFrame1 = new javax.swing.JInternalFrame();
         menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         openMenuItem = new javax.swing.JMenuItem();
@@ -57,17 +59,47 @@ public class MainMDIApplication extends javax.swing.JFrame {
         aboutMenuItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Sistema simples de estoque");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                MainMDIApplicationOpened(evt);
+            }
+        });
 
         desktopPane.setBackground(new java.awt.Color(105, 105, 105));
         desktopPane.addComponentListener(new java.awt.event.ComponentAdapter() {
             public void componentResized(java.awt.event.ComponentEvent evt) {
                 desktopPaneResized(evt);
             }
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                desktopPaneShow(evt);
+            }
         });
 
-        lblImgShell.setText("jLabel1");
-        lblImgShell.setBounds(10, 10, 34, 14);
+        lblImgShell.setText("lblImgShell");
+        lblImgShell.setBounds(10, 10, 60, 14);
         desktopPane.add(lblImgShell, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        jInternalFrame1.setClosable(true);
+        jInternalFrame1.setIconifiable(true);
+        jInternalFrame1.setMaximizable(true);
+        jInternalFrame1.setResizable(true);
+        jInternalFrame1.setTitle("jInternalFrame Teste");
+        jInternalFrame1.setVisible(true);
+
+        javax.swing.GroupLayout jInternalFrame1Layout = new javax.swing.GroupLayout(jInternalFrame1.getContentPane());
+        jInternalFrame1.getContentPane().setLayout(jInternalFrame1Layout);
+        jInternalFrame1Layout.setHorizontalGroup(
+            jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 524, Short.MAX_VALUE)
+        );
+        jInternalFrame1Layout.setVerticalGroup(
+            jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 221, Short.MAX_VALUE)
+        );
+
+        jInternalFrame1.setBounds(90, 70, 540, 250);
+        desktopPane.add(jInternalFrame1, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         fileMenu.setMnemonic('f');
         fileMenu.setText("Arquivo");
@@ -152,8 +184,17 @@ public class MainMDIApplication extends javax.swing.JFrame {
     }//GEN-LAST:event_mnSairActionPerformed
 
     private void desktopPaneResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_desktopPaneResized
-        lblImgShell.setBounds(0, 0, this.getWidth(), this.getHeight());
+        atlzFundo();
     }//GEN-LAST:event_desktopPaneResized
+
+    private void desktopPaneShow(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_desktopPaneShow
+        //atlzFundo();
+    }//GEN-LAST:event_desktopPaneShow
+
+    private void MainMDIApplicationOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_MainMDIApplicationOpened
+        atlzFundo();
+        jInternalFrame1.setVisible(true);
+    }//GEN-LAST:event_MainMDIApplicationOpened
 
     /**
      * @param args the command line arguments
@@ -196,6 +237,14 @@ public class MainMDIApplication extends javax.swing.JFrame {
             }
         });
     }
+    
+    private void atlzFundo(){
+        lblImgShell.setBounds(0, 0, this.getWidth(), this.getHeight());
+        if (fundo != null){
+            lblImgShell.setIcon(res.stretchImage(fundo, this.getWidth(), this.getHeight()));
+            lblImgShell.setVisible(true);
+        }
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem aboutMenuItem;
     private javax.swing.JMenuItem contentMenuItem;
@@ -206,6 +255,7 @@ public class MainMDIApplication extends javax.swing.JFrame {
     private javax.swing.JMenu editMenu;
     private javax.swing.JMenu fileMenu;
     private javax.swing.JMenu helpMenu;
+    private javax.swing.JInternalFrame jInternalFrame1;
     private javax.swing.JLabel lblImgShell;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenuItem mnSair;
