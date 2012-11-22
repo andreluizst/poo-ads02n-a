@@ -188,3 +188,9 @@ maria.silvaa -> 19/11/2012 - 21:43:57
 	ce.model.regra.ControladorUsuario.validarLogin(): Usuário inválido!
 maria.silva -> 19/11/2012 - 21:44:00
 	ce.model.regra.ControladorUsuario.validarLogin(): Senha inválida!
+root -> 21/11/2012 - 23:22:28
+	ce.util.GerenciadorConexao.conectar(): java.sql.SQLException: Access denied for user 'root'@'localhost' (using password: YES)
+joao.souza -> 21/11/2012 - 23:22:28
+	ce.model.regra.ControladorUsuario.validarLogin(): No momento não é possível validar o login.
+joao.souza -> 21/11/2012 - 23:56:33
+	ce.model.regra.ControladorUsuario.validarLogin(): Senha inválida!

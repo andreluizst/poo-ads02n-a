@@ -5,6 +5,9 @@
 package ce.gui;
 
 import ce.erro.GeralException;
+import java.beans.PropertyVetoException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
@@ -15,7 +18,7 @@ import javax.swing.JOptionPane;
 public class MainMDIApplication extends javax.swing.JFrame {
     private Resource res;
     private ImageIcon fundo;
-    private jifCategoria cat= new jifCategoria();
+    private JIFCategoria jifCategoria= new JIFCategoria();
     /**
      * Creates new form MainMDIApplication
      */
@@ -109,10 +112,20 @@ public class MainMDIApplication extends javax.swing.JFrame {
 
         jMenu1.setMnemonic('a');
         jMenu1.setText("Abrir");
+        jMenu1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenu1ActionPerformed(evt);
+            }
+        });
 
         miCategora.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         miCategora.setMnemonic('c');
         miCategora.setText("Categoria");
+        miCategora.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                miCategoraActionPerformed(evt);
+            }
+        });
         jMenu1.add(miCategora);
 
         fileMenu.add(jMenu1);
@@ -218,10 +231,23 @@ public class MainMDIApplication extends javax.swing.JFrame {
     }//GEN-LAST:event_MainMDIApplicationOpened
 
     private void openMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openMenuItemActionPerformed
-        desktopPane.add(cat, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        cat.setBounds(0, 0, 500, 300);
-        cat.setVisible(true);
+        
     }//GEN-LAST:event_openMenuItemActionPerformed
+
+    private void jMenu1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenu1ActionPerformed
+
+    private void miCategoraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miCategoraActionPerformed
+        desktopPane.add(jifCategoria, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jifCategoria.setBounds(0, 0, 450, 350);
+        /*try {
+            jifCategoria.setMaximum(true);
+        } catch (PropertyVetoException ex) {
+            //Logger.getLogger(MainMDIApplication.class.getName()).log(Level.SEVERE, null, ex);
+        }*/
+        jifCategoria.setVisible(true);
+    }//GEN-LAST:event_miCategoraActionPerformed
 
     /**
      * @param args the command line arguments
