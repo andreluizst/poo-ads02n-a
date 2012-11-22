@@ -5,9 +5,6 @@
 package ce.gui;
 
 import ce.erro.GeralException;
-import java.beans.PropertyVetoException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
@@ -18,7 +15,7 @@ import javax.swing.JOptionPane;
 public class MainMDIApplication extends javax.swing.JFrame {
     private Resource res;
     private ImageIcon fundo;
-    private JIFCategoria jifCategoria= new JIFCategoria();
+    //private JIFCategoria jifCategoria= new JIFCategoria();
     /**
      * Creates new form MainMDIApplication
      */
@@ -26,7 +23,6 @@ public class MainMDIApplication extends javax.swing.JFrame {
         initComponents();
         res= Resource.getInstancia();
         lblImgShell.setVisible(false);
-        jInternalFrame1.setVisible(false);
         try {
             fundo= res.get("\\images\\Fundo4.jpg");
         } catch (GeralException ex) {
@@ -46,7 +42,6 @@ public class MainMDIApplication extends javax.swing.JFrame {
 
         desktopPane = new javax.swing.JDesktopPane();
         lblImgShell = new javax.swing.JLabel();
-        jInternalFrame1 = new javax.swing.JInternalFrame();
         menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         jMenu1 = new javax.swing.JMenu();
@@ -86,26 +81,6 @@ public class MainMDIApplication extends javax.swing.JFrame {
         lblImgShell.setText("lblImgShell");
         lblImgShell.setBounds(10, 10, 60, 14);
         desktopPane.add(lblImgShell, javax.swing.JLayeredPane.DEFAULT_LAYER);
-
-        jInternalFrame1.setClosable(true);
-        jInternalFrame1.setIconifiable(true);
-        jInternalFrame1.setMaximizable(true);
-        jInternalFrame1.setTitle("jInternalFrame Teste");
-        jInternalFrame1.setVisible(true);
-
-        javax.swing.GroupLayout jInternalFrame1Layout = new javax.swing.GroupLayout(jInternalFrame1.getContentPane());
-        jInternalFrame1.getContentPane().setLayout(jInternalFrame1Layout);
-        jInternalFrame1Layout.setHorizontalGroup(
-            jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 524, Short.MAX_VALUE)
-        );
-        jInternalFrame1Layout.setVerticalGroup(
-            jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 221, Short.MAX_VALUE)
-        );
-
-        jInternalFrame1.setBounds(90, 70, 540, 250);
-        desktopPane.add(jInternalFrame1, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         fileMenu.setMnemonic('a');
         fileMenu.setText("Arquivo");
@@ -227,7 +202,6 @@ public class MainMDIApplication extends javax.swing.JFrame {
 
     private void MainMDIApplicationOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_MainMDIApplicationOpened
         atlzFundo();
-        jInternalFrame1.setVisible(true);
     }//GEN-LAST:event_MainMDIApplicationOpened
 
     private void openMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openMenuItemActionPerformed
@@ -239,14 +213,9 @@ public class MainMDIApplication extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenu1ActionPerformed
 
     private void miCategoraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miCategoraActionPerformed
-        desktopPane.add(jifCategoria, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        /*desktopPane.add(jifCategoria, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jifCategoria.setBounds(0, 0, 450, 350);
-        /*try {
-            jifCategoria.setMaximum(true);
-        } catch (PropertyVetoException ex) {
-            //Logger.getLogger(MainMDIApplication.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
-        jifCategoria.setVisible(true);
+        jifCategoria.setVisible(true);*/
     }//GEN-LAST:event_miCategoraActionPerformed
 
     /**
@@ -308,7 +277,6 @@ public class MainMDIApplication extends javax.swing.JFrame {
     private javax.swing.JMenu editMenu;
     private javax.swing.JMenu fileMenu;
     private javax.swing.JMenu helpMenu;
-    private javax.swing.JInternalFrame jInternalFrame1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JLabel lblImgShell;
