@@ -15,7 +15,7 @@ import javax.swing.JOptionPane;
 public class MainMDIApplication extends javax.swing.JFrame {
     private Resource res;
     private ImageIcon fundo;
-    //private JIFCategoria jifCategoria= new JIFCategoria();
+    private JIFCategoria jifCategoria= new JIFCategoria();
     /**
      * Creates new form MainMDIApplication
      */
@@ -213,9 +213,9 @@ public class MainMDIApplication extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenu1ActionPerformed
 
     private void miCategoraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miCategoraActionPerformed
-        /*desktopPane.add(jifCategoria, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        desktopPane.add(jifCategoria, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jifCategoria.setBounds(0, 0, 450, 350);
-        jifCategoria.setVisible(true);*/
+        jifCategoria.setVisible(true);
     }//GEN-LAST:event_miCategoraActionPerformed
 
     /**

@@ -194,3 +194,11 @@ joao.souza -> 21/11/2012 - 23:22:28
 	ce.model.regra.ControladorUsuario.validarLogin(): No momento não é possível validar o login.
 joao.souza -> 21/11/2012 - 23:56:33
 	ce.model.regra.ControladorUsuario.validarLogin(): Senha inválida!
+root -> 22/11/2012 - 00:26:56
+	ce.util.GerenciadorConexao.conectar(): java.sql.SQLException: Access denied for user 'root'@'localhost' (using password: YES)
+joao.souza -> 22/11/2012 - 00:26:56
+	ce.model.regra.ControladorUsuario.validarLogin(): No momento não é possível validar o login.
+root -> 22/11/2012 - 00:27:09
+	ce.util.GerenciadorConexao.conectar(): java.sql.SQLException: Access denied for user 'root'@'localhost' (using password: YES)
+joao.souza -> 22/11/2012 - 00:27:09
+	ce.model.regra.ControladorUsuario.validarLogin(): No momento não é possível validar o login.
