@@ -202,3 +202,7 @@ root -> 22/11/2012 - 00:27:09
 	ce.util.GerenciadorConexao.conectar(): java.sql.SQLException: Access denied for user 'root'@'localhost' (using password: YES)
 joao.souza -> 22/11/2012 - 00:27:09
 	ce.model.regra.ControladorUsuario.validarLogin(): No momento não é possível validar o login.
+joao souza -> 23/11/2012 - 21:13:43
+	ce.model.regra.ControladorUsuario.validarLogin(): Usuário inválido!
+joao souza -> 23/11/2012 - 21:13:55
+	ce.model.regra.ControladorUsuario.validarLogin(): Usuário inválido!
