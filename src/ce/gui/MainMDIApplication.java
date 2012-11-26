@@ -17,7 +17,7 @@ public class MainMDIApplication extends javax.swing.JFrame {
     private static JInternalFrame activeWindow;//IActionsGui activeWindow;
     private Resource res;
     private ImageIcon fundo;
-    private JIFCategoria jifCategoria= new JIFCategoria();
+    //private JIFCategoria jifCategoria= new JIFCategoria();
     
     /**
      * Creates new form MainMDIApplication
@@ -352,6 +352,7 @@ public class MainMDIApplication extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenu1ActionPerformed
 
     private void miCategoraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miCategoraActionPerformed
+        CategoriaJif jifCategoria= new CategoriaJif();
         desktopPane.add(jifCategoria, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jifCategoria.setBounds(0, 0, 450, 350);
         jifCategoria.setVisible(true);
@@ -512,11 +513,12 @@ public class MainMDIApplication extends javax.swing.JFrame {
     }
     
     public void atlzMenu(){
+        mnPesquisar.setEnabled(activeWindow!=null);
         mnNovo.setEnabled(activeWindow!=null);
         mnExcluir.setEnabled(activeWindow!=null);
         mnAlterar.setEnabled(activeWindow!=null);
         mnIrPara.setEnabled(activeWindow!=null);
-        jmnCategoria.setVisible(activeWindow !=null?(activeWindow instanceof JIFCategoria):false);
+        jmnCategoria.setVisible(activeWindow !=null?(activeWindow instanceof CategoriaJif):false);
         jmnFecharAtual.setEnabled(activeWindow!=null);
     }
 }
