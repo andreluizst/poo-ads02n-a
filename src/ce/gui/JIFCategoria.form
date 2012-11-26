@@ -110,7 +110,7 @@
                           <Component id="btnNovo" min="-2" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
                           <Component id="btnExcluir" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace pref="32" max="32767" attributes="0"/>
+                          <EmptySpace pref="12" max="32767" attributes="0"/>
                           <Component id="btnAlterar" min="-2" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
                           <Component id="btnAtualizar" min="-2" max="-2" attributes="0"/>
@@ -131,7 +131,7 @@
                       <Component id="btnAtualizar" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jScrollPane1" pref="213" max="32767" attributes="0"/>
+                  <Component id="jScrollPane1" pref="217" max="32767" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
@@ -183,9 +183,6 @@
                   </Subbinding>
                 </BindingProperty>
               </BindingProperties>
-              <Events>
-                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jTableClicked"/>
-              </Events>
             </Component>
           </SubComponents>
         </Container>
@@ -196,6 +193,9 @@
             </Property>
             <Property name="mnemonic" type="int" value="110"/>
             <Property name="text" type="java.lang.String" value="Novo"/>
+            <Property name="disabledIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/ce/gui/images/btnNovoDisable2.png"/>
+            </Property>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnNovoActionPerformed"/>
@@ -208,6 +208,9 @@
             </Property>
             <Property name="mnemonic" type="int" value="120"/>
             <Property name="text" type="java.lang.String" value="Excluir"/>
+            <Property name="disabledIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/ce/gui/images/btnApagarDisable2.png"/>
+            </Property>
           </Properties>
           <BindingProperties>
             <BindingProperty name="enabled" source="jTable1" sourcePath="${selectedElement!=null}" target="btnExcluir" targetPath="enabled" updateStrategy="0" immediately="false"/>
@@ -223,6 +226,9 @@
             </Property>
             <Property name="mnemonic" type="int" value="116"/>
             <Property name="text" type="java.lang.String" value="Alterar"/>
+            <Property name="disabledIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/ce/gui/images/btnAlterarDisable.png"/>
+            </Property>
           </Properties>
           <BindingProperties>
             <BindingProperty name="enabled" source="jTable1" sourcePath="${selectedElement!=null}" target="btnAlterar" targetPath="enabled" updateStrategy="0" immediately="false"/>
@@ -233,7 +239,13 @@
         </Component>
         <Component class="javax.swing.JButton" name="btnAtualizar">
           <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/ce/gui/images/btnAtualizarHot.png"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Atualizar"/>
+            <Property name="disabledIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/ce/gui/images/btnAtualizarDisable.png"/>
+            </Property>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAtualizarActionPerformed"/>

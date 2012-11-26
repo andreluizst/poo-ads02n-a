@@ -256,16 +256,12 @@ public class JIFCategoria extends javax.swing.JInternalFrame implements IActions
         columnBinding.setColumnClass(String.class);
         bindingGroup.addBinding(jTableBinding);
         jTableBinding.bind();
-        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jTableClicked(evt);
-            }
-        });
         jScrollPane1.setViewportView(jTable1);
 
         btnNovo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ce/gui/images/btnNovo.jpg"))); // NOI18N
         btnNovo.setMnemonic('n');
         btnNovo.setText("Novo");
+        btnNovo.setDisabledIcon(new javax.swing.ImageIcon(getClass().getResource("/ce/gui/images/btnNovoDisable2.png"))); // NOI18N
         btnNovo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnNovoActionPerformed(evt);
@@ -275,6 +271,7 @@ public class JIFCategoria extends javax.swing.JInternalFrame implements IActions
         btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ce/gui/images/btnApagar.jpg"))); // NOI18N
         btnExcluir.setMnemonic('x');
         btnExcluir.setText("Excluir");
+        btnExcluir.setDisabledIcon(new javax.swing.ImageIcon(getClass().getResource("/ce/gui/images/btnApagarDisable2.png"))); // NOI18N
 
         org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, jTable1, org.jdesktop.beansbinding.ELProperty.create("${selectedElement!=null}"), btnExcluir, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
@@ -288,6 +285,7 @@ public class JIFCategoria extends javax.swing.JInternalFrame implements IActions
         btnAlterar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ce/gui/images/btnAlterar.jpg"))); // NOI18N
         btnAlterar.setMnemonic('t');
         btnAlterar.setText("Alterar");
+        btnAlterar.setDisabledIcon(new javax.swing.ImageIcon(getClass().getResource("/ce/gui/images/btnAlterarDisable.png"))); // NOI18N
 
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, jTable1, org.jdesktop.beansbinding.ELProperty.create("${selectedElement!=null}"), btnAlterar, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
@@ -298,7 +296,9 @@ public class JIFCategoria extends javax.swing.JInternalFrame implements IActions
             }
         });
 
+        btnAtualizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ce/gui/images/btnAtualizarHot.png"))); // NOI18N
         btnAtualizar.setText("Atualizar");
+        btnAtualizar.setDisabledIcon(new javax.swing.ImageIcon(getClass().getResource("/ce/gui/images/btnAtualizarDisable.png"))); // NOI18N
         btnAtualizar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAtualizarActionPerformed(evt);
@@ -317,7 +317,7 @@ public class JIFCategoria extends javax.swing.JInternalFrame implements IActions
                         .addComponent(btnNovo)
                         .addGap(29, 29, 29)
                         .addComponent(btnExcluir)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
                         .addComponent(btnAlterar)
                         .addGap(31, 31, 31)
                         .addComponent(btnAtualizar)))
@@ -333,7 +333,7 @@ public class JIFCategoria extends javax.swing.JInternalFrame implements IActions
                     .addComponent(btnAlterar)
                     .addComponent(btnAtualizar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 213, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 217, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -365,10 +365,6 @@ public class JIFCategoria extends javax.swing.JInternalFrame implements IActions
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
         excluir();
     }//GEN-LAST:event_btnExcluirActionPerformed
-
-    private void jTableClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableClicked
-        alterar();
-    }//GEN-LAST:event_jTableClicked
 
     private void jpupmnNovoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jpupmnNovoMouseClicked
         novo();
