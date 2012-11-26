@@ -210,6 +210,11 @@ public class Fachada {
         return ctrlFun.trazer(cpf);
     }
     
+    public List<Funcionario> pesquisarFuncionario(String nome) 
+            throws GeralException{
+        return ctrlFun.pesquisar(nome);
+    }
+    
     
     /*
      * ************************ P E R F I L ********************************

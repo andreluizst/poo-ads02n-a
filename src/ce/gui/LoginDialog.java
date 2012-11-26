@@ -41,6 +41,12 @@ public class LoginDialog extends javax.swing.JDialog {
         user= new Usuario();
         res= Resource.getInstancia();
         lblImagem.setVisible(false);
+        try {
+            lblImagem.setIcon(res.get("\\images\\Fundo4.jpg", this.getWidth(), this.getHeight()));
+        } catch (GeralException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage());
+            //Logger.getLogger(LoginDialog.class.getName()).log(Level.SEVERE, null, ex);
+        }
         // Close the dialog when Esc is pressed
         String cancelName = "cancel";
         InputMap inputMap = getRootPane().getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
@@ -53,6 +59,7 @@ public class LoginDialog extends javax.swing.JDialog {
                 doClose(RET_CANCEL);
             }
         });
+        lblImagem.setVisible(true);
     }
 
     /**
@@ -82,9 +89,6 @@ public class LoginDialog extends javax.swing.JDialog {
         setTitle("Login");
         setMinimumSize(new java.awt.Dimension(300, 160));
         addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowOpened(java.awt.event.WindowEvent evt) {
-                LoginDialogOpened(evt);
-            }
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 closeDialog(evt);
             }
@@ -160,18 +164,6 @@ public class LoginDialog extends javax.swing.JDialog {
     private void closeDialog(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_closeDialog
         doClose(RET_CANCEL);
     }//GEN-LAST:event_closeDialog
-
-    private void LoginDialogOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_LoginDialogOpened
-        if (!lblImagem.isVisible()){
-            try {
-                lblImagem.setIcon(res.get("\\images\\Fundo2.jpg", this.getWidth(), this.getHeight()));
-                lblImagem.setVisible(true);
-            } catch (GeralException ex) {
-                lblImagem.setVisible(false);
-                JOptionPane.showMessageDialog(null, ex.getMessage());
-            }
-        }
-    }//GEN-LAST:event_LoginDialogOpened
     
     private void doClose(int retStatus) {
         returnStatus = retStatus;

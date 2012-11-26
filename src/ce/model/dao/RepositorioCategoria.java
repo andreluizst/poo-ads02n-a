@@ -56,7 +56,7 @@ public class RepositorioCategoria implements IRepositorioCategoria{
         List<Categoria> lista = new ArrayList();
         Categoria cat = null;
         Connection c = gc.conectar();
-        String sql = "SELECT codCateg, Descricao FROM categoria";
+        String sql = "SELECT codCateg, Descricao FROM categoria order by Descricao";
         try{
             Statement stm = c.createStatement();
             ResultSet rs = stm.executeQuery(sql);
@@ -164,7 +164,7 @@ public class RepositorioCategoria implements IRepositorioCategoria{
         }catch(SQLException e){
             String msg= e.getMessage().toLowerCase();
             if (msg!=null && msg.contains("foreign key constraint fails")){
-                throw new RepositorioForeignKeyException(getUser().getNome(), e,
+                throw new RepositorioForeignKeyException(e,
                     RepositorioCategoria.class.getName()+".excluir()");
             }
             throw new RepositorioExcluirException(e, 

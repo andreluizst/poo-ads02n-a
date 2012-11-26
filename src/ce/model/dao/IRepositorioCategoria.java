@@ -1,7 +1,6 @@
 package ce.model.dao;
 
 import ce.erro.ConexaoException;
-import ce.erro.RepositorioException;
 import ce.erro.RepositorioListarException;
 import ce.erro.RepositorioInserirException;
 import ce.erro.RepositorioAlterarException;

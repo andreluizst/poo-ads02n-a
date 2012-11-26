@@ -43,6 +43,7 @@ import ce.gui.*;
 import ce.util.LogGenerator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 
 /**
@@ -51,6 +52,7 @@ import javax.swing.JOptionPane;
  */
 public class Main {
     private static Fachada f;
+    private static MainMDIApplication mdiShell;
     //Para testar os repositórios
     private static IRepositorioCategoria rpCateg;
     private static IRepositorioUnidade rpUnid;
@@ -98,7 +100,7 @@ public class Main {
                 + "Perfil: "+ user.getPerfil().getNome()+"\n"
                 + "CPF: " + user.getFuncionario().getCpf());
         
-        MainMDIApplication mdiShell= new MainMDIApplication();
+        mdiShell= new MainMDIApplication();
         mdiShell.setLocationRelativeTo(null);
         mdiShell.setVisible(true);
         
@@ -131,6 +133,11 @@ public class Main {
         //ctrlTestaInserir();
         //ctrlTestaAlterar();
         //ctrlTestaExcluir();
+    }
+    
+    public static void atlzShellMenu(JInternalFrame sender){
+        MainMDIApplication.setActiveWindow(sender);
+        mdiShell.atlzMenu();
     }
     
     private static void verificarCpfOuCnpj(String s){
