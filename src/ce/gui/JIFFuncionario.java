@@ -19,6 +19,7 @@ import javax.swing.JOptionPane;
 public class JIFFuncionario extends javax.swing.JInternalFrame implements IActionsGui{
     private Fachada f;
     private Funcionario pesqFun;
+    private String activationName;
 
     /**
      * Creates new form JIFFuncionario
@@ -27,6 +28,7 @@ public class JIFFuncionario extends javax.swing.JInternalFrame implements IActio
         initComponents();
         pesqFun= new Funcionario();
         f= Fachada.getInstancia();
+        activationName= "Funcionário";
     }
     
     private void preencherFun(){
@@ -171,6 +173,11 @@ public class JIFFuncionario extends javax.swing.JInternalFrame implements IActio
         }
     }
     
+    @Override
+    public String getActivationName(){
+        return activationName;
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -296,7 +303,7 @@ public class JIFFuncionario extends javax.swing.JInternalFrame implements IActio
         });
 
         btnAtualizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ce/gui/images/btnAtualizarHot.png"))); // NOI18N
-        btnAtualizar.setText("Atualizar");
+        btnAtualizar.setText("Listar/Atualizar");
         btnAtualizar.setDisabledIcon(new javax.swing.ImageIcon(getClass().getResource("/ce/gui/images/btnAtualizarDisable.png"))); // NOI18N
         btnAtualizar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -332,7 +339,9 @@ public class JIFFuncionario extends javax.swing.JInternalFrame implements IActio
                                         .addComponent(btnPesquisar)
                                         .addGap(18, 18, 18)
                                         .addComponent(btnLimpar))
-                                    .addComponent(btnAtualizar))))))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGap(10, 10, 10)
+                                        .addComponent(btnAtualizar)))))))
                 .addContainerGap(132, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -412,7 +421,7 @@ public class JIFFuncionario extends javax.swing.JInternalFrame implements IActio
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 243, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 251, Short.MAX_VALUE)
                 .addContainerGap())
         );
 

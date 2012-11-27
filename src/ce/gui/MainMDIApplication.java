@@ -5,8 +5,15 @@
 package ce.gui;
 
 import ce.erro.GeralException;
+import java.beans.PropertyVetoException;
+import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JInternalFrame;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
 /**
@@ -17,6 +24,7 @@ public class MainMDIApplication extends javax.swing.JFrame {
     private static JInternalFrame activeWindow;//IActionsGui activeWindow;
     private Resource res;
     private ImageIcon fundo;
+    private List<JInternalFrame> janelas;
     //private JIFCategoria jifCategoria= new JIFCategoria();
     
     /**
@@ -31,6 +39,44 @@ public class MainMDIApplication extends javax.swing.JFrame {
         } catch (GeralException ex) {
             fundo=null;
             JOptionPane.showMessageDialog(null, ex.getMessage());
+        }
+        janelas= new ArrayList();
+    }
+    
+    public void registrarJanela(JInternalFrame janela){
+        String s="";
+        janelas.add(janela);
+        JMenuItem novoMenuItem= new JMenuItem();
+        novoMenuItem.setName("miJanela"+janelas.size());
+        novoMenuItem.setText(janelas.size()+ " " +((IActionsGui)janela).getActivationName());
+        s= ((Integer)janelas.size()).toString();
+        novoMenuItem.setMnemonic(s.charAt(0));
+        mnJanela.add(novoMenuItem);
+        atlzMenu();
+    }
+    
+    public void desregistrarJanela(JInternalFrame janela){
+        for(int i=0;i<janelas.size();i++){
+            if (janelas.get(i).getTitle().compareTo(janela.getTitle()) == 0){
+                janelas.remove(i);
+                break;
+            }
+        }
+        for(int i=0;i<mnJanela.getItemCount();i++){
+            if (mnJanela.getItem(i).getText().contains(((IActionsGui)janela).getActivationName())){
+                mnJanela.remove(i);
+                break;
+            }
+        }
+        atlzMenu();
+    }
+    
+    private void activeWindow(String activationName){
+        for(int i=0;i<janelas.size();i++){
+            if (((IActionsGui)janelas.get(i)).getActivationName().compareTo(activationName) == 0){
+                janelas.get(i).show();
+                break;
+            }
         }
     }
 
@@ -78,7 +124,7 @@ public class MainMDIApplication extends javax.swing.JFrame {
         jmnFecharAtual = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         jmnCategoria = new javax.swing.JMenuItem();
-        jMenuItem3 = new javax.swing.JMenuItem();
+        jmnFuncionario = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Sistema simples de estoque");
@@ -123,6 +169,11 @@ public class MainMDIApplication extends javax.swing.JFrame {
         mnFuncionario.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         mnFuncionario.setMnemonic('o');
         mnFuncionario.setText("Funcionário");
+        mnFuncionario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnFuncionarioActionPerformed(evt);
+            }
+        });
         jMenu1.add(mnFuncionario);
 
         miCategora.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
@@ -203,7 +254,7 @@ public class MainMDIApplication extends javax.swing.JFrame {
             }
         });
 
-        mnPesquisar.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ENTER, java.awt.event.InputEvent.CTRL_MASK));
+        mnPesquisar.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F5, 0));
         mnPesquisar.setMnemonic('p');
         mnPesquisar.setText("Pesquisar");
         mnPesquisar.addActionListener(new java.awt.event.ActionListener() {
@@ -308,10 +359,21 @@ public class MainMDIApplication extends javax.swing.JFrame {
 
         jmnCategoria.setMnemonic('c');
         jmnCategoria.setText("Categoria");
+        jmnCategoria.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmnCategoriaActionPerformed(evt);
+            }
+        });
         mnJanela.add(jmnCategoria);
 
-        jMenuItem3.setText("jMenuItem3");
-        mnJanela.add(jMenuItem3);
+        jmnFuncionario.setMnemonic('o');
+        jmnFuncionario.setText("Funcionário");
+        jmnFuncionario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmnFuncionarioActionPerformed(evt);
+            }
+        });
+        mnJanela.add(jmnFuncionario);
 
         menuBar.add(mnJanela);
 
@@ -341,10 +403,11 @@ public class MainMDIApplication extends javax.swing.JFrame {
 
     private void MainMDIApplicationOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_MainMDIApplicationOpened
         atlzFundo();
+        atlzMenu();
     }//GEN-LAST:event_MainMDIApplicationOpened
 
     private void mnProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnProdutoActionPerformed
-        
+        //JIFProduto
     }//GEN-LAST:event_mnProdutoActionPerformed
 
     private void jMenu1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu1ActionPerformed
@@ -354,7 +417,8 @@ public class MainMDIApplication extends javax.swing.JFrame {
     private void miCategoraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miCategoraActionPerformed
         CategoriaJif jifCategoria= new CategoriaJif();
         desktopPane.add(jifCategoria, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        jifCategoria.setBounds(0, 0, 450, 350);
+        //jifCategoria.setBounds(0, 0, 450, 350);
+        //registrarJanela(jifCategoria);
         jifCategoria.setVisible(true);
         setActiveWindow(jifCategoria);
     }//GEN-LAST:event_miCategoraActionPerformed
@@ -416,6 +480,28 @@ public class MainMDIApplication extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_mnPesquisarActionPerformed
 
+    private void jmnFuncionarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmnFuncionarioActionPerformed
+        //Ativar a tela Funcionário
+    }//GEN-LAST:event_jmnFuncionarioActionPerformed
+
+    private void mnFuncionarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnFuncionarioActionPerformed
+        JIFFuncionario jifFun= new JIFFuncionario();
+        desktopPane.add(jifFun, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        //jifCategoria.setBounds(0, 0, 450, 350);
+        //registrarJanela(jifFun);
+        jifFun.setVisible(true);
+        setActiveWindow(jifFun);
+        try {
+            jifFun.setMaximum(true);
+        } catch (PropertyVetoException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage());
+        }
+    }//GEN-LAST:event_mnFuncionarioActionPerformed
+
+    private void jmnCategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmnCategoriaActionPerformed
+        activeWindow.show();
+    }//GEN-LAST:event_jmnCategoriaActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -471,13 +557,13 @@ public class MainMDIApplication extends javax.swing.JFrame {
     private javax.swing.JMenu editMenu;
     private javax.swing.JMenu fileMenu;
     private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JPopupMenu.Separator jSeparator3;
     private javax.swing.JPopupMenu.Separator jSeparator4;
     private javax.swing.JMenuItem jmnCategoria;
     private javax.swing.JMenuItem jmnFecharAtual;
+    private javax.swing.JMenuItem jmnFuncionario;
     private javax.swing.JLabel lblImgShell;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenuItem miCategora;
@@ -518,7 +604,8 @@ public class MainMDIApplication extends javax.swing.JFrame {
         mnExcluir.setEnabled(activeWindow!=null);
         mnAlterar.setEnabled(activeWindow!=null);
         mnIrPara.setEnabled(activeWindow!=null);
-        jmnCategoria.setVisible(activeWindow !=null?(activeWindow instanceof CategoriaJif):false);
+        jmnCategoria.setVisible(activeWindow!=null?(activeWindow instanceof CategoriaJif):false);
+        jmnFuncionario.setVisible(activeWindow!= null?(activeWindow instanceof JIFFuncionario):false);
         jmnFecharAtual.setEnabled(activeWindow!=null);
     }
 }

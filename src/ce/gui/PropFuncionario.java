@@ -164,6 +164,7 @@ public class PropFuncionario extends javax.swing.JDialog {
         jftfDataNasc = new javax.swing.JFormattedTextField(maskData);
 
         setBounds(new java.awt.Rectangle(0, 0, 614, 320));
+        setPreferredSize(new java.awt.Dimension(614, 320));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 closeDialog(evt);

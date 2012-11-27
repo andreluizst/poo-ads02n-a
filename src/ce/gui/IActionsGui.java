@@ -18,4 +18,5 @@ public interface IActionsGui {
     public void priorRecord();
     public void nextRecord();
     public void lastRecord();
+    public String getActivationName();
 }

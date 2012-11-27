@@ -140,6 +140,14 @@ public class Main {
         mdiShell.atlzMenu();
     }
     
+    public static void registrarJanela(JInternalFrame janela){
+        mdiShell.registrarJanela(janela);
+    }
+    
+    public static void desregistrarJanela(JInternalFrame janela){
+        mdiShell.desregistrarJanela(janela);
+    }
+    
     private static void verificarCpfOuCnpj(String s){
         if (VerificarCpfCnpj.executar(s)){
             System.out.println("CPF ou CNPJ OK!");
