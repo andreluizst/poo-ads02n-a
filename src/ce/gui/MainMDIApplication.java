@@ -159,6 +159,11 @@ public class MainMDIApplication extends javax.swing.JFrame {
         mnPerfil.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         mnPerfil.setMnemonic('e');
         mnPerfil.setText("Perfil");
+        mnPerfil.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnPerfilActionPerformed(evt);
+            }
+        });
         jMenu1.add(mnPerfil);
 
         mnUsuario.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_U, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
@@ -501,6 +506,13 @@ public class MainMDIApplication extends javax.swing.JFrame {
     private void jmnCategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmnCategoriaActionPerformed
         activeWindow.show();
     }//GEN-LAST:event_jmnCategoriaActionPerformed
+
+    private void mnPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnPerfilActionPerformed
+        JIFPerfil jifPerfil= new JIFPerfil();
+        desktopPane.add(jifPerfil, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jifPerfil.setVisible(true);
+        setActiveWindow(jifPerfil);
+    }//GEN-LAST:event_mnPerfilActionPerformed
 
     /**
      * @param args the command line arguments

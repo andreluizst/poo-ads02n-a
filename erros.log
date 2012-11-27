@@ -14,3 +14,7 @@ Sistema -> 25/11/2012 - 22:48:07
 joao.souza -> 25/11/2012 - 22:48:07
 	ce.model.regra.ControladorCategoria.excluir(): Não é possível excluir a categoria informada, pois a mesma
  está sendo usanda por um ou mais produto!
+root -> 27/11/2012 - 17:43:46
+	ce.util.GerenciadorConexao.conectar(): java.sql.SQLException: Access denied for user 'root'@'localhost' (using password: YES)
+joao.souza -> 27/11/2012 - 17:43:46
+	ce.model.regra.ControladorUsuario.validarLogin(): No momento não é possível validar o login.

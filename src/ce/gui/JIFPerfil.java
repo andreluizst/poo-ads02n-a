@@ -6,7 +6,7 @@ package ce.gui;
 
 import ce.Main;
 import ce.erro.GeralException;
-import ce.model.basica.Categoria;
+import ce.model.basica.Perfil;
 import ce.model.fachada.Fachada;
 import java.util.LinkedList;
 import javax.swing.JOptionPane;
@@ -16,24 +16,24 @@ import javax.swing.table.DefaultTableCellRenderer;
  *
  * @author andreluiz
  */
-public class CategoriaJif extends javax.swing.JInternalFrame implements IActionsGui{
+public class JIFPerfil extends javax.swing.JInternalFrame implements IActionsGui{
     private Fachada f;
     private String activationName;
     /**
-     * Creates new form CategoriaJif
+     * Creates new form JIFPerfil
      */
-    public CategoriaJif() {
+    public JIFPerfil() {
         initComponents();
         f= Fachada.getInstancia();
-        activationName= "Categoria";
+        activationName= "Perfil";
         DefaultTableCellRenderer dtcrEsq= new DefaultTableCellRenderer();
         dtcrEsq.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jTable1.getColumnModel().getColumn(0).setCellRenderer(dtcrEsq);
     }
     
-    private void selectCategoria(Categoria c){
-        for(int i=0;i<lstCategorias.size();i++){
-            if (c.getCodCateg() == lstCategorias.get(i).getCodCateg()){
+    private void selectPerfil(Perfil p){
+        for(int i=0;i<lstPerfis.size();i++){
+            if (p.getCodPerfil() == lstPerfis.get(i).getCodPerfil()){
                 jTable1.setRowSelectionInterval(i, i);
                 break;
             }
@@ -42,17 +42,17 @@ public class CategoriaJif extends javax.swing.JInternalFrame implements IActions
 
     @Override
     public void novo(){
-        Categoria c;
-        PropCategoria propCateg= new PropCategoria(null, true, null); 
-        propCateg.setLocationRelativeTo(null);
-        propCateg.setVisible(true);
-        c= propCateg.getProperties();
+        Perfil p;
+        PropPerfil propPerfil= new PropPerfil(null, true, null); 
+        propPerfil.setLocationRelativeTo(null);
+        propPerfil.setVisible(true);
+        p= propPerfil.getProperties();
         //propFun.getReturnStatus();
-        if (c != null){
-            lstCategorias.clear();
+        if (p != null){
+            lstPerfis.clear();
             try {
-                lstCategorias.addAll(f.listarCategoria());
-                selectCategoria(c);
+                lstPerfis.addAll(f.listarPerfil());
+                selectPerfil(p);
             } catch (GeralException ex) {
                 JOptionPane.showMessageDialog(null, ex.getMessage());
             }
@@ -61,19 +61,19 @@ public class CategoriaJif extends javax.swing.JInternalFrame implements IActions
     
     @Override
     public void excluir(){
-        Categoria c;
+        Perfil obj;
         int row= jTable1.getSelectedRow();
         if ((row == jTable1.getRowCount()) || (row > 0)){
             row--;
         }else{
             row=0;
         }
-        c= lstCategorias.get(jTable1.getSelectedRow());
+        obj= lstPerfis.get(jTable1.getSelectedRow());
         try {
-            f.excluir(c);
+            f.excluir(obj);
             if (jTable1.getRowCount() > 0){
-                lstCategorias.clear();
-                lstCategorias.addAll(f.listarCategoria());
+                lstPerfis.clear();
+                lstPerfis.addAll(f.listarPerfil());
             }
             if (jTable1.getRowCount() > 0){
                 jTable1.setRowSelectionInterval(row, row);
@@ -86,18 +86,18 @@ public class CategoriaJif extends javax.swing.JInternalFrame implements IActions
     
     @Override
     public void alterar(){
-        Categoria c;
-        c= lstCategorias.get(jTable1.getSelectedRow());
-        PropCategoria propCateg= new PropCategoria(null, true, c); 
-        propCateg.setLocationRelativeTo(null);
-        propCateg.setVisible(true);
-        c= propCateg.getProperties();
-        if (c != null){
+        Perfil obj;
+        obj= lstPerfis.get(jTable1.getSelectedRow());
+        PropPerfil propObj= new PropPerfil(null, true, obj); 
+        propObj.setLocationRelativeTo(null);
+        propObj.setVisible(true);
+        obj= propObj.getProperties();
+        if (obj != null){
             try {
-                f.alterar(c);
-                lstCategorias.clear();
-                lstCategorias.addAll(f.listarCategoria());
-                selectCategoria(c);
+                f.alterar(obj);
+                lstPerfis.clear();
+                lstPerfis.addAll(f.listarPerfil());
+                selectPerfil(obj);
             } catch (GeralException ex) {
                 JOptionPane.showMessageDialog(null, ex.getMessage());
             }
@@ -142,9 +142,9 @@ public class CategoriaJif extends javax.swing.JInternalFrame implements IActions
     
     @Override
     public void listar(){
-        lstCategorias.clear();
+        lstPerfis.clear();
         try {
-            lstCategorias.addAll(f.listarCategoria());
+            lstPerfis.addAll(f.listarPerfil());
         } catch (GeralException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage());
         }
@@ -166,31 +166,29 @@ public class CategoriaJif extends javax.swing.JInternalFrame implements IActions
     private void initComponents() {
         bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
-        lstCategorias = new LinkedList<Categoria>();
-        jPanel1 = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        lstPerfis = new LinkedList<Perfil>();
         btnNovo = new javax.swing.JButton();
         btnExcluir = new javax.swing.JButton();
         btnAlterar = new javax.swing.JButton();
         btnListar = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
 
-        lstCategorias= org.jdesktop.observablecollections.ObservableCollections.observableList(lstCategorias);
+        lstPerfis= org.jdesktop.observablecollections.ObservableCollections.observableList(lstPerfis);
 
         setClosable(true);
         setIconifiable(true);
         setMaximizable(true);
         setResizable(true);
-        setTitle("Categoria");
-        setNormalBounds(new java.awt.Rectangle(0, 0, 570, 400));
+        setNormalBounds(new java.awt.Rectangle(0, 0, 573, 374));
         addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
             public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
-                CategoriaJifActivated(evt);
+                JIFPerfilActivated(evt);
             }
             public void internalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
             }
             public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
-                CategoriaJifClosing(evt);
+                JIFPerfilClosing(evt);
             }
             public void internalFrameDeactivated(javax.swing.event.InternalFrameEvent evt) {
             }
@@ -201,17 +199,6 @@ public class CategoriaJif extends javax.swing.JInternalFrame implements IActions
             public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
             }
         });
-
-        org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, lstCategorias, jTable1, "");
-        org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${codCateg}"));
-        columnBinding.setColumnName("Cod Categ");
-        columnBinding.setColumnClass(Integer.class);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${descricao}"));
-        columnBinding.setColumnName("Descricao");
-        columnBinding.setColumnClass(String.class);
-        bindingGroup.addBinding(jTableBinding);
-        jTableBinding.bind();
-        jScrollPane1.setViewportView(jTable1);
 
         btnNovo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ce/gui/images/btnNovo.jpg"))); // NOI18N
         btnNovo.setText("Novo");
@@ -225,10 +212,6 @@ public class CategoriaJif extends javax.swing.JInternalFrame implements IActions
         btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ce/gui/images/btnApagar.jpg"))); // NOI18N
         btnExcluir.setText("Excluir");
         btnExcluir.setDisabledIcon(new javax.swing.ImageIcon(getClass().getResource("/ce/gui/images/btnApagarDisable2.png"))); // NOI18N
-
-        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, jTable1, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), btnExcluir, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
-        bindingGroup.addBinding(binding);
-
         btnExcluir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnExcluirActionPerformed(evt);
@@ -238,10 +221,6 @@ public class CategoriaJif extends javax.swing.JInternalFrame implements IActions
         btnAlterar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ce/gui/images/btnAlterar.jpg"))); // NOI18N
         btnAlterar.setText("Alterar");
         btnAlterar.setDisabledIcon(new javax.swing.ImageIcon(getClass().getResource("/ce/gui/images/btnAlterarDisable.png"))); // NOI18N
-
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, jTable1, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), btnAlterar, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
-        bindingGroup.addBinding(binding);
-
         btnAlterar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAlterarActionPerformed(evt);
@@ -257,15 +236,26 @@ public class CategoriaJif extends javax.swing.JInternalFrame implements IActions
             }
         });
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, lstPerfis, jTable1);
+        org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${codPerfil}"));
+        columnBinding.setColumnName("Cod Perfil");
+        columnBinding.setColumnClass(Integer.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${nome}"));
+        columnBinding.setColumnName("Nome");
+        columnBinding.setColumnClass(String.class);
+        bindingGroup.addBinding(jTableBinding);
+        jTableBinding.bind();
+        jScrollPane1.setViewportView(jTable1);
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(btnNovo)
                         .addGap(42, 42, 42)
                         .addComponent(btnExcluir)
@@ -273,14 +263,14 @@ public class CategoriaJif extends javax.swing.JInternalFrame implements IActions
                         .addComponent(btnAlterar)
                         .addGap(52, 52, 52)
                         .addComponent(btnListar)
-                        .addGap(0, 26, Short.MAX_VALUE)))
+                        .addGap(0, 29, Short.MAX_VALUE)))
                 .addContainerGap())
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(25, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnNovo)
                     .addComponent(btnExcluir)
                     .addComponent(btnAlterar)
@@ -290,27 +280,10 @@ public class CategoriaJif extends javax.swing.JInternalFrame implements IActions
                 .addContainerGap())
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-
         bindingGroup.bind();
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void btnListarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnListarActionPerformed
-        listar();
-    }//GEN-LAST:event_btnListarActionPerformed
 
     private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
         novo();
@@ -324,25 +297,28 @@ public class CategoriaJif extends javax.swing.JInternalFrame implements IActions
         alterar();
     }//GEN-LAST:event_btnAlterarActionPerformed
 
-    private void CategoriaJifActivated(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_CategoriaJifActivated
-        Main.atlzShellMenu(this);
-    }//GEN-LAST:event_CategoriaJifActivated
+    private void btnListarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnListarActionPerformed
+        listar();
+    }//GEN-LAST:event_btnListarActionPerformed
 
-    private void CategoriaJifClosing(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_CategoriaJifClosing
+    private void JIFPerfilClosing(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_JIFPerfilClosing
         Main.atlzShellMenu(null);
         //Main.desregistrarJanela(this);
         dispose();
-    }//GEN-LAST:event_CategoriaJifClosing
+    }//GEN-LAST:event_JIFPerfilClosing
+
+    private void JIFPerfilActivated(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_JIFPerfilActivated
+        Main.atlzShellMenu(this);
+    }//GEN-LAST:event_JIFPerfilActivated
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAlterar;
     private javax.swing.JButton btnExcluir;
     private javax.swing.JButton btnListar;
     private javax.swing.JButton btnNovo;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
-    private java.util.List<Categoria> lstCategorias;
+    private java.util.List<Perfil> lstPerfis;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
 }

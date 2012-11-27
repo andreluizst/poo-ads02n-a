@@ -179,17 +179,17 @@ public class PropFuncionario extends javax.swing.JDialog {
             }
         });
         getContentPane().add(btnSalvar);
-        btnSalvar.setBounds(464, 283, 67, 23);
+        btnSalvar.setBounds(427, 283, 80, 23);
         getRootPane().setDefaultButton(btnSalvar);
 
-        cancelButton.setText("Cancel");
+        cancelButton.setText("Cancelar");
         cancelButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cancelButtonActionPerformed(evt);
             }
         });
         getContentPane().add(cancelButton);
-        cancelButton.setBounds(537, 283, 67, 23);
+        cancelButton.setBounds(524, 283, 80, 23);
 
         jLabel1.setText("CPF");
         getContentPane().add(jLabel1);

@@ -5,7 +5,7 @@
 package ce.gui;
 
 import ce.erro.GeralException;
-import ce.model.basica.Categoria;
+import ce.model.basica.Perfil;
 import ce.model.fachada.Fachada;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -18,13 +18,13 @@ import javax.swing.KeyStroke;
 
 /**
  *
- * @author Andre
+ * @author andreluiz
  */
-public class PropCategoria extends javax.swing.JDialog {
+public class PropPerfil extends javax.swing.JDialog {
     private Fachada f;
-    private Categoria categ;
-    private boolean isIns;
+    private Perfil perfil;
     private Resource res;
+    private boolean isIns;
     /**
      * A return status code - returned if Cancel button has been pressed
      */
@@ -35,9 +35,9 @@ public class PropCategoria extends javax.swing.JDialog {
     public static final int RET_OK = 1;
 
     /**
-     * Creates new form PropCategoria
+     * Creates new form PropPerfil
      */
-    public PropCategoria(java.awt.Frame parent, boolean modal, Categoria categ) {
+    public PropPerfil(java.awt.Frame parent, boolean modal, Perfil perfil) {
         super(parent, modal);
         initComponents();
 
@@ -53,9 +53,9 @@ public class PropCategoria extends javax.swing.JDialog {
         });
         f= Fachada.getInstancia();
         res= Resource.getInstancia();
-        if (categ == null){
+        if (perfil == null){
+            this.setTitle("INCLUIR perfil");
             isIns= true;
-            this.setTitle("INCLUIR categoria");
             try {
                 lblImg.setIcon(res.get("\\images\\Arquivo-Novo.jpg", lblImg.getWidth(), lblImg.getHeight()));
             } catch (GeralException ex) {
@@ -63,24 +63,24 @@ public class PropCategoria extends javax.swing.JDialog {
             }
         }else{
             isIns= false;
-            this.setTitle("ALTERAR categoria");
+            this.setTitle("ALTERAR perfil");
             try {
                 lblImg.setIcon(res.get("\\images\\Arquivo-Alterar3.jpg", lblImg.getWidth(), lblImg.getHeight()));
             } catch (GeralException ex) {
                 JOptionPane.showMessageDialog(null, ex.getMessage());
             }
-            setFields(categ);
+            setFields(perfil);
         }
     }
     
-    private void setFields(Categoria c){
-        jtxtCod.setText(c.getCodCateg().toString());
-        jtxtDescricao.setText(c.getDescricao());
-        jtxtDescricao.requestFocus();
+    private void setFields(Perfil p){
+        jtxtCod.setText(((Integer)p.getCodPerfil()).toString());
+        jtxtNome.setText(p.getNome());
+        jtxtNome.requestFocus();
     }
     
-    public Categoria getProperties(){
-        return categ;
+    public Perfil getProperties(){
+        return perfil;
     }
 
     /**
@@ -102,9 +102,9 @@ public class PropCategoria extends javax.swing.JDialog {
         btnSalvar = new javax.swing.JButton();
         cancelButton = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
         jtxtCod = new javax.swing.JTextField();
-        jtxtDescricao = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        jtxtNome = new javax.swing.JTextField();
         lblImg = new javax.swing.JLabel();
 
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -130,11 +130,12 @@ public class PropCategoria extends javax.swing.JDialog {
         jLabel1.setText("Código:");
         jLabel1.setToolTipText("");
 
-        jLabel2.setText("Descrição:");
-        jLabel2.setToolTipText("");
-
         jtxtCod.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        jtxtCod.setEditable(false);
         jtxtCod.setEnabled(false);
+
+        jLabel2.setText("Nome:");
+        jLabel2.setToolTipText("");
 
         lblImg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ce/gui/images/Arquivo-Alterar3.jpg"))); // NOI18N
         lblImg.setText("lblImg");
@@ -146,18 +147,21 @@ public class PropCategoria extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(lblImg, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                            .addComponent(btnSalvar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGap(18, 18, 18)
-                            .addComponent(cancelButton))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(cancelButton))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jtxtDescricao, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jtxtCod, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jtxtNome, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jtxtCod, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(0, 15, Short.MAX_VALUE))
         );
+
+        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btnSalvar, cancelButton});
+
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
@@ -168,13 +172,13 @@ public class PropCategoria extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jtxtDescricao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addComponent(jtxtNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cancelButton)
                     .addComponent(btnSalvar))
                 .addContainerGap())
-            .addComponent(lblImg, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+            .addComponent(lblImg, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
         );
 
         getRootPane().setDefaultButton(btnSalvar);
@@ -183,16 +187,16 @@ public class PropCategoria extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
-        categ= new Categoria();
+        perfil= new Perfil();
         if (jtxtCod.getText().compareTo("") != 0){
-            categ.setCodCateg(Integer.parseInt(jtxtCod.getText()));
+            perfil.setCodPerfil(Integer.parseInt(jtxtCod.getText()));
         }
-        categ.setDescricao(jtxtDescricao.getText());
+        perfil.setNome(jtxtNome.getText());
         try {
             if (isIns){
-                f.incluir(categ);
+                f.incluir(perfil);
             }else{
-                f.alterar(categ);
+                f.alterar(perfil);
             }
         } catch (GeralException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage());
@@ -204,7 +208,7 @@ public class PropCategoria extends javax.swing.JDialog {
         doClose(RET_CANCEL);
     }//GEN-LAST:event_cancelButtonActionPerformed
 
-    /**
+     /**
      * Closes the dialog
      */
     private void closeDialog(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_closeDialog
@@ -221,14 +225,10 @@ public class PropCategoria extends javax.swing.JDialog {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /*
-         * Set the Nimbus look and feel
-         */
+        /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /*
-         * If Nimbus (introduced in Java SE 6) is not available, stay with the
-         * default look and feel. For details see
-         * http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -238,24 +238,21 @@ public class PropCategoria extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(PropCategoria.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PropPerfil.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(PropCategoria.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PropPerfil.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(PropCategoria.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PropPerfil.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(PropCategoria.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PropPerfil.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
-        /*
-         * Create and display the dialog
-         */
+        /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                PropCategoria dialog = new PropCategoria(new javax.swing.JFrame(), true, null);
+                PropPerfil dialog = new PropPerfil(new javax.swing.JFrame(), true, null);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
                         System.exit(0);
@@ -271,7 +268,7 @@ public class PropCategoria extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JTextField jtxtCod;
-    private javax.swing.JTextField jtxtDescricao;
+    private javax.swing.JTextField jtxtNome;
     private javax.swing.JLabel lblImg;
     // End of variables declaration//GEN-END:variables
     private int returnStatus = RET_CANCEL;
