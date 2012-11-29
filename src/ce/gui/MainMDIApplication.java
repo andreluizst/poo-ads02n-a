@@ -5,6 +5,7 @@
 package ce.gui;
 
 import ce.erro.GeralException;
+import java.awt.event.ActionListener;
 import java.beans.PropertyVetoException;
 import java.util.ArrayList;
 import java.util.Hashtable;
@@ -43,18 +44,51 @@ public class MainMDIApplication extends javax.swing.JFrame {
         janelas= new ArrayList();
     }
     
+    /**
+     * Registra a janela (JInternalFrame) que está sendo criado e vincula a mesma
+     * a um item do menu janela
+     * @param janela 
+     * Janela que está sendo criada
+     */
     public void registrarJanela(JInternalFrame janela){
-        String s="";
+        String sTexto="";
         janelas.add(janela);
         JMenuItem novoMenuItem= new JMenuItem();
-        novoMenuItem.setName("miJanela"+janelas.size());
-        novoMenuItem.setText(janelas.size()+ " " +((IActionsGui)janela).getActivationName());
-        s= ((Integer)janelas.size()).toString();
-        novoMenuItem.setMnemonic(s.charAt(0));
+        //novoMenuItem.setName("miJanela"+janelas.size());
+        sTexto= ((IActionsGui)janela).getActivationName();
+        //novoMenuItem.setText(janelas.size()+ " " + sTexto);
+        //s= ((Integer)janelas.size()).toString();
+        novoMenuItem.setName("mi"+sTexto);
+        novoMenuItem.setText(sTexto);
+        novoMenuItem.setMnemonic(sTexto.charAt(0));
+        novoMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                activeWindow(evt);
+            }
+        });
         mnJanela.add(novoMenuItem);
         atlzMenu();
     }
     
+    /*
+    private void ordMenuJanela(){
+        Integer j=0;
+        String s;
+        for (int i=2;i<mnJanela.getItemCount();i++){
+            j= i-1;
+            s= j.toString();
+            mnJanela.getItem(i).setText(j.toString() + " " 
+                    +((IActionsGui)janelas.get(j-1)).getActivationName());
+            mnJanela.getItem(i).setMnemonic(s.charAt(0));
+        }
+    }*/
+    
+    /**
+     * Desregistra uma janela (JInternalFrame) da aplicação. Também remove o
+     * item do menu janela.
+     * @param janela 
+     * Janela que esta sendo fechada e destruida
+     */
     public void desregistrarJanela(JInternalFrame janela){
         for(int i=0;i<janelas.size();i++){
             if (janelas.get(i).getTitle().compareTo(janela.getTitle()) == 0){
@@ -62,22 +96,45 @@ public class MainMDIApplication extends javax.swing.JFrame {
                 break;
             }
         }
-        for(int i=0;i<mnJanela.getItemCount();i++){
-            if (mnJanela.getItem(i).getText().contains(((IActionsGui)janela).getActivationName())){
-                mnJanela.remove(i);
-                break;
+        /*Deve-se começar do index 2 porque dá erro inesplicável (bug) ao tentar
+         * ler o index 1 que é um Separator.
+         * 
+         */
+        try{
+            for(int i=2;i<mnJanela.getItemCount();i++){
+                if (mnJanela.getItem(i).getText().contains(((IActionsGui)janela).getActivationName())){
+                    mnJanela.remove(i);
+                    break;
+                }
             }
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null, "Erro: " + e.getMessage());
         }
         atlzMenu();
     }
-    
+    /**
+     * Ativa a janela criada e registrada com o activationName especificado
+     * @param activationName 
+     * Nome de ativação da janela registrada, também é o texo do item do
+     * menu janela
+     */
     private void activeWindow(String activationName){
+        //JOptionPane.showMessageDialog(null, "activeWindows(String activationName): " + activationName);
         for(int i=0;i<janelas.size();i++){
             if (((IActionsGui)janelas.get(i)).getActivationName().compareTo(activationName) == 0){
-                janelas.get(i).show();
+                janelas.get(i).setVisible(false);
+                janelas.get(i).setVisible(true);
                 break;
             }
         }
+    }
+    
+    /**
+     * 
+     * @param evt 
+     */
+    private void activeWindow(java.awt.event.ActionEvent evt){
+        activeWindow(evt.getActionCommand());
     }
 
     /**
@@ -123,8 +180,6 @@ public class MainMDIApplication extends javax.swing.JFrame {
         mnJanela = new javax.swing.JMenu();
         jmnFecharAtual = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
-        jmnCategoria = new javax.swing.JMenuItem();
-        jmnFuncionario = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Sistema simples de estoque");
@@ -230,6 +285,11 @@ public class MainMDIApplication extends javax.swing.JFrame {
 
         saveMenuItem.setMnemonic('s');
         saveMenuItem.setText("Salvar");
+        saveMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveMenuItemActionPerformed(evt);
+            }
+        });
         fileMenu.add(saveMenuItem);
 
         saveAsMenuItem.setMnemonic('a');
@@ -362,24 +422,6 @@ public class MainMDIApplication extends javax.swing.JFrame {
         mnJanela.add(jmnFecharAtual);
         mnJanela.add(jSeparator1);
 
-        jmnCategoria.setMnemonic('c');
-        jmnCategoria.setText("Categoria");
-        jmnCategoria.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jmnCategoriaActionPerformed(evt);
-            }
-        });
-        mnJanela.add(jmnCategoria);
-
-        jmnFuncionario.setMnemonic('o');
-        jmnFuncionario.setText("Funcionário");
-        jmnFuncionario.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jmnFuncionarioActionPerformed(evt);
-            }
-        });
-        mnJanela.add(jmnFuncionario);
-
         menuBar.add(mnJanela);
 
         setJMenuBar(menuBar);
@@ -423,7 +465,7 @@ public class MainMDIApplication extends javax.swing.JFrame {
         CategoriaJif jifCategoria= new CategoriaJif();
         desktopPane.add(jifCategoria, javax.swing.JLayeredPane.DEFAULT_LAYER);
         //jifCategoria.setBounds(0, 0, 450, 350);
-        //registrarJanela(jifCategoria);
+        registrarJanela(jifCategoria);
         jifCategoria.setVisible(true);
         setActiveWindow(jifCategoria);
     }//GEN-LAST:event_miCategoraActionPerformed
@@ -485,15 +527,11 @@ public class MainMDIApplication extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_mnPesquisarActionPerformed
 
-    private void jmnFuncionarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmnFuncionarioActionPerformed
-        //Ativar a tela Funcionário
-    }//GEN-LAST:event_jmnFuncionarioActionPerformed
-
     private void mnFuncionarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnFuncionarioActionPerformed
         JIFFuncionario jifFun= new JIFFuncionario();
         desktopPane.add(jifFun, javax.swing.JLayeredPane.DEFAULT_LAYER);
         //jifCategoria.setBounds(0, 0, 450, 350);
-        //registrarJanela(jifFun);
+        registrarJanela(jifFun);
         jifFun.setVisible(true);
         setActiveWindow(jifFun);
         try {
@@ -503,16 +541,17 @@ public class MainMDIApplication extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_mnFuncionarioActionPerformed
 
-    private void jmnCategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmnCategoriaActionPerformed
-        activeWindow.show();
-    }//GEN-LAST:event_jmnCategoriaActionPerformed
-
     private void mnPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnPerfilActionPerformed
         JIFPerfil jifPerfil= new JIFPerfil();
         desktopPane.add(jifPerfil, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jifPerfil.setVisible(true);
         setActiveWindow(jifPerfil);
     }//GEN-LAST:event_mnPerfilActionPerformed
+
+    private void saveMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveMenuItemActionPerformed
+        JOptionPane.showMessageDialog(null, evt.getActionCommand());
+        JOptionPane.showMessageDialog(null, ((JMenuItem)evt.getSource()).getText());
+    }//GEN-LAST:event_saveMenuItemActionPerformed
 
     /**
      * @param args the command line arguments
@@ -557,6 +596,9 @@ public class MainMDIApplication extends javax.swing.JFrame {
         });
     }
     
+    /**
+     * Atualiza a imagem de fundo da aplicação
+     */
     private void atlzFundo(){
         lblImgShell.setBounds(0, 0, this.getWidth(), this.getHeight());
         if (fundo != null){
@@ -573,9 +615,7 @@ public class MainMDIApplication extends javax.swing.JFrame {
     private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JPopupMenu.Separator jSeparator3;
     private javax.swing.JPopupMenu.Separator jSeparator4;
-    private javax.swing.JMenuItem jmnCategoria;
     private javax.swing.JMenuItem jmnFecharAtual;
-    private javax.swing.JMenuItem jmnFuncionario;
     private javax.swing.JLabel lblImgShell;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenuItem miCategora;
@@ -604,20 +644,26 @@ public class MainMDIApplication extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     /**
+     * Atribui a janela atualmente ativa para que a aplicação possa processar
+     * as atualização e chamadas de menu para a janela ativa.
      * @param activeWindow the activeWindow to set
      */
     public static void setActiveWindow(JInternalFrame actvWin) {
         activeWindow = actvWin;
     }
     
+    /**
+     * Atualiza os menus da aplicação. Deve ser chamado sempre que uma janela
+     * for criada, ativada ou destruida
+     */
     public void atlzMenu(){
         mnPesquisar.setEnabled(activeWindow!=null);
         mnNovo.setEnabled(activeWindow!=null);
         mnExcluir.setEnabled(activeWindow!=null);
         mnAlterar.setEnabled(activeWindow!=null);
         mnIrPara.setEnabled(activeWindow!=null);
-        jmnCategoria.setVisible(activeWindow!=null?(activeWindow instanceof CategoriaJif):false);
-        jmnFuncionario.setVisible(activeWindow!= null?(activeWindow instanceof JIFFuncionario):false);
+        //jmnCategoria.setVisible(activeWindow!=null?(activeWindow instanceof CategoriaJif):false);
+        //jmnFuncionario.setVisible(activeWindow!= null?(activeWindow instanceof JIFFuncionario):false);
         jmnFecharAtual.setEnabled(activeWindow!=null);
     }
 }

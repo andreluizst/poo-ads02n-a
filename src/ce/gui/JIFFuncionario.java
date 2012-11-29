@@ -436,6 +436,7 @@ public class JIFFuncionario extends javax.swing.JInternalFrame implements IActio
 
     private void jifFuncionarioClosing(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_jifFuncionarioClosing
         Main.atlzShellMenu(null);
+        Main.desregistrarJanela(this);
         dispose();
     }//GEN-LAST:event_jifFuncionarioClosing
 

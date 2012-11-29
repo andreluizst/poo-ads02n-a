@@ -330,7 +330,7 @@ public class CategoriaJif extends javax.swing.JInternalFrame implements IActions
 
     private void CategoriaJifClosing(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_CategoriaJifClosing
         Main.atlzShellMenu(null);
-        //Main.desregistrarJanela(this);
+        Main.desregistrarJanela(this);
         dispose();
     }//GEN-LAST:event_CategoriaJifClosing
 
