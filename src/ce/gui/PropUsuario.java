@@ -10,9 +10,13 @@ import ce.model.basica.Usuario;
 import ce.model.fachada.Fachada;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.LinkedList;
+import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
@@ -27,6 +31,7 @@ public class PropUsuario extends javax.swing.JDialog {
     private Usuario usuario;
     private boolean isIns;
     private Resource res;
+    private Hashtable perfis;
     /**
      * A return status code - returned if Cancel button has been pressed
      */
@@ -72,6 +77,8 @@ public class PropUsuario extends javax.swing.JDialog {
                 JOptionPane.showMessageDialog(null, ex.getMessage());
             }
             setFields(u);
+            perfis= new Hashtable();
+            atlzPerfis();
         }
     }
     
@@ -90,6 +97,18 @@ public class PropUsuario extends javax.swing.JDialog {
      */
     public int getReturnStatus() {
         return returnStatus;
+    }
+    
+    private void atlzPerfis(){
+        List<Perfil> lista= new ArrayList();
+        perfis.clear();
+        DefaultComboBoxModel dcbxModel= new DefaultComboBoxModel();
+        for(Perfil per : lista){
+            perfis.put(per.getNome(), per.getCodPerfil());
+            dcbxModel.addElement(per.getNome());
+        }
+        jcbxPerfil.setModel(dcbxModel);
+        //Integer i= (Integer)perfis.get("ijhuiyui");
     }
 
     /**
