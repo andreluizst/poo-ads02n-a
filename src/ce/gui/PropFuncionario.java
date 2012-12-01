@@ -6,6 +6,7 @@ package ce.gui;
 
 import ce.erro.GeralException;
 import ce.model.basica.Funcionario;
+import ce.model.fachada.Fachada;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import javax.swing.AbstractAction;
@@ -20,8 +21,10 @@ import javax.swing.KeyStroke;
  * @author Andre Luiz
  */
 public class PropFuncionario extends javax.swing.JDialog {
+    private Fachada f;
     private Funcionario func;
     private Resource res;
+    private boolean isIns;
 
     /**
      * A return status code - returned if Cancel button has been pressed
@@ -49,9 +52,11 @@ public class PropFuncionario extends javax.swing.JDialog {
                 doClose(RET_CANCEL);
             }
         });
+        f= Fachada.getInstancia();
         res= Resource.getInstancia();
         if (funcionario == null ){
             this.setTitle("INCLUIR funcionário");
+            isIns= true;
             try {
                 lblImg.setIcon(res.get("\\images\\Arquivo-Novo.jpg", lblImg.getWidth(), lblImg.getHeight()));
             } catch (GeralException ex) {
@@ -59,6 +64,7 @@ public class PropFuncionario extends javax.swing.JDialog {
             }
         }else{
             this.setTitle("ALTERAR funcionário");
+            isIns= false;
             setFields(funcionario);
             try {
                 lblImg.setIcon(res.get("\\images\\Arquivo-Alterar3.jpg", lblImg.getWidth(), lblImg.getHeight()));
@@ -289,6 +295,15 @@ public class PropFuncionario extends javax.swing.JDialog {
         func.setCep(jftfCep.getText());
         func.setFone(jftfFone.getText());
         func.setEmail(jtxtEmail.getText());
+        try {
+            if (isIns){
+                f.incluir(func);
+            }else{
+                f.alterar(func);
+            }
+        } catch (GeralException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage());
+        }
         doClose(RET_OK);
     }//GEN-LAST:event_btnSalvarActionPerformed
     
