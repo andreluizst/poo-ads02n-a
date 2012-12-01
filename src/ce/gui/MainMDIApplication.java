@@ -161,8 +161,6 @@ public class MainMDIApplication extends javax.swing.JFrame {
         mnEntrada = new javax.swing.JMenuItem();
         mnSaida = new javax.swing.JMenuItem();
         mnUnidade = new javax.swing.JMenuItem();
-        saveMenuItem = new javax.swing.JMenuItem();
-        saveAsMenuItem = new javax.swing.JMenuItem();
         jSeparator4 = new javax.swing.JPopupMenu.Separator();
         mnSair = new javax.swing.JMenuItem();
         editMenu = new javax.swing.JMenu();
@@ -212,7 +210,7 @@ public class MainMDIApplication extends javax.swing.JFrame {
         });
 
         mnPerfil.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
-        mnPerfil.setMnemonic('e');
+        mnPerfil.setMnemonic('p');
         mnPerfil.setText("Perfil");
         mnPerfil.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -247,7 +245,7 @@ public class MainMDIApplication extends javax.swing.JFrame {
         jMenu1.add(miCategora);
 
         mnProduto.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_D, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
-        mnProduto.setMnemonic('p');
+        mnProduto.setMnemonic('d');
         mnProduto.setText("Produto");
         mnProduto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -282,19 +280,6 @@ public class MainMDIApplication extends javax.swing.JFrame {
         jMenu1.add(mnUnidade);
 
         fileMenu.add(jMenu1);
-
-        saveMenuItem.setMnemonic('s');
-        saveMenuItem.setText("Salvar");
-        saveMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                saveMenuItemActionPerformed(evt);
-            }
-        });
-        fileMenu.add(saveMenuItem);
-
-        saveAsMenuItem.setMnemonic('a');
-        saveAsMenuItem.setText("Salvar como...");
-        fileMenu.add(saveAsMenuItem);
         fileMenu.add(jSeparator4);
 
         mnSair.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F12, java.awt.event.InputEvent.CTRL_MASK));
@@ -544,14 +529,10 @@ public class MainMDIApplication extends javax.swing.JFrame {
     private void mnPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnPerfilActionPerformed
         JIFPerfil jifPerfil= new JIFPerfil();
         desktopPane.add(jifPerfil, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        registrarJanela(jifPerfil);
         jifPerfil.setVisible(true);
         setActiveWindow(jifPerfil);
     }//GEN-LAST:event_mnPerfilActionPerformed
-
-    private void saveMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveMenuItemActionPerformed
-        JOptionPane.showMessageDialog(null, evt.getActionCommand());
-        JOptionPane.showMessageDialog(null, ((JMenuItem)evt.getSource()).getText());
-    }//GEN-LAST:event_saveMenuItemActionPerformed
 
     /**
      * @param args the command line arguments
@@ -639,8 +620,6 @@ public class MainMDIApplication extends javax.swing.JFrame {
     private javax.swing.JMenuItem mnUltimo;
     private javax.swing.JMenuItem mnUnidade;
     private javax.swing.JMenuItem mnUsuario;
-    private javax.swing.JMenuItem saveAsMenuItem;
-    private javax.swing.JMenuItem saveMenuItem;
     // End of variables declaration//GEN-END:variables
 
     /**

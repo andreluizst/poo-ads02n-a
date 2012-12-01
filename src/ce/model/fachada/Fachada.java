@@ -297,6 +297,10 @@ public class Fachada {
         return ctrlUsu.trazer(cpf);
     }
     
+    public List<Usuario> pesquisarUsuario(String nome) throws GeralException{
+        return ctrlUsu.pesquisar(nome);
+    }
+    
     
     /*
      * ******************* L O C A L  E S T O Q U E **********************

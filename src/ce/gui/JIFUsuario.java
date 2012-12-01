@@ -6,39 +6,39 @@ package ce.gui;
 
 import ce.Main;
 import ce.erro.GeralException;
-import ce.model.basica.Categoria;
+import ce.model.basica.Funcionario;
+import ce.model.basica.Usuario;
 import ce.model.fachada.Fachada;
 import java.util.LinkedList;
+import java.util.List;
 import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableCellRenderer;
 
 /**
  *
  * @author andreluiz
  */
-public class CategoriaJif extends javax.swing.JInternalFrame implements IActionsGui{
+public class JIFUsuario extends javax.swing.JInternalFrame implements IActionsGui{
     private Fachada f;
+    private Usuario u;
     private String activationName;
     /**
-     * Creates new form CategoriaJif
+     * Creates new form JIFUsuario
      */
-    public CategoriaJif() {
+    public JIFUsuario() {
         initComponents();
         f= Fachada.getInstancia();
-        activationName= "Categoria";
-        DefaultTableCellRenderer dtcrEsq= new DefaultTableCellRenderer();
-        dtcrEsq.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jTable1.getColumnModel().getColumn(0).setCellRenderer(dtcrEsq);
+        u= new Usuario();
+        activationName= "Usuário";
     }
     
     /**
-     * Seleciona uma catetoria na tabela
-     * @param c 
-     * Categoria que deseja selecionar
+     * Seleciona um funcionário na tabela
+     * @param fun
+     * Funcionário que deseja selecionar
      */
-    private void selectCategoria(Categoria c){
-        for(int i=0;i<lstCategorias.size();i++){
-            if (c.getCodCateg() == lstCategorias.get(i).getCodCateg()){
+    private void selectUsuario(Usuario u){
+        for(int i=0;i<lista.size();i++){
+            if (u.getNome().compareTo(lista.get(i).getNome()) == 0){
                 jTable1.setRowSelectionInterval(i, i);
                 break;
             }
@@ -50,17 +50,17 @@ public class CategoriaJif extends javax.swing.JInternalFrame implements IActions
      */
     @Override
     public void novo(){
-        Categoria c;
-        PropCategoria propCateg= new PropCategoria(null, true, null); 
-        propCateg.setLocationRelativeTo(null);
-        propCateg.setVisible(true);
-        c= propCateg.getProperties();
+        Usuario obj;
+        PropUsuario propUsu= new PropUsuario(null, true, null); 
+        propUsu.setLocationRelativeTo(null);
+        propUsu.setVisible(true);
+        obj= propUsu.getProperties();
         //propFun.getReturnStatus();
-        if (c != null){
-            lstCategorias.clear();
+        if (obj != null){
+            lista.clear();
             try {
-                lstCategorias.addAll(f.listarCategoria());
-                selectCategoria(c);
+                lista.addAll(f.listarUsuario());
+                selectUsuario(obj);
             } catch (GeralException ex) {
                 JOptionPane.showMessageDialog(null, ex.getMessage());
             }
@@ -72,25 +72,25 @@ public class CategoriaJif extends javax.swing.JInternalFrame implements IActions
      */
     @Override
     public void excluir(){
-        Categoria c;
+        Usuario obj;
         int row= jTable1.getSelectedRow();
         if ((row == jTable1.getRowCount()) || (row > 0)){
             row--;
         }else{
             row=0;
         }
-        c= lstCategorias.get(jTable1.getSelectedRow());
+        obj= lista.get(jTable1.getSelectedRow());
         String [] opcoes= new String[] {"Sim", "Não"};
-        String msg= "Deseja excluir " + c.getDescricao()+ "?";
+        String msg= "Deseja excluir " + obj.getNome() + "?";
         int result= JOptionPane.showOptionDialog(null, msg, "Confirmação",
                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,
                 null, opcoes, opcoes[0]);
-        if (result == 0){
+        if (result ==0){
             try {
-                f.excluir(c);
+                f.excluir(obj);
                 if (jTable1.getRowCount() > 0){
-                    lstCategorias.clear();
-                    lstCategorias.addAll(f.listarCategoria());
+                    lista.clear();
+                    lista.addAll(f.listarUsuario());
                 }
                 if (jTable1.getRowCount() > 0){
                     jTable1.setRowSelectionInterval(row, row);
@@ -107,18 +107,18 @@ public class CategoriaJif extends javax.swing.JInternalFrame implements IActions
      */
     @Override
     public void alterar(){
-        Categoria c;
-        c= lstCategorias.get(jTable1.getSelectedRow());
-        PropCategoria propCateg= new PropCategoria(null, true, c); 
-        propCateg.setLocationRelativeTo(null);
-        propCateg.setVisible(true);
-        c= propCateg.getProperties();
-        if (c != null){
+        Usuario obj;
+        obj= lista.get(jTable1.getSelectedRow());
+        PropUsuario propUsu= new PropUsuario(null, true, obj); 
+        propUsu.setLocationRelativeTo(null);
+        propUsu.setVisible(true);
+        obj= propUsu.getProperties();
+        if (obj != null){
             try {
-                f.alterar(c);
-                lstCategorias.clear();
-                lstCategorias.addAll(f.listarCategoria());
-                selectCategoria(c);
+                f.alterar(obj);
+                lista.clear();
+                lista.addAll(f.listarUsuario());
+                selectUsuario(obj);
             } catch (GeralException ex) {
                 JOptionPane.showMessageDialog(null, ex.getMessage());
             }
@@ -130,7 +130,15 @@ public class CategoriaJif extends javax.swing.JInternalFrame implements IActions
      */
     @Override
     public void pesquisar(){
-        listar();
+        List<Usuario> tmpLista;
+        try{
+            tmpLista= f.pesquisarUsuario(jtxtNome.getText());
+            lista.clear();
+            lista.addAll(tmpLista);
+        }
+        catch (GeralException e){
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
     }
     
     /**
@@ -181,13 +189,12 @@ public class CategoriaJif extends javax.swing.JInternalFrame implements IActions
      */
     @Override
     public void listar(){
-        lstCategorias.clear();
+        lista.clear();
         try {
-            lstCategorias.addAll(f.listarCategoria());
+            lista.addAll(f.listarUsuario());
         } catch (GeralException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage());
         }
-        priorRecord();
     }
     
     /**
@@ -210,7 +217,7 @@ public class CategoriaJif extends javax.swing.JInternalFrame implements IActions
     private void initComponents() {
         bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
-        lstCategorias = new LinkedList<Categoria>();
+        lista = new LinkedList<Usuario>();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
@@ -219,23 +226,24 @@ public class CategoriaJif extends javax.swing.JInternalFrame implements IActions
         btnExcluir = new javax.swing.JButton();
         btnAlterar = new javax.swing.JButton();
         btnListar = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        jtxtNome = new javax.swing.JTextField();
+        btnPesquisar = new javax.swing.JButton();
 
-        lstCategorias= org.jdesktop.observablecollections.ObservableCollections.observableList(lstCategorias);
+        lista= org.jdesktop.observablecollections.ObservableCollections.observableList(lista);
 
         setClosable(true);
         setIconifiable(true);
         setMaximizable(true);
         setResizable(true);
-        setTitle("Categoria");
-        setNormalBounds(new java.awt.Rectangle(0, 0, 570, 400));
         addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
             public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
-                CategoriaJifActivated(evt);
+                JIFUsuarioActivated(evt);
             }
             public void internalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
             }
             public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
-                CategoriaJifClosing(evt);
+                JIFUsuarioClosing(evt);
             }
             public void internalFrameDeactivated(javax.swing.event.InternalFrameEvent evt) {
             }
@@ -247,12 +255,21 @@ public class CategoriaJif extends javax.swing.JInternalFrame implements IActions
             }
         });
 
-        org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, lstCategorias, jTable1, "");
-        org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${codCateg}"));
-        columnBinding.setColumnName("Cod Categ");
+        org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, lista, jTable1, "");
+        org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${codUsuario}"));
+        columnBinding.setColumnName("Cod Usuario");
         columnBinding.setColumnClass(Integer.class);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${descricao}"));
-        columnBinding.setColumnName("Descricao");
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${perfil}"));
+        columnBinding.setColumnName("Perfil");
+        columnBinding.setColumnClass(ce.model.basica.Perfil.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${funcionario}"));
+        columnBinding.setColumnName("Funcionario");
+        columnBinding.setColumnClass(ce.model.basica.Funcionario.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${nome}"));
+        columnBinding.setColumnName("Nome");
+        columnBinding.setColumnClass(String.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${senha}"));
+        columnBinding.setColumnName("Senha");
         columnBinding.setColumnClass(String.class);
         bindingGroup.addBinding(jTableBinding);
         jTableBinding.bind();
@@ -271,7 +288,7 @@ public class CategoriaJif extends javax.swing.JInternalFrame implements IActions
         btnExcluir.setText("Excluir");
         btnExcluir.setDisabledIcon(new javax.swing.ImageIcon(getClass().getResource("/ce/gui/images/btnApagarDisable2.png"))); // NOI18N
 
-        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, jTable1, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), btnExcluir, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
+        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, jTable1, org.jdesktop.beansbinding.ELProperty.create("${selectedElement!=null}"), btnExcluir, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
 
         btnExcluir.addActionListener(new java.awt.event.ActionListener() {
@@ -284,7 +301,7 @@ public class CategoriaJif extends javax.swing.JInternalFrame implements IActions
         btnAlterar.setText("Alterar");
         btnAlterar.setDisabledIcon(new javax.swing.ImageIcon(getClass().getResource("/ce/gui/images/btnAlterarDisable.png"))); // NOI18N
 
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, jTable1, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), btnAlterar, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, jTable1, org.jdesktop.beansbinding.ELProperty.create("${selectedElement!=null}"), btnAlterar, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
 
         btnAlterar.addActionListener(new java.awt.event.ActionListener() {
@@ -302,25 +319,51 @@ public class CategoriaJif extends javax.swing.JInternalFrame implements IActions
             }
         });
 
+        jLabel2.setText("Nome:");
+
+        jtxtNome.setToolTipText("");
+
+        btnPesquisar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ce/gui/images/btnLupa.png"))); // NOI18N
+        btnPesquisar.setText("Pesquisar");
+        btnPesquisar.setDisabledIcon(new javax.swing.ImageIcon(getClass().getResource("/ce/gui/images/btnLupaDisable.png"))); // NOI18N
+        btnPesquisar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPesquisarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(btnNovo)
-                .addGap(42, 42, 42)
-                .addComponent(btnExcluir)
-                .addGap(44, 44, 44)
-                .addComponent(btnAlterar)
-                .addGap(52, 52, 52)
-                .addComponent(btnListar)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(btnNovo)
+                        .addGap(42, 42, 42)
+                        .addComponent(btnExcluir)
+                        .addGap(44, 44, 44)
+                        .addComponent(btnAlterar)
+                        .addGap(52, 52, 52)
+                        .addComponent(btnListar))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addGap(18, 18, 18)
+                        .addComponent(jtxtNome, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(30, 30, 30)
+                        .addComponent(btnPesquisar)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(52, Short.MAX_VALUE)
+                .addGap(27, 27, 27)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jtxtNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnPesquisar)
+                    .addComponent(jLabel2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnNovo)
                     .addComponent(btnExcluir)
@@ -335,16 +378,16 @@ public class CategoriaJif extends javax.swing.JInternalFrame implements IActions
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 535, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 530, Short.MAX_VALUE)
                 .addContainerGap())
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 267, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -364,9 +407,15 @@ public class CategoriaJif extends javax.swing.JInternalFrame implements IActions
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnListarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnListarActionPerformed
-        listar();
-    }//GEN-LAST:event_btnListarActionPerformed
+    private void JIFUsuarioActivated(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_JIFUsuarioActivated
+        Main.atlzShellMenu(this);
+    }//GEN-LAST:event_JIFUsuarioActivated
+
+    private void JIFUsuarioClosing(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_JIFUsuarioClosing
+        Main.atlzShellMenu(null);
+        Main.desregistrarJanela(this);
+        dispose();
+    }//GEN-LAST:event_JIFUsuarioClosing
 
     private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
         novo();
@@ -380,26 +429,27 @@ public class CategoriaJif extends javax.swing.JInternalFrame implements IActions
         alterar();
     }//GEN-LAST:event_btnAlterarActionPerformed
 
-    private void CategoriaJifActivated(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_CategoriaJifActivated
-        Main.atlzShellMenu(this);
-    }//GEN-LAST:event_CategoriaJifActivated
+    private void btnListarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnListarActionPerformed
+        listar();
+    }//GEN-LAST:event_btnListarActionPerformed
 
-    private void CategoriaJifClosing(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_CategoriaJifClosing
-        Main.atlzShellMenu(null);
-        Main.desregistrarJanela(this);
-        dispose();
-    }//GEN-LAST:event_CategoriaJifClosing
+    private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed
+        pesquisar();
+    }//GEN-LAST:event_btnPesquisarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAlterar;
     private javax.swing.JButton btnExcluir;
     private javax.swing.JButton btnListar;
     private javax.swing.JButton btnNovo;
+    private javax.swing.JButton btnPesquisar;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
-    private java.util.List<Categoria> lstCategorias;
+    private javax.swing.JTextField jtxtNome;
+    private java.util.List<Usuario> lista;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
 }

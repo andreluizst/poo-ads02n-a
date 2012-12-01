@@ -63,7 +63,7 @@
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="1" attributes="0">
-              <EmptySpace max="32767" attributes="0"/>
+              <EmptySpace pref="15" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="btnNovo" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="btnExcluir" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -102,6 +102,9 @@
           <Image iconType="3" name="/ce/gui/images/btnApagarDisable2.png"/>
         </Property>
       </Properties>
+      <BindingProperties>
+        <BindingProperty name="enabled" source="jTable1" sourcePath="${selectedElement!=null}" target="btnExcluir" targetPath="enabled" updateStrategy="0" immediately="false"/>
+      </BindingProperties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnExcluirActionPerformed"/>
       </Events>
@@ -116,6 +119,9 @@
           <Image iconType="3" name="/ce/gui/images/btnAlterarDisable.png"/>
         </Property>
       </Properties>
+      <BindingProperties>
+        <BindingProperty name="enabled" source="jTable1" sourcePath="${selectedElement!=null}" target="btnAlterar" targetPath="enabled" updateStrategy="0" immediately="false"/>
+      </BindingProperties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAlterarActionPerformed"/>
       </Events>

@@ -31,6 +31,9 @@ public class JIFFuncionario extends javax.swing.JInternalFrame implements IActio
         activationName= "Funcionário";
     }
     
+    /**
+     * Preenche o objeto pesFun do tipo Funcionario com os dados para pesquisa.
+     */
     private void preencherFun(){
         if (jftfCpf.getText().compareTo("") != 0){
             pesqFun.setCpf(jftfCpf.getText());
@@ -46,6 +49,11 @@ public class JIFFuncionario extends javax.swing.JInternalFrame implements IActio
         }
     }
     
+    /**
+     * Seleciona um funcionário na tabela
+     * @param fun
+     * Funcionário que deseja selecionar
+     */
     private void selectFun(Funcionario f){
         for(int i=0;i<lstFuncionarios.size();i++){
             if (f.getCpf().compareTo(lstFuncionarios.get(i).getCpf()) == 0){
@@ -54,7 +62,10 @@ public class JIFFuncionario extends javax.swing.JInternalFrame implements IActio
             }
         }
     }
-
+    
+    /**
+     * Inclui um novo registro
+     */
     @Override
     public void novo(){
         Funcionario fun;
@@ -74,6 +85,9 @@ public class JIFFuncionario extends javax.swing.JInternalFrame implements IActio
         }
     }
     
+    /**
+     * Exclui o registro selecionado. Será exibida uma mensagem pedindo confirmação.
+     */
     @Override
     public void excluir(){
         Funcionario fun;
@@ -84,21 +98,31 @@ public class JIFFuncionario extends javax.swing.JInternalFrame implements IActio
             row=0;
         }
         fun= lstFuncionarios.get(jTable1.getSelectedRow());
-        try {
-            f.excluir(fun);
-            if (jTable1.getRowCount() > 0){
-                lstFuncionarios.clear();
-                lstFuncionarios.addAll(f.listarFuncionario());
+        String [] opcoes= new String[] {"Sim", "Não"};
+        String msg= "Deseja excluir " + fun.getNome()+", CPF "+fun.getCpf()+ "?";
+        int result= JOptionPane.showOptionDialog(null, msg, "Confirmação",
+                JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,
+                null, opcoes, opcoes[0]);
+        if (result ==0){
+            try {
+                f.excluir(fun);
+                if (jTable1.getRowCount() > 0){
+                    lstFuncionarios.clear();
+                    lstFuncionarios.addAll(f.listarFuncionario());
+                }
+                if (jTable1.getRowCount() > 0){
+                    jTable1.setRowSelectionInterval(row, row);
+                }
+            } catch (GeralException ex) {
+                System.out.println(ex.getMessage());
+                JOptionPane.showMessageDialog(null, ex.getMessage());
             }
-            if (jTable1.getRowCount() > 0){
-                jTable1.setRowSelectionInterval(row, row);
-            }
-        } catch (GeralException ex) {
-            System.out.println(ex.getMessage());
-            JOptionPane.showMessageDialog(null, ex.getMessage());
         }
     }
     
+    /**
+     * Altera o registro selecionado
+     */
     @Override
     public void alterar(){
         Funcionario fun;
@@ -119,6 +143,9 @@ public class JIFFuncionario extends javax.swing.JInternalFrame implements IActio
         }
     }
     
+    /**
+     * Realiza uma presquisa de dados
+     */
     @Override
     public void pesquisar(){
         List<Funcionario> lista;
@@ -132,6 +159,9 @@ public class JIFFuncionario extends javax.swing.JInternalFrame implements IActio
         }
     }
     
+    /**
+     * Seleciona o primeiro registro da tabela
+     */
     @Override
     public void firstRecord(){
         if (jTable1.getRowCount() > 0){
@@ -139,6 +169,9 @@ public class JIFFuncionario extends javax.swing.JInternalFrame implements IActio
         }
     }
     
+    /**
+     * Seleciona o registro anterior ao atualmente selecionado na tabela.
+     */
     @Override
     public void priorRecord(){
         int line= jTable1.getSelectedRow();
@@ -147,6 +180,9 @@ public class JIFFuncionario extends javax.swing.JInternalFrame implements IActio
         }
     }
     
+    /**
+     * Seleciona o próximo registro da tabela.
+     */
     @Override
     public void nextRecord(){
         if (jTable1.getRowCount() > 0){
@@ -156,6 +192,9 @@ public class JIFFuncionario extends javax.swing.JInternalFrame implements IActio
         }
     }
     
+    /**
+     * seleciona o último registro da tabela
+     */
     @Override
     public void lastRecord(){
         if (jTable1.getRowCount() > 0){
@@ -163,6 +202,9 @@ public class JIFFuncionario extends javax.swing.JInternalFrame implements IActio
         }
     }
     
+    /**
+     * Lista todos os registros na tabela.
+     */
     @Override
     public void listar(){
         lstFuncionarios.clear();
@@ -173,6 +215,11 @@ public class JIFFuncionario extends javax.swing.JInternalFrame implements IActio
         }
     }
     
+    /**
+     * Informa o nome usado para ativar a janela após ser criada. Também pode ser
+     * usado como texto do menu que executará a ação.
+     * @return 
+     */
     @Override
     public String getActivationName(){
         return activationName;
@@ -462,7 +509,8 @@ public class JIFFuncionario extends javax.swing.JInternalFrame implements IActio
 
     private void btnLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimparActionPerformed
         JOptionPane.showMessageDialog(null, jftfCpf.getText());
-        JOptionPane.showMessageDialog(null, jftfCpf.getText());
+        jftfCpf.setText("");
+        jtxtNome.setText("");
     }//GEN-LAST:event_btnLimparActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

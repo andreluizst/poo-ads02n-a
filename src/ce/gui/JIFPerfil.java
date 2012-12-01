@@ -69,18 +69,26 @@ public class JIFPerfil extends javax.swing.JInternalFrame implements IActionsGui
             row=0;
         }
         obj= lstPerfis.get(jTable1.getSelectedRow());
-        try {
-            f.excluir(obj);
-            if (jTable1.getRowCount() > 0){
-                lstPerfis.clear();
-                lstPerfis.addAll(f.listarPerfil());
+        String [] opcoes= new String[] {"Sim", "Não"};
+        String msg= "Deseja excluir " + obj.getNome()+ "?";
+        int ret= JOptionPane.showOptionDialog(null, msg, "Confirmação",
+                JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,
+                null, opcoes, opcoes[0]);
+        //JOptionPane.showMessageDialog(null, "Botão escolhido: " + ret);
+        if (ret == 0){
+            try {
+                f.excluir(obj);
+                if (jTable1.getRowCount() > 0){
+                    lstPerfis.clear();
+                    lstPerfis.addAll(f.listarPerfil());
+                }
+                if (jTable1.getRowCount() > 0){
+                    jTable1.setRowSelectionInterval(row, row);
+                }
+            } catch (GeralException ex) {
+                System.out.println(ex.getMessage());
+                JOptionPane.showMessageDialog(null, ex.getMessage());
             }
-            if (jTable1.getRowCount() > 0){
-                jTable1.setRowSelectionInterval(row, row);
-            }
-        } catch (GeralException ex) {
-            System.out.println(ex.getMessage());
-            JOptionPane.showMessageDialog(null, ex.getMessage());
         }
     }
     
@@ -212,6 +220,10 @@ public class JIFPerfil extends javax.swing.JInternalFrame implements IActionsGui
         btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ce/gui/images/btnApagar.jpg"))); // NOI18N
         btnExcluir.setText("Excluir");
         btnExcluir.setDisabledIcon(new javax.swing.ImageIcon(getClass().getResource("/ce/gui/images/btnApagarDisable2.png"))); // NOI18N
+
+        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, jTable1, org.jdesktop.beansbinding.ELProperty.create("${selectedElement!=null}"), btnExcluir, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
+        bindingGroup.addBinding(binding);
+
         btnExcluir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnExcluirActionPerformed(evt);
@@ -221,6 +233,10 @@ public class JIFPerfil extends javax.swing.JInternalFrame implements IActionsGui
         btnAlterar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ce/gui/images/btnAlterar.jpg"))); // NOI18N
         btnAlterar.setText("Alterar");
         btnAlterar.setDisabledIcon(new javax.swing.ImageIcon(getClass().getResource("/ce/gui/images/btnAlterarDisable.png"))); // NOI18N
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, jTable1, org.jdesktop.beansbinding.ELProperty.create("${selectedElement!=null}"), btnAlterar, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
+        bindingGroup.addBinding(binding);
+
         btnAlterar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAlterarActionPerformed(evt);
@@ -269,7 +285,7 @@ public class JIFPerfil extends javax.swing.JInternalFrame implements IActionsGui
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(15, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnNovo)
                     .addComponent(btnExcluir)
@@ -303,7 +319,7 @@ public class JIFPerfil extends javax.swing.JInternalFrame implements IActionsGui
 
     private void JIFPerfilClosing(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_JIFPerfilClosing
         Main.atlzShellMenu(null);
-        //Main.desregistrarJanela(this);
+        Main.desregistrarJanela(this);
         dispose();
     }//GEN-LAST:event_JIFPerfilClosing
 
