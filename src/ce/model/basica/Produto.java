@@ -177,5 +177,30 @@ public class Produto {
     public void setUnidade(Unidade unidade) {
         this.unidade = unidade;
     }
+    
+    /**
+     * 
+     * @return 
+     * Texto contendo a descrição do produto.
+     */
+    @Override
+    public String toString(){
+        return descProd;
+    }
+    
+    /**
+     * 
+     * @return 
+     * Texto contendo os valores de todos os atribudos do objeto.
+     */
+    public String toStringAll(){
+        String s= "Normal";
+        if (statusProd != 0){
+            s= "Bloqueado";
+        }
+        return categoria.getDescricao() + " - " + codProd + " - " + descProd
+                + " - " + qtdeEstoq + " - " + qtdeMin + " - " + qtdeIdeal
+                + " - " + unidade.getDescricao()+ " - " + s;
+    }
   
 }

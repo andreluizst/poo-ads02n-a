@@ -227,7 +227,11 @@ public class RepositorioProduto implements IRepositorioProduto{
         Fornecedor f= null;
         //Unidade u= null;
         Connection c = gc.conectar();
-        String sql= "Select * from Produto";
+        String sql= "Select c.Descricao, p.codProd, p.descProd, p.qtdeEstoq, "
+                + "p.qtdeMin, p.qtdeIdeal, p.statusProd, p.codCateg, "
+                + "p.codUnid from Categoria as c "
+                + "inner join Produto as p on p.codCateg = c.codCateg "
+                + "order by c.Descricao, p.descProd";
         String sqlForns= "SELECT DISTINCT codProd, codForn from FornXProd"
                 + " where codProd=?";
         try{

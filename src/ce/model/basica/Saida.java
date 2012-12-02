@@ -103,6 +103,26 @@ public class Saida {
     public void setEntrada(Entrada entrada) {
         this.entrada = entrada;
     }
-
+    
+    /**
+     * 
+     * @return 
+     * Texto contendo o código e a data de saída
+     */
+    @Override
+    public String toString(){
+        return codSaida + " - " + dataSaida;
+    }
+    
+    /**
+     * 
+     * @return 
+     * Texto do conteúdo de todos os atribudos do objeto
+     */
+    public String toStringAll(){
+        return codSaida + " - " + dataSaida + " - " + entrada.getCodEntrada()
+                + " - " + entrada.getProduto().getDescProd() 
+                + " - " + qtde;
+    }
     
 }

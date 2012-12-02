@@ -176,6 +176,25 @@ public class Entrada {
     public void setFornecedor(Fornecedor fornecedor) {
         this.fornecedor = fornecedor;
     }
-
+    
+    /**
+     * 
+     * @return 
+     * Texto contendo o número e a data da entrada.
+     */
+    @Override
+    public String toString(){
+        return codEntrada + " - " + dataEntrada;
+    }
+    
+    /**
+     * 
+     * @return 
+     * Texto contendo os valores de todos os atribudos do objeto.
+     */
+    public String toStringAll(){
+        return codEntrada + " - " + dataEntrada + " - " + fornecedor.toString()
+                + " - " + produto.toString() +  " - " + qtde +  " - " + lote;
+    }
     
 }

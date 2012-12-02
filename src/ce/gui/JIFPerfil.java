@@ -31,6 +31,10 @@ public class JIFPerfil extends javax.swing.JInternalFrame implements IActionsGui
         jTable1.getColumnModel().getColumn(0).setCellRenderer(dtcrEsq);
     }
     
+    /**
+     * Seleciona na tabela o perfil informado.
+     * @param p 
+     */
     private void selectPerfil(Perfil p){
         for(int i=0;i<lstPerfis.size();i++){
             if (p.getCodPerfil() == lstPerfis.get(i).getCodPerfil()){
@@ -39,7 +43,10 @@ public class JIFPerfil extends javax.swing.JInternalFrame implements IActionsGui
             }
         }
     }
-
+    
+    /**
+     * Inclui um novo registro.
+     */
     @Override
     public void novo(){
         Perfil p;
@@ -59,6 +66,9 @@ public class JIFPerfil extends javax.swing.JInternalFrame implements IActionsGui
         }
     }
     
+    /**
+     * Exclui o registro selecionado. Será exibida uma mensagem pedindo confirmação.
+     */
     @Override
     public void excluir(){
         Perfil obj;
@@ -92,6 +102,9 @@ public class JIFPerfil extends javax.swing.JInternalFrame implements IActionsGui
         }
     }
     
+    /**
+     * Altera o registro selecionado
+     */
     @Override
     public void alterar(){
         Perfil obj;
@@ -112,6 +125,18 @@ public class JIFPerfil extends javax.swing.JInternalFrame implements IActionsGui
         }
     }
     
+    /**
+     * Informa se o método pesquisar está implementado e disponível.
+     * @return 
+     */
+    @Override
+    public boolean pesquisarExiste(){
+        return false;
+    }
+    
+    /**
+     * Retorna todas os perfis existentes.
+     */
     @Override
     public void pesquisar(){
         listar();
@@ -124,6 +149,9 @@ public class JIFPerfil extends javax.swing.JInternalFrame implements IActionsGui
         }
     }
     
+    /**
+     * Seleciona o registro anterior
+     */
     @Override
     public void priorRecord(){
         int line= jTable1.getSelectedRow();
@@ -132,6 +160,9 @@ public class JIFPerfil extends javax.swing.JInternalFrame implements IActionsGui
         }
     }
     
+    /**
+     * Seleciona o próximo registro da tabela.
+     */
     @Override
     public void nextRecord(){
         if (jTable1.getRowCount() > 0){
@@ -141,6 +172,9 @@ public class JIFPerfil extends javax.swing.JInternalFrame implements IActionsGui
         }
     }
     
+    /**
+     * Seleciona o último registro da tabela.
+     */
     @Override
     public void lastRecord(){
         if (jTable1.getRowCount() > 0){
@@ -148,6 +182,9 @@ public class JIFPerfil extends javax.swing.JInternalFrame implements IActionsGui
         }
     }
     
+    /**
+     * Lista todos os registros.
+     */
     @Override
     public void listar(){
         lstPerfis.clear();
@@ -159,6 +196,11 @@ public class JIFPerfil extends javax.swing.JInternalFrame implements IActionsGui
         priorRecord();
     }
     
+    /**
+     * Informa o nome usado para ativar a janela após ser criada. Também pode ser
+     * usado como texto do menu que executará a ação.
+     * @return 
+     */
     @Override
     public String getActivationName(){
         return activationName;

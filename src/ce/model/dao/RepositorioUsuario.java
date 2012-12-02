@@ -155,7 +155,7 @@ public class RepositorioUsuario implements IRepositorioUsuario{
             RepositorioListarException{
         List<Usuario> lista= new ArrayList();
         Usuario u= null;
-        String sql= "Select * from Usuario";
+        String sql= "Select * from Usuario order by nome";
         Connection c= gerenciadorConexao.conectar();
         try{
             Statement stmt= c.createStatement();
@@ -204,7 +204,7 @@ public class RepositorioUsuario implements IRepositorioUsuario{
             RepositorioPesquisarException{
         List<Usuario> lista= new ArrayList();
         Usuario u= null;
-        String sql= "Select * from Usuario where nome like ?";
+        String sql= "Select * from Usuario where nome like ? order by nome";
         Connection c= gerenciadorConexao.conectar();
         try{
             PreparedStatement pstmt= c.prepareStatement(sql);

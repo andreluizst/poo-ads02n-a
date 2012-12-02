@@ -35,9 +35,6 @@ public class JIFFuncionario extends javax.swing.JInternalFrame implements IActio
      * Preenche o objeto pesFun do tipo Funcionario com os dados para pesquisa.
      */
     private void preencherFun(){
-        if (jftfCpf.getText().compareTo("") != 0){
-            pesqFun.setCpf(jftfCpf.getText());
-        }
         if (jtxtNome.getText().compareTo("") != 0){
             pesqFun.setNome(jtxtNome.getText());
         }
@@ -144,6 +141,15 @@ public class JIFFuncionario extends javax.swing.JInternalFrame implements IActio
     }
     
     /**
+     * Informa que o método pesquisar está implementado e disponível.
+     * @return 
+     */
+    @Override
+    public boolean pesquisarExiste(){
+        return true;
+    }
+    
+    /**
      * Realiza uma presquisa de dados
      */
     @Override
@@ -237,20 +243,9 @@ public class JIFFuncionario extends javax.swing.JInternalFrame implements IActio
 
         lstFuncionarios = new LinkedList<Funcionario>();
         jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        javax.swing.text.MaskFormatter maskCpf= null;
-        try{
-            maskCpf = new javax.swing.text.MaskFormatter("###.###.###-##");
-            maskCpf.setPlaceholderCharacter('?');
-        }
-        catch(java.text.ParseException e){
-
-        }
-        jftfCpf = new javax.swing.JFormattedTextField(maskCpf);
         jLabel2 = new javax.swing.JLabel();
         jtxtNome = new javax.swing.JTextField();
         btnPesquisar = new javax.swing.JButton();
-        btnLimpar = new javax.swing.JButton();
         btnNovo = new javax.swing.JButton();
         btnExcluir = new javax.swing.JButton();
         btnAlterar = new javax.swing.JButton();
@@ -287,10 +282,6 @@ public class JIFFuncionario extends javax.swing.JInternalFrame implements IActio
 
         jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        jLabel1.setDisplayedMnemonic('c');
-        jLabel1.setText("CPF:");
-        jLabel1.setNextFocusableComponent(jftfCpf);
-
         jLabel2.setText("Nome:");
 
         jtxtNome.setToolTipText("");
@@ -301,13 +292,6 @@ public class JIFFuncionario extends javax.swing.JInternalFrame implements IActio
         btnPesquisar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnPesquisarActionPerformed(evt);
-            }
-        });
-
-        btnLimpar.setText("Limpar");
-        btnLimpar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnLimparActionPerformed(evt);
             }
         });
 
@@ -365,53 +349,38 @@ public class JIFFuncionario extends javax.swing.JInternalFrame implements IActio
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(34, 34, 34)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(btnNovo)
-                        .addGap(29, 29, 29)
-                        .addComponent(btnExcluir))
+                    .addComponent(jLabel2)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jftfCpf, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jtxtNome, javax.swing.GroupLayout.PREFERRED_SIZE, 321, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(btnAlterar)
-                                    .addComponent(jtxtNome, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(30, 30, 30)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(btnPesquisar)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(btnLimpar))
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGap(10, 10, 10)
-                                        .addComponent(btnAtualizar)))))))
-                .addContainerGap(132, Short.MAX_VALUE))
+                                .addComponent(btnNovo)
+                                .addGap(31, 31, 31)
+                                .addComponent(btnExcluir)
+                                .addGap(28, 28, 28)
+                                .addComponent(btnAlterar)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnAtualizar)
+                            .addComponent(btnPesquisar))))
+                .addContainerGap(190, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(42, 42, 42)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jftfCpf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
+                .addContainerGap()
+                .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel2)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jtxtNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(btnPesquisar)
-                        .addComponent(btnLimpar)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jtxtNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnPesquisar))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnNovo)
                     .addComponent(btnExcluir)
                     .addComponent(btnAlterar)
                     .addComponent(btnAtualizar))
-                .addContainerGap())
+                .addGap(19, 19, 19))
         );
 
         org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, lstFuncionarios, jTable1);
@@ -468,7 +437,7 @@ public class JIFFuncionario extends javax.swing.JInternalFrame implements IActio
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 251, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 313, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -507,25 +476,16 @@ public class JIFFuncionario extends javax.swing.JInternalFrame implements IActio
         listar();
     }//GEN-LAST:event_btnAtualizarActionPerformed
 
-    private void btnLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimparActionPerformed
-        JOptionPane.showMessageDialog(null, jftfCpf.getText());
-        jftfCpf.setText("");
-        jtxtNome.setText("");
-    }//GEN-LAST:event_btnLimparActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAlterar;
     private javax.swing.JButton btnAtualizar;
     private javax.swing.JButton btnExcluir;
-    private javax.swing.JButton btnLimpar;
     private javax.swing.JButton btnNovo;
     private javax.swing.JButton btnPesquisar;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
-    private javax.swing.JFormattedTextField jftfCpf;
     private javax.swing.JTextField jtxtNome;
     private java.util.List<Funcionario> lstFuncionarios;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;

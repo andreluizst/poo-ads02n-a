@@ -110,10 +110,24 @@ public class Usuario {
         this.senha = senha;
     }
     
+    /**
+     * 
+     * @return 
+     * Texto contendo o nome e o CPF.
+     */
     @Override
     public String toString(){
+        return nome + ", CPF " + funcionario.getCpf();
+    }
+    
+    /**
+     * 
+     * @return 
+     * Texto contendo o valor de todos os atribudos do objeto.
+     */
+    public String toStringAll(){
         return codUsuario + " - CPF " + funcionario.getCpf()+ " - " + nome +
-                " - " + perfil.getNome() + " - "+ senha;
+                " - " + perfil.getNome() + " - " + senha;
     }
     
 }

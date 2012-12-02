@@ -53,5 +53,23 @@ public class Unidade {
         this.descricao = descricao;
     }
     
+    /**
+     * 
+     * @return 
+     * Texto contendo a descrição da unidade.
+     */
+    @Override
+    public String toString(){
+        return descricao;
+    }
+    
+    /**
+     * 
+     * @return 
+     * Texto contendo o valor de todos os atribudos do objeto.
+     */
+    public String toStringAll(){
+        return codUnid + " - " + descricao;
+    }
     
 }

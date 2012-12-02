@@ -138,10 +138,10 @@ public class RepositorioUnidade implements IRepositorioUnidade{
     @Override
     public List<Unidade> listar() throws ConexaoException,
             RepositorioListarException{
-        List<Unidade> lista = new ArrayList<Unidade>();
+        List<Unidade> lista = new ArrayList();
         Unidade u;
         Connection c= gerenciadorConexao.conectar();
-        String sql= "select * from unidade";
+        String sql= "select * from unidade order by descricao";
         try{
             Statement stmt= c.createStatement();
             ResultSet rs= stmt.executeQuery(sql);
@@ -178,7 +178,7 @@ public class RepositorioUnidade implements IRepositorioUnidade{
                 List<Unidade> lista = new ArrayList();
         Unidade u;
         Connection c= gerenciadorConexao.conectar();
-        String sql= "select * from unidade where descricao like ?";
+        String sql= "select * from unidade where descricao like ? order by descricao";
         try{
             PreparedStatement pstmt= c.prepareStatement(sql);
             pstmt.setString(1, descricao);

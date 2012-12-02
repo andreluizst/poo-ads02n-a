@@ -81,7 +81,7 @@ public class JIFUsuario extends javax.swing.JInternalFrame implements IActionsGu
         }
         obj= lista.get(jTable1.getSelectedRow());
         String [] opcoes= new String[] {"Sim", "Não"};
-        String msg= "Deseja excluir " + obj.getNome() + "?";
+        String msg= "Deseja excluir " + obj.toString() + "?";
         int result= JOptionPane.showOptionDialog(null, msg, "Confirmação",
                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,
                 null, opcoes, opcoes[0]);
@@ -126,6 +126,15 @@ public class JIFUsuario extends javax.swing.JInternalFrame implements IActionsGu
     }
     
     /**
+     * Informa se o método pesquisar é válido para este frame
+     * @return 
+     */
+    @Override
+    public boolean pesquisarExiste(){
+        return true;
+    }
+    
+    /**
      * Realiza uma presquisa de dados
      */
     @Override
@@ -138,6 +147,19 @@ public class JIFUsuario extends javax.swing.JInternalFrame implements IActionsGu
         }
         catch (GeralException e){
             JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+    }
+    
+    /**
+     * Lista todos os registros na tabela.
+     */
+    @Override
+    public void listar(){
+        lista.clear();
+        try {
+            lista.addAll(f.listarUsuario());
+        } catch (GeralException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage());
         }
     }
     
@@ -181,19 +203,6 @@ public class JIFUsuario extends javax.swing.JInternalFrame implements IActionsGu
     public void lastRecord(){
         if (jTable1.getRowCount() > 0){
             jTable1.setRowSelectionInterval(jTable1.getRowCount()-1, jTable1.getRowCount()-1);
-        }
-    }
-    
-    /**
-     * Lista todos os registros na tabela.
-     */
-    @Override
-    public void listar(){
-        lista.clear();
-        try {
-            lista.addAll(f.listarUsuario());
-        } catch (GeralException ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage());
         }
     }
     
@@ -363,7 +372,7 @@ public class JIFUsuario extends javax.swing.JInternalFrame implements IActionsGu
                     .addComponent(jtxtNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnPesquisar)
                     .addComponent(jLabel2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnNovo)
                     .addComponent(btnExcluir)
@@ -378,16 +387,16 @@ public class JIFUsuario extends javax.swing.JInternalFrame implements IActionsGu
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 530, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 590, Short.MAX_VALUE)
                 .addContainerGap())
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 215, Short.MAX_VALUE)
                 .addContainerGap())
         );
 

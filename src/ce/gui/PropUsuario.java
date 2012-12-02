@@ -5,22 +5,16 @@
 package ce.gui;
 
 import ce.erro.GeralException;
+import ce.model.basica.Funcionario;
 import ce.model.basica.Perfil;
 import ce.model.basica.Usuario;
 import ce.model.fachada.Fachada;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
-import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.List;
-import javax.swing.AbstractAction;
-import javax.swing.ActionMap;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.InputMap;
-import javax.swing.JComponent;
-import javax.swing.JOptionPane;
-import javax.swing.KeyStroke;
+import javax.swing.*;
 
 /**
  *
@@ -31,7 +25,6 @@ public class PropUsuario extends javax.swing.JDialog {
     private Usuario usuario;
     private boolean isIns;
     private Resource res;
-    private Hashtable perfis;
     /**
      * A return status code - returned if Cancel button has been pressed
      */
@@ -54,6 +47,7 @@ public class PropUsuario extends javax.swing.JDialog {
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), cancelName);
         ActionMap actionMap = getRootPane().getActionMap();
         actionMap.put(cancelName, new AbstractAction() {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 doClose(RET_CANCEL);
             }
@@ -76,16 +70,21 @@ public class PropUsuario extends javax.swing.JDialog {
             } catch (GeralException ex) {
                 JOptionPane.showMessageDialog(null, ex.getMessage());
             }
+            atlzListas();
             setFields(u);
-            perfis= new Hashtable();
-            atlzPerfis();
         }
     }
     
     private void setFields(Usuario u){
         jtxtCod.setText(((Integer)u.getCodUsuario()).toString());
         jtxtNome.setText(u.getNome());
-        //jtxtDescricao.requestFocus();
+        if (jcbxPerfil.getItemCount() > 0){
+            jcbxPerfil.setSelectedItem(u.getPerfil());
+        }
+        if (jcbxFuncionario.getItemCount() > 0){
+            jcbxFuncionario.setSelectedItem(u.getFuncionario());
+        }
+        jtxtNome.requestFocus();
     }
     
     public Usuario getProperties(){
@@ -99,15 +98,25 @@ public class PropUsuario extends javax.swing.JDialog {
         return returnStatus;
     }
     
-    private void atlzPerfis(){
+    private void atlzListas(){
         List<Perfil> lista= new ArrayList();
-        perfis.clear();
-        DefaultComboBoxModel dcbxModel= new DefaultComboBoxModel();
+        List<Funcionario> lstFun= new ArrayList();
+        try {
+            lista= f.listarPerfil();
+            lstFun= f.listarFuncionario();
+        } catch (GeralException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage());
+        }
+        DefaultComboBoxModel<Perfil> dcbxModel= new DefaultComboBoxModel();
+        DefaultComboBoxModel<Funcionario> dcbxmFun= new DefaultComboBoxModel();
         for(Perfil per : lista){
-            perfis.put(per.getNome(), per.getCodPerfil());
-            dcbxModel.addElement(per.getNome());
+            dcbxModel.addElement(per);
         }
         jcbxPerfil.setModel(dcbxModel);
+        for (Funcionario fun : lstFun){
+            dcbxmFun.addElement(fun);
+        }
+        jcbxFuncionario.setModel(dcbxmFun);
         //Integer i= (Integer)perfis.get("ijhuiyui");
     }
 
@@ -128,13 +137,16 @@ public class PropUsuario extends javax.swing.JDialog {
         jtxtCod = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jtxtNome = new javax.swing.JTextField();
-        jcbxPerfil = new javax.swing.JComboBox();
+        jcbxPerfil = new javax.swing.JComboBox<Perfil>();
         jLabel3 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList();
+        jcbxFuncionario = new javax.swing.JComboBox<Funcionario>();
+        jLabel4 = new javax.swing.JLabel();
+        jpfSenha = new javax.swing.JPasswordField();
+        jLabel5 = new javax.swing.JLabel();
 
         lstPerfil= org.jdesktop.observablecollections.ObservableCollections.observableList(lstPerfil);
 
+        setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 closeDialog(evt);
@@ -164,16 +176,11 @@ public class PropUsuario extends javax.swing.JDialog {
 
         jLabel2.setText("Nome");
 
-        jcbxPerfil.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
         jLabel3.setText("Perfil");
 
-        jList1.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public Object getElementAt(int i) { return strings[i]; }
-        });
-        jScrollPane1.setViewportView(jList1);
+        jLabel4.setText("Funcionário");
+
+        jLabel5.setText("Senha");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -183,26 +190,33 @@ public class PropUsuario extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jpfSenha)
+                        .addGap(114, 114, 114)
                         .addComponent(btnSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(18, 18, 18)
                         .addComponent(btnCancelar))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel5)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jtxtNome, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jLabel2)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel1)
+                                            .addComponent(jtxtCod, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGap(62, 62, 62)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel3)
+                                            .addComponent(jcbxPerfil, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(jLabel4)
+                                    .addComponent(jcbxFuncionario, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 53, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel1)
-                                    .addComponent(jtxtCod, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(62, 62, 62)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel3)
-                                    .addComponent(jcbxPerfil, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
+                                .addComponent(jtxtNome)
+                                .addGap(165, 165, 165)))
                         .addComponent(lblImg, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
@@ -211,11 +225,8 @@ public class PropUsuario extends javax.swing.JDialog {
 
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(lblImg, javax.swing.GroupLayout.PREFERRED_SIZE, 154, Short.MAX_VALUE)
-                        .addGap(131, 131, 131))
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -225,16 +236,22 @@ public class PropUsuario extends javax.swing.JDialog {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jtxtCod, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jcbxPerfil, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jcbxFuncionario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jtxtNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(jtxtNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblImg, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCancelar)
-                    .addComponent(btnSalvar))
+                    .addComponent(btnSalvar)
+                    .addComponent(jpfSenha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -249,6 +266,9 @@ public class PropUsuario extends javax.swing.JDialog {
             u.setCodUsuario(Integer.parseInt(jtxtCod.getText()));
         }
         u.setNome(jtxtNome.getText());
+        u.setPerfil((Perfil)jcbxPerfil.getSelectedItem());
+        u.setFuncionario((Funcionario)jcbxFuncionario.getSelectedItem());
+        u.setSenha(jpfSenha.getText());
         try {
             if (isIns){
                 f.incluir(u);
@@ -325,9 +345,11 @@ public class PropUsuario extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JList jList1;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JComboBox jcbxPerfil;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JComboBox<Funcionario> jcbxFuncionario;
+    private javax.swing.JComboBox<Perfil> jcbxPerfil;
+    private javax.swing.JPasswordField jpfSenha;
     private javax.swing.JTextField jtxtCod;
     private javax.swing.JTextField jtxtNome;
     private javax.swing.JLabel lblImg;

@@ -279,4 +279,25 @@ public class Fornecedor {
     public void setProdutos(List<Produto> produtos) {
         this.produtos = produtos;
     }
+    
+    /**
+     * 
+     * @return 
+     * Texto contendo o nome e o CNPJ do fornecedor.
+     */
+    @Override
+    public String toString(){
+        return getNome() + ", CPF/CNPJ " + getCnpj();
+    }
+    
+    /**
+     * 
+     * @return 
+     * Texto contendo os valores de todos os atribudos do objeto.
+     */
+    public String toStringAll(){
+        return codForn + " - " + cnpj + " - " + nome + " - " + logradouro
+                + " - " + num + " - " + comp + " - " + bairro
+                + " - " + municipio + " - " + cep + " - " + fone+ " - " + email;
+    }
 }

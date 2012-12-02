@@ -19,4 +19,5 @@ public interface IActionsGui {
     public void nextRecord();
     public void lastRecord();
     public String getActivationName();
+    public boolean pesquisarExiste();
 }

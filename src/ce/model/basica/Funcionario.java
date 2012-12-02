@@ -210,12 +210,25 @@ public class Funcionario {
         this.email = email.toLowerCase();
     }
     
+    /**
+     * 
+     * @return 
+     * Texto contendo o nome e o CPF do funcionário.
+     */
     @Override
     public String toString(){
+        return nome + ", CPF " + cpf;
+    }
+    
+    /**
+     * 
+     * @return 
+     * Texto contendo os valores de todos os atribudos do objeto.
+     */
+    public String toStringAll(){
         return cpf + " - " + nome + " - " + dtNasc + " - " + logradouro
                 + " - " +num + " - " + comp + " - " + bairro+ " - " + municipio
                 + " - " + uf + " - " + cep + " - " + fone + " - " + email;
     }
-    
     
 }

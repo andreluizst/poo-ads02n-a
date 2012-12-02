@@ -54,5 +54,23 @@ public class LocalEstoque {
         this.descricao = descricao;
     }
     
+    /**
+     * 
+     * @return 
+     * Texto contendo a descrição do local de estoque.
+     */
+    @Override
+    public String toString(){
+        return descricao;
+    }
+    
+    /**
+     * 
+     * @return 
+     * Texto contendo os valores de todos os atribudos do objeto.
+     */
+    public String toStringAll(){
+        return codLocal + " - " + descricao;
+    }
     
 }

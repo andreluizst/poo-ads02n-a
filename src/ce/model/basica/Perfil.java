@@ -41,8 +41,22 @@ public class Perfil {
         this.codPerfil = codPerfil;
     }
     
+    /**
+     * 
+     * @return 
+     * Texto contendo o nome do perfil.
+     */
     @Override
     public String toString(){
+        return nome;
+    }
+    
+    /**
+     * 
+     * @return 
+     * Texto contendo os valores de todos os atribudos do objeto.
+     */
+    public String toStringAll(){
         return codPerfil + " - " + nome;
     }
 }

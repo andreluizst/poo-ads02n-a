@@ -48,4 +48,23 @@ public class Categoria {
     public void setDescricao(String descricao) {
         this.descricao = descricao;
     }
+    
+    /**
+     * 
+     * @return 
+     * Texto contendo a descrição da categoria.
+     */
+    @Override
+    public String toString(){
+        return descricao;
+    }
+    
+    /**
+     * 
+     * @return 
+     * Texto contendo os valores de todos os atribudos do objeto.
+     */
+    public String toStringAll(){
+        return codCateg + " - " + descricao;
+    }
 }

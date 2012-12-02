@@ -126,6 +126,15 @@ public class CategoriaJif extends javax.swing.JInternalFrame implements IActions
     }
     
     /**
+     * Informa se o método pesquisar está implementado e fundcional para esta tela.
+     * @return 
+     * 
+     */
+    @Override
+    public boolean pesquisarExiste(){
+        return false;
+    }
+    /**
      * Realiza uma presquisa de dados
      */
     @Override
@@ -344,7 +353,7 @@ public class CategoriaJif extends javax.swing.JInternalFrame implements IActions
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 267, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 279, Short.MAX_VALUE)
                 .addContainerGap())
         );
 

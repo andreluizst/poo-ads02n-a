@@ -67,7 +67,17 @@ public class MainMDIApplication extends javax.swing.JFrame {
             }
         });
         mnJanela.add(novoMenuItem);
+        desktopPane.add(janela, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        janela.setVisible(true);
+        setActiveWindow(janela);
         atlzMenu();
+        
+        /*
+         * desktopPane.add(jifUsuario, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        registrarJanela(jifUsuario);
+        jifUsuario.setVisible(true);
+        setActiveWindow(jifUsuario);
+         */
     }
     
     /*
@@ -164,6 +174,7 @@ public class MainMDIApplication extends javax.swing.JFrame {
         jSeparator4 = new javax.swing.JPopupMenu.Separator();
         mnSair = new javax.swing.JMenuItem();
         editMenu = new javax.swing.JMenu();
+        mnListar = new javax.swing.JMenuItem();
         mnPesquisar = new javax.swing.JMenuItem();
         jSeparator3 = new javax.swing.JPopupMenu.Separator();
         mnNovo = new javax.swing.JMenuItem();
@@ -222,6 +233,11 @@ public class MainMDIApplication extends javax.swing.JFrame {
         mnUsuario.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_U, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         mnUsuario.setMnemonic('u');
         mnUsuario.setText("Usuário");
+        mnUsuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnUsuarioActionPerformed(evt);
+            }
+        });
         jMenu1.add(mnUsuario);
 
         mnFuncionario.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
@@ -303,6 +319,16 @@ public class MainMDIApplication extends javax.swing.JFrame {
                 editMenuActionPerformed(evt);
             }
         });
+
+        mnListar.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.CTRL_MASK));
+        mnListar.setMnemonic('l');
+        mnListar.setText("Listar/Atualizar");
+        mnListar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnListarActionPerformed(evt);
+            }
+        });
+        editMenu.add(mnListar);
 
         mnPesquisar.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F5, 0));
         mnPesquisar.setMnemonic('p');
@@ -448,11 +474,11 @@ public class MainMDIApplication extends javax.swing.JFrame {
 
     private void miCategoraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miCategoraActionPerformed
         CategoriaJif jifCategoria= new CategoriaJif();
-        desktopPane.add(jifCategoria, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        //desktopPane.add(jifCategoria, javax.swing.JLayeredPane.DEFAULT_LAYER);
         //jifCategoria.setBounds(0, 0, 450, 350);
         registrarJanela(jifCategoria);
-        jifCategoria.setVisible(true);
-        setActiveWindow(jifCategoria);
+        //jifCategoria.setVisible(true);
+       // setActiveWindow(jifCategoria);
     }//GEN-LAST:event_miCategoraActionPerformed
 
     private void mnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnNovoActionPerformed
@@ -514,11 +540,11 @@ public class MainMDIApplication extends javax.swing.JFrame {
 
     private void mnFuncionarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnFuncionarioActionPerformed
         JIFFuncionario jifFun= new JIFFuncionario();
-        desktopPane.add(jifFun, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        //desktopPane.add(jifFun, javax.swing.JLayeredPane.DEFAULT_LAYER);
         //jifCategoria.setBounds(0, 0, 450, 350);
         registrarJanela(jifFun);
-        jifFun.setVisible(true);
-        setActiveWindow(jifFun);
+        //jifFun.setVisible(true);
+        //setActiveWindow(jifFun);
         try {
             jifFun.setMaximum(true);
         } catch (PropertyVetoException ex) {
@@ -528,11 +554,25 @@ public class MainMDIApplication extends javax.swing.JFrame {
 
     private void mnPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnPerfilActionPerformed
         JIFPerfil jifPerfil= new JIFPerfil();
-        desktopPane.add(jifPerfil, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        //desktopPane.add(jifPerfil, javax.swing.JLayeredPane.DEFAULT_LAYER);
         registrarJanela(jifPerfil);
-        jifPerfil.setVisible(true);
-        setActiveWindow(jifPerfil);
+        //jifPerfil.setVisible(true);
+        //setActiveWindow(jifPerfil);
     }//GEN-LAST:event_mnPerfilActionPerformed
+
+    private void mnUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnUsuarioActionPerformed
+        JIFUsuario jifUsuario= new JIFUsuario();
+        //desktopPane.add(jifUsuario, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        registrarJanela(jifUsuario);
+        //jifUsuario.setVisible(true);
+        //setActiveWindow(jifUsuario);
+    }//GEN-LAST:event_mnUsuarioActionPerformed
+
+    private void mnListarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnListarActionPerformed
+        if (activeWindow != null){
+            ((IActionsGui)activeWindow).listar();
+        }
+    }//GEN-LAST:event_mnListarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -608,6 +648,7 @@ public class MainMDIApplication extends javax.swing.JFrame {
     private javax.swing.JMenuItem mnFuncionario;
     private javax.swing.JMenu mnIrPara;
     private javax.swing.JMenu mnJanela;
+    private javax.swing.JMenuItem mnListar;
     private javax.swing.JMenuItem mnLocalE;
     private javax.swing.JMenuItem mnNovo;
     private javax.swing.JMenuItem mnPerfil;
@@ -636,13 +677,12 @@ public class MainMDIApplication extends javax.swing.JFrame {
      * for criada, ativada ou destruida
      */
     public void atlzMenu(){
-        mnPesquisar.setEnabled(activeWindow!=null);
+        mnListar.setEnabled(activeWindow!=null);
+        mnPesquisar.setEnabled(activeWindow!=null?((IActionsGui)activeWindow).pesquisarExiste():false);
         mnNovo.setEnabled(activeWindow!=null);
         mnExcluir.setEnabled(activeWindow!=null);
         mnAlterar.setEnabled(activeWindow!=null);
         mnIrPara.setEnabled(activeWindow!=null);
-        //jmnCategoria.setVisible(activeWindow!=null?(activeWindow instanceof CategoriaJif):false);
-        //jmnFuncionario.setVisible(activeWindow!= null?(activeWindow instanceof JIFFuncionario):false);
         jmnFecharAtual.setEnabled(activeWindow!=null);
     }
 }
