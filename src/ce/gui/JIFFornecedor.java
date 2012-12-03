@@ -7,7 +7,6 @@ package ce.gui;
 import ce.Main;
 import ce.erro.GeralException;
 import ce.model.basica.Fornecedor;
-import ce.model.basica.Produto;
 import ce.model.fachada.Fachada;
 import java.util.LinkedList;
 import java.util.List;
@@ -227,7 +226,6 @@ public class JIFFornecedor extends javax.swing.JInternalFrame implements IAction
         bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
         lista = new LinkedList<Fornecedor>();
-        lstProdsForn = new LinkedList<Produto>();
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jtxtNome = new javax.swing.JTextField();
@@ -242,8 +240,6 @@ public class JIFFornecedor extends javax.swing.JInternalFrame implements IAction
         jtbProdutos = new javax.swing.JTable();
 
         lista= org.jdesktop.observablecollections.ObservableCollections.observableList(lista);
-
-        lstProdsForn = org.jdesktop.observablecollections.ObservableCollections.observableList(lstProdsForn);
 
         setClosable(true);
         setIconifiable(true);
@@ -352,18 +348,18 @@ public class JIFFornecedor extends javax.swing.JInternalFrame implements IAction
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(btnAtualizar)
                             .addComponent(btnPesquisar))))
-                .addContainerGap(465, Short.MAX_VALUE))
+                .addContainerGap(328, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jtxtNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnPesquisar))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnNovo)
                     .addComponent(btnExcluir)
@@ -458,10 +454,10 @@ public class JIFFornecedor extends javax.swing.JInternalFrame implements IAction
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(15, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         bindingGroup.bind();
@@ -513,7 +509,6 @@ public class JIFFornecedor extends javax.swing.JInternalFrame implements IAction
     private javax.swing.JTable jtbProdutos;
     private javax.swing.JTextField jtxtNome;
     private java.util.List<Fornecedor> lista;
-    private java.util.List<Produto> lstProdsForn;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
 }

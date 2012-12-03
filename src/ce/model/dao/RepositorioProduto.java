@@ -14,7 +14,6 @@ import ce.erro.RepositorioListarException;
 import ce.erro.RepositorioPesquisarException;
 import ce.model.basica.Fornecedor;
 import ce.model.basica.Produto;
-import ce.model.basica.Unidade;
 import ce.util.GerenciadorConexao;
 import ce.util.IGerenciadorConexao;
 import java.sql.*;
@@ -222,7 +221,6 @@ public class RepositorioProduto implements IRepositorioProduto{
     @Override
     public List<Produto> listar()throws ConexaoException, RepositorioListarException{
         List<Produto> lista = new ArrayList();
-        List<Fornecedor> fornecedores= new ArrayList();
         Produto p= null;
         Fornecedor f= null;
         //Unidade u= null;
@@ -251,6 +249,7 @@ public class RepositorioProduto implements IRepositorioProduto{
                 PreparedStatement pstmtForns= c.prepareStatement(sqlForns);
                 pstmtForns.setInt(1, p.getCodProd());
                 ResultSet rsForns= pstmtForns.executeQuery();
+                List<Fornecedor> fornecedores= new ArrayList();
                 while (rsForns.next()){
                     f= rpForn.pesqCodForn(rsForns.getInt("codForn"), false);
                     fornecedores.add(f);
@@ -293,7 +292,6 @@ public class RepositorioProduto implements IRepositorioProduto{
     public List<Produto> pesquisar(String descProd) throws ConexaoException, 
             RepositorioPesquisarException{
         List<Produto> lista = new ArrayList();
-        List<Fornecedor> fornecedores= new ArrayList();
         Produto p = null;
         Fornecedor f= null;
         Connection c = gc.conectar();
@@ -317,6 +315,7 @@ public class RepositorioProduto implements IRepositorioProduto{
                         rpUnid.pesqCod(rs.getInt("codUnid")));
                 pstmtForns.setInt(1, p.getCodProd());
                 ResultSet rsForns= pstmtForns.executeQuery();
+                List<Fornecedor> fornecedores= new ArrayList();
                 while (rsForns.next()){
                    f= rpForn.pesqCodForn(rsForns.getInt("codForn"), false);
                    fornecedores.add(f);
@@ -362,7 +361,6 @@ public class RepositorioProduto implements IRepositorioProduto{
             RepositorioPesquisarException{
         Produto p= null;
         Fornecedor f= null;
-        List<Fornecedor> fornecedores= new ArrayList();
         Connection c = gc.conectar();
         String sql= "Select * from Produto where codProd=?";
         String sqlForns = "SELECT DISTINCT codProd, codForn"
@@ -384,6 +382,7 @@ public class RepositorioProduto implements IRepositorioProduto{
                     PreparedStatement pstmtForns= c.prepareStatement(sqlForns);
                     pstmtForns.setInt(1, codProd);
                     ResultSet rsForns= pstmtForns.executeQuery();
+                    List<Fornecedor> fornecedores= new ArrayList();
                     while (rsForns.next()){
                         f= rpForn.pesqCodForn(rsForns.getInt("codForn"), false);
                         fornecedores.add(f);
