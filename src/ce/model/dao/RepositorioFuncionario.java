@@ -165,7 +165,7 @@ public class RepositorioFuncionario implements IRepositorioFuncionario{
         List<Funcionario> lista = new ArrayList();
         Funcionario f;
         Connection c= gerenciadorConexao.conectar();
-        String sql= "select * from funcionario";
+        String sql= "select * from funcionario order by nome";
         try{
             Statement stmt= c.createStatement();
             ResultSet rs= stmt.executeQuery(sql);
@@ -209,7 +209,7 @@ public class RepositorioFuncionario implements IRepositorioFuncionario{
                 List<Funcionario> lista = new ArrayList();
         Funcionario f;
         Connection c= gerenciadorConexao.conectar();
-        String sql= "select * from funcionario where nome like ?";
+        String sql= "select * from funcionario where nome like ? order by nome";
         try{
             PreparedStatement pstmt= c.prepareStatement(sql);
             pstmt.setString(1, nome);

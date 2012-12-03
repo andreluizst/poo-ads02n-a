@@ -281,6 +281,11 @@ public class MainMDIApplication extends javax.swing.JFrame {
         mnFornecedor.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         mnFornecedor.setMnemonic('f');
         mnFornecedor.setText("Fornecedor");
+        mnFornecedor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnFornecedorActionPerformed(evt);
+            }
+        });
         jMenu1.add(mnFornecedor);
 
         mnLocalE.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
@@ -581,6 +586,11 @@ public class MainMDIApplication extends javax.swing.JFrame {
             ((IActionsGui)activeWindow).listar();
         }
     }//GEN-LAST:event_mnListarActionPerformed
+
+    private void mnFornecedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnFornecedorActionPerformed
+        JIFFornecedor jifFornecedor = new JIFFornecedor();
+        registrarJanela(jifFornecedor);
+    }//GEN-LAST:event_mnFornecedorActionPerformed
 
     /**
      * @param args the command line arguments

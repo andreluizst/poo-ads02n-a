@@ -4,8 +4,10 @@
  */
 package ce.gui;
 
+import ce.Main;
 import ce.erro.GeralException;
 import ce.model.basica.Fornecedor;
+import ce.model.basica.Produto;
 import ce.model.fachada.Fachada;
 import java.util.LinkedList;
 import java.util.List;
@@ -225,6 +227,7 @@ public class JIFFornecedor extends javax.swing.JInternalFrame implements IAction
         bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
         lista = new LinkedList<Fornecedor>();
+        lstProdsForn = new LinkedList<Produto>();
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jtxtNome = new javax.swing.JTextField();
@@ -240,11 +243,31 @@ public class JIFFornecedor extends javax.swing.JInternalFrame implements IAction
 
         lista= org.jdesktop.observablecollections.ObservableCollections.observableList(lista);
 
+        lstProdsForn = org.jdesktop.observablecollections.ObservableCollections.observableList(lstProdsForn);
+
         setClosable(true);
         setIconifiable(true);
         setMaximizable(true);
         setResizable(true);
         setTitle("Fornecedor");
+        addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
+            public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
+                JIFFornecedorActivated(evt);
+            }
+            public void internalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
+                JIFFornecedorClosing(evt);
+            }
+            public void internalFrameDeactivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeiconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameIconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
+            }
+        });
 
         jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
@@ -391,17 +414,35 @@ public class JIFFornecedor extends javax.swing.JInternalFrame implements IAction
 
         jScrollPane1.setViewportView(jTable1);
 
-        jtbProdutos.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
+        org.jdesktop.beansbinding.ELProperty eLProperty = org.jdesktop.beansbinding.ELProperty.create("${selectedElement.produtos}");
+        jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, jTable1, eLProperty, jtbProdutos);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${codProd}"));
+        columnBinding.setColumnName("Cod Prod");
+        columnBinding.setColumnClass(Integer.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${categoria}"));
+        columnBinding.setColumnName("Categoria");
+        columnBinding.setColumnClass(ce.model.basica.Categoria.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${descProd}"));
+        columnBinding.setColumnName("Desc Prod");
+        columnBinding.setColumnClass(String.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${unidade}"));
+        columnBinding.setColumnName("Unidade");
+        columnBinding.setColumnClass(ce.model.basica.Unidade.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${qtdeEstoq}"));
+        columnBinding.setColumnName("Qtde Estoq");
+        columnBinding.setColumnClass(Double.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${qtdeIdeal}"));
+        columnBinding.setColumnName("Qtde Ideal");
+        columnBinding.setColumnClass(Double.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${qtdeMin}"));
+        columnBinding.setColumnName("Qtde Min");
+        columnBinding.setColumnClass(Double.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${statusProd}"));
+        columnBinding.setColumnName("Status Prod");
+        columnBinding.setColumnClass(Integer.class);
+        bindingGroup.addBinding(jTableBinding);
+        jTableBinding.bind();
+
         jScrollPane2.setViewportView(jtbProdutos);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -420,7 +461,7 @@ public class JIFFornecedor extends javax.swing.JInternalFrame implements IAction
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(15, Short.MAX_VALUE))
         );
 
         bindingGroup.bind();
@@ -448,6 +489,16 @@ public class JIFFornecedor extends javax.swing.JInternalFrame implements IAction
         listar();
     }//GEN-LAST:event_btnAtualizarActionPerformed
 
+    private void JIFFornecedorActivated(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_JIFFornecedorActivated
+        Main.atlzShellMenu(this);
+    }//GEN-LAST:event_JIFFornecedorActivated
+
+    private void JIFFornecedorClosing(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_JIFFornecedorClosing
+        Main.atlzShellMenu(null);
+        Main.desregistrarJanela(this);
+        dispose();
+    }//GEN-LAST:event_JIFFornecedorClosing
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAlterar;
     private javax.swing.JButton btnAtualizar;
@@ -462,6 +513,7 @@ public class JIFFornecedor extends javax.swing.JInternalFrame implements IAction
     private javax.swing.JTable jtbProdutos;
     private javax.swing.JTextField jtxtNome;
     private java.util.List<Fornecedor> lista;
+    private java.util.List<Produto> lstProdsForn;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
 }

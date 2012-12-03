@@ -217,7 +217,7 @@ public class RepositorioFornecedor implements IRepositorioFornecedor{
         Fornecedor f;
         Produto p=null;
         Connection c= gerenciadorConexao.conectar();
-        String sql= "select * from Fornecedor";
+        String sql= "select * from Fornecedor order by nome";
         String sqlProds= "SELECT DISTINCT codProd, codForn from FornXProd"
                 + " where codForn=?";
         try{
@@ -283,14 +283,13 @@ public class RepositorioFornecedor implements IRepositorioFornecedor{
         Fornecedor f=null;
         Produto p=null;
         Connection c= gerenciadorConexao.conectar();
-        String sql= "select * from Fornecedor where nome like ?";
+        String sql= "select * from Fornecedor where nome like ? order by nome";
         String sqlProds= "SELECT DISTINCT codProd, codForn"
                 + " from FornXProd where codForn=?";
         try{
             PreparedStatement pstmt= c.prepareStatement(sql);
             pstmt.setString(1, nome);
             ResultSet rs= pstmt.executeQuery();
-            PreparedStatement pstmtProds= c.prepareStatement(sqlProds);
             IRepositorioProduto rpProd= new RepositorioProduto();
             while (rs.next()){
                 f = new Fornecedor(rs.getInt("codForn"), rs.getString("nome"), 
@@ -299,8 +298,9 @@ public class RepositorioFornecedor implements IRepositorioFornecedor{
                         rs.getString("Bairro"), rs.getString("Municipio"),
                         rs.getString("UF"), rs.getString("CEP"), 
                         rs.getString("Fone"), rs.getString("Email"));
+                PreparedStatement pstmtProds= c.prepareStatement(sqlProds);
                 pstmtProds.setInt(1, f.getCodForn());
-                ResultSet rsProds= pstmt.executeQuery();
+                ResultSet rsProds= pstmtProds.executeQuery();
                 while (rsProds.next()){
                     p= rpProd.pesqCodProd(rsProds.getInt("codProd"), false);
                     produtos.add(p);

@@ -142,7 +142,7 @@ public class RepositorioLocalEstoque implements IRepositorioLocalEstoque{
         List<LocalEstoque> lista = new ArrayList();
         LocalEstoque le;
         Connection c= gerenciadorConexao.conectar();
-        String sql= "select * from LocalEstoque";
+        String sql= "select * from LocalEstoque order by descricao";
         try{
             Statement stmt= c.createStatement();
             ResultSet rs= stmt.executeQuery(sql);
@@ -180,7 +180,7 @@ public class RepositorioLocalEstoque implements IRepositorioLocalEstoque{
                 List<LocalEstoque> lista = new ArrayList();
         LocalEstoque le;
         Connection c= gerenciadorConexao.conectar();
-        String sql= "select * from LocalEstoque where descricao like ?";
+        String sql= "select * from LocalEstoque where descricao like ? order by descricao";
         try{
             PreparedStatement pstmt= c.prepareStatement(sql);
             pstmt.setString(1, descricao);
