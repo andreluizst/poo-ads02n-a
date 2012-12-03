@@ -6,7 +6,6 @@ package ce.model.regra;
 
 import ce.erro.ConexaoException;
 import ce.erro.ControladorException;
-import ce.erro.RepositorioException;
 import ce.erro.RepositorioAlterarException;
 import ce.erro.RepositorioInserirException;
 import ce.erro.RepositorioExcluirException;

@@ -5,11 +5,13 @@
 package ce.gui;
 
 import ce.erro.GeralException;
+import ce.model.fachada.Fachada;
 import java.awt.event.ActionListener;
 import java.beans.PropertyVetoException;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
@@ -23,9 +25,11 @@ import javax.swing.JOptionPane;
  */
 public class MainMDIApplication extends javax.swing.JFrame {
     private static JInternalFrame activeWindow;//IActionsGui activeWindow;
+    private Fachada f;
     private Resource res;
     private ImageIcon fundo;
     private List<JInternalFrame> janelas;
+    private boolean userIsAdm;
     //private JIFCategoria jifCategoria= new JIFCategoria();
     
     /**
@@ -42,6 +46,10 @@ public class MainMDIApplication extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, ex.getMessage());
         }
         janelas= new ArrayList();
+        f= Fachada.getInstancia();
+        userIsAdm= f.getUser().getPerfil().getNome().toLowerCase().compareTo("administrador") == 0;
+        mnPerfil.setVisible(userIsAdm);
+        mnUsuario.setVisible(userIsAdm);
     }
     
     /**
@@ -678,7 +686,8 @@ public class MainMDIApplication extends javax.swing.JFrame {
      */
     public void atlzMenu(){
         mnListar.setEnabled(activeWindow!=null);
-        mnPesquisar.setEnabled(activeWindow!=null?((IActionsGui)activeWindow).pesquisarExiste():false);
+        mnPesquisar.setEnabled(activeWindow!=null);
+        mnPesquisar.setVisible(activeWindow!=null?((IActionsGui)activeWindow).pesquisarExiste():true);
         mnNovo.setEnabled(activeWindow!=null);
         mnExcluir.setEnabled(activeWindow!=null);
         mnAlterar.setEnabled(activeWindow!=null);

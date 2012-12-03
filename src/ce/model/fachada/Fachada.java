@@ -170,7 +170,7 @@ public class Fachada {
         return ctrlForn.listar();
     }
     
-    public List<Fornecedor> PesquisarFornecedor(String nome) throws GeralException{
+    public List<Fornecedor> pesquisarFornecedor(String nome) throws GeralException{
         return ctrlForn.pesquisar(nome);
     }
     

@@ -114,8 +114,9 @@ public class JIFUsuario extends javax.swing.JInternalFrame implements IActionsGu
         propUsu.setVisible(true);
         obj= propUsu.getProperties();
         if (obj != null){
+        //if (propUsu.getReturnStatus() == 0){
             try {
-                f.alterar(obj);
+                //f.alterar(obj);
                 lista.clear();
                 lista.addAll(f.listarUsuario());
                 selectUsuario(obj);

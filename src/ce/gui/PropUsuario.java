@@ -25,6 +25,7 @@ public class PropUsuario extends javax.swing.JDialog {
     private Usuario usuario;
     private boolean isIns;
     private Resource res;
+    private boolean isAdm;
     /**
      * A return status code - returned if Cancel button has been pressed
      */
@@ -52,11 +53,15 @@ public class PropUsuario extends javax.swing.JDialog {
                 doClose(RET_CANCEL);
             }
         });
+        isAdm= false;
         f= Fachada.getInstancia();
+        if (f.getUser().getPerfil().getNome().toLowerCase().compareTo("administrador") == 0){
+            isAdm= true;
+        }
         res= Resource.getInstancia();
         if (u == null){
             isIns= true;
-            this.setTitle("INCLUIR categoria");
+            this.setTitle("INCLUIR usuário");
             try {
                 lblImg.setIcon(res.get("\\images\\Arquivo-Novo.jpg", lblImg.getWidth(), lblImg.getHeight()));
             } catch (GeralException ex) {
@@ -64,7 +69,7 @@ public class PropUsuario extends javax.swing.JDialog {
             }
         }else{
             isIns= false;
-            this.setTitle("ALTERAR categoria");
+            this.setTitle("ALTERAR usuário");
             try {
                 lblImg.setIcon(res.get("\\images\\Arquivo-Alterar3.jpg", lblImg.getWidth(), lblImg.getHeight()));
             } catch (GeralException ex) {
@@ -72,21 +77,39 @@ public class PropUsuario extends javax.swing.JDialog {
             }
             atlzListas();
             setFields(u);
+            lblNvSenha.setVisible(!isIns);
+            jpfNvSenha.setVisible(lblNvSenha.isVisible());
+            jpfSenha.setEditable(isAdm);
         }
     }
     
     private void setFields(Usuario u){
         jtxtCod.setText(((Integer)u.getCodUsuario()).toString());
         jtxtNome.setText(u.getNome());
+        jpfSenha.setText(u.getSenha());
         if (jcbxPerfil.getItemCount() > 0){
-            jcbxPerfil.setSelectedItem(u.getPerfil());
+            for (int i=0;i<jcbxPerfil.getItemCount();i++){
+                if (jcbxPerfil.getItemAt(i).getCodPerfil() == u.getPerfil().getCodPerfil()){
+                    jcbxPerfil.setSelectedIndex(i);
+                    break;
+                }
+            }
         }
         if (jcbxFuncionario.getItemCount() > 0){
-            jcbxFuncionario.setSelectedItem(u.getFuncionario());
+            for (int i=0;i<jcbxFuncionario.getItemCount();i++){
+                if (jcbxFuncionario.getItemAt(i).getCpf().compareTo(u.getFuncionario().getCpf()) == 0){
+                    jcbxFuncionario.setSelectedIndex(i);
+                    break;
+                }
+            }
         }
         jtxtNome.requestFocus();
     }
     
+    /**
+     * 
+     * @return 
+     */
     public Usuario getProperties(){
         return usuario;
     }
@@ -98,6 +121,9 @@ public class PropUsuario extends javax.swing.JDialog {
         return returnStatus;
     }
     
+    /**
+     * Atualiza as caixas de combinação de Perfil e de Funcionário
+     */
     private void atlzListas(){
         List<Perfil> lista= new ArrayList();
         List<Funcionario> lstFun= new ArrayList();
@@ -143,6 +169,8 @@ public class PropUsuario extends javax.swing.JDialog {
         jLabel4 = new javax.swing.JLabel();
         jpfSenha = new javax.swing.JPasswordField();
         jLabel5 = new javax.swing.JLabel();
+        lblNvSenha = new javax.swing.JLabel();
+        jpfNvSenha = new javax.swing.JPasswordField();
 
         lstPerfil= org.jdesktop.observablecollections.ObservableCollections.observableList(lstPerfil);
 
@@ -182,6 +210,8 @@ public class PropUsuario extends javax.swing.JDialog {
 
         jLabel5.setText("Senha");
 
+        lblNvSenha.setText("Nova senha");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -189,15 +219,6 @@ public class PropUsuario extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jpfSenha)
-                        .addGap(114, 114, 114)
-                        .addComponent(btnSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnCancelar))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel5)
-                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
@@ -217,7 +238,19 @@ public class PropUsuario extends javax.swing.JDialog {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jtxtNome)
                                 .addGap(165, 165, 165)))
-                        .addComponent(lblImg, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(lblImg, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jpfSenha, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel5))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblNvSenha)
+                            .addComponent(jpfNvSenha, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnCancelar)))
                 .addContainerGap())
         );
 
@@ -246,12 +279,18 @@ public class PropUsuario extends javax.swing.JDialog {
                         .addComponent(jtxtNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(lblImg, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel5)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnCancelar)
-                    .addComponent(btnSalvar)
-                    .addComponent(jpfSenha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnCancelar)
+                            .addComponent(btnSalvar)
+                            .addComponent(jpfSenha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jpfNvSenha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(lblNvSenha)
+                        .addGap(26, 26, 26)))
                 .addContainerGap())
         );
 
@@ -269,6 +308,10 @@ public class PropUsuario extends javax.swing.JDialog {
         u.setPerfil((Perfil)jcbxPerfil.getSelectedItem());
         u.setFuncionario((Funcionario)jcbxFuncionario.getSelectedItem());
         u.setSenha(jpfSenha.getText());
+        /*JOptionPane.showMessageDialog(null, "usuário: " + u.getNome() + "\n"
+                + "Perfil: "+u.getPerfil().getNome() + "\n"
+                + "Funcionário: "+u.getFuncionario().toString()+"\n"
+                + "Senha: "+u.getSenha());*/
         try {
             if (isIns){
                 f.incluir(u);
@@ -349,10 +392,12 @@ public class PropUsuario extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JComboBox<Funcionario> jcbxFuncionario;
     private javax.swing.JComboBox<Perfil> jcbxPerfil;
+    private javax.swing.JPasswordField jpfNvSenha;
     private javax.swing.JPasswordField jpfSenha;
     private javax.swing.JTextField jtxtCod;
     private javax.swing.JTextField jtxtNome;
     private javax.swing.JLabel lblImg;
+    private javax.swing.JLabel lblNvSenha;
     private java.util.List<Perfil> lstPerfil;
     // End of variables declaration//GEN-END:variables
     private int returnStatus = RET_CANCEL;

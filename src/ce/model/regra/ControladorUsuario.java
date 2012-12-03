@@ -45,7 +45,7 @@ public class ControladorUsuario {
                     rb.getString("CtrlErroValInvalido"),
                     ControladorUsuario.class.getName()+".validarDados()");
         }
-        if (u.getSenha().length() >= 6){
+        if (u.getSenha().length() < 6){
             throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroValInvalido")
                     +"\nA senha deve ter seis ou mais caracteres.",

@@ -4,9 +4,8 @@
  */
 package ce.gui;
 
-import ce.Main;
 import ce.erro.GeralException;
-import ce.model.basica.Funcionario;
+import ce.model.basica.Fornecedor;
 import ce.model.fachada.Fachada;
 import java.util.LinkedList;
 import java.util.List;
@@ -14,38 +13,18 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author Andre Luiz
+ * @author Andre
  */
-public class JIFFuncionario extends javax.swing.JInternalFrame implements IActionsGui{
+public class JIFFornecedor extends javax.swing.JInternalFrame implements IActionsGui{
     private Fachada f;
-    private Funcionario pesqFun;
     private String activationName;
-    private boolean userIsAdm;
-
     /**
-     * Creates new form JIFFuncionario
+     * Creates new form JIFFornecedor
      */
-    public JIFFuncionario() {
+    public JIFFornecedor() {
         initComponents();
-        pesqFun= new Funcionario();
         f= Fachada.getInstancia();
-        activationName= "Funcionário";
-        userIsAdm= f.getUser().getPerfil().getNome().toLowerCase().compareTo("administrador") == 0;
-    }
-    
-    /**
-     * Preenche o objeto pesFun do tipo Funcionario com os dados para pesquisa.
-     */
-    private void preencherFun(){
-        if (jtxtNome.getText().compareTo("") != 0){
-            pesqFun.setNome(jtxtNome.getText());
-        }
-        lstFuncionarios.clear();
-        try {
-            lstFuncionarios.addAll(f.pesquisarFuncionario(pesqFun.getNome()));
-        } catch (GeralException ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage());
-        }
+        activationName= "Fornecedor";
     }
     
     /**
@@ -53,9 +32,9 @@ public class JIFFuncionario extends javax.swing.JInternalFrame implements IActio
      * @param fun
      * Funcionário que deseja selecionar
      */
-    private void selectFun(Funcionario f){
-        for(int i=0;i<lstFuncionarios.size();i++){
-            if (f.getCpf().compareTo(lstFuncionarios.get(i).getCpf()) == 0){
+    private void selectForn(Fornecedor f){
+        for(int i=0;i<lista.size();i++){
+            if (f.getCnpj().compareTo(lista.get(i).getCnpj()) == 0){
                 jTable1.setRowSelectionInterval(i, i);
                 break;
             }
@@ -67,17 +46,17 @@ public class JIFFuncionario extends javax.swing.JInternalFrame implements IActio
      */
     @Override
     public void novo(){
-        Funcionario fun;
-        PropFuncionario propFun= new PropFuncionario(null, true, null); 
-        propFun.setLocationRelativeTo(null);
-        propFun.setVisible(true);
-        fun= propFun.getProperties();
-        //propFun.getReturnStatus();
-        if (fun != null){
-            lstFuncionarios.clear();
+        Fornecedor obj;
+        PropFornecedor propObj= new PropFornecedor(null, true, null); 
+        propObj.setLocationRelativeTo(null);
+        propObj.setVisible(true);
+        obj= propObj.getProperties();
+        //propForn.getReturnStatus();
+        if (obj != null){
+            lista.clear();
             try {
-                lstFuncionarios.addAll(f.listarFuncionario());
-                selectFun(fun);
+                lista.addAll(f.listarFornecedor());
+                selectForn(obj);
             } catch (GeralException ex) {
                 JOptionPane.showMessageDialog(null, ex.getMessage());
             }
@@ -89,25 +68,25 @@ public class JIFFuncionario extends javax.swing.JInternalFrame implements IActio
      */
     @Override
     public void excluir(){
-        Funcionario fun;
+        Fornecedor obj;
         int row= jTable1.getSelectedRow();
         if ((row == jTable1.getRowCount()) || (row > 0)){
             row--;
         }else{
             row=0;
         }
-        fun= lstFuncionarios.get(jTable1.getSelectedRow());
+        obj= lista.get(jTable1.getSelectedRow());
         String [] opcoes= new String[] {"Sim", "Não"};
-        String msg= "Deseja excluir " + fun.getNome()+", CPF "+fun.getCpf()+ "?";
+        String msg= "Deseja excluir " + obj.toString() + "?";
         int result= JOptionPane.showOptionDialog(null, msg, "Confirmação",
                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,
                 null, opcoes, opcoes[0]);
         if (result ==0){
             try {
-                f.excluir(fun);
+                f.excluir(obj);
                 if (jTable1.getRowCount() > 0){
-                    lstFuncionarios.clear();
-                    lstFuncionarios.addAll(f.listarFuncionario());
+                    lista.clear();
+                    lista.addAll(f.listarFornecedor());
                 }
                 if (jTable1.getRowCount() > 0){
                     jTable1.setRowSelectionInterval(row, row);
@@ -124,18 +103,18 @@ public class JIFFuncionario extends javax.swing.JInternalFrame implements IActio
      */
     @Override
     public void alterar(){
-        Funcionario fun;
-        fun= lstFuncionarios.get(jTable1.getSelectedRow());
-        PropFuncionario propFun= new PropFuncionario(null, true, fun); 
-        propFun.setLocationRelativeTo(null);
-        propFun.setVisible(true);
-        fun= propFun.getProperties();
-        if (fun != null){
+        Fornecedor obj;
+        obj= lista.get(jTable1.getSelectedRow());
+        PropFornecedor propObj= new PropFornecedor(null, true, obj); 
+        propObj.setLocationRelativeTo(null);
+        propObj.setVisible(true);
+        obj= propObj.getProperties();
+        if (obj != null){
             try {
-                f.alterar(fun);
-                lstFuncionarios.clear();
-                lstFuncionarios.addAll(f.listarFuncionario());
-                selectFun(fun);
+                //f.alterar(fun);
+                lista.clear();
+                lista.addAll(f.listarFornecedor());
+                selectForn(obj);
             } catch (GeralException ex) {
                 JOptionPane.showMessageDialog(null, ex.getMessage());
             }
@@ -156,19 +135,11 @@ public class JIFFuncionario extends javax.swing.JInternalFrame implements IActio
      */
     @Override
     public void pesquisar(){
-        List<Funcionario> lista;
+        List<Fornecedor> tmpLista;
         try{
-            lista= f.pesquisarFuncionario(jtxtNome.getText());
-            lstFuncionarios.clear();
-            if (!userIsAdm){
-                for (Funcionario fun : lista){
-                    if (fun.getCpf().compareTo("00000000000") == 0){
-                        lista.remove(fun);
-                        break;
-                    }
-                }
-            }
-            lstFuncionarios.addAll(lista);
+            tmpLista= f.pesquisarFornecedor(jtxtNome.getText());
+            lista.clear();
+            lista.addAll(tmpLista);
         }
         catch (GeralException e){
             JOptionPane.showMessageDialog(null, e.getMessage());
@@ -180,19 +151,11 @@ public class JIFFuncionario extends javax.swing.JInternalFrame implements IActio
      */
     @Override
     public void listar(){
-        List<Funcionario> lista;
-        lstFuncionarios.clear();
+        List<Fornecedor> tmpLista;
+        lista.clear();
         try {
-            lista= f.listarFuncionario();
-            if (!userIsAdm){
-                for (Funcionario fun : lista){
-                    if (fun.getCpf().compareTo("00000000000") == 0){
-                        lista.remove(fun);
-                        break;
-                    }
-                }
-            }
-            lstFuncionarios.addAll(lista);
+            tmpLista= f.listarFornecedor();
+            lista.addAll(tmpLista);
         } catch (GeralException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage());
         }
@@ -250,7 +213,7 @@ public class JIFFuncionario extends javax.swing.JInternalFrame implements IActio
     public String getActivationName(){
         return activationName;
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -261,7 +224,7 @@ public class JIFFuncionario extends javax.swing.JInternalFrame implements IActio
     private void initComponents() {
         bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
-        lstFuncionarios = new LinkedList<Funcionario>();
+        lista = new LinkedList<Fornecedor>();
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jtxtNome = new javax.swing.JTextField();
@@ -272,33 +235,16 @@ public class JIFFuncionario extends javax.swing.JInternalFrame implements IActio
         btnAtualizar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jtbProdutos = new javax.swing.JTable();
 
-        lstFuncionarios= org.jdesktop.observablecollections.ObservableCollections.observableList(lstFuncionarios);
+        lista= org.jdesktop.observablecollections.ObservableCollections.observableList(lista);
 
         setClosable(true);
         setIconifiable(true);
         setMaximizable(true);
         setResizable(true);
-        setTitle("Funcionários");
-        setNormalBounds(new java.awt.Rectangle(0, 0, 700, 474));
-        addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
-            public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
-                jifFuncionarioActivated(evt);
-            }
-            public void internalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
-            }
-            public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
-                jifFuncionarioClosing(evt);
-            }
-            public void internalFrameDeactivated(javax.swing.event.InternalFrameEvent evt) {
-            }
-            public void internalFrameDeiconified(javax.swing.event.InternalFrameEvent evt) {
-            }
-            public void internalFrameIconified(javax.swing.event.InternalFrameEvent evt) {
-            }
-            public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
-            }
-        });
+        setTitle("Fornecedor");
 
         jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
@@ -383,7 +329,7 @@ public class JIFFuncionario extends javax.swing.JInternalFrame implements IActio
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(btnAtualizar)
                             .addComponent(btnPesquisar))))
-                .addContainerGap(190, Short.MAX_VALUE))
+                .addContainerGap(465, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -403,15 +349,15 @@ public class JIFFuncionario extends javax.swing.JInternalFrame implements IActio
                 .addGap(19, 19, 19))
         );
 
-        org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, lstFuncionarios, jTable1);
-        org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${cpf}"));
-        columnBinding.setColumnName("Cpf");
+        org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, lista, jTable1);
+        org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${codForn}"));
+        columnBinding.setColumnName("Cod Forn");
+        columnBinding.setColumnClass(Integer.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${cnpj}"));
+        columnBinding.setColumnName("Cnpj");
         columnBinding.setColumnClass(String.class);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${nome}"));
         columnBinding.setColumnName("Nome");
-        columnBinding.setColumnClass(String.class);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${dtNasc}"));
-        columnBinding.setColumnName("Dt Nasc");
         columnBinding.setColumnClass(String.class);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${logradouro}"));
         columnBinding.setColumnName("Logradouro");
@@ -434,31 +380,47 @@ public class JIFFuncionario extends javax.swing.JInternalFrame implements IActio
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${cep}"));
         columnBinding.setColumnName("Cep");
         columnBinding.setColumnClass(String.class);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${email}"));
-        columnBinding.setColumnName("Email");
-        columnBinding.setColumnClass(String.class);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${fone}"));
         columnBinding.setColumnName("Fone");
+        columnBinding.setColumnClass(String.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${email}"));
+        columnBinding.setColumnName("Email");
         columnBinding.setColumnClass(String.class);
         bindingGroup.addBinding(jTableBinding);
         jTableBinding.bind();
 
         jScrollPane1.setViewportView(jTable1);
 
+        jtbProdutos.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane2.setViewportView(jtbProdutos);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 684, Short.MAX_VALUE)
+            .addComponent(jScrollPane1)
+            .addComponent(jScrollPane2)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 313, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         bindingGroup.bind();
@@ -469,16 +431,6 @@ public class JIFFuncionario extends javax.swing.JInternalFrame implements IActio
     private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed
         pesquisar();
     }//GEN-LAST:event_btnPesquisarActionPerformed
-
-    private void jifFuncionarioClosing(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_jifFuncionarioClosing
-        Main.atlzShellMenu(null);
-        Main.desregistrarJanela(this);
-        dispose();
-    }//GEN-LAST:event_jifFuncionarioClosing
-
-    private void jifFuncionarioActivated(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_jifFuncionarioActivated
-        Main.atlzShellMenu(this);
-    }//GEN-LAST:event_jifFuncionarioActivated
 
     private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
         novo();
@@ -505,9 +457,11 @@ public class JIFFuncionario extends javax.swing.JInternalFrame implements IActio
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
+    private javax.swing.JTable jtbProdutos;
     private javax.swing.JTextField jtxtNome;
-    private java.util.List<Funcionario> lstFuncionarios;
+    private java.util.List<Fornecedor> lista;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
 }
