@@ -59,6 +59,7 @@ public class PropUsuario extends javax.swing.JDialog {
             isAdm= true;
         }
         res= Resource.getInstancia();
+        atlzListas();
         if (u == null){
             isIns= true;
             this.setTitle("INCLUIR usuário");
@@ -70,13 +71,12 @@ public class PropUsuario extends javax.swing.JDialog {
         }else{
             isIns= false;
             this.setTitle("ALTERAR usuário");
+            setFields(u);
             try {
                 lblImg.setIcon(res.get("\\images\\Arquivo-Alterar3.jpg", lblImg.getWidth(), lblImg.getHeight()));
             } catch (GeralException ex) {
                 JOptionPane.showMessageDialog(null, ex.getMessage());
             }
-            atlzListas();
-            setFields(u);
             lblNvSenha.setVisible(!isIns);
             jpfNvSenha.setVisible(lblNvSenha.isVisible());
             jpfSenha.setEditable(isAdm);

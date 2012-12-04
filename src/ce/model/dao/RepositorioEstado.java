@@ -6,6 +6,12 @@ package ce.model.dao;
 
 import ce.erro.ConexaoException;
 import ce.erro.RepositorioException;
+import ce.erro.RepositorioInserirException;
+import ce.erro.RepositorioAlterarException;
+import ce.erro.RepositorioExcluirException;
+import ce.erro.RepositorioForeignKeyException;
+import ce.erro.RepositorioListarException;
+import ce.erro.RepositorioPesquisarException;
 import ce.model.basica.Estado;
 import ce.util.GerenciadorConexao;
 import ce.util.IGerenciadorConexao;
@@ -23,43 +29,51 @@ public class RepositorioEstado implements IRepositorioEstado{
         gerenciadorConexao= GerenciadorConexao.getInstancia();
     }
     
-        public void inserir(Estado e) throws ConexaoException, RepositorioException{
+    @Override
+    public void inserir(Estado e) throws ConexaoException, 
+                RepositorioInserirException{
         Connection c= gerenciadorConexao.conectar();
         String sql = "insert into estados(uf, descricao) values(?, ?)";
         try{
             PreparedStatement pstmt = c.prepareStatement(sql);
-            pstmt.setString(1, e.getUf());
+            pstmt.setString(1, e.getUf().toUpperCase());
             pstmt.setString(2, e.getDescricao());
             pstmt.execute();
             pstmt.close();
         }
         catch(SQLException ex){
-            throw new RepositorioException(ex);
+            throw new RepositorioInserirException(ex, 
+                    RepositorioEstado.class.getName()+".inserir()");
         }
         finally{
             gerenciadorConexao.desconectar(c);
         }
     }
     
-    public void alterar(Estado e)throws ConexaoException, RepositorioException{
+    @Override
+    public void alterar(Estado e)throws ConexaoException, 
+            RepositorioAlterarException{
         Connection c= gerenciadorConexao.conectar();
         String sql = "update estados set descricao=? where uf=?";
         try{
             PreparedStatement pstmt = c.prepareStatement(sql);
-            pstmt.setString(1, e.getUf());
+            pstmt.setString(1, e.getUf().toUpperCase());
             pstmt.setString(2, e.getDescricao());
             pstmt.execute();
             pstmt.close();
         }
         catch(SQLException ex){
-            throw new RepositorioException(ex);
+            throw new RepositorioAlterarException(ex, 
+                    RepositorioEstado.class.getName()+".alterar()");
         }
         finally{
             gerenciadorConexao.desconectar(c);
         }
     }
     
-    public void excluir(String uf)throws ConexaoException, RepositorioException{
+    @Override
+    public void excluir(String uf)throws ConexaoException, 
+        RepositorioForeignKeyException, RepositorioExcluirException{
         Connection c= gerenciadorConexao.conectar();
         String sql = "delete from estados where uf=?";
         try{
@@ -69,19 +83,26 @@ public class RepositorioEstado implements IRepositorioEstado{
             pstmt.close();
         }
         catch(SQLException e){
-            throw new RepositorioException(e);
+            String msg= e.getMessage().toLowerCase();
+            if (msg!=null && msg.contains("foreign key constraint fails")){
+                throw new RepositorioForeignKeyException(e,
+                    RepositorioEstado.class.getName()+".excluir()");
+            }
+            throw new RepositorioExcluirException(e, 
+                    RepositorioEstado.class.getName()+".excluir()");
         }
         finally{
             gerenciadorConexao.desconectar(c);
         }
     }
     
+    @Override
     public List<Estado> listar() throws ConexaoException,
-            RepositorioException{
-        List<Estado> lista = new ArrayList<Estado>();
+            RepositorioListarException{
+        List<Estado> lista = new ArrayList();
         Estado e;
         Connection c= gerenciadorConexao.conectar();
-        String sql= "select * from estados";
+        String sql= "select * from estados order by uf";
         try{
             Statement stmt= c.createStatement();
             ResultSet rs= stmt.executeQuery(sql);
@@ -93,19 +114,21 @@ public class RepositorioEstado implements IRepositorioEstado{
             return lista;
         }
         catch(SQLException ex){
-            throw new RepositorioException(ex);
+            throw new RepositorioListarException(ex, 
+                    RepositorioEstado.class.getName()+".listar()");
         }
         finally{
             gerenciadorConexao.desconectar(c);
         }
     }
     
+    @Override
     public List<Estado> pesquisar(String descricao) throws ConexaoException,
-            RepositorioException{
-                List<Estado> lista = new ArrayList<Estado>();
+            RepositorioPesquisarException{
+                List<Estado> lista = new ArrayList();
         Estado e;
         Connection c= gerenciadorConexao.conectar();
-        String sql= "select * from estados where descricao like ?";
+        String sql= "select * from estados where descricao like ? order by descricao";
         try{
             PreparedStatement pstmt= c.prepareStatement(sql);
             pstmt.setString(1, descricao);
@@ -118,18 +141,20 @@ public class RepositorioEstado implements IRepositorioEstado{
             return lista;
         }
         catch(SQLException ex){
-            throw new RepositorioException(ex);
+            throw new RepositorioPesquisarException(ex, 
+                    RepositorioEstado.class.getName()+".pesquisar()");
         }
         finally{
             gerenciadorConexao.desconectar(c);
         }
     }
     
-    public Estado pesqPorUf(String uf) throws ConexaoException, 
-            RepositorioException{
+    @Override
+    public Estado pesqUf(String uf) throws ConexaoException, 
+            RepositorioPesquisarException{
         Estado e= null;
         Connection c= gerenciadorConexao.conectar();
-        String sql= "select * from estados where uf=?";        
+        String sql= "select * from estados where uf=? order by uf";
         try{
             PreparedStatement pstmt= c.prepareStatement(sql);
             pstmt.setString(1, uf);
@@ -141,7 +166,8 @@ public class RepositorioEstado implements IRepositorioEstado{
             return e;
         }
         catch(SQLException ex){
-            throw new RepositorioException(ex);
+            throw new RepositorioPesquisarException(ex, 
+                    RepositorioEstado.class.getName()+".pesqUf()");
         }
         finally{
             gerenciadorConexao.desconectar(c);

@@ -5,10 +5,13 @@
 package ce.gui;
 
 import ce.erro.GeralException;
+import ce.model.basica.Estado;
 import ce.model.basica.Fornecedor;
 import ce.model.fachada.Fachada;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.*;
 
 /**
@@ -20,6 +23,7 @@ public class PropFornecedor extends javax.swing.JDialog {
     private boolean isIns;
     private Resource res;
     private Fornecedor fornecedor;
+    private List<Estado> estados;
     /**
      * A return status code - returned if Cancel button has been pressed
      */
@@ -49,6 +53,7 @@ public class PropFornecedor extends javax.swing.JDialog {
         });
         f= Fachada.getInstancia();
         res= Resource.getInstancia();
+        atlzEstados();
         if (forn == null){
             isIns= true;
             this.setTitle("INCLUIR fornecedor");
@@ -66,6 +71,60 @@ public class PropFornecedor extends javax.swing.JDialog {
                 JOptionPane.showMessageDialog(null, ex.getMessage());
             }
         }
+    }
+    
+    private void atlzEstados(){
+        List<Estado> lista= new ArrayList();
+        try{
+            lista= f.listarEstado();
+            DefaultComboBoxModel<Estado> dcbxm= new DefaultComboBoxModel();
+            for (Estado est:lista){
+                dcbxm.addElement(est);
+            }
+            jcbxEstados.setModel(dcbxm);
+        }catch(GeralException ex){
+            JOptionPane.showMessageDialog(null, ex.getMessage());
+        }
+    }
+    
+    private void setFields(Fornecedor forn){
+        jtxtCod.setText(forn.getCodForn().toString());
+        jftfCnpj.setText(forn.getCnpj());
+        jtxtNome.setText(forn.getNome());
+        jtxtLogradouro.setText(forn.getLogradouro());
+        jtxtComp.setText(forn.getComp());
+        jtxtNum.setText(((Integer)forn.getNum()).toString());
+        jtxtBairro.setText(forn.getBairro());
+        jtxtMunicipio.setText(forn.getMunicipio());
+        if (jcbxEstados.getItemCount() > 0){
+            for (int i=0;i<jcbxEstados.getItemCount();i++){
+                if (jcbxEstados.getItemAt(i).getUf().compareTo(forn.getEstado().getUf()) == 0){
+                    jcbxEstados.setSelectedIndex(i);
+                    break;
+                }
+            }
+        }
+        jftfCep.setText(forn.getCep());
+        jftfFone.setText(forn.getFone());
+        jtxtEmail.setText(forn.getEmail());
+        
+    }
+    
+    private void setFornecedor(Fornecedor forn){
+        if (!isIns){
+            forn.setCodForn(Integer.parseInt(jtxtCod.getText()));
+        }
+        forn.setCnpj(jftfCnpj.getText());
+        forn.setNome(jtxtNome.getText());
+        forn.setLogradouro(jtxtLogradouro.getText());
+        try{
+            forn.setNum(Integer.parseInt(jtxtNum.getText()));
+        }catch(Exception e){
+            forn.setNum(0);
+        }
+        forn.setComp(jtxtComp.getText());
+        forn.setMunicipio(jtxtMunicipio.getText());
+        forn.setEstado((Estado)jcbxEstados.getSelectedItem());
     }
 
     /**
@@ -95,6 +154,51 @@ public class PropFornecedor extends javax.swing.JDialog {
         btnSalvar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
         lblImg = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        jtxtCod = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        javax.swing.text.MaskFormatter maskCnpj=null;
+        try{
+            maskCnpj= new javax.swing.text.MaskFormatter("##############");
+            maskCnpj.setPlaceholderCharacter('_');
+        }catch(java.text.ParseException e){
+
+        }
+        jftfCnpj = new javax.swing.JFormattedTextField(maskCnpj);
+        jLabel3 = new javax.swing.JLabel();
+        jtxtNome = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        jtxtLogradouro = new javax.swing.JTextField();
+        jtxtNum = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+        jtxtComp = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jtxtBairro = new javax.swing.JTextField();
+        jLabel8 = new javax.swing.JLabel();
+        jtxtMunicipio = new javax.swing.JTextField();
+        jcbxEstados = new javax.swing.JComboBox<Estado>();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        javax.swing.text.MaskFormatter maskCep=null;
+        try{
+            maskCep= new javax.swing.text.MaskFormatter("########");
+            maskCep.setPlaceholderCharacter('_');
+        }catch(java.text.ParseException e){
+
+        }
+        jftfCep = new javax.swing.JFormattedTextField(maskCep);
+        javax.swing.text.MaskFormatter maskFone=null;
+        try{
+            maskFone= new javax.swing.text.MaskFormatter("##########");
+            maskFone.setPlaceholderCharacter('_');
+        }catch(java.text.ParseException e){
+
+        }
+        jftfFone = new javax.swing.JFormattedTextField(maskFone);
+        jLabel11 = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
+        jtxtEmail = new javax.swing.JTextField();
 
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
@@ -119,35 +223,151 @@ public class PropFornecedor extends javax.swing.JDialog {
         lblImg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ce/gui/images/Arquivo-Alterar3.jpg"))); // NOI18N
         lblImg.setText("lblImg");
 
+        jLabel1.setText("Código");
+
+        jtxtCod.setEditable(false);
+        jtxtCod.setEnabled(false);
+
+        jLabel2.setText("CNPJ");
+
+        jftfCnpj.setHorizontalAlignment(javax.swing.JFormattedTextField.RIGHT);
+
+        jLabel3.setText("Nome (Razão social)");
+
+        jLabel4.setText("Logradouro");
+
+        jLabel5.setText("Número");
+
+        jLabel6.setText("Complemento");
+
+        jLabel7.setText("Bairro");
+
+        jLabel8.setText("Município");
+
+        jLabel9.setText("Estado");
+
+        jLabel10.setText("CEP");
+
+        jLabel11.setText("Fone");
+
+        jLabel12.setText("E-mail");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(576, Short.MAX_VALUE)
+                .addGap(25, 25, 25)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(btnSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnCancelar)
-                        .addContainerGap())
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(lblImg, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(22, 22, 22))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(113, 113, 113)
+                        .addComponent(jLabel2))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jtxtCod, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(47, 47, 47)
+                        .addComponent(jftfCnpj, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel3)
+                    .addComponent(jtxtNome, javax.swing.GroupLayout.PREFERRED_SIZE, 370, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel4)
+                        .addGap(247, 247, 247)
+                        .addComponent(jLabel5)
+                        .addGap(29, 29, 29)
+                        .addComponent(jLabel6))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jtxtLogradouro, javax.swing.GroupLayout.PREFERRED_SIZE, 292, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(10, 10, 10)
+                        .addComponent(jtxtNum, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(10, 10, 10)
+                        .addComponent(jtxtComp, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(75, 75, 75)
+                .addComponent(lblImg, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(25, 25, 25)
+                .addComponent(jLabel7)
+                .addGap(169, 169, 169)
+                .addComponent(jLabel8)
+                .addGap(154, 154, 154)
+                .addComponent(jLabel9))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(25, 25, 25)
+                .addComponent(jtxtBairro, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jtxtMunicipio, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jcbxEstados, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(25, 25, 25)
+                .addComponent(jLabel10)
+                .addGap(109, 109, 109)
+                .addComponent(jLabel11)
+                .addGap(134, 134, 134)
+                .addComponent(jLabel12))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(25, 25, 25)
+                .addComponent(jftfCep, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jftfFone, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(21, 21, 21)
+                .addComponent(jtxtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(576, 576, 576)
+                .addComponent(btnSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(6, 6, 6)
+                .addComponent(btnCancelar))
         );
-
-        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btnCancelar, btnSalvar});
-
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lblImg, javax.swing.GroupLayout.PREFERRED_SIZE, 153, Short.MAX_VALUE)
-                .addGap(232, 232, 232)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnCancelar)
-                    .addComponent(btnSalvar))
-                .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(11, 11, 11)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel2))
+                        .addGap(6, 6, 6)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jtxtCod, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jftfCnpj, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(11, 11, 11)
+                        .addComponent(jLabel3)
+                        .addGap(6, 6, 6)
+                        .addComponent(jtxtNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(11, 11, 11)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel6))
+                        .addGap(6, 6, 6)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jtxtLogradouro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jtxtNum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jtxtComp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(lblImg, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel7)
+                    .addComponent(jLabel8)
+                    .addComponent(jLabel9))
+                .addGap(6, 6, 6)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jtxtBairro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jtxtMunicipio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jcbxEstados, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(11, 11, 11)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel10)
+                    .addComponent(jLabel11)
+                    .addComponent(jLabel12))
+                .addGap(6, 6, 6)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jftfCep, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jftfFone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jtxtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(141, 141, 141)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnSalvar)
+                    .addComponent(btnCancelar)))
         );
 
         getRootPane().setDefaultButton(btnSalvar);
@@ -156,6 +376,17 @@ public class PropFornecedor extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
+        Fornecedor forn= new Fornecedor();
+        setFornecedor(forn);
+        try{
+            if (isIns){
+                f.incluir(forn);
+            }else{
+                f.alterar(forn);
+            }
+        }catch(GeralException ex){
+            JOptionPane.showMessageDialog(null, ex.getMessage());
+        }
         doClose(RET_OK);
     }//GEN-LAST:event_btnSalvarActionPerformed
     
@@ -228,6 +459,30 @@ public class PropFornecedor extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnSalvar;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JComboBox<Estado> jcbxEstados;
+    private javax.swing.JFormattedTextField jftfCep;
+    private javax.swing.JFormattedTextField jftfCnpj;
+    private javax.swing.JFormattedTextField jftfFone;
+    private javax.swing.JTextField jtxtBairro;
+    private javax.swing.JTextField jtxtCod;
+    private javax.swing.JTextField jtxtComp;
+    private javax.swing.JTextField jtxtEmail;
+    private javax.swing.JTextField jtxtLogradouro;
+    private javax.swing.JTextField jtxtMunicipio;
+    private javax.swing.JTextField jtxtNome;
+    private javax.swing.JTextField jtxtNum;
     private javax.swing.JLabel lblImg;
     // End of variables declaration//GEN-END:variables
     private int returnStatus = RET_CANCEL;

@@ -53,7 +53,7 @@ public class RepositorioFornecedor implements IRepositorioFornecedor{
             pstmt.setString(5, f.getComp());
             pstmt.setString(6, f.getBairro());
             pstmt.setString(7, f.getMunicipio());
-            pstmt.setString(8, f.getUf());
+            pstmt.setString(8, f.getEstado().getUf());
             pstmt.setString(9, f.getCep());
             pstmt.setString(10, f.getFone());
             pstmt.setString(11, f.getEmail());
@@ -99,7 +99,7 @@ public class RepositorioFornecedor implements IRepositorioFornecedor{
             pstmt.setString(5, f.getComp());
             pstmt.setString(6, f.getBairro());
             pstmt.setString(7, f.getMunicipio());
-            pstmt.setString(8, f.getUf());
+            pstmt.setString(8, f.getEstado().getUf());
             pstmt.setString(9, f.getCep());
             pstmt.setString(10, f.getFone());
             pstmt.setString(11, f.getEmail());
@@ -223,12 +223,13 @@ public class RepositorioFornecedor implements IRepositorioFornecedor{
             Statement stmt= c.createStatement();
             ResultSet rs= stmt.executeQuery(sql);
             IRepositorioProduto rpProd= new RepositorioProduto();
+            IRepositorioEstado rpEst= new RepositorioEstado();
             while (rs.next()){
                 f = new Fornecedor(rs.getInt("codForn"), rs.getString("nome"), 
                         rs.getString("CNPJ"), rs.getString("logradouro"),
                         rs.getInt("Num"), rs.getString("Comp"), 
                         rs.getString("Bairro"), rs.getString("Municipio"),
-                        rs.getString("UF"), rs.getString("CEP"), 
+                        rpEst.pesqUf(rs.getString("UF")), rs.getString("CEP"), 
                         rs.getString("Fone"), rs.getString("Email"));
                 PreparedStatement pstmtProds= c.prepareStatement(sqlProds);
                 pstmtProds.setInt(1, f.getCodForn());
@@ -290,12 +291,13 @@ public class RepositorioFornecedor implements IRepositorioFornecedor{
             pstmt.setString(1, nome);
             ResultSet rs= pstmt.executeQuery();
             IRepositorioProduto rpProd= new RepositorioProduto();
+            IRepositorioEstado rpEst= new RepositorioEstado();
             while (rs.next()){
                 f = new Fornecedor(rs.getInt("codForn"), rs.getString("nome"), 
                         rs.getString("CNPJ"), rs.getString("logradouro"),
                         rs.getInt("Num"), rs.getString("Comp"), 
                         rs.getString("Bairro"), rs.getString("Municipio"),
-                        rs.getString("UF"), rs.getString("CEP"), 
+                        rpEst.pesqUf(rs.getString("UF")), rs.getString("CEP"), 
                         rs.getString("Fone"), rs.getString("Email"));
                 PreparedStatement pstmtProds= c.prepareStatement(sqlProds);
                 pstmtProds.setInt(1, f.getCodForn());
@@ -367,12 +369,13 @@ public class RepositorioFornecedor implements IRepositorioFornecedor{
             pstmt.setInt(1, codForn);
             ResultSet rs= pstmt.executeQuery();
             IRepositorioProduto rpProd= new RepositorioProduto();
+            IRepositorioEstado rpEst= new RepositorioEstado();
             if(rs.next()){
                 f = new Fornecedor(rs.getInt("codForn"), rs.getString("nome"), 
                         rs.getString("CNPJ"), rs.getString("logradouro"),
                         rs.getInt("Num"), rs.getString("Comp"), 
                         rs.getString("Bairro"), rs.getString("Municipio"),
-                        rs.getString("UF"), rs.getString("CEP"), 
+                        rpEst.pesqUf(rs.getString("UF")), rs.getString("CEP"), 
                         rs.getString("Fone"), rs.getString("Email"));
                 if (comProds){
                     PreparedStatement pstmtProds= c.prepareStatement(sqlProds);
@@ -439,12 +442,13 @@ public class RepositorioFornecedor implements IRepositorioFornecedor{
             pstmt.setString(1, cnpj);
             ResultSet rs= pstmt.executeQuery();
             IRepositorioProduto rpProd= new RepositorioProduto();
+            IRepositorioEstado rpEst= new RepositorioEstado();
             if(rs.next()){
                 f = new Fornecedor(rs.getInt("codForn"), rs.getString("nome"), 
                         rs.getString("CNPJ"), rs.getString("logradouro"),
                         rs.getInt("Num"), rs.getString("Comp"), 
                         rs.getString("Bairro"), rs.getString("Municipio"),
-                        rs.getString("UF"), rs.getString("CEP"), 
+                        rpEst.pesqUf(rs.getString("UF")), rs.getString("CEP"), 
                         rs.getString("Fone"), rs.getString("Email"));
                 if (comProds){
                     PreparedStatement pstmtProds= c.prepareStatement(sqlProds);

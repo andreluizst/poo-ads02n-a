@@ -74,7 +74,7 @@ public class ControladorFornecedor {
             throw new ControladorException(user.getNome(),
                     "Informe o municipio do fornecedor", sPath);
         }
-        if ((f.getUf() == null) || (f.getUf().compareTo("")==0)){
+        if ((f.getEstado().getUf() == null) || (f.getEstado().getUf().compareTo("")==0)){
             throw new ControladorException(user.getNome(),
                     "Informe a sigla do estado do fornecedor", sPath);
         }

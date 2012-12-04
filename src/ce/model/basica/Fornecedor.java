@@ -19,7 +19,8 @@ public class Fornecedor {
     private String comp;
     private String bairro;
     private String municipio;
-    private String uf;
+    //private String uf;
+    private Estado estado;
     private String cep;
     private String fone;
     private String email;
@@ -27,11 +28,12 @@ public class Fornecedor {
     
     public Fornecedor(){
         produtos= new ArrayList();
+        //estado= new Estado(); //Este obj é instanciado em outros construtores
     }
     
     public Fornecedor(Integer codForn, String nome, String cnpj, 
             String logradouro, int num, String comp, String bairro,
-            String municipio, String uf, String cep, String fone,
+            String municipio, Estado estado, String cep, String fone,
             String email){
         this();
         this.codForn= codForn;
@@ -42,14 +44,14 @@ public class Fornecedor {
         this.comp=comp;
         this.bairro=bairro;
         this.municipio=municipio;
-        this.uf=uf;
+        this.estado=estado;
         this.cep=cep;
         this.fone=fone;
         this.email=email;
     }
     
     public Fornecedor(String nome, String cnpj, String logradouro, int num,
-            String comp, String bairro, String municipio, String uf, String cep,
+            String comp, String bairro, String municipio, Estado estado, String cep,
             String fone, String email){
         this();
         this.codForn= 0;
@@ -60,7 +62,7 @@ public class Fornecedor {
         this.comp=comp;
         this.bairro=bairro;
         this.municipio=municipio;
-        this.uf=uf;
+        this.estado=estado;
         this.cep=cep;
         this.fone=fone;
         this.email=email;
@@ -76,7 +78,7 @@ public class Fornecedor {
         this.comp="";
         this.bairro="";
         this.municipio="";
-        this.uf="";
+        this.estado= new Estado();
         this.cep="";
         this.fone="";
         this.email="";
@@ -92,7 +94,7 @@ public class Fornecedor {
         this.comp="";
         this.bairro="";
         this.municipio="";
-        this.uf="";
+        this.estado= new Estado();
         this.cep="";
         this.fone="";
         this.email="";
@@ -210,20 +212,7 @@ public class Fornecedor {
         this.municipio = municipio;
     }
 
-    /**
-     * @return the uf
-     */
-    public String getUf() {
-        return uf;
-    }
-
-    /**
-     * @param uf the uf to set
-     */
-    public void setUf(String uf) {
-        this.uf = uf.toUpperCase();
-    }
-
+    
     /**
      * @return the cep
      */
@@ -298,6 +287,21 @@ public class Fornecedor {
     public String toStringAll(){
         return codForn + " - " + cnpj + " - " + nome + " - " + logradouro
                 + " - " + num + " - " + comp + " - " + bairro
-                + " - " + municipio + " - " + cep + " - " + fone+ " - " + email;
+                + " - " + municipio + " - " + cep + " - " + estado.getUf()
+                + " - " + fone + " - " + email;
+    }
+
+    /**
+     * @return the estado
+     */
+    public Estado getEstado() {
+        return estado;
+    }
+
+    /**
+     * @param estado the estado to set
+     */
+    public void setEstado(Estado estado) {
+        this.estado = estado;
     }
 }

@@ -25,6 +25,7 @@ public class Fachada {
     private ControladorLocalEstoque ctrlLocalE;
     private ControladorEntrada ctrlE;
     private ControladorSaida ctrlS;
+    private ControladorEstado ctrlEst;
     
     private Fachada(){
         ctrlCateg= new ControladorCategoria();
@@ -37,6 +38,7 @@ public class Fachada {
         ctrlLocalE= new ControladorLocalEstoque();
         ctrlE= new ControladorEntrada();
         ctrlS= new ControladorSaida();
+        ctrlEst= new ControladorEstado();
         //user= new Usuario();
     }
     
@@ -265,6 +267,7 @@ public class Fachada {
         ctrlLocalE.setUser(getUser());
         ctrlE.setUser(getUser());
         ctrlS.setUser(getUser());
+        ctrlEst.setUser(getUser());
     }
     
     public void incluir(Usuario u) throws GeralException{
@@ -392,6 +395,35 @@ public class Fachada {
         ctrlS.verificarSeExiste(num);
         return ctrlS.trazer(num);
     }
+    
+    /*
+     * *********************** E S T A D O *********************************
+     */
+    public void incluir(Estado e) throws GeralException{
+        ctrlEst.validarDados(e);
+        ctrlEst.inserir(e);
+    }
+    
+    public void alterar(Estado e) throws GeralException{
+        ctrlEst.verificarSeExiste(e);
+        ctrlEst.alterar(e);
+    }
+    
+    public void excluir(Estado e)throws GeralException{
+        ctrlEst.verificarSeExiste(e);
+        ctrlEst.excluir(e);
+    }
+    
+    public List<Estado> listarEstado() throws GeralException{
+        return ctrlEst.listar();
+    }
+    
+    public Estado trazerEstado(String uf)throws GeralException{
+        ctrlEst.verificarSeExiste(uf);
+        return ctrlEst.trazer(uf);
+    }
+    
+    
 
     /**
      * @return the user

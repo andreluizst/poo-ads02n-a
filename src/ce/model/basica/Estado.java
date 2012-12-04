@@ -48,5 +48,14 @@ public class Estado {
         this.descricao = descricao;
     }
     
+    /**
+     * 
+     * @return 
+     * Texto com a sigla e o nome do estado
+     */
+    @Override
+    public String toString(){
+        return uf + " - " + descricao;
+    }
     
 }
