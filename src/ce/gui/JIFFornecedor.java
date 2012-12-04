@@ -145,6 +145,7 @@ public class JIFFornecedor extends javax.swing.JInternalFrame implements IAction
         catch (GeralException e){
             JOptionPane.showMessageDialog(null, e.getMessage());
         }
+        firstRecord();
     }
     
     /**
@@ -160,6 +161,7 @@ public class JIFFornecedor extends javax.swing.JInternalFrame implements IAction
         } catch (GeralException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage());
         }
+        firstRecord();
     }
     
     /**
@@ -368,7 +370,7 @@ public class JIFFornecedor extends javax.swing.JInternalFrame implements IAction
                 .addGap(19, 19, 19))
         );
 
-        org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, lista, jTable1);
+        org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ, lista, jTable1);
         org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${codForn}"));
         columnBinding.setColumnName("Cod Forn");
         columnBinding.setColumnClass(Integer.class);
@@ -393,9 +395,9 @@ public class JIFFornecedor extends javax.swing.JInternalFrame implements IAction
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${municipio}"));
         columnBinding.setColumnName("Municipio");
         columnBinding.setColumnClass(String.class);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${uf}"));
-        columnBinding.setColumnName("Uf");
-        columnBinding.setColumnClass(String.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${estado}"));
+        columnBinding.setColumnName("Estado");
+        columnBinding.setColumnClass(ce.model.basica.Estado.class);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${cep}"));
         columnBinding.setColumnName("Cep");
         columnBinding.setColumnClass(String.class);
@@ -411,7 +413,7 @@ public class JIFFornecedor extends javax.swing.JInternalFrame implements IAction
         jScrollPane1.setViewportView(jTable1);
 
         org.jdesktop.beansbinding.ELProperty eLProperty = org.jdesktop.beansbinding.ELProperty.create("${selectedElement.produtos}");
-        jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, jTable1, eLProperty, jtbProdutos);
+        jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ, jTable1, eLProperty, jtbProdutos);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${codProd}"));
         columnBinding.setColumnName("Cod Prod");
         columnBinding.setColumnClass(Integer.class);
@@ -454,10 +456,10 @@ public class JIFFornecedor extends javax.swing.JInternalFrame implements IAction
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 197, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(15, 15, 15))
         );
 
         bindingGroup.bind();

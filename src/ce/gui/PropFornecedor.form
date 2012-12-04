@@ -34,6 +34,8 @@
                       <Component id="jtxtCod" min="-2" pref="99" max="-2" attributes="0"/>
                       <EmptySpace min="47" pref="47" max="-2" attributes="0"/>
                       <Component id="jftfCnpj" min="-2" pref="170" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="75" max="-2" attributes="0"/>
+                      <Component id="jButton1" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
                   <Component id="jtxtNome" min="-2" pref="370" max="-2" attributes="0"/>
@@ -105,12 +107,15 @@
                           <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
+                      <EmptySpace min="5" pref="5" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="jtxtCod" min="-2" max="-2" attributes="0"/>
-                          <Component id="jftfCnpj" min="-2" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="jftfCnpj" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jButton1" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
                       </Group>
-                      <EmptySpace min="11" pref="11" max="-2" attributes="0"/>
+                      <EmptySpace min="9" pref="9" max="-2" attributes="0"/>
                       <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
                       <Component id="jtxtNome" min="-2" max="-2" attributes="0"/>
@@ -208,7 +213,7 @@
     <Component class="javax.swing.JFormattedTextField" name="jftfCnpj">
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JFormattedTextField(maskCnpj)"/>
-        <AuxValue name="JavaCodeGenerator_CreateCodePre" type="java.lang.String" value="javax.swing.text.MaskFormatter maskCnpj=null;&#xa;try{&#xa;    maskCnpj= new javax.swing.text.MaskFormatter(&quot;##############&quot;);&#xa;    maskCnpj.setPlaceholderCharacter(&apos;_&apos;);&#xa;}catch(java.text.ParseException e){&#xa;&#xa;}"/>
+        <AuxValue name="JavaCodeGenerator_CreateCodePre" type="java.lang.String" value="javax.swing.text.MaskFormatter maskCnpj=null;&#xa;try{&#xa;    maskCnpj= new javax.swing.text.MaskFormatter(&quot;##.###.###/####-##&quot;);&#xa;    maskCnpj.setPlaceholderCharacter(&apos;_&apos;);&#xa;}catch(java.text.ParseException e){&#xa;&#xa;}"/>
         <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="jftfCnpj.setHorizontalAlignment(javax.swing.JFormattedTextField.RIGHT);"/>
       </AuxValues>
     </Component>
@@ -277,13 +282,13 @@
     <Component class="javax.swing.JFormattedTextField" name="jftfCep">
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JFormattedTextField(maskCep)"/>
-        <AuxValue name="JavaCodeGenerator_CreateCodePre" type="java.lang.String" value="javax.swing.text.MaskFormatter maskCep=null;&#xa;try{&#xa;    maskCep= new javax.swing.text.MaskFormatter(&quot;########&quot;);&#xa;    maskCep.setPlaceholderCharacter(&apos;_&apos;);&#xa;}catch(java.text.ParseException e){&#xa;&#xa;}"/>
+        <AuxValue name="JavaCodeGenerator_CreateCodePre" type="java.lang.String" value="javax.swing.text.MaskFormatter maskCep=null;&#xa;try{&#xa;    maskCep= new javax.swing.text.MaskFormatter(&quot;##.###-###&quot;);&#xa;    maskCep.setPlaceholderCharacter(&apos;_&apos;);&#xa;}catch(java.text.ParseException e){&#xa;&#xa;}"/>
       </AuxValues>
     </Component>
     <Component class="javax.swing.JFormattedTextField" name="jftfFone">
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JFormattedTextField(maskFone)"/>
-        <AuxValue name="JavaCodeGenerator_CreateCodePre" type="java.lang.String" value="javax.swing.text.MaskFormatter maskFone=null;&#xa;try{&#xa;    maskFone= new javax.swing.text.MaskFormatter(&quot;##########&quot;);&#xa;    maskFone.setPlaceholderCharacter(&apos;_&apos;);&#xa;}catch(java.text.ParseException e){&#xa;&#xa;}"/>
+        <AuxValue name="JavaCodeGenerator_CreateCodePre" type="java.lang.String" value="javax.swing.text.MaskFormatter maskFone=null;&#xa;try{&#xa;    maskFone= new javax.swing.text.MaskFormatter(&quot;(##)####-####&quot;);&#xa;    maskFone.setPlaceholderCharacter(&apos;_&apos;);&#xa;}catch(java.text.ParseException e){&#xa;&#xa;}"/>
       </AuxValues>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel11">
@@ -297,6 +302,14 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="jtxtEmail">
+    </Component>
+    <Component class="javax.swing.JButton" name="jButton1">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Mostrar CNPJ"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

@@ -64,6 +64,7 @@ public class PropFornecedor extends javax.swing.JDialog {
             }
         }else{
             isIns= false;
+            setFields(forn);
             this.setTitle("ALTERAR fornecedor");
             try {
                 lblImg.setIcon(res.get("\\images\\Arquivo-Alterar3.jpg", lblImg.getWidth(), lblImg.getHeight()));
@@ -104,6 +105,7 @@ public class PropFornecedor extends javax.swing.JDialog {
                 }
             }
         }
+        
         jftfCep.setText(forn.getCep());
         jftfFone.setText(forn.getFone());
         jtxtEmail.setText(forn.getEmail());
@@ -159,7 +161,7 @@ public class PropFornecedor extends javax.swing.JDialog {
         jLabel2 = new javax.swing.JLabel();
         javax.swing.text.MaskFormatter maskCnpj=null;
         try{
-            maskCnpj= new javax.swing.text.MaskFormatter("##############");
+            maskCnpj= new javax.swing.text.MaskFormatter("##.###.###/####-##");
             maskCnpj.setPlaceholderCharacter('_');
         }catch(java.text.ParseException e){
 
@@ -182,7 +184,7 @@ public class PropFornecedor extends javax.swing.JDialog {
         jLabel10 = new javax.swing.JLabel();
         javax.swing.text.MaskFormatter maskCep=null;
         try{
-            maskCep= new javax.swing.text.MaskFormatter("########");
+            maskCep= new javax.swing.text.MaskFormatter("##.###-###");
             maskCep.setPlaceholderCharacter('_');
         }catch(java.text.ParseException e){
 
@@ -190,7 +192,7 @@ public class PropFornecedor extends javax.swing.JDialog {
         jftfCep = new javax.swing.JFormattedTextField(maskCep);
         javax.swing.text.MaskFormatter maskFone=null;
         try{
-            maskFone= new javax.swing.text.MaskFormatter("##########");
+            maskFone= new javax.swing.text.MaskFormatter("(##)####-####");
             maskFone.setPlaceholderCharacter('_');
         }catch(java.text.ParseException e){
 
@@ -199,6 +201,7 @@ public class PropFornecedor extends javax.swing.JDialog {
         jLabel11 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
         jtxtEmail = new javax.swing.JTextField();
+        jButton1 = new javax.swing.JButton();
 
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
@@ -252,6 +255,13 @@ public class PropFornecedor extends javax.swing.JDialog {
 
         jLabel12.setText("E-mail");
 
+        jButton1.setText("Mostrar CNPJ");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -266,7 +276,9 @@ public class PropFornecedor extends javax.swing.JDialog {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jtxtCod, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(47, 47, 47)
-                        .addComponent(jftfCnpj, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jftfCnpj, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(75, 75, 75)
+                        .addComponent(jButton1))
                     .addComponent(jLabel3)
                     .addComponent(jtxtNome, javax.swing.GroupLayout.PREFERRED_SIZE, 370, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
@@ -326,11 +338,13 @@ public class PropFornecedor extends javax.swing.JDialog {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1)
                             .addComponent(jLabel2))
-                        .addGap(6, 6, 6)
+                        .addGap(5, 5, 5)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jtxtCod, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jftfCnpj, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(11, 11, 11)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jftfCnpj, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jButton1)))
+                        .addGap(9, 9, 9)
                         .addComponent(jLabel3)
                         .addGap(6, 6, 6)
                         .addComponent(jtxtNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -400,6 +414,21 @@ public class PropFornecedor extends javax.swing.JDialog {
     private void closeDialog(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_closeDialog
         doClose(RET_CANCEL);
     }//GEN-LAST:event_closeDialog
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        String sOrig= jftfCnpj.getText();
+        String sModify= sOrig.replaceAll("[()_./-]", "");
+        String sCep= jftfCep.getText();
+        String sFone= jftfFone.getText();
+        String sCep2= sCep.replaceAll("[()_./-]", "");
+        String sFone2= sFone.replaceAll("[()_./-]", "");
+        JOptionPane.showMessageDialog(null, "Texto original: "+ sOrig +"\n"
+                + "Texto após replaceAll(): " + sModify+"\n"
+                + "Fone: "+ sFone2+"\n"
+                + "CEP: " + jftfCep.getText().replaceAll("[()_./-]", ""));
+        JOptionPane.showMessageDialog(null,"jftfCep.getValue(): "+ jftfCep.getValue());
+        //jftfCep.setValue(sFone);
+    }//GEN-LAST:event_jButton1ActionPerformed
     
     private void doClose(int retStatus) {
         returnStatus = retStatus;
@@ -459,6 +488,7 @@ public class PropFornecedor extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnSalvar;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;

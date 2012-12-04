@@ -48,11 +48,11 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="jScrollPane1" min="-2" pref="197" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
+              <Component id="jScrollPane1" pref="197" max="32767" attributes="0"/>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
               <Component id="jScrollPane2" min="-2" pref="134" max="-2" attributes="0"/>
-              <EmptySpace max="32767" attributes="0"/>
+              <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -219,7 +219,7 @@
       <SubComponents>
         <Component class="javax.swing.JTable" name="jTable1">
           <BindingProperties>
-            <BindingProperty name="elements" source="lista" target="jTable1" targetPath="elements" updateStrategy="0" immediately="true">
+            <BindingProperty name="elements" source="lista" target="jTable1" targetPath="elements" updateStrategy="1" immediately="true">
               <Subbinding sourcePath="${codForn}">
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="Integer.class"/>
               </Subbinding>
@@ -244,8 +244,8 @@
               <Subbinding sourcePath="${municipio}">
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
               </Subbinding>
-              <Subbinding sourcePath="${uf}">
-                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
+              <Subbinding sourcePath="${estado}">
+                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="ce.model.basica.Estado.class"/>
               </Subbinding>
               <Subbinding sourcePath="${cep}">
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
@@ -270,7 +270,7 @@
       <SubComponents>
         <Component class="javax.swing.JTable" name="jtbProdutos">
           <BindingProperties>
-            <BindingProperty name="elements" source="jTable1" sourcePath="${selectedElement.produtos}" target="jtbProdutos" targetPath="elements" updateStrategy="0" immediately="true">
+            <BindingProperty name="elements" source="jTable1" sourcePath="${selectedElement.produtos}" target="jtbProdutos" targetPath="elements" updateStrategy="1" immediately="true">
               <Subbinding sourcePath="${codProd}">
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="Integer.class"/>
               </Subbinding>
