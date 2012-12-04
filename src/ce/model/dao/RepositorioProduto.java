@@ -230,8 +230,10 @@ public class RepositorioProduto implements IRepositorioProduto{
                 + "p.codUnid from Categoria as c "
                 + "inner join Produto as p on p.codCateg = c.codCateg "
                 + "order by c.Descricao, p.descProd";
-        String sqlForns= "SELECT DISTINCT codProd, codForn from FornXProd"
-                + " where codProd=?";
+        String sqlForns= "SELECT fp.codProd, fp.codForn from FornXProd as fp"
+                + " inner join Fornecedor as f on fp.codProd=?"
+                + " and f.codForn = fp.codForn"
+                + " order by fp.nome, fp.Cnpj";
         try{
             Statement statement = c.createStatement();
             ResultSet rs = statement.executeQuery(sql);

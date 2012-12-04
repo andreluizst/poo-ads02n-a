@@ -6,6 +6,7 @@ package ce.gui;
 
 import ce.erro.GeralException;
 import ce.model.fachada.Fachada;
+import java.awt.Frame;
 import java.awt.event.ActionListener;
 import java.beans.PropertyVetoException;
 import java.util.ArrayList;
@@ -92,7 +93,7 @@ public class MainMDIApplication extends javax.swing.JFrame {
     private void ordMenuJanela(){
         Integer j=0;
         String s;
-        for (int i=2;i<mnJanela.getItemCount();i++){
+        for (int i=3;i<mnJanela.getItemCount();i++){
             j= i-1;
             s= j.toString();
             mnJanela.getItem(i).setText(j.toString() + " " 
@@ -111,15 +112,16 @@ public class MainMDIApplication extends javax.swing.JFrame {
         for(int i=0;i<janelas.size();i++){
             if (janelas.get(i).getTitle().compareTo(janela.getTitle()) == 0){
                 janelas.remove(i);
+                activeLastWindow();
                 break;
             }
         }
-        /*Deve-se começar do index 2 porque dá erro inesplicável (bug) ao tentar
-         * ler o index 1 que é um Separator.
+        /*Deve-se começar do index 3 porque dá erro inesplicável (bug) ao tentar
+         * ler o index 2 que é um Separator.
          * 
          */
         try{
-            for(int i=2;i<mnJanela.getItemCount();i++){
+            for(int i=3;i<mnJanela.getItemCount();i++){
                 if (mnJanela.getItem(i).getText().contains(((IActionsGui)janela).getActivationName())){
                     mnJanela.remove(i);
                     break;
@@ -138,12 +140,67 @@ public class MainMDIApplication extends javax.swing.JFrame {
      */
     private void activeWindow(String activationName){
         //JOptionPane.showMessageDialog(null, "activeWindows(String activationName): " + activationName);
+        JInternalFrame jifJanela;
         for(int i=0;i<janelas.size();i++){
             if (((IActionsGui)janelas.get(i)).getActivationName().compareTo(activationName) == 0){
                 janelas.get(i).setVisible(false);
                 janelas.get(i).setVisible(true);
+                jifJanela= janelas.get(i);
+                janelas.remove(i);
+                janelas.add(jifJanela);
                 break;
             }
+        }
+    }
+    
+    /**
+     * Activa a próxima janela
+     */
+    private void activeNextWindow(){
+        if (janelas.size() > 1){
+            activeWindow(((IActionsGui)janelas.get(0)).getActivationName());
+        }
+        /*int i;
+        int x;
+        boolean active;
+        JInternalFrame jifJanela;
+        String activationName= ((IActionsGui)activeWindow).getActivationName();
+        if (mnJanela.getItemCount() > 3){
+            i=3;
+            x=0;
+            active=false;
+            do
+            {
+                if (((IActionsGui)janelas.get(i)).getActivationName().compareTo(activationName) == 0){
+                    if (active){
+                        janelas.get(i).setVisible(false);
+                        janelas.get(i).setVisible(true);
+                        jifJanela= janelas.get(i);
+                        janelas.remove(i);
+                        janelas.add(jifJanela);
+                        if (x > 10){
+                            JOptionPane.showMessageDialog(null, "Erro de lógica em activeNextWindow");
+                            break;
+                        }
+                    }
+                    active=true;
+                }
+                i++;
+                if (i == mnJanela.getItemCount()){
+                    i= 3;
+                }
+            }
+            while (!active);
+        }*/
+    }
+    
+    /**
+     * Ativa a última janela registrada
+     */
+    private void activeLastWindow(){
+        if (janelas.size() > 0){
+            janelas.get(janelas.size()-1).setVisible(false);
+            janelas.get(janelas.size()-1).setVisible(true);
         }
     }
     
@@ -196,6 +253,7 @@ public class MainMDIApplication extends javax.swing.JFrame {
         mnUltimo = new javax.swing.JMenuItem();
         mnJanela = new javax.swing.JMenu();
         jmnFecharAtual = new javax.swing.JMenuItem();
+        jmnProximaJanela = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -444,6 +502,15 @@ public class MainMDIApplication extends javax.swing.JFrame {
             }
         });
         mnJanela.add(jmnFecharAtual);
+
+        jmnProximaJanela.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_PAGE_DOWN, java.awt.event.InputEvent.CTRL_MASK));
+        jmnProximaJanela.setText("Próxima");
+        jmnProximaJanela.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmnProximaJanelaActionPerformed(evt);
+            }
+        });
+        mnJanela.add(jmnProximaJanela);
         mnJanela.add(jSeparator1);
 
         menuBar.add(mnJanela);
@@ -592,6 +659,10 @@ public class MainMDIApplication extends javax.swing.JFrame {
         registrarJanela(jifFornecedor);
     }//GEN-LAST:event_mnFornecedorActionPerformed
 
+    private void jmnProximaJanelaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmnProximaJanelaActionPerformed
+        activeNextWindow();
+    }//GEN-LAST:event_jmnProximaJanelaActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -655,6 +726,7 @@ public class MainMDIApplication extends javax.swing.JFrame {
     private javax.swing.JPopupMenu.Separator jSeparator3;
     private javax.swing.JPopupMenu.Separator jSeparator4;
     private javax.swing.JMenuItem jmnFecharAtual;
+    private javax.swing.JMenuItem jmnProximaJanela;
     private javax.swing.JLabel lblImgShell;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenuItem miCategora;
@@ -703,5 +775,6 @@ public class MainMDIApplication extends javax.swing.JFrame {
         mnAlterar.setEnabled(activeWindow!=null);
         mnIrPara.setEnabled(activeWindow!=null);
         jmnFecharAtual.setEnabled(activeWindow!=null);
+        jmnProximaJanela.setEnabled(activeWindow!=null?janelas.size()>1:false);
     }
 }

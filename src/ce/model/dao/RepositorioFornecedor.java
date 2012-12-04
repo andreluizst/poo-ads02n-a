@@ -217,8 +217,10 @@ public class RepositorioFornecedor implements IRepositorioFornecedor{
         Produto p=null;
         Connection c= gerenciadorConexao.conectar();
         String sql= "select * from Fornecedor order by nome";
-        String sqlProds= "SELECT DISTINCT codProd, codForn from FornXProd"
-                + " where codForn=?";
+        String sqlProds= "SELECT fp.codProd, fp.codForn from FornXProd as fp"
+                + " inner join Produto as p on fp.codForn=? and p.codProd = fp.codProd"
+                + " inner join Categoria as c on c.codCateg = p.codCateg"
+                + " order by c.descricao, p.descProd";
         try{
             Statement stmt= c.createStatement();
             ResultSet rs= stmt.executeQuery(sql);
@@ -284,8 +286,10 @@ public class RepositorioFornecedor implements IRepositorioFornecedor{
         Produto p=null;
         Connection c= gerenciadorConexao.conectar();
         String sql= "select * from Fornecedor where nome like ? order by nome";
-        String sqlProds= "SELECT DISTINCT codProd, codForn"
-                + " from FornXProd where codForn=?";
+        String sqlProds= "SELECT fp.codProd, fp.codForn from FornXProd as fp"
+                + " inner join Produto as p on fp.codForn=? and p.codProd = fp.codProd"
+                + " inner join Categoria as c on c.codCateg = p.codCateg"
+                + " order by c.descricao, p.descProd";
         try{
             PreparedStatement pstmt= c.prepareStatement(sql);
             pstmt.setString(1, nome);
@@ -362,8 +366,10 @@ public class RepositorioFornecedor implements IRepositorioFornecedor{
         Connection c= gerenciadorConexao.conectar();
         List<Produto> produtos= new ArrayList();
         String sql= "select * from Fornecedor where codForn=?";        
-        String sqlProds = "SELECT DISTINCT codProd, codForn"
-                + " from fornxprod where codForn=?";
+        String sqlProds= "SELECT fp.codProd, fp.codForn from FornXProd as fp"
+                + " inner join Produto as p on fp.codForn=? and p.codProd = fp.codProd"
+                + " inner join Categoria as c on c.codCateg = p.codCateg"
+                + " order by c.descricao, p.descProd";
         try{
             PreparedStatement pstmt= c.prepareStatement(sql);
             pstmt.setInt(1, codForn);
@@ -435,8 +441,10 @@ public class RepositorioFornecedor implements IRepositorioFornecedor{
         Connection c= gerenciadorConexao.conectar();
         List<Produto> produtos= new ArrayList<>();
         String sql= "select * from Fornecedor where cnpj=?";        
-        String sqlProds = "SELECT DISTINCT codProd, codForn"
-                + " from fornxprod where codForn=?";
+        String sqlProds= "SELECT fp.codProd, fp.codForn from FornXProd as fp"
+                + " inner join Produto as p on fp.codForn=? and p.codProd = fp.codProd"
+                + " inner join Categoria as c on c.codCateg = p.codCateg"
+                + " order by c.descricao, p.descProd";
         try{
             PreparedStatement pstmt= c.prepareStatement(sql);
             pstmt.setString(1, cnpj);
