@@ -7,6 +7,7 @@ package ce.model.dao;
 import ce.erro.ConexaoException;
 import ce.erro.RepositorioInserirException;
 import ce.erro.RepositorioAlterarException;
+import ce.erro.RepositorioException;
 import ce.erro.RepositorioExcluirException;
 import ce.erro.RepositorioForeignKeyException;
 import ce.erro.RepositorioListarException;
@@ -54,7 +55,7 @@ public class RepositorioFuncionario implements IRepositorioFuncionario{
             pstmt.setString(5, f.getComp());
             pstmt.setString(6, f.getBairro());
             pstmt.setString(7, f.getMunicipio());
-            pstmt.setString(8, f.getUf());
+            pstmt.setString(8, f.getEstado().getUf());
             pstmt.setString(9, f.getCep());
             pstmt.setString(10, f.getFone());
             pstmt.setString(11, f.getEmail());
@@ -97,7 +98,7 @@ public class RepositorioFuncionario implements IRepositorioFuncionario{
             pstmt.setString(5, f.getComp());
             pstmt.setString(6, f.getBairro());
             pstmt.setString(7, f.getMunicipio());
-            pstmt.setString(8, f.getUf());
+            pstmt.setString(8, f.getEstado().getUf());
             pstmt.setString(9, f.getCep());
             pstmt.setString(10, f.getFone());
             pstmt.setString(11, f.getEmail());
@@ -169,12 +170,13 @@ public class RepositorioFuncionario implements IRepositorioFuncionario{
         try{
             Statement stmt= c.createStatement();
             ResultSet rs= stmt.executeQuery(sql);
+            IRepositorioEstado rpEst= new RepositorioEstado();
             while (rs.next()){
                 f = new Funcionario(rs.getString("CPF"), rs.getString("nome"), 
                         rs.getString("DtNasc"), rs.getString("logradouro"),
                         rs.getInt("Num"), rs.getString("Comp"), 
                         rs.getString("Bairro"), rs.getString("Municipio"),
-                        rs.getString("UF"), rs.getString("CEP"), 
+                        rpEst.pesqUf(rs.getString("UF")), rs.getString("CEP"), 
                         rs.getString("Fone"), rs.getString("Email"));
                 lista.add(f);
             }
@@ -185,6 +187,10 @@ public class RepositorioFuncionario implements IRepositorioFuncionario{
         catch(SQLException e){
             throw new RepositorioListarException(e, 
                     RepositorioFuncionario.class.getName()+".listar()");
+        }
+        catch(RepositorioException ex){
+            throw new RepositorioListarException(ex, 
+                    RepositorioFuncionario.class.getName()+".listar()."+ex.getPathClassCall());
         }
         finally{
             gerenciadorConexao.desconectar(c);
@@ -214,12 +220,13 @@ public class RepositorioFuncionario implements IRepositorioFuncionario{
             PreparedStatement pstmt= c.prepareStatement(sql);
             pstmt.setString(1, nome);
             ResultSet rs= pstmt.executeQuery();
+            IRepositorioEstado rpEst= new RepositorioEstado();
             while (rs.next()){
                 f = new Funcionario(rs.getString("CPF"), rs.getString("nome"), 
                         rs.getString("DtNasc"), rs.getString("logradouro"),
                         rs.getInt("Num"), rs.getString("Comp"), 
                         rs.getString("Bairro"), rs.getString("Municipio"),
-                        rs.getString("UF"), rs.getString("CEP"), 
+                        rpEst.pesqUf(rs.getString("UF")), rs.getString("CEP"), 
                         rs.getString("Fone"), rs.getString("Email"));
                 lista.add(f);
             }
@@ -230,6 +237,10 @@ public class RepositorioFuncionario implements IRepositorioFuncionario{
         catch(SQLException e){
             throw new RepositorioPesquisarException(e, 
                     RepositorioFuncionario.class.getName()+".pesquisar()");
+        }
+        catch(RepositorioException ex){
+            throw new RepositorioPesquisarException(ex, 
+                    RepositorioFuncionario.class.getName()+".pesquisar()."+ex.getPathClassCall());
         }
         finally{
             gerenciadorConexao.desconectar(c);
@@ -256,12 +267,13 @@ public class RepositorioFuncionario implements IRepositorioFuncionario{
             PreparedStatement pstmt= c.prepareStatement(sql);
             pstmt.setString(1, cpf);
             ResultSet rs= pstmt.executeQuery();
+            IRepositorioEstado rpEst= new RepositorioEstado();
             if(rs.next()){
                 f = new Funcionario(rs.getString("CPF"), rs.getString("nome"), 
                         rs.getString("DtNasc"), rs.getString("logradouro"),
                         rs.getInt("Num"), rs.getString("Comp"), 
                         rs.getString("Bairro"), rs.getString("Municipio"),
-                        rs.getString("UF"), rs.getString("CEP"), 
+                        rpEst.pesqUf(rs.getString("UF")), rs.getString("CEP"), 
                         rs.getString("Fone"), rs.getString("Email"));
             }
             rs.close();
@@ -274,6 +286,10 @@ public class RepositorioFuncionario implements IRepositorioFuncionario{
         catch(SQLException e){
             throw new RepositorioPesquisarException(e, 
                     RepositorioFuncionario.class.getName()+".pesqCpf()");
+        }
+        catch(RepositorioException ex){
+            throw new RepositorioPesquisarException(ex, 
+                    RepositorioFuncionario.class.getName()+".pesqCpf()."+ex.getPathClassCall());
         }
         finally{
             gerenciadorConexao.desconectar(c);

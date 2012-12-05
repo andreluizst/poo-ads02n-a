@@ -75,7 +75,7 @@ public class ControladorFuncionario {
                     "O campo municipio deve ser preenchido.",
                     sPath);
         }
-        if ((f.getUf() == null) || (f.getUf().compareTo("")==0)){
+        if ((f.getEstado().getUf() == null) || (f.getEstado().getUf().compareTo("")==0)){
             throw new ControladorException(user.getNome(),
                     "O campo UF deve ser preenchido.",
                     sPath);

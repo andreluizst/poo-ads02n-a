@@ -102,7 +102,7 @@ public class ControladorUsuario {
                     ControladorUsuario.class.getName()+".inserir()");
         } catch (RepositorioInserirException re) {
             throw new ControladorException(user.getNome(),
-                    rb.getString("CtrlErroInseir") + " usuário.",
+                    rb.getString("CtrlErroInserir") + " usuário.",
                     ControladorUsuario.class.getName()+".inserir()");
         }
     }

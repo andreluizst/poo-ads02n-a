@@ -73,7 +73,7 @@ public class ControladorPerfil {
                     ControladorPerfil.class.getName()+".inserir()");
         } catch (RepositorioInserirException re) {
             throw new ControladorException(user.getNome(),
-                    rb.getString("CtrlErroInseir") + " perfil.",
+                    rb.getString("CtrlErroInserir") + " perfil.",
                     ControladorPerfil.class.getName()+".inserir()");
         }
     }

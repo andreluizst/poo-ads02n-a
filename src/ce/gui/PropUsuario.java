@@ -318,10 +318,10 @@ public class PropUsuario extends javax.swing.JDialog {
             }else{
                 f.alterar(u);
             }
+            doClose(RET_OK);
         } catch (GeralException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage());
         }
-        doClose(RET_OK);
     }//GEN-LAST:event_btnSalvarActionPerformed
     
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed

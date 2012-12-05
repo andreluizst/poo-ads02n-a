@@ -194,10 +194,10 @@ public class PropCategoria extends javax.swing.JDialog {
             }else{
                 f.alterar(categ);
             }
+            doClose(RET_OK);
         } catch (GeralException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage());
         }
-        doClose(RET_OK);
     }//GEN-LAST:event_btnSalvarActionPerformed
     
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed

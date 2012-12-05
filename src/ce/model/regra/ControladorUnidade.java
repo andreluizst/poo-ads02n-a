@@ -74,7 +74,7 @@ public class ControladorUnidade {
                     ControladorUnidade.class.getName()+".inserir()");
         } catch (RepositorioInserirException re) {
             throw new ControladorException(user.getNome(),
-                    rb.getString("CtrlErroInseir") + " unidade.",
+                    rb.getString("CtrlErroInserir") + " unidade.",
                     ControladorUnidade.class.getName()+".inserir()");
         }
     }

@@ -46,3 +46,15 @@ Sistema -> 04/12/2012 - 21:44:47
 	ce.model.dao.RepositorioProduto.listar(): com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Unknown column 'fp.nome' in 'order clause'
 joao.souza -> 04/12/2012 - 21:44:47
 	ce.model.regra.ControladorProduto.listar(): Erro ao tentar listar produto.
+joao.souza -> 05/12/2012 - 09:14:39
+	ce.model.regra.ControladorFornecedor.validarDados(): O campo nome deve ser preenchido.
+joao.souza -> 05/12/2012 - 09:17:50
+	ce.model.regra.ControladorFornecedor.validarDados(): O campo nome deve ser preenchido.
+joao.souza -> 05/12/2012 - 09:17:56
+	ce.model.regra.ControladorFornecedor.validarDados(): O campo nome deve ser preenchido.
+joao.souza -> 05/12/2012 - 09:21:20
+	ce.model.regra.ControladorFornecedor.validarDados(): O campo nome deve ser preenchido.
+joao.souza -> 05/12/2012 - 09:21:39
+	ce.model.regra.ControladorUsuario.validarLogin(): Senha inválida!
+joao.souza -> 05/12/2012 - 09:21:51
+	ce.model.regra.ControladorFornecedor.validarDados(): CNPJ inválido.

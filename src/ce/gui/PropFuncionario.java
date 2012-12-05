@@ -5,12 +5,16 @@
 package ce.gui;
 
 import ce.erro.GeralException;
+import ce.model.basica.Estado;
 import ce.model.basica.Funcionario;
 import ce.model.fachada.Fachada;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
@@ -36,7 +40,12 @@ public class PropFuncionario extends javax.swing.JDialog {
     public static final int RET_OK = 1;
 
     /**
-     * Creates new form PropFuncionario
+     * Construtor - Cria o diálogo de propriedades do funcionário para inclusão ou alteração
+     * @param parent
+     * @param modal
+     * @param funcionario 
+     * Objeto do tipo Fornecedor. Se null o diálogo iniciará em modo de inclusão,
+     * caso contrário, iniciará em modo de alteração
      */
     public PropFuncionario(java.awt.Frame parent, boolean modal, Funcionario funcionario) {
         super(parent, modal);
@@ -74,6 +83,28 @@ public class PropFuncionario extends javax.swing.JDialog {
         }
     }
     
+    /**
+     * Atualiza a lista de estados
+     */
+    private void atlzEstados(){
+        List<Estado> lista= new ArrayList();
+        try{
+            lista= f.listarEstado();
+            DefaultComboBoxModel<Estado> dcbxm= new DefaultComboBoxModel();
+            for (Estado est:lista){
+                dcbxm.addElement(est);
+            }
+            jcbxEstados.setModel(dcbxm);
+        }catch(GeralException ex){
+            JOptionPane.showMessageDialog(null, ex.getMessage());
+        }
+    }
+    
+    /**
+     * Preenche os campos do formulário com os dados do objeto Funcionario
+     * @param fun 
+     * Objeto do tipo Funcionario cujos dados serão exibidos nos campos texto da tela.
+     */
     private void setFields(Funcionario fun){
         jftfCpf.setText(fun.getCpf());
         jtxtNome.setText(fun.getNome());
@@ -83,10 +114,41 @@ public class PropFuncionario extends javax.swing.JDialog {
         jtxtComp.setText(fun.getComp());
         jtxtBairro.setText(fun.getBairro());
         jtxtMunicipio.setText(fun.getMunicipio());
-        jtxtUf.setText(fun.getUf());
+        if (jcbxEstados.getItemCount() > 0){
+            for (int i=0;i<jcbxEstados.getItemCount();i++){
+                if (jcbxEstados.getItemAt(i).getUf().compareTo(fun.getEstado().getUf()) == 0){
+                    jcbxEstados.setSelectedIndex(i);
+                    break;
+                }
+            }
+        }
         jftfCep.setText(fun.getCep());
         jftfFone.setText(fun.getFone());
         jtxtEmail.setText(fun.getEmail());
+    }
+    
+    /**
+     * Preenche o objeto do tipo Funcionario com os dados constantes nos campos
+     * do formulário
+     * @param fun 
+     * Objeto do tipo Funcionario que receberá os dados dos campos da tela.
+     */
+    private void setFuncionario(Funcionario fun){
+        fun.setCpf(jftfCpf.getText());
+        fun.setNome(jtxtNome.getText());
+        fun.setDtNasc(jftfDataNasc.getText());
+        fun.setLogradouro(jtxtLogradouro.getText());
+        try{
+            fun.setNum(Integer.parseInt(jtxtNum.getText()));
+        }catch (Exception e){
+            fun.setNum(0);
+        }
+        fun.setBairro(jtxtBairro.getText());
+        fun.setMunicipio(jtxtMunicipio.getText());
+        fun.setEstado((Estado)jcbxEstados.getSelectedItem());
+        fun.setCep(jftfCep.getText());
+        fun.setFone(jftfFone.getText());
+        fun.setEmail(jtxtEmail.getText());
     }
 
     /**
@@ -96,6 +158,11 @@ public class PropFuncionario extends javax.swing.JDialog {
         return returnStatus;
     }
     
+    /**
+     * 
+     * @return 
+     * Retorna um objeto do tipo Funcionario com as propriedades salvas.
+     */
     public Funcionario getProperties(){
         return func;
     }
@@ -135,7 +202,6 @@ public class PropFuncionario extends javax.swing.JDialog {
         jtxtMunicipio = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
-        jtxtUf = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
         javax.swing.text.MaskFormatter maskCep= null;
         try{
@@ -168,6 +234,7 @@ public class PropFuncionario extends javax.swing.JDialog {
 
         }
         jftfDataNasc = new javax.swing.JFormattedTextField(maskData);
+        jcbxEstados = new javax.swing.JComboBox<Estado>();
 
         setBounds(new java.awt.Rectangle(0, 0, 614, 320));
         setPreferredSize(new java.awt.Dimension(614, 320));
@@ -176,7 +243,6 @@ public class PropFuncionario extends javax.swing.JDialog {
                 closeDialog(evt);
             }
         });
-        getContentPane().setLayout(null);
 
         btnSalvar.setText("Salvar");
         btnSalvar.addActionListener(new java.awt.event.ActionListener() {
@@ -184,9 +250,6 @@ public class PropFuncionario extends javax.swing.JDialog {
                 btnSalvarActionPerformed(evt);
             }
         });
-        getContentPane().add(btnSalvar);
-        btnSalvar.setBounds(427, 283, 80, 23);
-        getRootPane().setDefaultButton(btnSalvar);
 
         cancelButton.setText("Cancelar");
         cancelButton.addActionListener(new java.awt.event.ActionListener() {
@@ -194,119 +257,188 @@ public class PropFuncionario extends javax.swing.JDialog {
                 cancelButtonActionPerformed(evt);
             }
         });
-        getContentPane().add(cancelButton);
-        cancelButton.setBounds(524, 283, 80, 23);
 
         jLabel1.setText("CPF");
-        getContentPane().add(jLabel1);
-        jLabel1.setBounds(18, 21, 55, 14);
 
         jLabel2.setText("Nome");
-        getContentPane().add(jLabel2);
-        jLabel2.setBounds(18, 72, 27, 14);
-        getContentPane().add(jtxtNome);
-        jtxtNome.setBounds(18, 91, 344, 20);
 
         jLabel3.setText("Logradouro:");
-        getContentPane().add(jLabel3);
-        jLabel3.setBounds(18, 122, 59, 14);
-        getContentPane().add(jtxtLogradouro);
-        jtxtLogradouro.setBounds(18, 142, 344, 20);
 
         jftfCpf.setHorizontalAlignment(javax.swing.JFormattedTextField.RIGHT);
-        getContentPane().add(jftfCpf);
-        jftfCpf.setBounds(18, 41, 121, 20);
 
         jLabel4.setText("Número");
-        getContentPane().add(jLabel4);
-        jLabel4.setBounds(380, 122, 37, 14);
-        getContentPane().add(jtxtNum);
-        jtxtNum.setBounds(380, 142, 45, 20);
 
         jLabel5.setText("Complemento");
-        getContentPane().add(jLabel5);
-        jLabel5.setBounds(443, 122, 65, 14);
-        getContentPane().add(jtxtComp);
-        jtxtComp.setBounds(443, 142, 106, 20);
 
         lblImg.setText("lblImg");
-        getContentPane().add(lblImg);
-        lblImg.setBounds(484, 0, 120, 120);
 
         jLabel6.setText("Bairro");
-        getContentPane().add(jLabel6);
-        jLabel6.setBounds(18, 173, 28, 14);
-        getContentPane().add(jtxtBairro);
-        jtxtBairro.setBounds(18, 193, 190, 20);
-        getContentPane().add(jtxtMunicipio);
-        jtxtMunicipio.setBounds(226, 193, 208, 20);
 
         jLabel7.setText("Município");
-        getContentPane().add(jLabel7);
-        jLabel7.setBounds(226, 173, 43, 14);
 
         jLabel8.setText("UF");
-        getContentPane().add(jLabel8);
-        jLabel8.setBounds(452, 173, 13, 14);
-        getContentPane().add(jtxtUf);
-        jtxtUf.setBounds(452, 193, 32, 20);
 
         jLabel9.setText("CEP");
-        getContentPane().add(jLabel9);
-        jLabel9.setBounds(502, 173, 19, 14);
-        getContentPane().add(jftfCep);
-        jftfCep.setBounds(502, 193, 88, 20);
 
         jLabel10.setText("Fone");
-        getContentPane().add(jLabel10);
-        jLabel10.setBounds(18, 224, 24, 14);
-        getContentPane().add(jftfFone);
-        jftfFone.setBounds(18, 244, 125, 20);
 
         jLabel11.setText("E-mail");
-        getContentPane().add(jLabel11);
-        jLabel11.setBounds(161, 224, 28, 14);
-        getContentPane().add(jtxtEmail);
-        jtxtEmail.setBounds(161, 244, 429, 20);
 
         jLabel12.setText("Data de nascimento");
-        getContentPane().add(jLabel12);
-        jLabel12.setBounds(174, 21, 95, 14);
-        getContentPane().add(jftfDataNasc);
-        jftfDataNasc.setBounds(174, 41, 121, 20);
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(101, 101, 101)
+                                .addComponent(jLabel12))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jftfCpf, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(35, 35, 35)
+                                .addComponent(jftfDataNasc, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel2)
+                            .addComponent(jtxtNome, javax.swing.GroupLayout.PREFERRED_SIZE, 344, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(122, 122, 122)
+                        .addComponent(lblImg, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addGap(303, 303, 303)
+                        .addComponent(jLabel4)
+                        .addGap(26, 26, 26)
+                        .addComponent(jLabel5))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jtxtLogradouro, javax.swing.GroupLayout.PREFERRED_SIZE, 344, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jtxtNum, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jtxtComp, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel6)
+                        .addGap(180, 180, 180)
+                        .addComponent(jLabel7)
+                        .addGap(183, 183, 183)
+                        .addComponent(jLabel8))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(jtxtBairro, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(18, 18, 18)
+                            .addComponent(jtxtMunicipio, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(18, 18, 18)
+                            .addComponent(jcbxEstados, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createSequentialGroup()
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jftfCep, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel9))
+                            .addGap(18, 18, 18)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jLabel10)
+                                    .addGap(119, 119, 119)
+                                    .addComponent(jLabel11))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jftfFone, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(jtxtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                            .addComponent(btnSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(20, 20, 20)
+                            .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(21, 21, 21)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel12))
+                        .addGap(6, 6, 6)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jftfCpf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jftfDataNasc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(11, 11, 11)
+                        .addComponent(jLabel2)
+                        .addGap(5, 5, 5)
+                        .addComponent(jtxtNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblImg, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(2, 2, 2)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel5))
+                .addGap(6, 6, 6)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jtxtLogradouro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jtxtNum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jtxtComp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(11, 11, 11)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel6)
+                    .addComponent(jLabel7)
+                    .addComponent(jLabel8))
+                .addGap(6, 6, 6)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jtxtBairro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jtxtMunicipio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jcbxEstados, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(13, 13, 13)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel9)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jftfCep, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel10)
+                            .addComponent(jLabel11))
+                        .addGap(6, 6, 6)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jftfFone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jtxtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(28, 28, 28)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnSalvar)
+                    .addComponent(cancelButton))
+                .addContainerGap(19, Short.MAX_VALUE))
+        );
+
+        getRootPane().setDefaultButton(btnSalvar);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    
+    /**
+     * Salva as alterações ou o novo Fornecedor.
+     * @param evt 
+     */
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
         func= new Funcionario();
-        func.setCpf(jftfCpf.getText());
-        func.setNome(jtxtNome.getText());
-        func.setDtNasc(jftfDataNasc.getText());
-        func.setLogradouro(jtxtLogradouro.getText());
-        try{
-            func.setNum(Integer.parseInt(jtxtNum.getText()));
-        }catch (Exception e){
-            func.setNum(0);
-        }
-        func.setBairro(jtxtBairro.getText());
-        func.setMunicipio(jtxtMunicipio.getText());
-        func.setUf(jtxtUf.getText());
-        func.setCep(jftfCep.getText());
-        func.setFone(jftfFone.getText());
-        func.setEmail(jtxtEmail.getText());
+        setFuncionario(func);
         try {
             if (isIns){
                 f.incluir(func);
             }else{
                 f.alterar(func);
             }
+            doClose(RET_OK);
         } catch (GeralException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage());
         }
-        doClose(RET_OK);
     }//GEN-LAST:event_btnSalvarActionPerformed
     
+    /**
+     * Cancela a operação de inclusão ou alteração
+     * @param evt 
+     */
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
         doClose(RET_CANCEL);
     }//GEN-LAST:event_cancelButtonActionPerformed
@@ -380,6 +512,7 @@ public class PropFuncionario extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JComboBox<Estado> jcbxEstados;
     private javax.swing.JFormattedTextField jftfCep;
     private javax.swing.JFormattedTextField jftfCpf;
     private javax.swing.JFormattedTextField jftfDataNasc;
@@ -391,7 +524,6 @@ public class PropFuncionario extends javax.swing.JDialog {
     private javax.swing.JTextField jtxtMunicipio;
     private javax.swing.JTextField jtxtNome;
     private javax.swing.JTextField jtxtNum;
-    private javax.swing.JTextField jtxtUf;
     private javax.swing.JLabel lblImg;
     // End of variables declaration//GEN-END:variables
     private int returnStatus = RET_CANCEL;

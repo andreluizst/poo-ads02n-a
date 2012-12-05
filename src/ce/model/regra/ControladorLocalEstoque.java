@@ -74,7 +74,7 @@ public class ControladorLocalEstoque {
                     ControladorLocalEstoque.class.getName()+".inserir()");
         } catch (RepositorioInserirException re) {
             throw new ControladorException(getUser().getNome(),
-                    rb.getString("CtrlErroInseir") + " local de estoque.",
+                    rb.getString("CtrlErroInserir") + " local de estoque.",
                     ControladorLocalEstoque.class.getName()+".inserir()");
         }
     }

@@ -78,7 +78,7 @@ public class ControladorCategoria {
                     ControladorCategoria.class.getName()+".inserir()");
         } catch (RepositorioInserirException ex) {
             throw new ControladorException(getUser().getNome(),
-                    rb.getString("CtrlErroInseir") + " categoria.",
+                    rb.getString("CtrlErroInserir") + " categoria.",
                     ControladorCategoria.class.getName()+".inserir()");
         }
     }

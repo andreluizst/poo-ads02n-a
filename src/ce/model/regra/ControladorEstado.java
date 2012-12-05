@@ -13,10 +13,8 @@ import ce.erro.RepositorioForeignKeyException;
 import ce.erro.RepositorioInserirException;
 import ce.erro.RepositorioListarException;
 import ce.erro.RepositorioPesquisarException;
-import ce.model.basica.Categoria;
 import ce.model.basica.Estado;
 import ce.model.basica.Usuario;
-import ce.model.dao.IRepositorioCategoria;
 import ce.model.dao.IRepositorioEstado;
 import ce.model.dao.RepositorioEstado;
 import java.util.List;
@@ -83,7 +81,7 @@ public class ControladorEstado {
                     ControladorEstado.class.getName()+".inserir()");
         } catch (RepositorioInserirException ex) {
             throw new ControladorException(getUser().getNome(),
-                    rb.getString("CtrlErroInseir") + " estadl.",
+                    rb.getString("CtrlErroInserir") + " estado.",
                     ControladorEstado.class.getName()+".inserir()");
         }
     }

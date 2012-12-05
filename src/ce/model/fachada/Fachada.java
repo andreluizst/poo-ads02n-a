@@ -58,6 +58,7 @@ public class Fachada {
     }
     
     public void alterar(Categoria c) throws GeralException{
+        ctrlCateg.validarDados(c);
         ctrlCateg.verificarSeExiste(c);
         ctrlCateg.alterar(c);
     }
@@ -91,6 +92,7 @@ public class Fachada {
     }
     
     public void alterar(Unidade u) throws GeralException{
+        ctrlUnid.validarDados(u);
         ctrlUnid.verificarSeExiste(u);
         ctrlUnid.alterar(u);
     }
@@ -124,6 +126,7 @@ public class Fachada {
     }
     
     public void alterar(Produto p) throws GeralException{
+        ctrlProd.validarDados(p);
         ctrlProd.verificarSeExiste(p);
         ctrlProd.alterar(p);
     }
@@ -164,6 +167,7 @@ public class Fachada {
     }
     
     public void alterar(Fornecedor f) throws GeralException{
+        ctrlForn.validarDados(f);
         ctrlForn.verificarSeExiste(f);
         ctrlForn.alterar(f);
     }
@@ -199,6 +203,7 @@ public class Fachada {
     }
     
     public void alterar(Funcionario f) throws GeralException{
+        ctrlFun.validarDados(f);
         ctrlFun.verificarSeExiste(f);
         ctrlFun.alterar(f);
     }
@@ -233,6 +238,7 @@ public class Fachada {
     }
     
     public void alterar(Perfil p) throws GeralException{
+        ctrlPer.validarDados(p);
         ctrlPer.verificarSeExiste(p);
         ctrlPer.alterar(p);
     }
@@ -282,6 +288,7 @@ public class Fachada {
     }
     
     public void alterar(Usuario u) throws GeralException{
+        ctrlUsu.validarDados(u);
         ctrlUsu.verificarSeExiste(u);
         ctrlUsu.alterar(u);
     }
@@ -320,6 +327,7 @@ public class Fachada {
     }
     
     public void alterar(LocalEstoque le) throws GeralException{
+        ctrlLocalE.validarDados(le);
         ctrlLocalE.verificarSeExiste(le);
         ctrlLocalE.alterar(le);
     }
@@ -354,6 +362,7 @@ public class Fachada {
     }
     
     public void alterar(Entrada e) throws GeralException{
+        ctrlE.validarDados(e);
         ctrlE.verificarSeExiste(e);
         ctrlE.alterar(e);
     }
@@ -383,6 +392,7 @@ public class Fachada {
     }
 
     public void alterar(Saida s) throws GeralException{
+        ctrlS.validarDados(s);
         ctrlS.verificarSeExiste(s);
         ctrlS.alterar(s);
     }
@@ -406,10 +416,12 @@ public class Fachada {
      */
     public void incluir(Estado e) throws GeralException{
         ctrlEst.validarDados(e);
+        ctrlEst.verificarSePodeInserir(e);
         ctrlEst.inserir(e);
     }
     
     public void alterar(Estado e) throws GeralException{
+        ctrlEst.validarDados(e);
         ctrlEst.verificarSeExiste(e);
         ctrlEst.alterar(e);
     }

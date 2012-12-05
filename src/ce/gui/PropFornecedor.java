@@ -87,7 +87,7 @@ public class PropFornecedor extends javax.swing.JDialog {
         
     }
     
-    /*
+    /**
      * Atualiza a lista de estados
      */
     private void atlzEstados(){
@@ -104,8 +104,10 @@ public class PropFornecedor extends javax.swing.JDialog {
         }
     }
     
-    /*
+    /**
      * Preenche os campos do formulário com os dados do objeto Fornecedor
+     * @param forn 
+     * Objeto do tipo Fornecedor cujos dados serão exibidos nos campos texto da tela.
      */
     private void setFields(Fornecedor forn){
         jtxtCod.setText(forn.getCodForn().toString());
@@ -148,9 +150,11 @@ public class PropFornecedor extends javax.swing.JDialog {
         }
     }
     
-    /*
+    /**
      * Preenche o objeto do tipo Fornecedor com os dados constantes nos campos
      * do formulário
+     * @param forn 
+     * Objeto do tipo Fornecedor que receberá os dados dos campos da tela.
      */
     private void setFornecedor(Fornecedor forn){
         String mask= "[()_./-]";
@@ -172,6 +176,10 @@ public class PropFornecedor extends javax.swing.JDialog {
         forn.setCep(jftfCep.getText().replaceAll(mask, ""));
         forn.setFone(jftfFone.getText().replaceAll(mask, ""));
         forn.setEmail(jtxtEmail.getText());
+        forn.getProdutos().clear();
+        if (lstProdsForn.size()>0){
+            forn.getProdutos().addAll(lstProdsForn);
+        }
     }
     
     /**
@@ -561,22 +569,23 @@ public class PropFornecedor extends javax.swing.JDialog {
      * @param evt 
      */
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
-        Fornecedor forn= new Fornecedor();
-        setFornecedor(forn);
+        fornecedor= new Fornecedor();
+        setFornecedor(fornecedor);
         try{
             if (isIns){
-                f.incluir(forn);
+                f.incluir(fornecedor);
             }else{
-                f.alterar(forn);
+                f.alterar(fornecedor);
             }
+            doClose(RET_OK);
         }catch(GeralException ex){
             JOptionPane.showMessageDialog(null, ex.getMessage());
         }
-        doClose(RET_OK);
     }//GEN-LAST:event_btnSalvarActionPerformed
     
-    /*
+    /**
      * Cancela a operação de inclusão ou alteração
+     * @param evt 
      */
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         doClose(RET_CANCEL);
@@ -597,9 +606,7 @@ public class PropFornecedor extends javax.swing.JDialog {
         lstProdsForn.add(lstProdsNaoForn.get(jlstProdsNaoFornecidos.getSelectedIndex()));
         lstProdsNaoForn.remove(jlstProdsNaoFornecidos.getSelectedIndex());
         if (lstProdsForn.size()>0){
-            /*List<Produto> lst= */ordenarLista(lstProdsForn);
-            //lstProdsForn.clear();
-            //lstProdsForn.addAll(lst);
+            ordenarLista(lstProdsForn);
             jlstProdsForn.setSelectedIndex(lstProdsForn.size()-1);
         }
         if (lstProdsNaoForn.size()>0){
@@ -637,6 +644,7 @@ public class PropFornecedor extends javax.swing.JDialog {
      */
     private void btnAdiconaTodosProdsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdiconaTodosProdsActionPerformed
         lstProdsForn.addAll(lstProdsNaoForn);
+        ordenarLista(lstProdsForn);
         lstProdsNaoForn.clear();
     }//GEN-LAST:event_btnAdiconaTodosProdsActionPerformed
     
@@ -646,6 +654,7 @@ public class PropFornecedor extends javax.swing.JDialog {
      */
     private void btnRemoveTodosProdsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveTodosProdsActionPerformed
         lstProdsNaoForn.addAll(lstProdsForn);
+        ordenarLista(lstProdsNaoForn);
         lstProdsForn.clear();
     }//GEN-LAST:event_btnRemoveTodosProdsActionPerformed
     
