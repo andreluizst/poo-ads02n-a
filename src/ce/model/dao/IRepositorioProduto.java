@@ -32,6 +32,8 @@ public interface IRepositorioProduto {
             RepositorioPesquisarException;
     public Produto pesqCodProd(Integer codProd, boolean comForns) 
             throws ConexaoException, RepositorioPesquisarException; 
+    public List<Produto> pesquisarProdsQueNaoSaoDoForn(Integer codForn) 
+            throws ConexaoException, RepositorioPesquisarException;
     public void atualizarQtde(Produto p) throws ConexaoException, 
             RepositorioAlterarException;
 }

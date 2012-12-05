@@ -141,6 +141,11 @@ public class Fachada {
         return ctrlProd.pesquisar(descricao);
     }
     
+    public List<Produto> pesquisarProdsQueNaoSaoDoForn(Integer codForn)
+            throws GeralException{
+        return ctrlProd.pesquisarProdsQueNaoSaoDoForn(codForn);
+    }
+    
     public Produto trazerProduto(Integer cod, boolean comFornecedores) 
             throws GeralException{
         ctrlProd.verificarSeExiste(cod);

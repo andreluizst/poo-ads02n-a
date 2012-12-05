@@ -36,7 +36,12 @@ public class PropFornecedor extends javax.swing.JDialog {
     public static final int RET_OK = 1;
 
     /**
-     * Creates new form PropFornecedor
+     * Construtor - Cria o diálogo de propriedades do Fornecedor para inclusão ou alteração
+     * @param parent
+     * @param modal
+     * @param forn 
+     * Objeto do tipo Fornecedor. Se null o diálogo iniciará em modo de inclusão,
+     * caso contrário, iniciará em modo de alteração
      */
     public PropFornecedor(java.awt.Frame parent, boolean modal, Fornecedor forn) {
         super(parent, modal);
@@ -64,6 +69,11 @@ public class PropFornecedor extends javax.swing.JDialog {
             } catch (GeralException ex) {
                 JOptionPane.showMessageDialog(null, ex.getMessage());
             }
+            try {
+                lstProdsNaoForn.addAll(f.listarProduto());
+            } catch (GeralException ex) {
+                JOptionPane.showMessageDialog(null, ex.getMessage());
+            }
         }else{
             isIns= false;
             setFields(forn);
@@ -74,8 +84,12 @@ public class PropFornecedor extends javax.swing.JDialog {
                 JOptionPane.showMessageDialog(null, ex.getMessage());
             }
         }
+        
     }
     
+    /*
+     * Atualiza a lista de estados
+     */
     private void atlzEstados(){
         List<Estado> lista= new ArrayList();
         try{
@@ -90,6 +104,9 @@ public class PropFornecedor extends javax.swing.JDialog {
         }
     }
     
+    /*
+     * Preenche os campos do formulário com os dados do objeto Fornecedor
+     */
     private void setFields(Fornecedor forn){
         jtxtCod.setText(forn.getCodForn().toString());
         jftfCnpj.setText(forn.getCnpj());
@@ -111,13 +128,30 @@ public class PropFornecedor extends javax.swing.JDialog {
         jftfCep.setText(forn.getCep());
         jftfFone.setText(forn.getFone());
         jtxtEmail.setText(forn.getEmail());
-        DefaultListModel<Produto> dlm= new DefaultListModel();
+        /*DefaultListModel<Produto> dlm= new DefaultListModel();
         for (Produto prod: forn.getProdutos()){
             dlm.addElement(prod);
         }
-        jlstProdsForn.setModel(dlm);
+        jlstProdsForn.setModel(dlm);*/
+        lstProdsForn.clear();
+        lstProdsForn.addAll(forn.getProdutos());
+        try {
+            lstProdsNaoForn.addAll(f.pesquisarProdsQueNaoSaoDoForn(forn.getCodForn()));
+        } catch (GeralException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage());
+        }
+        if (lstProdsNaoForn.size() > 0){
+            jlstProdsNaoFornecidos.setSelectedIndex(0);
+        }
+        if (lstProdsForn.size()>0){
+            jlstProdsForn.setSelectedIndex(0);
+        }
     }
     
+    /*
+     * Preenche o objeto do tipo Fornecedor com os dados constantes nos campos
+     * do formulário
+     */
     private void setFornecedor(Fornecedor forn){
         String mask= "[()_./-]";
         if (!isIns){
@@ -139,6 +173,27 @@ public class PropFornecedor extends javax.swing.JDialog {
         forn.setFone(jftfFone.getText().replaceAll(mask, ""));
         forn.setEmail(jtxtEmail.getText());
     }
+    
+    /**
+     * Ordena as listas de produtos fornecidos e nao fornecidos
+     * @param l 
+     * Lista a ser ordenada
+     */
+    private void ordenarLista(List<Produto> l){
+        Produto prod;
+        int idx= l.size();
+        if (l.size() > 1){
+            for (int i=0;i<idx-1;i++){
+                for (int j=i+1;j<idx;j++){
+                    if (l.get(i).toString().compareTo(l.get(j).toString())>0){
+                        prod= l.get(i);
+                        l.set(i, l.get(j));
+                        l.set(j, prod);
+                    }
+                }
+            }
+        }
+    }
 
     /**
      * @return the return status of this dialog - one of RET_OK or RET_CANCEL
@@ -150,6 +205,7 @@ public class PropFornecedor extends javax.swing.JDialog {
     /**
      * 
      * @return 
+     * Retorna um objeto do tipo Fornecedor com as propriedades salvas.
      */
     public Fornecedor getProperties(){
         return fornecedor;
@@ -165,7 +221,8 @@ public class PropFornecedor extends javax.swing.JDialog {
     private void initComponents() {
         bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
-        lstProds = new LinkedList<Produto>();
+        lstProdsNaoForn = new LinkedList<Produto>();
+        lstProdsForn = new LinkedList<Produto>();
         btnSalvar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
         lblImg = new javax.swing.JLabel();
@@ -215,7 +272,7 @@ public class PropFornecedor extends javax.swing.JDialog {
         jLabel12 = new javax.swing.JLabel();
         jtxtEmail = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jlstProdutos = new javax.swing.JList<Produto>();
+        jlstProdsNaoFornecidos = new javax.swing.JList<Produto>();
         jLabel13 = new javax.swing.JLabel();
         btnAdicionaUmProd = new javax.swing.JButton();
         btnAdiconaTodosProds = new javax.swing.JButton();
@@ -225,7 +282,9 @@ public class PropFornecedor extends javax.swing.JDialog {
         jScrollPane2 = new javax.swing.JScrollPane();
         jlstProdsForn = new javax.swing.JList<Produto>();
 
-        lstProds= org.jdesktop.observablecollections.ObservableCollections.observableList(lstProds);
+        lstProdsNaoForn= org.jdesktop.observablecollections.ObservableCollections.observableList(lstProdsNaoForn);
+
+        lstProdsForn= org.jdesktop.observablecollections.ObservableCollections.observableList(lstProdsForn);
 
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
@@ -279,14 +338,18 @@ public class PropFornecedor extends javax.swing.JDialog {
 
         jLabel12.setText("E-mail");
 
-        org.jdesktop.swingbinding.JListBinding jListBinding = org.jdesktop.swingbinding.SwingBindings.createJListBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, lstProds, jlstProdutos, "");
+        org.jdesktop.swingbinding.JListBinding jListBinding = org.jdesktop.swingbinding.SwingBindings.createJListBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, lstProdsNaoForn, jlstProdsNaoFornecidos, "");
         bindingGroup.addBinding(jListBinding);
 
-        jScrollPane1.setViewportView(jlstProdutos);
+        jScrollPane1.setViewportView(jlstProdsNaoFornecidos);
 
-        jLabel13.setText("Lista de todos os produtos");
+        jLabel13.setText("Lista de produtos não fornecidos");
 
         btnAdicionaUmProd.setText(">");
+
+        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, jlstProdsNaoFornecidos, org.jdesktop.beansbinding.ELProperty.create("${selectedElement!=null}"), btnAdicionaUmProd, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
+        bindingGroup.addBinding(binding);
+
         btnAdicionaUmProd.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAdicionaUmProdActionPerformed(evt);
@@ -295,11 +358,41 @@ public class PropFornecedor extends javax.swing.JDialog {
 
         btnAdiconaTodosProds.setText(">>");
 
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, jlstProdsNaoFornecidos, org.jdesktop.beansbinding.ELProperty.create("${selectedElement!=null}"), btnAdiconaTodosProds, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
+        bindingGroup.addBinding(binding);
+
+        btnAdiconaTodosProds.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAdiconaTodosProdsActionPerformed(evt);
+            }
+        });
+
         btnRemoveTodosProds.setText("<<");
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, jlstProdsForn, org.jdesktop.beansbinding.ELProperty.create("${selectedElement!=null}"), btnRemoveTodosProds, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
+        bindingGroup.addBinding(binding);
+
+        btnRemoveTodosProds.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRemoveTodosProdsActionPerformed(evt);
+            }
+        });
 
         btnRemoveUmProd.setText("<");
 
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, jlstProdsForn, org.jdesktop.beansbinding.ELProperty.create("${selectedElement!=null}"), btnRemoveUmProd, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
+        bindingGroup.addBinding(binding);
+
+        btnRemoveUmProd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRemoveUmProdActionPerformed(evt);
+            }
+        });
+
         jLabel14.setText("Produtos fornecidos");
+
+        jListBinding = org.jdesktop.swingbinding.SwingBindings.createJListBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, lstProdsForn, jlstProdsForn);
+        bindingGroup.addBinding(jListBinding);
 
         jScrollPane2.setViewportView(jlstProdsForn);
 
@@ -463,6 +556,10 @@ public class PropFornecedor extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Salva as alterações ou o novo Fornecedor.
+     * @param evt 
+     */
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
         Fornecedor forn= new Fornecedor();
         setFornecedor(forn);
@@ -478,6 +575,9 @@ public class PropFornecedor extends javax.swing.JDialog {
         doClose(RET_OK);
     }//GEN-LAST:event_btnSalvarActionPerformed
     
+    /*
+     * Cancela a operação de inclusão ou alteração
+     */
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         doClose(RET_CANCEL);
     }//GEN-LAST:event_btnCancelarActionPerformed
@@ -488,11 +588,71 @@ public class PropFornecedor extends javax.swing.JDialog {
     private void closeDialog(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_closeDialog
         doClose(RET_CANCEL);
     }//GEN-LAST:event_closeDialog
-
+    
+    /**
+     * Adiciona um produto a lista de produtos fornecidos pelo fornecedor.
+     * @param evt 
+     */
     private void btnAdicionaUmProdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionaUmProdActionPerformed
-        //lstProdsForn lstProds.getSelectedValue()
+        lstProdsForn.add(lstProdsNaoForn.get(jlstProdsNaoFornecidos.getSelectedIndex()));
+        lstProdsNaoForn.remove(jlstProdsNaoFornecidos.getSelectedIndex());
+        if (lstProdsForn.size()>0){
+            /*List<Produto> lst= */ordenarLista(lstProdsForn);
+            //lstProdsForn.clear();
+            //lstProdsForn.addAll(lst);
+            jlstProdsForn.setSelectedIndex(lstProdsForn.size()-1);
+        }
+        if (lstProdsNaoForn.size()>0){
+            ordenarLista(lstProdsNaoForn);
+            jlstProdsNaoFornecidos.setSelectedIndex(lstProdsNaoForn.size()-1);
+        }
     }//GEN-LAST:event_btnAdicionaUmProdActionPerformed
     
+    /**
+     * Remove um produto da lista de produtos fornecidos pelo fornecedor.
+     * @param evt 
+     */
+    private void btnRemoveUmProdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveUmProdActionPerformed
+        int idx;
+        if (lstProdsForn.size() > 0){
+            if (jlstProdsForn.isSelectionEmpty()){
+                idx= lstProdsForn.size()-1;
+            }else{
+                idx= jlstProdsForn.getSelectedIndex();
+            }
+            lstProdsNaoForn.add(lstProdsForn.get(idx));
+            ordenarLista(lstProdsNaoForn);
+            jlstProdsNaoFornecidos.setSelectedIndex(lstProdsNaoForn.size()-1);
+            lstProdsForn.remove(idx);
+            if (lstProdsForn.size()>0){
+                ordenarLista(lstProdsForn);
+                jlstProdsForn.setSelectedIndex(lstProdsForn.size()-1);
+            }
+        }
+    }//GEN-LAST:event_btnRemoveUmProdActionPerformed
+    
+    /**
+     * Adiciona todos os produtos a lista de produtos fornecidos pelo fornecedor.
+     * @param evt 
+     */
+    private void btnAdiconaTodosProdsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdiconaTodosProdsActionPerformed
+        lstProdsForn.addAll(lstProdsNaoForn);
+        lstProdsNaoForn.clear();
+    }//GEN-LAST:event_btnAdiconaTodosProdsActionPerformed
+    
+    /**
+     * Remove todos os produtos fornecidos pelo fornecedor.
+     * @param evt 
+     */
+    private void btnRemoveTodosProdsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveTodosProdsActionPerformed
+        lstProdsNaoForn.addAll(lstProdsForn);
+        lstProdsForn.clear();
+    }//GEN-LAST:event_btnRemoveTodosProdsActionPerformed
+    
+    /**
+     * Fecha a janela de diálogo.
+     * @param retStatus 
+     */
     private void doClose(int retStatus) {
         returnStatus = retStatus;
         setVisible(false);
@@ -576,7 +736,7 @@ public class PropFornecedor extends javax.swing.JDialog {
     private javax.swing.JFormattedTextField jftfCnpj;
     private javax.swing.JFormattedTextField jftfFone;
     private javax.swing.JList<Produto> jlstProdsForn;
-    private javax.swing.JList<Produto> jlstProdutos;
+    private javax.swing.JList<Produto> jlstProdsNaoFornecidos;
     private javax.swing.JTextField jtxtBairro;
     private javax.swing.JTextField jtxtCod;
     private javax.swing.JTextField jtxtComp;
@@ -586,7 +746,8 @@ public class PropFornecedor extends javax.swing.JDialog {
     private javax.swing.JTextField jtxtNome;
     private javax.swing.JTextField jtxtNum;
     private javax.swing.JLabel lblImg;
-    private java.util.List<Produto> lstProds;
+    private java.util.List<Produto> lstProdsForn;
+    private java.util.List<Produto> lstProdsNaoForn;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
     private int returnStatus = RET_CANCEL;

@@ -187,6 +187,23 @@ public class ControladorProduto {
         }
     }
     
+    public List<Produto> pesquisarProdsQueNaoSaoDoForn(Integer codForn) 
+            throws ControladorException{
+        try{
+            return rpProd.pesquisarProdsQueNaoSaoDoForn(codForn);
+        }
+        catch(ConexaoException e){
+            throw new ControladorException(user.getNome(),
+                    rb.getString("CtrlErroPesqIndisp") + " produto.",
+                    ControladorProduto.class.getName()+".pesquisarProdsQueNaoSaoDoForn()");
+        }
+        catch(RepositorioException e){
+            throw new ControladorException(user.getNome(),
+                    rb.getString("CtrlErroPesquisar") + " produto.",
+                    ControladorProduto.class.getName()+".pesquisarProdsQueNaoSaoDoForn()");
+        }
+    }
+    
     public Produto trazer(Integer cod, boolean listarForns) throws ControladorException{
         try{
             return rpProd.pesqCodProd(cod, listarForns);

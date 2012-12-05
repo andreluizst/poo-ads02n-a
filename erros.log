@@ -42,3 +42,7 @@ Sistema -> 03/12/2012 - 12:48:26
 	ce.model.dao.RepositorioFornecedor.pesquisar(): com.mysql.jdbc.exceptions.jdbc4.MySQLNonTransientConnectionException: No operations allowed after statement closed.
 joao.souza -> 03/12/2012 - 12:48:26
 	ce.model.regra.ControladorFornecedor.pesquisar(): Erro ao tentar pesquisar fornecedor.
+Sistema -> 04/12/2012 - 21:44:47
+	ce.model.dao.RepositorioProduto.listar(): com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Unknown column 'fp.nome' in 'order clause'
+joao.souza -> 04/12/2012 - 21:44:47
+	ce.model.regra.ControladorProduto.listar(): Erro ao tentar listar produto.

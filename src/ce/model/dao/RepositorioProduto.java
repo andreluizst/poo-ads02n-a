@@ -233,7 +233,7 @@ public class RepositorioProduto implements IRepositorioProduto{
         String sqlForns= "SELECT fp.codProd, fp.codForn from FornXProd as fp"
                 + " inner join Fornecedor as f on fp.codProd=?"
                 + " and f.codForn = fp.codForn"
-                + " order by fp.nome, fp.Cnpj";
+                + " order by f.nome, f.Cnpj";
         try{
             Statement statement = c.createStatement();
             ResultSet rs = statement.executeQuery(sql);
@@ -273,6 +273,67 @@ public class RepositorioProduto implements IRepositorioProduto{
         catch(RepositorioException ex){
             throw new RepositorioListarException(ex,
                     RepositorioProduto.class.getName()+".listar()."+ex.getPathClassCall());
+        }
+        finally{
+            gc.desconectar(c);
+        }
+    }
+    
+    @Override
+    public List<Produto> pesquisarProdsQueNaoSaoDoForn(Integer codForn) 
+            throws ConexaoException, RepositorioPesquisarException{
+        List<Produto> lista = new ArrayList();
+        Produto p= null;
+        //Fornecedor f= null;
+        Connection c = gc.conectar();
+        String sql= "Select c.Descricao, p.codProd, p.descProd, p.qtdeEstoq,"
+                + " p.qtdeMin, p.qtdeIdeal, p.statusProd, p.codCateg,"
+                + " p.codUnid from Categoria as c "
+                + " inner join Produto as p on p.codCateg = c.codCateg"
+                + " and p.codProd not in (select distinct fp.codProd from FornXProd as fp"
+                + " where fp.codForn = ?)"
+                + " order by c.Descricao, p.descProd";
+        /*String sqlForns= "SELECT fp.codProd, fp.codForn from FornXProd as fp"
+                + " inner join Fornecedor as f on fp.codProd=?"
+                + " and f.codForn = fp.codForn"
+                + " order by f.nome, f.Cnpj";*/
+        try{
+            PreparedStatement pstmt = c.prepareStatement(sql);
+            pstmt.setInt(1, codForn);
+            ResultSet rs = pstmt.executeQuery();
+            IRepositorioCategoria rpCateg = new RepositorioCategoria();
+            IRepositorioUnidade rpUnid= new RepositorioUnidade();
+            //IRepositorioFornecedor rpForn= new RepositorioFornecedor();
+            while (rs.next()){
+                p= new Produto(rs.getInt("codProd"), rs.getString("descProd"),
+                        rs.getDouble("qtdeEstoq"), rs.getDouble("qtdeMin"),
+                        rs.getDouble("qtdeIdeal"), rs.getInt("statusProd"),
+                        rpCateg.pesqPorCod(rs.getInt("codCateg")),
+                        rpUnid.pesqCod(rs.getInt("codUnid")));
+                /*PreparedStatement pstmtForns= c.prepareStatement(sqlForns);
+                pstmtForns.setInt(1, p.getCodProd());
+                ResultSet rsForns= pstmtForns.executeQuery();
+                List<Fornecedor> fornecedores= new ArrayList();
+                while (rsForns.next()){
+                    f= rpForn.pesqCodForn(rsForns.getInt("codForn"), false);
+                    fornecedores.add(f);
+                }
+                rsForns.close();
+                pstmtForns.close();
+                p.setFornecedores(fornecedores);*/
+                lista.add(p);
+            }
+            rs.close();
+            pstmt.close();
+            return lista;
+        }
+        catch(SQLException e){
+            throw new RepositorioPesquisarException(e, 
+                    RepositorioProduto.class.getName()+".pesquisarProdsQueNaoSaoDoForn()");
+        }
+        catch(RepositorioException ex){
+            throw new RepositorioPesquisarException(ex,
+                    RepositorioProduto.class.getName()+".pesquisarProdsQueNaoSaoDoForn()."+ex.getPathClassCall());
         }
         finally{
             gc.desconectar(c);
