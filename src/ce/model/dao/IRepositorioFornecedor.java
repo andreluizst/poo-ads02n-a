@@ -34,4 +34,6 @@ public interface IRepositorioFornecedor {
             throws ConexaoException, RepositorioPesquisarException;
     public Fornecedor pesqCnpj(String cnpj, boolean comProds) throws ConexaoException, 
             RepositorioPesquisarException;
+    public List<Fornecedor> pesqFornsQueNaoFornecemEsteProd(Integer codProd)
+            throws ConexaoException, RepositorioPesquisarException;
 }

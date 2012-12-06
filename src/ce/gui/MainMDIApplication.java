@@ -6,15 +6,9 @@ package ce.gui;
 
 import ce.erro.GeralException;
 import ce.model.fachada.Fachada;
-import java.awt.Frame;
-import java.awt.event.ActionListener;
 import java.beans.PropertyVetoException;
 import java.util.ArrayList;
-import java.util.Hashtable;
 import java.util.List;
-import java.util.Locale;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JInternalFrame;
 import javax.swing.JMenuItem;
@@ -25,13 +19,12 @@ import javax.swing.JOptionPane;
  * @author Andre
  */
 public class MainMDIApplication extends javax.swing.JFrame {
-    private static JInternalFrame activeWindow;//IActionsGui activeWindow;
+    private static JInternalFrame activeWindow;
     private Fachada f;
     private Resource res;
     private ImageIcon fundo;
     private List<JInternalFrame> janelas;
     private boolean userIsAdm;
-    //private JIFCategoria jifCategoria= new JIFCategoria();
     
     /**
      * Creates new form MainMDIApplication
@@ -63,14 +56,12 @@ public class MainMDIApplication extends javax.swing.JFrame {
         String sTexto="";
         janelas.add(janela);
         JMenuItem novoMenuItem= new JMenuItem();
-        //novoMenuItem.setName("miJanela"+janelas.size());
         sTexto= ((IActionsGui)janela).getActivationName();
-        //novoMenuItem.setText(janelas.size()+ " " + sTexto);
-        //s= ((Integer)janelas.size()).toString();
         novoMenuItem.setName("mi"+sTexto);
         novoMenuItem.setText(sTexto);
         novoMenuItem.setMnemonic(sTexto.charAt(0));
         novoMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            @Override
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 activeWindow(evt);
             }
@@ -80,13 +71,6 @@ public class MainMDIApplication extends javax.swing.JFrame {
         janela.setVisible(true);
         setActiveWindow(janela);
         atlzMenu();
-        
-        /*
-         * desktopPane.add(jifUsuario, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        registrarJanela(jifUsuario);
-        jifUsuario.setVisible(true);
-        setActiveWindow(jifUsuario);
-         */
     }
     
     /*
@@ -160,38 +144,6 @@ public class MainMDIApplication extends javax.swing.JFrame {
         if (janelas.size() > 1){
             activeWindow(((IActionsGui)janelas.get(0)).getActivationName());
         }
-        /*int i;
-        int x;
-        boolean active;
-        JInternalFrame jifJanela;
-        String activationName= ((IActionsGui)activeWindow).getActivationName();
-        if (mnJanela.getItemCount() > 3){
-            i=3;
-            x=0;
-            active=false;
-            do
-            {
-                if (((IActionsGui)janelas.get(i)).getActivationName().compareTo(activationName) == 0){
-                    if (active){
-                        janelas.get(i).setVisible(false);
-                        janelas.get(i).setVisible(true);
-                        jifJanela= janelas.get(i);
-                        janelas.remove(i);
-                        janelas.add(jifJanela);
-                        if (x > 10){
-                            JOptionPane.showMessageDialog(null, "Erro de lógica em activeNextWindow");
-                            break;
-                        }
-                    }
-                    active=true;
-                }
-                i++;
-                if (i == mnJanela.getItemCount()){
-                    i= 3;
-                }
-            }
-            while (!active);
-        }*/
     }
     
     /**
@@ -349,6 +301,11 @@ public class MainMDIApplication extends javax.swing.JFrame {
         mnLocalE.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         mnLocalE.setMnemonic('l');
         mnLocalE.setText("Local de estoque");
+        mnLocalE.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnLocalEActionPerformed(evt);
+            }
+        });
         jMenu1.add(mnLocalE);
 
         mnEntrada.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
@@ -554,11 +511,7 @@ public class MainMDIApplication extends javax.swing.JFrame {
 
     private void miCategoraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miCategoraActionPerformed
         CategoriaJif jifCategoria= new CategoriaJif();
-        //desktopPane.add(jifCategoria, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        //jifCategoria.setBounds(0, 0, 450, 350);
         registrarJanela(jifCategoria);
-        //jifCategoria.setVisible(true);
-       // setActiveWindow(jifCategoria);
     }//GEN-LAST:event_miCategoraActionPerformed
 
     private void mnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnNovoActionPerformed
@@ -577,7 +530,6 @@ public class MainMDIApplication extends javax.swing.JFrame {
 
     private void jmnFecharAtualActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmnFecharAtualActionPerformed
         if (activeWindow != null){
-            //activeWindow.setVisible(false);
             activeWindow.doDefaultCloseAction();
         }
     }//GEN-LAST:event_jmnFecharAtualActionPerformed
@@ -620,11 +572,7 @@ public class MainMDIApplication extends javax.swing.JFrame {
 
     private void mnFuncionarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnFuncionarioActionPerformed
         JIFFuncionario jifFun= new JIFFuncionario();
-        //desktopPane.add(jifFun, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        //jifCategoria.setBounds(0, 0, 450, 350);
         registrarJanela(jifFun);
-        //jifFun.setVisible(true);
-        //setActiveWindow(jifFun);
         try {
             jifFun.setMaximum(true);
         } catch (PropertyVetoException ex) {
@@ -634,18 +582,12 @@ public class MainMDIApplication extends javax.swing.JFrame {
 
     private void mnPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnPerfilActionPerformed
         JIFPerfil jifPerfil= new JIFPerfil();
-        //desktopPane.add(jifPerfil, javax.swing.JLayeredPane.DEFAULT_LAYER);
         registrarJanela(jifPerfil);
-        //jifPerfil.setVisible(true);
-        //setActiveWindow(jifPerfil);
     }//GEN-LAST:event_mnPerfilActionPerformed
 
     private void mnUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnUsuarioActionPerformed
         JIFUsuario jifUsuario= new JIFUsuario();
-        //desktopPane.add(jifUsuario, javax.swing.JLayeredPane.DEFAULT_LAYER);
         registrarJanela(jifUsuario);
-        //jifUsuario.setVisible(true);
-        //setActiveWindow(jifUsuario);
     }//GEN-LAST:event_mnUsuarioActionPerformed
 
     private void mnListarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnListarActionPerformed
@@ -662,6 +604,11 @@ public class MainMDIApplication extends javax.swing.JFrame {
     private void jmnProximaJanelaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmnProximaJanelaActionPerformed
         activeNextWindow();
     }//GEN-LAST:event_jmnProximaJanelaActionPerformed
+
+    private void mnLocalEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnLocalEActionPerformed
+        JIFLocalEstoque jifLocalEstoque= new JIFLocalEstoque();
+        registrarJanela(jifLocalEstoque);
+    }//GEN-LAST:event_mnLocalEActionPerformed
 
     /**
      * @param args the command line arguments

@@ -58,3 +58,8 @@ joao.souza -> 05/12/2012 - 09:21:39
 	ce.model.regra.ControladorUsuario.validarLogin(): Senha inválida!
 joao.souza -> 05/12/2012 - 09:21:51
 	ce.model.regra.ControladorFornecedor.validarDados(): CNPJ inválido.
+Sistema -> 05/12/2012 - 20:54:02
+	ce.model.dao.RepositorioFornecedor.excluir(): com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException: Cannot delete or update a parent row: a foreign key constraint fails (`estoque`.`fornxprod`, CONSTRAINT `fornxprod_fkCodForn` FOREIGN KEY (`codForn`) REFERENCES `fornecedor` (`codForn`))
+joao.souza -> 05/12/2012 - 20:54:02
+	ce.model.regra.ControladorFornecedor.excluir(): Não é possível excluir o fornecedor informado, pois o mesmo
+ está sendo usando em uma ou mais entrada e/ou saída!

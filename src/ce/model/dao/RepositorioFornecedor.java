@@ -44,6 +44,8 @@ public class RepositorioFornecedor implements IRepositorioFornecedor{
         String sql = "insert into Fornecedor(cnpj, nome, logradouro, num, comp,"
                 + " bairro, municipio, uf, cep, fone, email)"
                 + " values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sqlProds= "insert into FornXProd(codForn, codPRod) values(?,?)";
+        Fornecedor novoForn;
         try{
             PreparedStatement pstmt = c.prepareStatement(sql);
             pstmt.setString(1, f.getCnpj());
@@ -59,8 +61,19 @@ public class RepositorioFornecedor implements IRepositorioFornecedor{
             pstmt.setString(11, f.getEmail());
             pstmt.execute();
             pstmt.close();
+            novoForn= pesqCnpj(f.getCnpj(), false);
+            if (f.getProdutos().size()>0){
+                PreparedStatement pstmtProds;//= c.prepareStatement(sqlProds);
+                for (int i=0;i<f.getProdutos().size();i++){
+                    pstmtProds= c.prepareStatement(sqlProds);
+                    pstmtProds.setInt(1, novoForn.getCodForn());
+                    pstmtProds.setInt(2, f.getProdutos().get(i).getCodProd());
+                    pstmtProds.executeUpdate();
+                    pstmtProds.close();
+                }
+            }
         }
-        catch(SQLException e){
+        catch(SQLException | RepositorioPesquisarException e){
             throw new RepositorioInserirException(e, 
                     RepositorioFornecedor.class.getName()+".inserir()");
         }
@@ -86,7 +99,7 @@ public class RepositorioFornecedor implements IRepositorioFornecedor{
                 + "num=?,comp=?,bairro=?, municipio=?, uf=?, cep=?, fone=?,"
                 + "email=? where codForn=?";
         boolean atualizaFornXProd= false;
-        List<Produto> ProdsForn= new ArrayList();
+        List<Produto> prodsForn= new ArrayList();
         Produto p= null;
         String sqlProds= "select distinct codProd, codForn from FornXProd"
                 + " where codForn=?";
@@ -112,14 +125,14 @@ public class RepositorioFornecedor implements IRepositorioFornecedor{
             IRepositorioProduto rpProd= new RepositorioProduto();
             while (rs.next()){
                 p= rpProd.pesqCodProd(rs.getInt("codProd"), false);
-                ProdsForn.add(p);
+                prodsForn.add(p);
             }
-            if (ProdsForn.size() != f.getProdutos().size()){
+            if (prodsForn.size() != f.getProdutos().size()){
                 atualizaFornXProd=true;
             }else{
                 if (f.getProdutos().size() > 0){
                     for (int i=0;i<f.getProdutos().size();i++){
-                        if (ProdsForn.get(i).getCodProd() != 
+                        if (prodsForn.get(i).getCodProd() != 
                                 f.getProdutos().get(i).getCodProd()){
                             atualizaFornXProd= true;
                             break;
@@ -178,7 +191,12 @@ public class RepositorioFornecedor implements IRepositorioFornecedor{
             RepositorioForeignKeyException, RepositorioExcluirException{
         Connection c= gerenciadorConexao.conectar();
         String sql = "delete from Fornecedor where codForn=?";
+        String sqlDelProds= "delete from FornXProd where codForn=?";
         try{
+            PreparedStatement pstmtProdsForn= c.prepareStatement(sqlDelProds);
+            pstmtProdsForn.setInt(1, codForn);
+            pstmtProdsForn.execute();
+            pstmtProdsForn.close();
             PreparedStatement pstmt = c.prepareStatement(sql);
             pstmt.setInt(1, codForn);
             pstmt.execute();
@@ -486,6 +504,62 @@ public class RepositorioFornecedor implements IRepositorioFornecedor{
         catch(RepositorioException ex){
             throw new RepositorioPesquisarException(ex, 
                     RepositorioFornecedor.class.getName()+".pesqCnpj()."+ex.getPathClassCall());
+        }
+        finally{
+            gerenciadorConexao.desconectar(c);
+        }
+    }
+    
+    /**
+     * Pesquisa os fornecedores que não fornecem o produto especificado.
+     * @param codProd
+     * Código do produto cujos fornecedores não constarão na lista.
+     * @return
+     * Retorna uma lista com o(s) Fornecedor(es) encontrado(s).
+     * @throws ConexaoException
+     * Se houver algum problema com a conexão será lançada uma ConexaoException
+     * @throws RepositorioPesquisarException 
+     * Se houver algum erro na execução do SQL será lançada uma exceção.
+     */
+    @Override
+    public List<Fornecedor> pesqFornsQueNaoFornecemEsteProd(Integer codProd)
+            throws ConexaoException, RepositorioPesquisarException{
+        List<Fornecedor> lista = new ArrayList();
+        Fornecedor f=null;
+        Connection c= gerenciadorConexao.conectar();
+        String sql= "Select f.codForn, f.nome, f.CNPJ, f.logradouro, f.Num, "
+                + "f.Comp, f.Bairro, f.Municipio, f.UF, "
+                + "f.CEP, f.Fone, f.Email from Fornecedor as f "
+                + "where f.codForn not in (select distinct fp.codForn "
+                + "from FornXProd as fp where fp.codProd = ?) "
+                + "order by f.nome, f.CNPJ";
+        try{
+            PreparedStatement pstmt= c.prepareStatement(sql);
+            pstmt.setInt(1, codProd);
+            ResultSet rs= pstmt.executeQuery();
+            IRepositorioEstado rpEst= new RepositorioEstado();
+            while (rs.next()){
+                f = new Fornecedor(rs.getInt("codForn"), rs.getString("nome"), 
+                        rs.getString("CNPJ"), rs.getString("logradouro"),
+                        rs.getInt("Num"), rs.getString("Comp"), 
+                        rs.getString("Bairro"), rs.getString("Municipio"),
+                        rpEst.pesqUf(rs.getString("UF")), rs.getString("CEP"), 
+                        rs.getString("Fone"), rs.getString("Email"));
+                lista.add(f);
+            }
+            rs.close();
+            pstmt.close();
+            return lista;
+        }
+        catch(SQLException e){
+            throw new RepositorioPesquisarException(e, 
+                    RepositorioFornecedor.class.getName()
+                    +".pesqFornsQueNaoFornecemEsteProd()");
+        }
+        catch(RepositorioException ex){
+            throw new RepositorioPesquisarException(ex, 
+                    RepositorioFornecedor.class.getName()
+                    +".pesqFornsQueNaoFornecemEsteProd()."+ex.getPathClassCall());
         }
         finally{
             gerenciadorConexao.desconectar(c);

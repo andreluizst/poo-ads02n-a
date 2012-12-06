@@ -102,6 +102,9 @@
                     <Property name="mnemonic" type="int" value="108"/>
                     <Property name="text" type="java.lang.String" value="Local de estoque"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnLocalEActionPerformed"/>
+                  </Events>
                 </MenuItem>
                 <MenuItem class="javax.swing.JMenuItem" name="mnEntrada">
                   <Properties>

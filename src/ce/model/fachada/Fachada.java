@@ -185,6 +185,11 @@ public class Fachada {
         return ctrlForn.pesquisar(nome);
     }
     
+    public List<Fornecedor> pesqFornsQueNaoFornecemEsteProd(Integer codProd)
+            throws GeralException{
+        return ctrlForn.pesqFornsQueNaoFornecemEsteProd(codProd);
+    }
+    
     public Fornecedor trazerFornecedor(Integer cod, boolean comProdutos)
             throws GeralException{
         ctrlForn.verificarSeExiste(cod);

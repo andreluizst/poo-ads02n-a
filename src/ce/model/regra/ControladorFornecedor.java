@@ -31,14 +31,27 @@ public class ControladorFornecedor {
     private IRepositorioFornecedor rpForn= new RepositorioFornecedor();
     private ResourceBundle rb= ResourceBundle.getBundle("ce.erro.Erro");
     
+    /**
+     * Construtor padrão
+     */
     public ControladorFornecedor(){
         user= new Usuario();
     }
-    
+    /**
+     * 
+     * @param user 
+     */
     public ControladorFornecedor(Usuario user){
         this.user=user;
     }
     
+    /**
+     * Valida os dados do fornecedor especificado.
+     * @param f
+     * Objeto do tipo Fornecedor que será validado.
+     * @throws ControladorException
+     * Se houver algum erro na execução será lançada uma exceção.
+     */
     public void validarDados(Fornecedor f) throws ControladorException{
         /*boolean contemErro= false;
         List fieldsName= new ArrayList();
@@ -88,7 +101,13 @@ public class ControladorFornecedor {
         }
     }
     
-    
+    /**
+     * Verifica se o fornecedor especificado pode ser incluido.
+     * @param f
+     * Objeto do tipo Fornecedor que será verificado.
+     * @throws ControladorException
+     * Se houver algum erro na execução será lançada uma exceção.
+     */
     public void verificarSePodeInserir(Fornecedor f) throws ControladorException{
         try{
             Fornecedor forn= rpForn.pesqCnpj(f.getCnpj(), false);
@@ -110,6 +129,13 @@ public class ControladorFornecedor {
         }
     }
     
+    /**
+     * Inclui um fornecedor
+     * @param f
+     * Objeto do tipo Fornecedor que será incluido.
+     * @throws ControladorException
+     * Se houver algum erro na execução será lançada uma exceção.
+     */
     public void inserir(Fornecedor f) throws ControladorException{
         try{
             rpForn.inserir(f);
@@ -126,6 +152,13 @@ public class ControladorFornecedor {
         }
     }
     
+    /**
+     * Altera um fornecedor
+     * @param f
+     * Objeto do tipo Fornecedor que será alterado.
+     * @throws ControladorException
+     * Se houver algum erro na execução será lançada uma exceção.
+     */
     public void alterar(Fornecedor f) throws ControladorException{
         try{
             rpForn.alterar(f);
@@ -142,6 +175,13 @@ public class ControladorFornecedor {
         }
     }
     
+    /**
+     * Verificar se um determinado fornecedor existe.
+     * @param cod
+     * Código do fornecedor para verificação.
+     * @throws ControladorException
+     * Se houver algum erro na execução será lançada uma exceção.
+     */
     public void verificarSeExiste(Integer cod) throws ControladorException {
         try{
             Fornecedor forn= rpForn.pesqCodForn(cod, false);
@@ -163,10 +203,24 @@ public class ControladorFornecedor {
         }
     }
     
+    /**
+     * Verifica se um determinado fornecedor existe. 
+     * @param f
+     * Objeto do tipo Fornecedor que será verificado.
+     * @throws ControladorException
+     * Se houver algum erro na execução será lançada uma exceção.
+     */
     public void verificarSeExiste(Fornecedor f) throws ControladorException {
         verificarSeExiste(f.getCodForn());
     }
     
+    /**
+     * Exclui um fornecedor
+     * @param f
+     * Objeto do tipo Fornecedor que deseja excluir
+     * @throws ControladorException
+     * Se houver algum erro na execução será lançada uma exceção.
+     */
     public void excluir(Fornecedor f) throws ControladorException{
         try{
             rpForn.excluir(f.getCodForn());
@@ -188,6 +242,13 @@ public class ControladorFornecedor {
         }
     }
     
+    /**
+     * Lista todos os fornecedores existentes.
+     * @return
+     * Retorna uma lista com os Fornecedores
+     * @throws ControladorException
+     * Se houver algum erro na execução será lançada uma exceção.
+     */
     public List<Fornecedor> listar() throws ControladorException{
         try{
             return rpForn.listar();
@@ -204,6 +265,16 @@ public class ControladorFornecedor {
         }
     }
     
+    /**
+     * Retorna um fornecedor com ou sem os produtos fornecidos.
+     * @param cod
+     * @param comProds
+     * Se false a lista de produtos do Fornecedor não será preenchida.
+     * @return
+     * Fornecedor
+     * @throws ControladorException
+     * Se houver algum erro na execução será lançada uma exceção.
+     */
     public Fornecedor trazer(Integer cod, boolean comProds) throws ControladorException{
         try{
             Fornecedor forn= rpForn.pesqCodForn(cod, comProds);
@@ -226,6 +297,17 @@ public class ControladorFornecedor {
         }
     }
     
+    /**
+     * Pesquisa fonrcedor pelo CNPJ
+     * @param cnpj
+     * CNPJ do Fornecedor desejado
+     * @param comProds
+     * Se false a lista de produtos do Fornecedor não será preenchida.
+     * @return
+     * Retorna um Fornecedor com todos os seus atributos preenchidos
+     * @throws ControladorException
+     * Se houver algum erro na execução será lançada uma exceção.
+     */
     public Fornecedor trazer(String cnpj, boolean comProds) throws ControladorException{
         try{
             Fornecedor forn= rpForn.pesqCnpj(cnpj, comProds);
@@ -243,6 +325,17 @@ public class ControladorFornecedor {
         }
     }
     
+    /**
+     * Pesquisa fornecedores por nome
+     * @param nome
+     * Nome do fornecedor desejado.
+     * É possível a utilização de caracteres coringas no parâmetro nome dando
+     * maior flexibilidade a pesquisa. Ex: "comer%"
+     * @return
+     * Retorna uma lista com o(s) Fornecedor(es) encontrado(s).
+     * @throws ControladorException
+     * Se houver algum erro na execução será lançada uma exceção.
+     */
     public List<Fornecedor> pesquisar(String nome) throws ControladorException{
         try{
             return rpForn.pesquisar(nome);
@@ -256,6 +349,31 @@ public class ControladorFornecedor {
             throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroPesquisar") + " fornecedor.",
                     ControladorFornecedor.class.getName()+".pesquisar()");
+        }
+    }
+    
+    /**
+     * Pesquisa os fornecedores que não fornecem o produto especificado.
+     * @param codProd
+     * Código do produto cujos fornecedores não constarão na lista.
+     * @return
+     * @throws ControladorException 
+     * Se houver algum erro na execução será lançada uma exceção.
+     */
+    public List<Fornecedor> pesqFornsQueNaoFornecemEsteProd(Integer codProd)
+            throws ControladorException{
+        try{
+            return rpForn.pesqFornsQueNaoFornecemEsteProd(codProd);
+        }
+        catch(ConexaoException e){
+            throw new ControladorException(user.getNome(),
+                    rb.getString("CtrlErroPesqIndisp") + " fornecedor.",
+                    ControladorFornecedor.class.getName()+".pesqFornsQueNaoFornecemEsteProd()");
+        }
+        catch(RepositorioPesquisarException re){
+            throw new ControladorException(user.getNome(),
+                    rb.getString("CtrlErroPesquisar") + " fornecedor.",
+                    ControladorFornecedor.class.getName()+".pesqFornsQueNaoFornecemEsteProd()");
         }
     }
 

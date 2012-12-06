@@ -279,6 +279,17 @@ public class RepositorioProduto implements IRepositorioProduto{
         }
     }
     
+    /**
+     * Pesquisa os produtos que não são fornecdidos por um determinado fornecedor.
+     * @param codForn
+     * Código do fornecedor cujos produtos fornecidos não constarão na lista. 
+     * @return
+     * Retorna uma lista com o(s) produto(s) encontrado(s).
+     * @throws ConexaoException
+     * Se houver algum problema com a conexão será lançada uma ConexaoException
+     * @throws RepositorioPesquisarException 
+     * Se houver algum erro na execução do SQL será lançada uma exceção.
+     */
     @Override
     public List<Produto> pesquisarProdsQueNaoSaoDoForn(Integer codForn) 
             throws ConexaoException, RepositorioPesquisarException{
