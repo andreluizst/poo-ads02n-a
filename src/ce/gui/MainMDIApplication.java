@@ -115,14 +115,18 @@ public class MainMDIApplication extends javax.swing.JFrame {
                     break;
                 }
             }
-            for(int i=0;i<miAbrir.getItemCount();i++){
-                if (miAbrir.getItem(i).getName().compareTo("abrir"+((IActionsGui)janela).getActivationName())==0){
-                    miAbrir.getItem(i).setEnabled(true);
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null, "Erro ao remover submenu do menu Janela");
+        }
+        try{
+            for(int j=0;j<miAbrir.getItemCount();j++){
+                if (miAbrir.getItem(j).getText().contains(((IActionsGui)janela).getActivationName())){
+                    miAbrir.getItem(j).setEnabled(true);
                     break;
                 }
             }
         }catch(Exception e){
-            JOptionPane.showMessageDialog(null, "Erro: " + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Erro reabilitar submenu do submenu Abrir");
         }
         atlzMenu();
     }
