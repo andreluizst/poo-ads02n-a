@@ -48,7 +48,7 @@ public class RepositorioSaida implements IRepositorioSaida{
         String sql="Insert into saida (codEnt, dtSaida, qtde) values(?,?,?)";
         try{
             PreparedStatement pstmt= c.prepareStatement(sql);
-            pstmt.setInt(1, s.getEntrada().getCodEntrada());
+            pstmt.setInt(1, s.getEntrada().getNumero());
             pstmt.setString(2, s.getDataSaida());
             pstmt.setDouble(3, s.getQtde());
             pstmt.executeUpdate();
@@ -81,7 +81,7 @@ public class RepositorioSaida implements IRepositorioSaida{
         String sql="Update saida set codEnt=?, dtSaida=?, qtde=? where codSaida=?";
         try{
             PreparedStatement pstmt= c.prepareStatement(sql);
-            pstmt.setInt(1, s.getEntrada().getCodEntrada());
+            pstmt.setInt(1, s.getEntrada().getNumero());
             pstmt.setString(2, s.getDataSaida());
             pstmt.setDouble(3, s.getQtde());
             pstmt.setInt(4, s.getCodSaida());
@@ -142,20 +142,24 @@ public class RepositorioSaida implements IRepositorioSaida{
         Produto p= null;
         Fornecedor f= null;
         Connection c= gerenciadorConexao.conectar();
-        String sql= "select s.codSaida, s.codEnt, s.dtSaida, s.qtde, e.codProd,"
+        /*String sql= "select s.codSaida, s.codEnt, s.dtSaida, s.qtde, e.codProd,"
                 + " e.codForn, e.qtde as qtdeEnt, e.lote, p.descProd, f.nome, f.CNPJ"
                 + " from Saida as s inner join Entrada as e where e.codEnt = s.codEnt"
                 + " inner join Produto as p where p.codProd = e.codProd"
-                + " inner join Fornecedor as f where f.codForn = e.codForn";
+                + " inner join Fornecedor as f where f.codForn = e.codForn";*/
+        String sql= "select codSaida, codEnt, dtSaida, qtde from saida "
+                + "order by dtSaida desc, codSaida asc";
         try{
             Statement stmt= c.createStatement();
             ResultSet rs= stmt.executeQuery(sql);
+            IRepositorioEntrada rpEnt= new RepositorioEntrada();
             while (rs.next()){
                 s= new Saida(rs.getInt("codSaida"), rs.getDouble("qtde"), rs.getString("dtSaida"));
-                e= new Entrada();
-                e.setCodEntrada(rs.getInt("codEnt"));
+                /*e= new Entrada();
+                e.setNumero(rs.getInt("codEnt"));
                 e.setLote(rs.getString("lote"));
                 e.setQtde(rs.getDouble("qtdeEnt"));
+                e.setDataEntrada(rs.getDate("dataEnt"));
                 p= new Produto();
                 p.setCodProd(rs.getInt("codProd"));
                 p.setDescProd(rs.getString("descprod"));
@@ -165,13 +169,14 @@ public class RepositorioSaida implements IRepositorioSaida{
                 f.setCnpj(rs.getString("CNPJ"));
                 e.setFornecedor(f);
                 e.setProduto(p);
-                s.setEntrada(e);
+                s.setEntrada(e);*/
+                s.setEntrada(rpEnt.pesquisar(rs.getInt("codEnt")));
                 lista.add(s);
                 
             }
             return lista;
         }
-        catch(SQLException ex){
+        catch(SQLException | RepositorioPesquisarException ex){
             throw new RepositorioListarException(ex, 
                     RepositorioSaida.class.getName()+".listar()");
         }
@@ -198,19 +203,22 @@ public class RepositorioSaida implements IRepositorioSaida{
         Entrada e= null;
         Fornecedor f= null;
         Produto p= null;
-        String sql= "select s.codSaida, s.codEnt, s.dtSaida, s.qtde, e.codProd,"
+        /*String sql= "select s.codSaida, s.codEnt, s.dtSaida, s.qtde, e.codProd,"
                 + " e.codForn, e.qtde as qtdeEnt, e.lote, p.descProd, f.nome, f.CNPJ"
                 + " from Saida as s inner join entrada as e"
                 + " where s.codSaida = ? and e.codEnt = s.codEnt"
                 + " inner join produto as p where p.codProd = e.codProd"
-                + " inner join Fornecedor as f where f.codForn = e.codForn";
+                + " inner join Fornecedor as f where f.codForn = e.codForn";*/
+        String sql= "select codSaida, codEnt, dtSaida, qtde"
+                + "from saida order by dtSaida desc, codSaida asc";
         try{
             PreparedStatement pstmt= c.prepareStatement(sql);
             pstmt.setInt(1, num);
             ResultSet rs= pstmt.executeQuery();
+            IRepositorioEntrada rpEnt= new RepositorioEntrada();
             while (rs.next()){
                 s= new Saida(rs.getInt("codSaida"), rs.getDouble("qtde"), rs.getString("dtSaida"));
-                e= new Entrada();
+                /*e= new Entrada();
                 e.setCodEntrada(rs.getInt("codEnt"));
                 e.setLote(rs.getString("lote"));
                 e.setQtde(rs.getDouble("qtdeEnt"));
@@ -223,7 +231,8 @@ public class RepositorioSaida implements IRepositorioSaida{
                 f.setCnpj(rs.getString("CNPJ"));
                 e.setFornecedor(f);
                 e.setProduto(p);
-                s.setEntrada(e);
+                s.setEntrada(e);*/
+                s.setEntrada(rpEnt.pesquisar(rs.getInt("codEnt")));
             }
             return s;
         }

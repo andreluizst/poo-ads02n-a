@@ -42,8 +42,8 @@ public class MainMDIApplication extends javax.swing.JFrame {
         janelas= new ArrayList();
         f= Fachada.getInstancia();
         userIsAdm= f.getUser().getPerfil().getNome().toLowerCase().compareTo("administrador") == 0;
-        mnPerfil.setVisible(userIsAdm);
-        mnUsuario.setVisible(userIsAdm);
+        miPerfil.setVisible(userIsAdm);
+        miUsuario.setVisible(userIsAdm);
     }
     
     /**
@@ -52,8 +52,12 @@ public class MainMDIApplication extends javax.swing.JFrame {
      * @param janela 
      * Janela que está sendo criada
      */
-    public void registrarJanela(JInternalFrame janela){
+    public void registrarJanela(JInternalFrame janela, JMenuItem openedMenu){
         String sTexto="";
+        if (openedMenu != null){
+            openedMenu.setName("abrir"+((IActionsGui)janela).getActivationName());
+            openedMenu.setEnabled(false);
+        }
         janelas.add(janela);
         JMenuItem novoMenuItem= new JMenuItem();
         sTexto= ((IActionsGui)janela).getActivationName();
@@ -108,6 +112,12 @@ public class MainMDIApplication extends javax.swing.JFrame {
             for(int i=3;i<mnJanela.getItemCount();i++){
                 if (mnJanela.getItem(i).getText().contains(((IActionsGui)janela).getActivationName())){
                     mnJanela.remove(i);
+                    break;
+                }
+            }
+            for(int i=0;i<miAbrir.getItemCount();i++){
+                if (miAbrir.getItem(i).getName().compareTo("abrir"+((IActionsGui)janela).getActivationName())==0){
+                    miAbrir.getItem(i).setEnabled(true);
                     break;
                 }
             }
@@ -176,21 +186,21 @@ public class MainMDIApplication extends javax.swing.JFrame {
         desktopPane = new javax.swing.JDesktopPane();
         lblImgShell = new javax.swing.JLabel();
         menuBar = new javax.swing.JMenuBar();
-        fileMenu = new javax.swing.JMenu();
-        jMenu1 = new javax.swing.JMenu();
-        mnPerfil = new javax.swing.JMenuItem();
-        mnUsuario = new javax.swing.JMenuItem();
-        mnFuncionario = new javax.swing.JMenuItem();
-        miCategora = new javax.swing.JMenuItem();
-        mnProduto = new javax.swing.JMenuItem();
-        mnFornecedor = new javax.swing.JMenuItem();
-        mnLocalE = new javax.swing.JMenuItem();
-        mnEntrada = new javax.swing.JMenuItem();
-        mnSaida = new javax.swing.JMenuItem();
-        mnUnidade = new javax.swing.JMenuItem();
+        mnArquivo = new javax.swing.JMenu();
+        miAbrir = new javax.swing.JMenu();
+        miPerfil = new javax.swing.JMenuItem();
+        miUsuario = new javax.swing.JMenuItem();
+        miFuncionario = new javax.swing.JMenuItem();
+        miCategoria = new javax.swing.JMenuItem();
+        miProduto = new javax.swing.JMenuItem();
+        miFornecedor = new javax.swing.JMenuItem();
+        miLocalE = new javax.swing.JMenuItem();
+        miEntrada = new javax.swing.JMenuItem();
+        miSaida = new javax.swing.JMenuItem();
+        miUnidade = new javax.swing.JMenuItem();
         jSeparator4 = new javax.swing.JPopupMenu.Separator();
-        mnSair = new javax.swing.JMenuItem();
-        editMenu = new javax.swing.JMenu();
+        miSair = new javax.swing.JMenuItem();
+        mnEditar = new javax.swing.JMenu();
         mnListar = new javax.swing.JMenuItem();
         mnPesquisar = new javax.swing.JMenuItem();
         jSeparator3 = new javax.swing.JPopupMenu.Separator();
@@ -227,124 +237,129 @@ public class MainMDIApplication extends javax.swing.JFrame {
         lblImgShell.setBounds(10, 10, 60, 14);
         desktopPane.add(lblImgShell, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-        fileMenu.setMnemonic('a');
-        fileMenu.setText("Arquivo");
+        mnArquivo.setMnemonic('a');
+        mnArquivo.setText("Arquivo");
 
-        jMenu1.setMnemonic('a');
-        jMenu1.setText("Abrir");
-        jMenu1.addActionListener(new java.awt.event.ActionListener() {
+        miAbrir.setMnemonic('a');
+        miAbrir.setText("Abrir");
+        miAbrir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenu1ActionPerformed(evt);
+                miAbrirActionPerformed(evt);
             }
         });
 
-        mnPerfil.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
-        mnPerfil.setMnemonic('p');
-        mnPerfil.setText("Perfil");
-        mnPerfil.addActionListener(new java.awt.event.ActionListener() {
+        miPerfil.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        miPerfil.setMnemonic('p');
+        miPerfil.setText("Perfil");
+        miPerfil.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mnPerfilActionPerformed(evt);
+                miPerfilActionPerformed(evt);
             }
         });
-        jMenu1.add(mnPerfil);
+        miAbrir.add(miPerfil);
 
-        mnUsuario.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_U, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
-        mnUsuario.setMnemonic('u');
-        mnUsuario.setText("Usuário");
-        mnUsuario.addActionListener(new java.awt.event.ActionListener() {
+        miUsuario.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_U, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        miUsuario.setMnemonic('u');
+        miUsuario.setText("Usuário");
+        miUsuario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mnUsuarioActionPerformed(evt);
+                miUsuarioActionPerformed(evt);
             }
         });
-        jMenu1.add(mnUsuario);
+        miAbrir.add(miUsuario);
 
-        mnFuncionario.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
-        mnFuncionario.setMnemonic('o');
-        mnFuncionario.setText("Funcionário");
-        mnFuncionario.addActionListener(new java.awt.event.ActionListener() {
+        miFuncionario.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        miFuncionario.setMnemonic('o');
+        miFuncionario.setText("Funcionário");
+        miFuncionario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mnFuncionarioActionPerformed(evt);
+                miFuncionarioActionPerformed(evt);
             }
         });
-        jMenu1.add(mnFuncionario);
+        miAbrir.add(miFuncionario);
 
-        miCategora.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
-        miCategora.setMnemonic('c');
-        miCategora.setText("Categoria");
-        miCategora.addActionListener(new java.awt.event.ActionListener() {
+        miCategoria.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        miCategoria.setMnemonic('c');
+        miCategoria.setText("Categoria");
+        miCategoria.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                miCategoraActionPerformed(evt);
+                miCategoriaActionPerformed(evt);
             }
         });
-        jMenu1.add(miCategora);
+        miAbrir.add(miCategoria);
 
-        mnProduto.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_D, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
-        mnProduto.setMnemonic('d');
-        mnProduto.setText("Produto");
-        mnProduto.addActionListener(new java.awt.event.ActionListener() {
+        miProduto.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_D, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        miProduto.setMnemonic('d');
+        miProduto.setText("Produto");
+        miProduto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mnProdutoActionPerformed(evt);
+                miProdutoActionPerformed(evt);
             }
         });
-        jMenu1.add(mnProduto);
+        miAbrir.add(miProduto);
 
-        mnFornecedor.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
-        mnFornecedor.setMnemonic('f');
-        mnFornecedor.setText("Fornecedor");
-        mnFornecedor.addActionListener(new java.awt.event.ActionListener() {
+        miFornecedor.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        miFornecedor.setMnemonic('f');
+        miFornecedor.setText("Fornecedor");
+        miFornecedor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mnFornecedorActionPerformed(evt);
+                miFornecedorActionPerformed(evt);
             }
         });
-        jMenu1.add(mnFornecedor);
+        miAbrir.add(miFornecedor);
 
-        mnLocalE.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
-        mnLocalE.setMnemonic('l');
-        mnLocalE.setText("Local de estoque");
-        mnLocalE.addActionListener(new java.awt.event.ActionListener() {
+        miLocalE.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        miLocalE.setMnemonic('l');
+        miLocalE.setText("Local de estoque");
+        miLocalE.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mnLocalEActionPerformed(evt);
+                miLocalEActionPerformed(evt);
             }
         });
-        jMenu1.add(mnLocalE);
+        miAbrir.add(miLocalE);
 
-        mnEntrada.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
-        mnEntrada.setMnemonic('e');
-        mnEntrada.setText("Entrada");
-        jMenu1.add(mnEntrada);
-
-        mnSaida.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
-        mnSaida.setMnemonic('s');
-        mnSaida.setText("Saída");
-        jMenu1.add(mnSaida);
-
-        mnUnidade.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_I, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
-        mnUnidade.setMnemonic('i');
-        mnUnidade.setText("Unidade");
-        jMenu1.add(mnUnidade);
-
-        fileMenu.add(jMenu1);
-        fileMenu.add(jSeparator4);
-
-        mnSair.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F12, java.awt.event.InputEvent.CTRL_MASK));
-        mnSair.setMnemonic('s');
-        mnSair.setText("Sair");
-        mnSair.setName("mnSair"); // NOI18N
-        mnSair.addActionListener(new java.awt.event.ActionListener() {
+        miEntrada.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        miEntrada.setMnemonic('e');
+        miEntrada.setText("Entrada");
+        miEntrada.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mnSairActionPerformed(evt);
+                miEntradaActionPerformed(evt);
             }
         });
-        fileMenu.add(mnSair);
-        mnSair.getAccessibleContext().setAccessibleDescription("");
+        miAbrir.add(miEntrada);
 
-        menuBar.add(fileMenu);
+        miSaida.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        miSaida.setMnemonic('s');
+        miSaida.setText("Saída");
+        miAbrir.add(miSaida);
 
-        editMenu.setMnemonic('e');
-        editMenu.setText("Editar");
-        editMenu.addActionListener(new java.awt.event.ActionListener() {
+        miUnidade.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_I, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        miUnidade.setMnemonic('i');
+        miUnidade.setText("Unidade");
+        miAbrir.add(miUnidade);
+
+        mnArquivo.add(miAbrir);
+        mnArquivo.add(jSeparator4);
+
+        miSair.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F12, java.awt.event.InputEvent.CTRL_MASK));
+        miSair.setMnemonic('s');
+        miSair.setText("Sair");
+        miSair.setName("miSair"); // NOI18N
+        miSair.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                editMenuActionPerformed(evt);
+                miSairActionPerformed(evt);
+            }
+        });
+        mnArquivo.add(miSair);
+        miSair.getAccessibleContext().setAccessibleDescription("");
+
+        menuBar.add(mnArquivo);
+
+        mnEditar.setMnemonic('e');
+        mnEditar.setText("Editar");
+        mnEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnEditarActionPerformed(evt);
             }
         });
 
@@ -356,7 +371,7 @@ public class MainMDIApplication extends javax.swing.JFrame {
                 mnListarActionPerformed(evt);
             }
         });
-        editMenu.add(mnListar);
+        mnEditar.add(mnListar);
 
         mnPesquisar.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F5, 0));
         mnPesquisar.setMnemonic('p');
@@ -366,8 +381,8 @@ public class MainMDIApplication extends javax.swing.JFrame {
                 mnPesquisarActionPerformed(evt);
             }
         });
-        editMenu.add(mnPesquisar);
-        editMenu.add(jSeparator3);
+        mnEditar.add(mnPesquisar);
+        mnEditar.add(jSeparator3);
 
         mnNovo.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_INSERT, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         mnNovo.setMnemonic('n');
@@ -377,7 +392,7 @@ public class MainMDIApplication extends javax.swing.JFrame {
                 mnNovoActionPerformed(evt);
             }
         });
-        editMenu.add(mnNovo);
+        mnEditar.add(mnNovo);
 
         mnAlterar.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         mnAlterar.setMnemonic('a');
@@ -387,7 +402,7 @@ public class MainMDIApplication extends javax.swing.JFrame {
                 mnAlterarActionPerformed(evt);
             }
         });
-        editMenu.add(mnAlterar);
+        mnEditar.add(mnAlterar);
 
         mnExcluir.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_DELETE, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         mnExcluir.setMnemonic('e');
@@ -397,8 +412,8 @@ public class MainMDIApplication extends javax.swing.JFrame {
                 mnExcluirActionPerformed(evt);
             }
         });
-        editMenu.add(mnExcluir);
-        editMenu.add(jSeparator2);
+        mnEditar.add(mnExcluir);
+        mnEditar.add(jSeparator2);
 
         mnIrPara.setMnemonic('i');
         mnIrPara.setText("Ir para");
@@ -443,9 +458,9 @@ public class MainMDIApplication extends javax.swing.JFrame {
         });
         mnIrPara.add(mnUltimo);
 
-        editMenu.add(mnIrPara);
+        mnEditar.add(mnIrPara);
 
-        menuBar.add(editMenu);
+        menuBar.add(mnEditar);
 
         mnJanela.setMnemonic('j');
         mnJanela.setText("Janela");
@@ -488,9 +503,9 @@ public class MainMDIApplication extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void mnSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnSairActionPerformed
+    private void miSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miSairActionPerformed
         System.exit(0);
-    }//GEN-LAST:event_mnSairActionPerformed
+    }//GEN-LAST:event_miSairActionPerformed
 
     private void desktopPaneResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_desktopPaneResized
         atlzFundo();
@@ -501,18 +516,18 @@ public class MainMDIApplication extends javax.swing.JFrame {
         atlzMenu();
     }//GEN-LAST:event_MainMDIApplicationOpened
 
-    private void mnProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnProdutoActionPerformed
+    private void miProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miProdutoActionPerformed
         //JIFProduto
-    }//GEN-LAST:event_mnProdutoActionPerformed
+    }//GEN-LAST:event_miProdutoActionPerformed
 
-    private void jMenu1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu1ActionPerformed
+    private void miAbrirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miAbrirActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jMenu1ActionPerformed
+    }//GEN-LAST:event_miAbrirActionPerformed
 
-    private void miCategoraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miCategoraActionPerformed
+    private void miCategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miCategoriaActionPerformed
         CategoriaJif jifCategoria= new CategoriaJif();
-        registrarJanela(jifCategoria);
-    }//GEN-LAST:event_miCategoraActionPerformed
+        registrarJanela(jifCategoria, miCategoria);
+    }//GEN-LAST:event_miCategoriaActionPerformed
 
     private void mnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnNovoActionPerformed
         ((IActionsGui)activeWindow).novo();
@@ -522,11 +537,11 @@ public class MainMDIApplication extends javax.swing.JFrame {
         ((IActionsGui)activeWindow).excluir();
     }//GEN-LAST:event_mnExcluirActionPerformed
 
-    private void editMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editMenuActionPerformed
+    private void mnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnEditarActionPerformed
         mnNovo.setEnabled(activeWindow!=null);
         mnExcluir.setEnabled(activeWindow!=null);
         mnAlterar.setEnabled(activeWindow!=null);
-    }//GEN-LAST:event_editMenuActionPerformed
+    }//GEN-LAST:event_mnEditarActionPerformed
 
     private void jmnFecharAtualActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmnFecharAtualActionPerformed
         if (activeWindow != null){
@@ -570,25 +585,25 @@ public class MainMDIApplication extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_mnPesquisarActionPerformed
 
-    private void mnFuncionarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnFuncionarioActionPerformed
+    private void miFuncionarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miFuncionarioActionPerformed
         JIFFuncionario jifFun= new JIFFuncionario();
-        registrarJanela(jifFun);
+        registrarJanela(jifFun, miFuncionario);
         try {
             jifFun.setMaximum(true);
         } catch (PropertyVetoException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage());
         }
-    }//GEN-LAST:event_mnFuncionarioActionPerformed
+    }//GEN-LAST:event_miFuncionarioActionPerformed
 
-    private void mnPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnPerfilActionPerformed
+    private void miPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miPerfilActionPerformed
         JIFPerfil jifPerfil= new JIFPerfil();
-        registrarJanela(jifPerfil);
-    }//GEN-LAST:event_mnPerfilActionPerformed
+        registrarJanela(jifPerfil, miPerfil);
+    }//GEN-LAST:event_miPerfilActionPerformed
 
-    private void mnUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnUsuarioActionPerformed
+    private void miUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miUsuarioActionPerformed
         JIFUsuario jifUsuario= new JIFUsuario();
-        registrarJanela(jifUsuario);
-    }//GEN-LAST:event_mnUsuarioActionPerformed
+        registrarJanela(jifUsuario, miUsuario);
+    }//GEN-LAST:event_miUsuarioActionPerformed
 
     private void mnListarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnListarActionPerformed
         if (activeWindow != null){
@@ -596,19 +611,24 @@ public class MainMDIApplication extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_mnListarActionPerformed
 
-    private void mnFornecedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnFornecedorActionPerformed
+    private void miFornecedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miFornecedorActionPerformed
         JIFFornecedor jifFornecedor = new JIFFornecedor();
-        registrarJanela(jifFornecedor);
-    }//GEN-LAST:event_mnFornecedorActionPerformed
+        registrarJanela(jifFornecedor, miFornecedor);
+    }//GEN-LAST:event_miFornecedorActionPerformed
 
     private void jmnProximaJanelaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmnProximaJanelaActionPerformed
         activeNextWindow();
     }//GEN-LAST:event_jmnProximaJanelaActionPerformed
 
-    private void mnLocalEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnLocalEActionPerformed
+    private void miLocalEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miLocalEActionPerformed
         JIFLocalEstoque jifLocalEstoque= new JIFLocalEstoque();
-        registrarJanela(jifLocalEstoque);
-    }//GEN-LAST:event_mnLocalEActionPerformed
+        registrarJanela(jifLocalEstoque, miLocalE);
+    }//GEN-LAST:event_miLocalEActionPerformed
+
+    private void miEntradaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miEntradaActionPerformed
+        JIFEntrada jifEntrada= new JIFEntrada();
+        registrarJanela(jifEntrada, miEntrada);
+    }//GEN-LAST:event_miEntradaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -665,9 +685,6 @@ public class MainMDIApplication extends javax.swing.JFrame {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDesktopPane desktopPane;
-    private javax.swing.JMenu editMenu;
-    private javax.swing.JMenu fileMenu;
-    private javax.swing.JMenu jMenu1;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JPopupMenu.Separator jSeparator3;
@@ -676,28 +693,31 @@ public class MainMDIApplication extends javax.swing.JFrame {
     private javax.swing.JMenuItem jmnProximaJanela;
     private javax.swing.JLabel lblImgShell;
     private javax.swing.JMenuBar menuBar;
-    private javax.swing.JMenuItem miCategora;
+    private javax.swing.JMenu miAbrir;
+    private javax.swing.JMenuItem miCategoria;
+    private javax.swing.JMenuItem miEntrada;
+    private javax.swing.JMenuItem miFornecedor;
+    private javax.swing.JMenuItem miFuncionario;
+    private javax.swing.JMenuItem miLocalE;
+    private javax.swing.JMenuItem miPerfil;
+    private javax.swing.JMenuItem miProduto;
+    private javax.swing.JMenuItem miSaida;
+    private javax.swing.JMenuItem miSair;
+    private javax.swing.JMenuItem miUnidade;
+    private javax.swing.JMenuItem miUsuario;
     private javax.swing.JMenuItem mnAlterar;
     private javax.swing.JMenuItem mnAnterior;
-    private javax.swing.JMenuItem mnEntrada;
+    private javax.swing.JMenu mnArquivo;
+    private javax.swing.JMenu mnEditar;
     private javax.swing.JMenuItem mnExcluir;
-    private javax.swing.JMenuItem mnFornecedor;
-    private javax.swing.JMenuItem mnFuncionario;
     private javax.swing.JMenu mnIrPara;
     private javax.swing.JMenu mnJanela;
     private javax.swing.JMenuItem mnListar;
-    private javax.swing.JMenuItem mnLocalE;
     private javax.swing.JMenuItem mnNovo;
-    private javax.swing.JMenuItem mnPerfil;
     private javax.swing.JMenuItem mnPesquisar;
     private javax.swing.JMenuItem mnPrimeiro;
-    private javax.swing.JMenuItem mnProduto;
     private javax.swing.JMenuItem mnProximo;
-    private javax.swing.JMenuItem mnSaida;
-    private javax.swing.JMenuItem mnSair;
     private javax.swing.JMenuItem mnUltimo;
-    private javax.swing.JMenuItem mnUnidade;
-    private javax.swing.JMenuItem mnUsuario;
     // End of variables declaration//GEN-END:variables
 
     /**

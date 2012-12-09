@@ -52,7 +52,7 @@ public class Main {
     }
     
     public static void registrarJanela(JInternalFrame janela){
-        mdiShell.registrarJanela(janela);
+        mdiShell.registrarJanela(janela, null);
     }
     
     public static void desregistrarJanela(JInternalFrame janela){

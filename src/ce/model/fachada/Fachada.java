@@ -386,6 +386,11 @@ public class Fachada {
         return ctrlE.trazer(num);
     }
     
+    public List<Entrada> pesquisarEntrada(Entrada entrada, String dataInicial, 
+            String dataFinal) throws GeralException{
+        return ctrlE.pesquisar(entrada, dataInicial, dataFinal);
+    }
+    
     
     /*
      * *********************** S A Í D A *********************************

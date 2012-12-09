@@ -4,20 +4,22 @@
  */
 package ce.gui;
 
+import ce.erro.GeralException;
+import ce.model.basica.Entrada;
+import ce.model.fachada.Fachada;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import javax.swing.AbstractAction;
-import javax.swing.ActionMap;
-import javax.swing.InputMap;
-import javax.swing.JComponent;
-import javax.swing.KeyStroke;
+import javax.swing.*;
 
 /**
  *
  * @author Andre
  */
 public class PropEntrada extends javax.swing.JDialog {
-
+    private Fachada f;
+    private boolean isIns;
+    private Resource res;
+    private Entrada entrada;
     /**
      * A return status code - returned if Cancel button has been pressed
      */
@@ -30,7 +32,7 @@ public class PropEntrada extends javax.swing.JDialog {
     /**
      * Creates new form PropEntrada
      */
-    public PropEntrada(java.awt.Frame parent, boolean modal) {
+    public PropEntrada(java.awt.Frame parent, boolean modal, Entrada obj) {
         super(parent, modal);
         initComponents();
 
@@ -40,11 +42,56 @@ public class PropEntrada extends javax.swing.JDialog {
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), cancelName);
         ActionMap actionMap = getRootPane().getActionMap();
         actionMap.put(cancelName, new AbstractAction() {
-
+            @Override
             public void actionPerformed(ActionEvent e) {
                 doClose(RET_CANCEL);
             }
         });
+        f= Fachada.getInstancia();
+        res= Resource.getInstancia();
+        //atlzEstados();
+        if (obj == null){
+            isIns= true;
+            this.setTitle("INCLUIR fornecedor");
+            try {
+                lblImg.setIcon(res.get("\\images\\Arquivo-Novo.jpg", lblImg.getWidth(), lblImg.getHeight()));
+            } catch (GeralException ex) {
+                JOptionPane.showMessageDialog(null, ex.getMessage());
+            }
+            /*try {
+                lstProdsNaoForn.addAll(f.listarProduto());
+            } catch (GeralException ex) {
+                JOptionPane.showMessageDialog(null, ex.getMessage());
+            }*/
+        }else{
+            isIns= false;
+            setFields(obj);
+            this.setTitle("ALTERAR fornecedor");
+            try {
+                lblImg.setIcon(res.get("\\images\\Arquivo-Alterar3.jpg", lblImg.getWidth(), lblImg.getHeight()));
+            } catch (GeralException ex) {
+                JOptionPane.showMessageDialog(null, ex.getMessage());
+            }
+        }
+    }
+    
+    /**
+     * Preenche os campos do formulário com os dados do objeto Enrtrada
+     * @param obj 
+     * Objeto do tipo Entrada cujos dados serão exibidos nos campos texto da tela.
+     */
+    private void setFields(Entrada obj){
+        // código aki
+    }
+    
+    /**
+     * Preenche o objeto do tipo Entrada que receberá os dados constantes nos campos.
+     * do formulário
+     * @param obj 
+     * Objeto do tipo Entrada que receberá os dados dos campos da tela.
+     */
+    private void setEntrada(Entrada obj){
+        
     }
 
     /**
@@ -52,6 +99,15 @@ public class PropEntrada extends javax.swing.JDialog {
      */
     public int getReturnStatus() {
         return returnStatus;
+    }
+    
+    /**
+     * 
+     * @return 
+     * Retorna um objeto do tipo Entrada com as propriedades salvas.
+     */
+    public Entrada getProperties(){
+        return entrada;
     }
 
     /**
@@ -65,6 +121,7 @@ public class PropEntrada extends javax.swing.JDialog {
 
         btnSalvar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
+        lblImg = new javax.swing.JLabel();
 
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
@@ -86,16 +143,22 @@ public class PropEntrada extends javax.swing.JDialog {
             }
         });
 
+        lblImg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ce/gui/images/Arquivo-Alterar3.jpg"))); // NOI18N
+        lblImg.setText("lblImg");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(344, Short.MAX_VALUE)
+                .addContainerGap(537, Short.MAX_VALUE)
                 .addComponent(btnSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnCancelar)
                 .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(lblImg, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btnCancelar, btnSalvar});
@@ -103,7 +166,8 @@ public class PropEntrada extends javax.swing.JDialog {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(273, Short.MAX_VALUE)
+                .addComponent(lblImg, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 227, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCancelar)
                     .addComponent(btnSalvar))
@@ -172,8 +236,9 @@ public class PropEntrada extends javax.swing.JDialog {
          */
         java.awt.EventQueue.invokeLater(new Runnable() {
 
+            @Override
             public void run() {
-                PropEntrada dialog = new PropEntrada(new javax.swing.JFrame(), true);
+                PropEntrada dialog = new PropEntrada(new javax.swing.JFrame(), true, null);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
 
                     @Override
@@ -188,6 +253,7 @@ public class PropEntrada extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnSalvar;
+    private javax.swing.JLabel lblImg;
     // End of variables declaration//GEN-END:variables
     private int returnStatus = RET_CANCEL;
 }

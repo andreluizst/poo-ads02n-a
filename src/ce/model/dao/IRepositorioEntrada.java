@@ -26,6 +26,10 @@ public interface IRepositorioEntrada {
             RepositorioForeignKeyException, RepositorioExcluirException;
     public List<Entrada> listar() throws ConexaoException, 
             RepositorioListarException;
-    public Entrada pesqNum(Integer Num) 
+    public Entrada pesquisar(Integer Num) 
+            throws ConexaoException, RepositorioPesquisarException;
+    public List<Entrada> pesquisar(String dataInicial, String dataFinal)
+            throws ConexaoException, RepositorioPesquisarException;
+    public List<Entrada> pesquisar(Entrada e, String dataInicial, String dataFinal)
             throws ConexaoException, RepositorioPesquisarException;
 }

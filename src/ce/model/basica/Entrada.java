@@ -5,13 +5,16 @@
 
 package ce.model.basica;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+
 /**
  *
  * @author aluno
  */
 public class Entrada {
 
-    private Integer codEntrada;
+    private Integer numero;
     private Double qtde;
     private String dataEntrada;
     private String lote;
@@ -27,33 +30,64 @@ public class Entrada {
     
     /**
      * 
-     * @param codEntrada
+     * @param numero
      * @param qtde
      * @param dataEntrada
      * @param lote 
      */
-    public Entrada(Integer codEntrada, Double qtde, String dataEntrada, String lote){
+    public Entrada(Integer numero, Double qtde, Object dataEntrada, String lote){
         this();
-        this.codEntrada = codEntrada;
+        java.util.Date dt;
+        this.numero = numero;
         this.qtde = qtde;
-        this.dataEntrada = dataEntrada;
+        this.qtde = qtde;
+        if (dataEntrada instanceof String){
+            try{
+                dt= new SimpleDateFormat("dd/MM/yyy").parse((String)dataEntrada);
+                this.dataEntrada= new SimpleDateFormat("dd/MM/yyyy").format(dt);
+            }catch(Exception e){
+                this.dataEntrada= "";
+            }
+        }
+        if (dataEntrada instanceof java.sql.Date){
+            dt= new java.util.Date(((java.sql.Date)dataEntrada).getTime());
+            this.dataEntrada= new SimpleDateFormat("dd/MM/yyyy").format(dt);
+        }
         this.lote = lote;
     }
     
     /**
      * 
-     * @param codEntrada
+     * @param numero
+     * Número da entrada
      * @param qtde
+     * Quantidade do produto
      * @param dataEntrada
+     * Data no formato de String ou java.sql.Date.
      * @param lote
+     * Número de lote
      * @param produto
+     * Objeto do tipo Produto
      * @param fornecedor 
+     * Objeto do tipo Fornecedor
      */
-    public Entrada(Integer codEntrada, Produto produto, Fornecedor fornecedor, 
-            String dataEntrada, String lote, Double qtde){
-        this.codEntrada = codEntrada;
+    public Entrada(Integer numero, Produto produto, Fornecedor fornecedor, 
+            Object dataEntrada, String lote, Double qtde){
+        java.util.Date dt;
+        this.numero = numero;
         this.qtde = qtde;
-        this.dataEntrada = dataEntrada;
+        if (dataEntrada instanceof String){
+            try{
+                dt= new SimpleDateFormat("dd/MM/yyy").parse((String)dataEntrada);
+                this.dataEntrada= new SimpleDateFormat("dd/MM/yyyy").format(dt);
+            }catch(Exception e){
+                this.dataEntrada= "";
+            }
+        }
+        if (dataEntrada instanceof java.sql.Date){
+            dt= new java.util.Date(((java.sql.Date)dataEntrada).getTime());
+            this.dataEntrada= new SimpleDateFormat("dd/MM/yyyy").format(dt);
+        }
         this.lote = lote;
         this.produto=produto;
         this.fornecedor=fornecedor;
@@ -61,17 +95,29 @@ public class Entrada {
     
     /**
      * 
-     * @param codEntrada
+     * @param numero
      * @param dataEntrada
      * @param lote
      * @param qtde 
      */
-    public Entrada(Integer codEntrada, String dataEntrada, String lote, 
+    public Entrada(Integer numero, Object dataEntrada, String lote, 
             Double qtde){
         this();
-        this.codEntrada = codEntrada;
+        java.util.Date dt;
+        this.numero = numero;
         this.qtde = qtde;
-        this.dataEntrada = dataEntrada;
+        if (dataEntrada instanceof String){
+            try{
+                dt= new SimpleDateFormat("dd/MM/yyy").parse((String)dataEntrada);
+                this.dataEntrada= new SimpleDateFormat("dd/MM/yyyy").format(dt);
+            }catch(Exception e){
+                this.dataEntrada= "";
+            }
+        }
+        if (dataEntrada instanceof java.sql.Date){
+            dt= new java.util.Date(((java.sql.Date)dataEntrada).getTime());
+            this.dataEntrada= new SimpleDateFormat("dd/MM/yyyy").format(dt);
+        }
         this.lote = lote;
     }
     
@@ -84,27 +130,39 @@ public class Entrada {
      * @param fornecedor 
      */
     public Entrada(Produto produto, Fornecedor fornecedor, 
-            String dataEntrada, String lote, Double qtde){
-        this.codEntrada = 0;
+            Object dataEntrada, String lote, Double qtde){
+        java.util.Date dt;
+        this.numero = 0;
         this.qtde = qtde;
-        this.dataEntrada = dataEntrada;
+        if (dataEntrada instanceof String){
+            try{
+                dt= new SimpleDateFormat("dd/MM/yyy").parse((String)dataEntrada);
+                this.dataEntrada= new SimpleDateFormat("dd/MM/yyyy").format(dt);
+            }catch(Exception e){
+                this.dataEntrada= "";
+            }
+        }
+        if (dataEntrada instanceof java.sql.Date){
+            dt= new java.util.Date(((java.sql.Date)dataEntrada).getTime());
+            this.dataEntrada= new SimpleDateFormat("dd/MM/yyyy").format(dt);
+        }
         this.lote = lote;
         this.produto=produto;
         this.fornecedor=fornecedor;
     }
 
     /**
-     * @return the codEntrada
+     * @return the numero
      */
-    public Integer getCodEntrada() {
-        return codEntrada;
+    public Integer getNumero() {
+        return numero;
     }
 
     /**
-     * @param codEntrada the codEntrada to set
+     * @param numero the numero to set
      */
-    public void setCodEntrada(Integer codEntrada) {
-        this.codEntrada = codEntrada;
+    public void setNumero(Integer numero) {
+        this.numero = numero;
     }
 
     /**
@@ -119,6 +177,38 @@ public class Entrada {
      */
     public void setQtde(Double qtde) {
         this.qtde = qtde;
+    }
+    
+    /**
+     * Retorn a data invertida (yyyy/MM/dd) no formado texto para manter a
+     * compatibilidade com o MySQL
+     * @return 
+     */
+    public String getStrDataInvertida(){
+        String dt="";
+        try{
+            for (int i=dataEntrada.length();i>0;i--){
+                dt+= dataEntrada.substring(i-1, i);
+            }
+        }catch(Exception e){
+            dt= "";
+        }
+        return dt;
+    }
+    
+    /**
+     * Retorn a data invertida (yyyy-MM-dd) no formato suportado pelo MySQL.
+     * @return 
+     * java.sql.Date
+     */
+    public java.sql.Date getDatatoMySqlDate(){
+        java.sql.Date data;
+        try {
+            data= new java.sql.Date(new SimpleDateFormat("yyyy-MM-dd").parse(dataEntrada).getTime());
+        } catch (ParseException ex) {
+            data= null;
+        }
+        return data;
     }
 
     /**
@@ -184,7 +274,7 @@ public class Entrada {
      */
     @Override
     public String toString(){
-        return codEntrada + " - " + dataEntrada;
+        return numero + " - " + dataEntrada;
     }
     
     /**
@@ -193,7 +283,7 @@ public class Entrada {
      * Texto contendo os valores de todos os atribudos do objeto.
      */
     public String toStringAll(){
-        return codEntrada + " - " + dataEntrada + " - " + fornecedor.toString()
+        return numero + " - " + dataEntrada + " - " + fornecedor.toString()
                 + " - " + produto.toString() +  " - " + qtde +  " - " + lote;
     }
     

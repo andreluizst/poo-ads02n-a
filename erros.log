@@ -63,3 +63,7 @@ Sistema -> 05/12/2012 - 20:54:02
 joao.souza -> 05/12/2012 - 20:54:02
 	ce.model.regra.ControladorFornecedor.excluir(): Não é possível excluir o fornecedor informado, pois o mesmo
  está sendo usando em uma ou mais entrada e/ou saída!
+root -> 08/12/2012 - 23:50:20
+	ce.util.GerenciadorConexao.conectar(): java.sql.SQLException: Access denied for user 'root'@'localhost' (using password: YES)
+joao.souza -> 08/12/2012 - 23:50:20
+	ce.model.regra.ControladorUsuario.validarLogin(): No momento não é possível validar o login.

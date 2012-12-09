@@ -114,7 +114,7 @@ public class ControladorEntrada {
     
     public void verificarSeExiste(Integer num) throws ControladorException {
         try{
-            Entrada ent= rpEnt.pesqNum(num);
+            Entrada ent= rpEnt.pesquisar(num);
             if (ent == null){
                 throw new ControladorException(user.getNome(),
                         rb.getString("CtrlEntNaoExiste"),
@@ -134,7 +134,7 @@ public class ControladorEntrada {
     }
     
     public void verificarSeExiste(Entrada e) throws ControladorException {
-        verificarSeExiste(e.getCodEntrada());
+        verificarSeExiste(e.getNumero());
     }
     
     public void excluir(Entrada e) throws ControladorException{
@@ -179,9 +179,43 @@ public class ControladorEntrada {
         }
     }
     
+    public List<Entrada> pesquisar(Entrada entrada, String dataInicial, 
+            String dataFinal) throws ControladorException{
+        try{
+            return rpEnt.pesquisar(entrada, dataInicial, dataFinal);
+        }
+        catch(ConexaoException e){
+            throw new ControladorException(user.getNome(),
+                    rb.getString("CtrlErroPesqIndisp") + " entrada.",
+                    ControladorEntrada.class.getName()+".pesquisar()");
+        }
+        catch(RepositorioPesquisarException re){
+            throw new ControladorException(user.getNome(),
+                    rb.getString("CtrlErroPesquisar") + " entrada.",
+                    ControladorEntrada.class.getName()+".pesquisar()");
+        }
+    }
+    
+    public List<Entrada> pesquisar(String dataInicial, String dataFinal)
+            throws ControladorException{
+        try{
+            return rpEnt.pesquisar(dataInicial, dataFinal);
+        }
+        catch(ConexaoException e){
+            throw new ControladorException(user.getNome(),
+                    rb.getString("CtrlErroPesqIndisp") + " entrada.",
+                    ControladorEntrada.class.getName()+".pesquisar()");
+        }
+        catch(RepositorioPesquisarException re){
+            throw new ControladorException(user.getNome(),
+                    rb.getString("CtrlErroPesquisar") + " entrada.",
+                    ControladorEntrada.class.getName()+".pesquisar()");
+        }
+    }
+    
     public Entrada trazer(Integer num) throws ControladorException{
         try{
-            Entrada ent= rpEnt.pesqNum(num);
+            Entrada ent= rpEnt.pesquisar(num);
             /*Para deixar o método atômico o mesmo não deve executar verificações
              * Usar o metódo verificarSeExiste(Entrada e) antes.
              * if (ent == null){

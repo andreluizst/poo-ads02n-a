@@ -50,7 +50,7 @@ public class ControladorSaida {
                     rb.getString("CtrlErroValInvalido"),
                     ControladorSaida.class.getName()+".validarDados()");
         }
-        if ((s.getEntrada() == null) || (s.getEntrada().getCodEntrada() == 0)){
+        if ((s.getEntrada() == null) || (s.getEntrada().getNumero() == 0)){
             throw new ControladorException(user.getNome(),
                     rb.getString("CtrlErroValInvalido"),
                     ControladorSaida.class.getName()+".validarDados()");

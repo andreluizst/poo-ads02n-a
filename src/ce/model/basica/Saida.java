@@ -120,7 +120,7 @@ public class Saida {
      * Texto do conteúdo de todos os atribudos do objeto
      */
     public String toStringAll(){
-        return codSaida + " - " + dataSaida + " - " + entrada.getCodEntrada()
+        return codSaida + " - " + dataSaida + " - " + entrada.getNumero()
                 + " - " + entrada.getProduto().getDescProd() 
                 + " - " + qtde;
     }

@@ -12,12 +12,12 @@ import ce.erro.RepositorioExcluirException;
 import ce.erro.RepositorioForeignKeyException;
 import ce.erro.RepositorioListarException;
 import ce.erro.RepositorioPesquisarException;
-import ce.model.basica.Fornecedor;
-import ce.model.basica.Produto;
 import ce.model.basica.Entrada;
 import ce.util.GerenciadorConexao;
 import ce.util.IGerenciadorConexao;
 import java.sql.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -47,13 +47,13 @@ public class RepositorioEntrada implements IRepositorioEntrada{
     public void inserir(Entrada e) throws ConexaoException, 
             RepositorioInserirException{
         Connection c= gerenciadorConexao.conectar();
-        String sql="Insert into entrada (codProd, codForn, dtEnt, lote, qtde)"
+        String sql="Insert into entrada (codProd, codForn, dataEnt, lote, qtde)"
                 + " values(?,?,?,?,?)";
         try{
             PreparedStatement pstmt = c.prepareStatement(sql);
             pstmt.setInt(1, e.getProduto().getCodProd());
             pstmt.setInt(2, e.getFornecedor().getCodForn());
-            pstmt.setString(3, e.getDataEntrada());
+            pstmt.setDate(3, e.getDatatoMySqlDate());
             pstmt.setString(4, e.getLote());
             pstmt.setDouble(5, e.getQtde());
             pstmt.executeUpdate();
@@ -94,16 +94,16 @@ public class RepositorioEntrada implements IRepositorioEntrada{
     public void alterar(Entrada e) throws ConexaoException, 
             RepositorioAlterarException{
         Connection c= gerenciadorConexao.conectar();
-        String sql="Update entrada set codProd=?, codForn=?, dtEnt=?, lote=?,"
+        String sql="Update entrada set codProd=?, codForn=?, dataEnt=?, lote=?,"
                 + " qtde=? where codEnt=?";
         try{
             PreparedStatement pstmt = c.prepareStatement(sql);
             pstmt.setInt(1, e.getProduto().getCodProd());
             pstmt.setInt(2, e.getFornecedor().getCodForn());
-            pstmt.setString(3, e.getDataEntrada());
+            pstmt.setDate(3, e.getDatatoMySqlDate());
             pstmt.setString(4, e.getLote());
             pstmt.setDouble(5, e.getQtde());
-            pstmt.setInt(6, e.getCodEntrada());
+            pstmt.setInt(6, e.getNumero());
             pstmt.executeUpdate();
             pstmt.close();
             IRepositorioProduto rpProd= new RepositorioProduto();
@@ -143,7 +143,7 @@ public class RepositorioEntrada implements IRepositorioEntrada{
         String sql="delete from Entrada where codEnt=?";
         try{
             PreparedStatement pstmt = c.prepareStatement(sql);
-            pstmt.setInt(1, e.getCodEntrada());
+            pstmt.setInt(1, e.getNumero());
             pstmt.executeUpdate();
             pstmt.close();
             IRepositorioProduto rpProd= new RepositorioProduto();
@@ -179,7 +179,7 @@ public class RepositorioEntrada implements IRepositorioEntrada{
     @Override
     public List<Entrada> listar() throws ConexaoException, 
             RepositorioListarException{
-         List<Entrada> lista = new ArrayList();
+        List<Entrada> lista = new ArrayList();
         Entrada e=null;
         Connection c= gerenciadorConexao.conectar();
         String sql= "select * from Entrada";
@@ -192,7 +192,7 @@ public class RepositorioEntrada implements IRepositorioEntrada{
                 e = new Entrada(rs.getInt("codEnt"),
                         rpProd.pesqCodProd(rs.getInt("codProd"), false),
                         rpForn.pesqCodForn(rs.getInt("codForn"), false),
-                        rs.getString("dtEnt"), rs.getString("lote"),
+                        rs.getDate("dataEnt"), rs.getString("lote"),
                         rs.getDouble("qtde"));
                 
                 lista.add(e);
@@ -225,7 +225,7 @@ public class RepositorioEntrada implements IRepositorioEntrada{
      * Se houver algum erro na execução do SQL será lançada uma exceção.
      */
     @Override
-    public Entrada pesqNum(Integer num) throws ConexaoException, 
+    public Entrada pesquisar(Integer num) throws ConexaoException, 
             RepositorioPesquisarException{
         Entrada e=null;
         Connection c= gerenciadorConexao.conectar();
@@ -240,7 +240,7 @@ public class RepositorioEntrada implements IRepositorioEntrada{
                 e = new Entrada(rs.getInt("codEnt"),
                         rpProd.pesqCodProd(rs.getInt("codProd"), false),
                         rpForn.pesqCodForn(rs.getInt("codForn"), false),
-                        rs.getString("dtEnt"), rs.getString("lote"),
+                        rs.getDate("dataEnt"), rs.getString("lote"),
                         rs.getDouble("qtde"));
             }
             rs.close();
@@ -260,49 +260,187 @@ public class RepositorioEntrada implements IRepositorioEntrada{
         }
     }
     
-    /*private boolean reverterInserir(Entrada e)throws ConexaoException, 
-            RepositorioInserirException {
-        Connection c= gerenciadorConexao.conectar();
-        String sql= "Delete from Entrada where codEnt=?";
+    /**
+     * Pesquisa entradas no período de datas informado.
+     * 
+     * @param entrada
+     * Objeto do tipo Entrada que terá seus atributos utilizados para filtrar a 
+     * pesquisa com exceção de data de entrada e quantidade.
+     * Se o objeto não for nulo, os atributos abaixo serão válidos se:
+     * Número da entrada for maior que zero;
+     * Código do fornecedor for maior que zero;
+     * Código do produto for maior que zero;
+     * Lote não for vazio. (pode conter coringa SQL como o caracter %)
+     * 
+     * @param dataInicial
+     * Data inicial no formato texto (dd/MM/yyyy).
+     * 
+     * @param dataFinal
+     * Data final no formato texto (dd/MM/yyyy).
+     * 
+     * @return
+     * Retorna uma lista com as entradas.
+     * 
+     * @throws ConexaoException
+     * Se houver algum problema com a conexão será lançada uma ConexaoException
+     * 
+     * @throws RepositorioPesquisarException 
+     * Se houver algum erro na execução do SQL ou com as datas informadas será lançada uma exceção.
+     */
+    @Override
+    public List<Entrada> pesquisar(Entrada entrada, String dataInicial, String dataFinal)
+            throws ConexaoException, RepositorioPesquisarException{
+        int nFields=2;
+        int pesqCod= 0;
+        int pesqForn= 0;
+        int pesqProd= 0;
+        int pesqLote= 0;
+        List<Entrada> lista = new ArrayList();
+        java.sql.Date sqlDateInicial;
+        java.sql.Date sqlDateFinal;
         try{
-            PreparedStatement pstmt = c.prepareStatement(sql);
-            pstmt.setInt(1, e.getCodEntrada());
-            pstmt.executeUpdate();
-            pstmt.close();
+            sqlDateInicial= new java.sql.Date(new SimpleDateFormat("yyyy-MM-dd").parse(dataInicial).getTime());
+            sqlDateFinal= new java.sql.Date(new SimpleDateFormat("yyyy-MM-dd").parse(dataFinal).getTime());
+        }catch(java.text.ParseException pe){
+            throw new RepositorioPesquisarException(pe,
+                    RepositorioEntrada.class.getName()+".pesquisarNoPeriodo()");
         }
-        catch(SQLException sqlE){
-            throw new RepositorioInserirException(sqlE,
-                    "RepositorioEntrada.inserir()");
+        Entrada e=null;
+        Connection c= gerenciadorConexao.conectar();
+        String sql= "select * from Entrada "
+                + "where (dataEnt >= ? and dataEnt <= ?)";
+        if (entrada != null){
+            if (entrada.getNumero() > 0){
+                sql+= " and codEnt=?";
+                nFields++;
+                pesqCod= nFields;
+            }
+            if (entrada.getFornecedor().getCodForn() > 0){
+                sql+= " and codForn=?";
+                nFields++;
+                pesqForn= nFields;
+            }
+            if (entrada.getProduto().getCodProd() > 0){
+                sql+= " and codProd=?";
+                nFields++;
+                pesqProd= nFields;
+            }
+            if ((entrada.getLote()!= null) && (entrada.getLote().length() > 0)){
+                sql+= " and lote like ?";
+                nFields++;
+                pesqLote= nFields;
+            }
+        }
+        sql+= " order by dataEnt desc, codEnt asc";
+        try{
+            PreparedStatement pstmt= c.prepareStatement(sql);
+            pstmt.setDate(1, sqlDateInicial);
+            pstmt.setDate(2, sqlDateFinal);
+            if (pesqCod > 0){
+                pstmt.setInt(pesqCod, entrada.getNumero());
+            }
+            if (pesqForn > 0){
+                pstmt.setInt(pesqForn, entrada.getFornecedor().getCodForn());
+            }
+            if (pesqProd > 0){
+                pstmt.setInt(pesqProd, entrada.getProduto().getCodProd());
+            }
+            if (pesqLote > 0){
+                pstmt.setString(pesqLote, entrada.getLote());
+            }
+            ResultSet rs= pstmt.executeQuery();
+            IRepositorioProduto rpProd= new RepositorioProduto();
+            IRepositorioFornecedor rpForn= new RepositorioFornecedor();
+            while (rs.next()){
+                e = new Entrada(rs.getInt("codEnt"),
+                        rpProd.pesqCodProd(rs.getInt("codProd"), false),
+                        rpForn.pesqCodForn(rs.getInt("codForn"), false),
+                        rs.getDate("dataEnt"), rs.getString("lote"),
+                        rs.getDouble("qtde"));
+                
+                lista.add(e);
+            }
+            rs.close();
+            pstmt.close();
+            return lista;
+        }
+        catch(SQLException ex){
+            throw new RepositorioPesquisarException(ex,
+                    RepositorioEntrada.class.getName()+".pesquisarNoPeriodo()");
+        }
+        catch(RepositorioException ex){
+            throw new RepositorioPesquisarException(ex, 
+                    RepositorioEntrada.class.getName()+".pesquisarNoPeriodo()."+ex.getPathClassCall());
         }
         finally{
             gerenciadorConexao.desconectar(c);
         }
-        
-        return true;
-    }*/
+    }
     
-    /*private boolean reverterAlterar(Entrada e) throws ConexaoException, 
-            RepositorioAlterarException{
-        Connection c= gerenciadorConexao.conectar();
-        String sql="Update entrada set codProd=?, codForn=?, dtEnt=?, lote=?,"
-                + " qtde=? where codEnt=?";
+    /**
+     * Pesquisa entradas no período de datas informado.
+     * @param dataInicial
+     * Data inicial no formato texto (dd/MM/yyyy).
+     * @param dataFinal
+     * Data final no formato texto (dd/MM/yyyy).
+     * @return
+     * Retorna uma lista com as entradas.
+     * @throws ConexaoException
+     * Se houver algum problema com a conexão será lançada uma ConexaoException
+     * @throws RepositorioPesquisarException 
+     * Se houver algum erro na execução do SQL ou com as datas informadas será lançada uma exceção.
+     */
+    @Override
+    public List<Entrada> pesquisar(String dataInicial, String dataFinal)
+            throws ConexaoException, RepositorioPesquisarException{
+        return pesquisar(null, dataInicial, dataFinal);
+        /*List<Entrada> lista = new ArrayList();
+        java.sql.Date sqlDateInicial;
+        java.sql.Date sqlDateFinal;
         try{
-            PreparedStatement pstmt = c.prepareStatement(sql);
-            pstmt.setInt(1, e.getProduto().getCodProd());
-            pstmt.setInt(2, e.getFornecedor().getCodForn());
-            pstmt.setString(3, e.getDataEntrada());
-            pstmt.setString(4, e.getLote());
-            pstmt.setDouble(5, e.getQtde());
-            pstmt.setInt(6, e.getCodEntrada());
-            pstmt.executeUpdate();
-            pstmt.close();
+            sqlDateInicial= new java.sql.Date(new SimpleDateFormat("yyyy-MM-dd").parse(dataInicial).getTime());
+            sqlDateFinal= new java.sql.Date(new SimpleDateFormat("yyyy-MM-dd").parse(dataFinal).getTime());
+        }catch(java.text.ParseException pe){
+            throw new RepositorioPesquisarException(pe,
+                    RepositorioEntrada.class.getName()+".pesquisarNoPeriodo()");
         }
-        catch(SQLException sqlE){
-            throw new RepositorioAlterarException(sqlE, "RepositorioEntrada.alterar()");
+        Entrada e=null;
+        Connection c= gerenciadorConexao.conectar();
+        String sql= "select * from Entrada "
+                + "where dataEnt >= ? and dataEnt <= ?"
+                + "order by dataEnt desc, codEnt asc";
+        try{
+            PreparedStatement pstmt= c.prepareStatement(sql);
+            pstmt.setDate(1, sqlDateInicial);
+            pstmt.setDate(2, sqlDateFinal);
+            ResultSet rs= pstmt.executeQuery();
+            IRepositorioProduto rpProd= new RepositorioProduto();
+            IRepositorioFornecedor rpForn= new RepositorioFornecedor();
+            while (rs.next()){
+                e = new Entrada(rs.getInt("codEnt"),
+                        rpProd.pesqCodProd(rs.getInt("codProd"), false),
+                        rpForn.pesqCodForn(rs.getInt("codForn"), false),
+                        rs.getDate("dataEnt"), rs.getString("lote"),
+                        rs.getDouble("qtde"));
+                
+                lista.add(e);
+            }
+            rs.close();
+            pstmt.close();
+            return lista;
+        }
+        catch(SQLException ex){
+            throw new RepositorioPesquisarException(ex,
+                    RepositorioEntrada.class.getName()+".pesquisarNoPeriodo()");
+        }
+        catch(RepositorioException ex){
+            throw new RepositorioPesquisarException(ex, 
+                    RepositorioEntrada.class.getName()+".pesquisarNoPeriodo()."+ex.getPathClassCall());
         }
         finally{
             gerenciadorConexao.desconectar(c);
-        }
-        return true;
-    }*/
+        }*/
+    }
+    
+    
 }
