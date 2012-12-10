@@ -4,6 +4,7 @@
  */
 package ce.gui;
 
+import ce.Main;
 import ce.erro.GeralException;
 import ce.model.basica.Fornecedor;
 import ce.model.basica.Produto;
@@ -312,6 +313,24 @@ public class JIFSaida extends javax.swing.JInternalFrame implements IActionsGui 
         setMaximizable(true);
         setResizable(true);
         setTitle("Saída");
+        addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
+            public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
+                JIFSaidaActivated(evt);
+            }
+            public void internalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
+                JIFSaidaClosing(evt);
+            }
+            public void internalFrameDeactivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeiconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameIconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
+            }
+        });
 
         jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
@@ -477,6 +496,22 @@ public class JIFSaida extends javax.swing.JInternalFrame implements IActionsGui 
                 .addGap(19, 19, 19))
         );
 
+        org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, lista, jTable1);
+        org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${codSaida}"));
+        columnBinding.setColumnName("Cod Saida");
+        columnBinding.setColumnClass(Integer.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${dataSaida}"));
+        columnBinding.setColumnName("Data Saida");
+        columnBinding.setColumnClass(String.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${qtde}"));
+        columnBinding.setColumnName("Qtde");
+        columnBinding.setColumnClass(Double.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${entrada}"));
+        columnBinding.setColumnName("Entrada");
+        columnBinding.setColumnClass(ce.model.basica.Entrada.class);
+        bindingGroup.addBinding(jTableBinding);
+        jTableBinding.bind();
+
         jScrollPane1.setViewportView(jTable1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -484,14 +519,14 @@ public class JIFSaida extends javax.swing.JInternalFrame implements IActionsGui 
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 730, Short.MAX_VALUE)
+            .addComponent(jScrollPane1)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 245, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 249, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -519,6 +554,16 @@ public class JIFSaida extends javax.swing.JInternalFrame implements IActionsGui 
     private void btnAtualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtualizarActionPerformed
         listar();
     }//GEN-LAST:event_btnAtualizarActionPerformed
+
+    private void JIFSaidaActivated(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_JIFSaidaActivated
+        Main.atlzShellMenu(this);
+    }//GEN-LAST:event_JIFSaidaActivated
+
+    private void JIFSaidaClosing(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_JIFSaidaClosing
+        Main.atlzShellMenu(null);
+        Main.desregistrarJanela(this);
+        dispose();
+    }//GEN-LAST:event_JIFSaidaClosing
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAlterar;

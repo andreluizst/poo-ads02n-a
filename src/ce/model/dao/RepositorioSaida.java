@@ -149,7 +149,7 @@ public class RepositorioSaida implements IRepositorioSaida{
                 + " inner join Produto as p where p.codProd = e.codProd"
                 + " inner join Fornecedor as f where f.codForn = e.codForn";*/
         String sql= "select codSaida, codEnt, dataSaida, qtde from saida "
-                + "order by dtSaida desc, codSaida asc";
+                + "order by dataSaida desc, codSaida asc";
         try{
             Statement stmt= c.createStatement();
             ResultSet rs= stmt.executeQuery(sql);
@@ -174,6 +174,7 @@ public class RepositorioSaida implements IRepositorioSaida{
                 e.setProduto(p);
                 s.setEntrada(e);*/
                 //s.setEntrada(rpEnt.pesquisar(rs.getInt("codEnt")));
+                s.getEntrada().setComportamentoToString(Entrada.TO_STRING_PROD_LOTE_SALDO);
                 lista.add(s);
                 
             }
@@ -294,7 +295,7 @@ public class RepositorioSaida implements IRepositorioSaida{
             sqlDateFinal= new java.sql.Date(new SimpleDateFormat("dd/MM/yyyy").parse(dataFinal).getTime());
         }catch(java.text.ParseException pe){
             throw new RepositorioPesquisarException(pe,
-                    RepositorioSaida.class.getName()+".pesquisar(dataInicial, dataFinal)");
+                    RepositorioSaida.class.getName()+".pesquisar(saida, dataInicial, dataFinal)");
         }
         Entrada e=null;
         Connection c= gerenciadorConexao.conectar();
@@ -338,17 +339,35 @@ public class RepositorioSaida implements IRepositorioSaida{
                 pesqCod= nFields+2;
             }
         }
+        nFields+=2;
         sql+= " where (dataEnt >= ? and dataEnt <= ?)";
         if (pesqCod>0){
             sql+= " and s.codSaida=?";
         }
         sql+= " order by s.dataSaida desc, s.codSaida asc";
-        
-        ///CONTINUAR CODIFICAÇÃO
-        /*
         try{
             PreparedStatement pstmt= c.prepareStatement(sql);
-            pstmt.setInt(1, num);
+            if (pesqForn >0){
+                pstmt.setInt(pesqForn, saida.getEntrada().getFornecedor().getCodForn());
+            }
+            if (pesqProd > 0){
+                pstmt.setInt(pesqProd, saida.getEntrada().getProduto().getCodProd());
+            }
+            if (pesqLote > 0){
+                pstmt.setString(pesqLote, saida.getEntrada().getLote());
+            }
+            if (nFields>0){
+                pstmt.setDate(nFields-2, sqlDateInicial);
+                pstmt.setDate(nFields-1, sqlDateFinal);
+            }
+            if (pesqCod>0){
+                //pstmt.setDate(pesqCod-2, sqlDateInicial);
+                //pstmt.setDate(pesqCod-1, sqlDateFinal);
+                pstmt.setInt(pesqCod, saida.getCodSaida());
+            }
+            
+            ///CONTINUAR CODIFICAÇÃO
+            
             ResultSet rs= pstmt.executeQuery();
             IRepositorioEntrada rpEnt= new RepositorioEntrada();
             while (rs.next()){
@@ -356,14 +375,14 @@ public class RepositorioSaida implements IRepositorioSaida{
                         rs.getDate("dataSaida"),
                         rpEnt.pesquisar(rs.getInt("codEnt")));
             }
-            return s;
+            return lista;
         }
         catch(SQLException ex){
             throw new RepositorioPesquisarException(ex, 
-                    RepositorioSaida.class.getName()+".pesNum()");
+                    RepositorioSaida.class.getName()+".pesquisar(saida, dataInicial, dataFinal)");
         }
         finally{
             gerenciadorConexao.desconectar(c);
-        }*/
+        }
     }
 }

@@ -34,6 +34,10 @@
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
   </SyntheticProperties>
+  <Events>
+    <EventHandler event="internalFrameActivated" listener="javax.swing.event.InternalFrameListener" parameters="javax.swing.event.InternalFrameEvent" handler="JIFSaidaActivated"/>
+    <EventHandler event="internalFrameClosing" listener="javax.swing.event.InternalFrameListener" parameters="javax.swing.event.InternalFrameEvent" handler="JIFSaidaClosing"/>
+  </Events>
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
     <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
@@ -50,7 +54,7 @@
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
           <Component id="jPanel1" max="32767" attributes="0"/>
-          <Component id="jScrollPane1" pref="730" max="32767" attributes="0"/>
+          <Component id="jScrollPane1" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
@@ -58,7 +62,7 @@
           <Group type="102" alignment="0" attributes="0">
               <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="jScrollPane1" pref="245" max="32767" attributes="0"/>
+              <Component id="jScrollPane1" pref="249" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -334,6 +338,22 @@
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
       <SubComponents>
         <Component class="javax.swing.JTable" name="jTable1">
+          <BindingProperties>
+            <BindingProperty name="elements" source="lista" target="jTable1" targetPath="elements" updateStrategy="0" immediately="true">
+              <Subbinding sourcePath="${codSaida}">
+                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="Integer.class"/>
+              </Subbinding>
+              <Subbinding sourcePath="${dataSaida}">
+                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
+              </Subbinding>
+              <Subbinding sourcePath="${qtde}">
+                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="Double.class"/>
+              </Subbinding>
+              <Subbinding sourcePath="${entrada}">
+                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="ce.model.basica.Entrada.class"/>
+              </Subbinding>
+            </BindingProperty>
+          </BindingProperties>
         </Component>
       </SubComponents>
     </Container>

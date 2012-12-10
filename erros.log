@@ -145,3 +145,19 @@ joao.souza -> 09/12/2012 - 22:21:10
 	ce.model.regra.ControladorEntrada.alterar(): ce.erro.RepositorioAlterarException: Erro ao tentar atualizar a quantidade do produto em estoque.
 joao.souza -> 09/12/2012 - 22:23:13
 	ce.model.regra.ControladorUsuario.validarLogin(): Senha inválida!
+joao.souza -> 10/12/2012 - 18:23:49
+	ce.model.regra.ControladorUsuario.validarLogin(): Senha inválida!
+Sistema -> 10/12/2012 - 18:26:48
+	ce.model.dao.RepositorioLocalEstoque.alterar(): com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Unknown column 'codUnid' in 'where clause'
+joao.souza -> 10/12/2012 - 18:26:48
+	ce.model.regra.ControladorLocalEstoque.alterar(): Erro ao tenrar alterar local de estoque.
+Sistema -> 10/12/2012 - 18:26:55
+	ce.model.dao.RepositorioLocalEstoque.alterar(): com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Unknown column 'codUnid' in 'where clause'
+joao.souza -> 10/12/2012 - 18:26:55
+	ce.model.regra.ControladorLocalEstoque.alterar(): Erro ao tenrar alterar local de estoque.
+adm.sys -> 10/12/2012 - 18:30:19
+	ce.model.regra.ControladorUsuario.validarLogin(): Usuário inválido!
+Sistema -> 10/12/2012 - 19:01:56
+	ce.model.dao.RepositorioSaida.listar(): com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Unknown column 'dtSaida' in 'order clause'
+joao.souza -> 10/12/2012 - 19:01:56
+	ce.model.regra.ControladorSaida.listar(): Erro ao tentar listar saída.

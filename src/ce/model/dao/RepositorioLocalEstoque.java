@@ -74,7 +74,7 @@ public class RepositorioLocalEstoque implements IRepositorioLocalEstoque{
     public void alterar(LocalEstoque le)throws ConexaoException, 
             RepositorioAlterarException{
         Connection c= gerenciadorConexao.conectar();
-        String sql = "update LocalEstoque set descricao=? where codUnid=?";
+        String sql = "update LocalEstoque set descricao=? where codLocal=?";
         try{
             PreparedStatement pstmt = c.prepareStatement(sql);
             pstmt.setString(1, le.getDescricao());

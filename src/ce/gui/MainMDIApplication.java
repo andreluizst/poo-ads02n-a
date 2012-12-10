@@ -45,6 +45,7 @@ public class MainMDIApplication extends javax.swing.JFrame {
         miPerfil.setVisible(userIsAdm);
         miUsuario.setVisible(userIsAdm);
         mnUser.setText(f.getUser().getNome());
+        miUnidade.setVisible(false);
     }
     
     /**
@@ -338,6 +339,11 @@ public class MainMDIApplication extends javax.swing.JFrame {
         miSaida.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         miSaida.setMnemonic('s');
         miSaida.setText("Saída");
+        miSaida.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                miSaidaActionPerformed(evt);
+            }
+        });
         miAbrir.add(miSaida);
 
         miUnidade.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_I, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
@@ -641,7 +647,7 @@ public class MainMDIApplication extends javax.swing.JFrame {
     private void miFornecedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miFornecedorActionPerformed
         JIFFornecedor jifFornecedor = new JIFFornecedor();
         registrarJanela(jifFornecedor, miFornecedor);
-         try {
+        try {
             jifFornecedor.setMaximum(true);
         } catch (PropertyVetoException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage());
@@ -660,6 +666,11 @@ public class MainMDIApplication extends javax.swing.JFrame {
     private void miEntradaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miEntradaActionPerformed
         JIFEntrada jifEntrada= new JIFEntrada();
         registrarJanela(jifEntrada, miEntrada);
+        try {
+            jifEntrada.setMaximum(true);
+        } catch (PropertyVetoException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage());
+        }
     }//GEN-LAST:event_miEntradaActionPerformed
 
     private void miUserAlterarSenhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miUserAlterarSenhaActionPerformed
@@ -667,6 +678,16 @@ public class MainMDIApplication extends javax.swing.JFrame {
         dlgAlterarSenha.setLocationRelativeTo(null);
         dlgAlterarSenha.setVisible(true);
     }//GEN-LAST:event_miUserAlterarSenhaActionPerformed
+
+    private void miSaidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miSaidaActionPerformed
+        JIFSaida jifSaida= new JIFSaida();
+        registrarJanela(jifSaida, miSaida);
+        try {
+            jifSaida.setMaximum(true);
+        } catch (PropertyVetoException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage());
+        }
+    }//GEN-LAST:event_miSaidaActionPerformed
 
     /**
      * @param args the command line arguments
