@@ -42,7 +42,7 @@ public class ControladorUsuario {
     public void validarDados(Usuario u) throws ControladorException{
         if (u.getNome() == null){
             throw new ControladorException(user.getNome(),
-                    rb.getString("CtrlErroValInvalido"),
+                    rb.getString("CtrlErroValInvalido") + " [nome]",
                     ControladorUsuario.class.getName()+".validarDados()");
         }
         if (u.getSenha().length() < 6){
@@ -54,12 +54,12 @@ public class ControladorUsuario {
         if ((u.getFuncionario() == null) || 
                 (u.getFuncionario().getCpf().compareTo("")==0)){
             throw new ControladorException(user.getNome(),
-                    rb.getString("CtrlErroValInvalido"),
+                    rb.getString("CtrlErroValInvalido") + " [funcionário]",
                     ControladorUsuario.class.getName()+".validarDados()");
         }
         if ((u.getPerfil() == null) || (u.getPerfil().getCodPerfil() <= 0)){
             throw new ControladorException(user.getNome(),
-                    rb.getString("CtrlErroValInvalido"),
+                    rb.getString("CtrlErroValInvalido") + " [perfil]",
                     ControladorUsuario.class.getName()+".validarDados()");
         }
     }

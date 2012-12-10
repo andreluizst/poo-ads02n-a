@@ -273,17 +273,15 @@ public class Fachada {
      */
     public void login(Usuario u) throws GeralException{
         ctrlUsu.validarLogin(u);
-        user= u;
-        ctrlCateg.setUser(getUser());
-        ctrlUnid.setUser(getUser());
-        ctrlProd.setUser(getUser());
-        ctrlForn.setUser(getUser());
-        ctrlPer.setUser(getUser());
-        ctrlFun.setUser(getUser());
-        ctrlLocalE.setUser(getUser());
-        ctrlE.setUser(getUser());
-        ctrlS.setUser(getUser());
-        ctrlEst.setUser(getUser());
+        setUser(u);
+    }
+    
+    public void alterarSenha(Usuario u, String novaSenha) throws GeralException{
+        ctrlUsu.validarLogin(u);
+        u.setSenha(novaSenha);
+        ctrlUsu.validarDados(u);
+        ctrlUsu.alterar(u);
+        setUser(u);
     }
     
     public void incluir(Usuario u) throws GeralException{
@@ -457,6 +455,20 @@ public class Fachada {
      */
     public Usuario getUser() {
         return user;
+    }
+    
+    private void setUser(Usuario u){
+        user= u;
+        ctrlCateg.setUser(getUser());
+        ctrlUnid.setUser(getUser());
+        ctrlProd.setUser(getUser());
+        ctrlForn.setUser(getUser());
+        ctrlPer.setUser(getUser());
+        ctrlFun.setUser(getUser());
+        ctrlLocalE.setUser(getUser());
+        ctrlE.setUser(getUser());
+        ctrlS.setUser(getUser());
+        ctrlEst.setUser(getUser());
     }
     
 }

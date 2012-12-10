@@ -53,7 +53,7 @@ public class RepositorioEntrada implements IRepositorioEntrada{
             PreparedStatement pstmt = c.prepareStatement(sql);
             pstmt.setInt(1, e.getProduto().getCodProd());
             pstmt.setInt(2, e.getFornecedor().getCodForn());
-            pstmt.setDate(3, e.getDatatoMySqlDate());
+            pstmt.setDate(3, e.getDataToMySqlDate());
             pstmt.setString(4, e.getLote());
             pstmt.setDouble(5, e.getQtde());
             pstmt.executeUpdate();
@@ -100,7 +100,7 @@ public class RepositorioEntrada implements IRepositorioEntrada{
             PreparedStatement pstmt = c.prepareStatement(sql);
             pstmt.setInt(1, e.getProduto().getCodProd());
             pstmt.setInt(2, e.getFornecedor().getCodForn());
-            pstmt.setDate(3, e.getDatatoMySqlDate());
+            pstmt.setDate(3, e.getDataToMySqlDate());
             pstmt.setString(4, e.getLote());
             pstmt.setDouble(5, e.getQtde());
             pstmt.setInt(6, e.getNumero());
@@ -299,8 +299,8 @@ public class RepositorioEntrada implements IRepositorioEntrada{
         java.sql.Date sqlDateInicial;
         java.sql.Date sqlDateFinal;
         try{
-            sqlDateInicial= new java.sql.Date(new SimpleDateFormat("yyyy-MM-dd").parse(dataInicial).getTime());
-            sqlDateFinal= new java.sql.Date(new SimpleDateFormat("yyyy-MM-dd").parse(dataFinal).getTime());
+            sqlDateInicial= new java.sql.Date(new SimpleDateFormat("dd/MM/yyyy").parse(dataInicial).getTime());
+            sqlDateFinal= new java.sql.Date(new SimpleDateFormat("dd/MM/yyyy").parse(dataFinal).getTime());
         }catch(java.text.ParseException pe){
             throw new RepositorioPesquisarException(pe,
                     RepositorioEntrada.class.getName()+".pesquisarNoPeriodo()");
@@ -310,17 +310,19 @@ public class RepositorioEntrada implements IRepositorioEntrada{
         String sql= "select * from Entrada "
                 + "where (dataEnt >= ? and dataEnt <= ?)";
         if (entrada != null){
-            if (entrada.getNumero() > 0){
+            if ((entrada.getNumero()!=null) && (entrada.getNumero() > 0)){
                 sql+= " and codEnt=?";
                 nFields++;
                 pesqCod= nFields;
             }
-            if (entrada.getFornecedor().getCodForn() > 0){
+            if ((entrada.getFornecedor().getCodForn()!=null) 
+                    && (entrada.getFornecedor().getCodForn() > 0)){
                 sql+= " and codForn=?";
                 nFields++;
                 pesqForn= nFields;
             }
-            if (entrada.getProduto().getCodProd() > 0){
+            if ((entrada.getProduto().getCodProd()!=null) 
+                    && (entrada.getProduto().getCodProd() > 0)){
                 sql+= " and codProd=?";
                 nFields++;
                 pesqProd= nFields;

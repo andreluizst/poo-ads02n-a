@@ -69,6 +69,36 @@ joao.souza -> 08/12/2012 - 23:50:20
 	ce.model.regra.ControladorUsuario.validarLogin(): No momento não é possível validar o login.
 joao.souza -> 09/12/2012 - 16:20:24
 	ce.model.regra.ControladorUsuario.validarLogin(): Senha inválida!
+Sistema -> 09/12/2012 - 19:31:33
+	ce.model.dao.RepositorioEntrada.pesquisarNoPeriodo(): java.text.ParseException: Unparseable date: "01/11/2012"
+joao.souza -> 09/12/2012 - 19:31:33
+	ce.model.regra.ControladorEntrada.pesquisar(): Erro ao tentar pesquisar entrada.
+joao.souza -> 09/12/2012 - 21:12:01
+	ce.model.regra.ControladorUsuario.validarDados(): Campo com valor inválido!
+joao.souza -> 09/12/2012 - 21:12:42
+	ce.model.regra.ControladorUsuario.validarDados(): Campo com valor inválido!
+joao.souza -> 09/12/2012 - 21:12:57
+	ce.model.regra.ControladorUsuario.validarDados(): Campo com valor inválido!
+joao.souza -> 09/12/2012 - 21:15:29
+	ce.model.regra.ControladorUsuario.validarDados(): Campo com valor inválido! [nome]
+joao.souza -> 09/12/2012 - 21:16:30
+	ce.model.regra.ControladorUsuario.validarDados(): Campo com valor inválido!
+A senha deve ter seis ou mais caracteres.
+joao.souza -> 09/12/2012 - 21:16:45
+	ce.model.regra.ControladorUsuario.validarDados(): Campo com valor inválido!
+A senha deve ter seis ou mais caracteres.
+joao.souza -> 09/12/2012 - 21:17:00
+	ce.model.regra.ControladorUsuario.validarDados(): Campo com valor inválido!
+A senha deve ter seis ou mais caracteres.
+joao.souza -> 09/12/2012 - 21:20:51
+	ce.model.regra.ControladorUsuario.validarDados(): Campo com valor inválido!
+A senha deve ter seis ou mais caracteres.
+joao.souza -> 09/12/2012 - 21:21:16
+	ce.model.regra.ControladorUsuario.validarLogin(): Senha inválida!
+joao.souza -> 09/12/2012 - 21:21:18
+	ce.model.regra.ControladorUsuario.validarLogin(): Senha inválida!
+joao.souza -> 09/12/2012 - 21:21:35
+	ce.model.regra.ControladorUsuario.validarLogin(): Senha inválida!
 root -> 09/12/2012 - 19:23:06
 	ce.util.GerenciadorConexao.conectar(): java.sql.SQLException: Access denied for user 'root'@'localhost' (using password: YES)
 joao.souza -> 09/12/2012 - 19:23:06

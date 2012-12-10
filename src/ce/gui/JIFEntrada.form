@@ -65,7 +65,7 @@
           <Group type="102" alignment="0" attributes="0">
               <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="jScrollPane1" pref="279" max="32767" attributes="0"/>
+              <Component id="jScrollPane1" pref="295" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -241,7 +241,7 @@
             </Property>
           </Properties>
           <BindingProperties>
-            <BindingProperty name="enabled" source="jTable1" sourcePath="${selectedElement!==null}" target="btnExcluir" targetPath="enabled" updateStrategy="0" immediately="false"/>
+            <BindingProperty name="enabled" source="jTable1" sourcePath="${selectedElement!=null}" target="btnExcluir" targetPath="enabled" updateStrategy="0" immediately="false"/>
           </BindingProperties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnExcluirActionPerformed"/>
@@ -259,7 +259,7 @@
             </Property>
           </Properties>
           <BindingProperties>
-            <BindingProperty name="enabled" source="jTable1" sourcePath="${selectedElement!==null}" target="btnAlterar" targetPath="enabled" updateStrategy="0" immediately="false"/>
+            <BindingProperty name="enabled" source="jTable1" sourcePath="${selectedElement!=null}" target="btnAlterar" targetPath="enabled" updateStrategy="0" immediately="false"/>
           </BindingProperties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAlterarActionPerformed"/>
@@ -312,11 +312,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JComboBox" name="jcbxProdutos">
-          <Properties>
-            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="0"/>
-            </Property>
-          </Properties>
+          <BindingProperties>
+            <BindingProperty name="elements" source="lstProds" target="jcbxProdutos" targetPath="elements" updateStrategy="0" immediately="false"/>
+          </BindingProperties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel5">
           <Properties>

@@ -186,14 +186,8 @@ public class Entrada {
      */
     public String getStrDataInvertida(){
         String dt="";
-        try{
-            for (int i=dataEntrada.length();i>0;i--){
-                dt+= dataEntrada.substring(i-1, i);
-            }
-        }catch(Exception e){
-            dt= "";
-        }
-        return dt;
+        dt= getDataToMySqlDate().toString();
+        return dt.replaceAll("[-]", "/");
     }
     
     /**
@@ -201,10 +195,10 @@ public class Entrada {
      * @return 
      * java.sql.Date
      */
-    public java.sql.Date getDatatoMySqlDate(){
+    public java.sql.Date getDataToMySqlDate(){
         java.sql.Date data;
         try {
-            data= new java.sql.Date(new SimpleDateFormat("yyyy-MM-dd").parse(dataEntrada).getTime());
+            data= new java.sql.Date(new SimpleDateFormat("dd/MM/yyyy").parse(dataEntrada).getTime());
         } catch (ParseException ex) {
             data= null;
         }
@@ -274,7 +268,7 @@ public class Entrada {
      */
     @Override
     public String toString(){
-        return numero + " - " + dataEntrada;
+        return numero + " de " + dataEntrada;
     }
     
     /**

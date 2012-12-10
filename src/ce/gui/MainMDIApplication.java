@@ -44,6 +44,7 @@ public class MainMDIApplication extends javax.swing.JFrame {
         userIsAdm= f.getUser().getPerfil().getNome().toLowerCase().compareTo("administrador") == 0;
         miPerfil.setVisible(userIsAdm);
         miUsuario.setVisible(userIsAdm);
+        mnUser.setText(f.getUser().getNome());
     }
     
     /**
@@ -221,6 +222,8 @@ public class MainMDIApplication extends javax.swing.JFrame {
         jmnFecharAtual = new javax.swing.JMenuItem();
         jmnProximaJanela = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
+        mnUser = new javax.swing.JMenu();
+        miUserAlterarSenha = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Sistema simples de estoque");
@@ -491,6 +494,20 @@ public class MainMDIApplication extends javax.swing.JFrame {
 
         menuBar.add(mnJanela);
 
+        mnUser.setText("UsuarioLogado");
+
+        miUserAlterarSenha.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F10, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        miUserAlterarSenha.setMnemonic('a');
+        miUserAlterarSenha.setText("Alterar senha");
+        miUserAlterarSenha.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                miUserAlterarSenhaActionPerformed(evt);
+            }
+        });
+        mnUser.add(miUserAlterarSenha);
+
+        menuBar.add(mnUser);
+
         setJMenuBar(menuBar);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -634,6 +651,12 @@ public class MainMDIApplication extends javax.swing.JFrame {
         registrarJanela(jifEntrada, miEntrada);
     }//GEN-LAST:event_miEntradaActionPerformed
 
+    private void miUserAlterarSenhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miUserAlterarSenhaActionPerformed
+        UsuarioAlterarSenha dlgAlterarSenha= new UsuarioAlterarSenha(null, true);
+        dlgAlterarSenha.setLocationRelativeTo(null);
+        dlgAlterarSenha.setVisible(true);
+    }//GEN-LAST:event_miUserAlterarSenhaActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -708,6 +731,7 @@ public class MainMDIApplication extends javax.swing.JFrame {
     private javax.swing.JMenuItem miSaida;
     private javax.swing.JMenuItem miSair;
     private javax.swing.JMenuItem miUnidade;
+    private javax.swing.JMenuItem miUserAlterarSenha;
     private javax.swing.JMenuItem miUsuario;
     private javax.swing.JMenuItem mnAlterar;
     private javax.swing.JMenuItem mnAnterior;
@@ -722,6 +746,7 @@ public class MainMDIApplication extends javax.swing.JFrame {
     private javax.swing.JMenuItem mnPrimeiro;
     private javax.swing.JMenuItem mnProximo;
     private javax.swing.JMenuItem mnUltimo;
+    private javax.swing.JMenu mnUser;
     // End of variables declaration//GEN-END:variables
 
     /**

@@ -276,7 +276,12 @@ public class Fornecedor {
      */
     @Override
     public String toString(){
-        return getNome() + ", CPF/CNPJ " + getCnpj();
+        String str="";
+        str= getNome();
+        if ((getCnpj() != null) && (getCnpj().length() > 0)){
+            str+= ", CNPJ " + getCnpj();
+        }
+        return str;
     }
     
     /**

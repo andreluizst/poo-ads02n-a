@@ -10,6 +10,7 @@ import ce.model.basica.Entrada;
 import ce.model.basica.Fornecedor;
 import ce.model.basica.Produto;
 import ce.model.fachada.Fachada;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -21,11 +22,17 @@ import javax.swing.JOptionPane;
 public class JIFEntrada extends javax.swing.JInternalFrame implements IActionsGui {
     private Fachada f;
     private String activationName;
+    private Date hj;
     /**
      * Creates new form JIFEntrada
      */
     public JIFEntrada() {
         initComponents();
+        f= Fachada.getInstancia();
+        activationName= "Entrada";
+        hj= new Date();
+        jftfDtInicial.setText("01/01/1900");
+        jftfDtFinal.setText(new java.text.SimpleDateFormat("dd/MM/yyyy").format(hj));
         Fornecedor fornIni= new Fornecedor();
         Produto prodIni= new Produto();
         fornIni.setCnpj("");
@@ -33,10 +40,14 @@ public class JIFEntrada extends javax.swing.JInternalFrame implements IActionsGu
         prodIni.setCodProd(0);
         prodIni.setDescProd("<Todos>");
         try {
-            lstForns.add(fornIni);
+            //lstForns.add(fornIni);
             lstForns.addAll(f.listarFornecedor());
+            lstForns.add(0, fornIni);
+            jcbxFornecedores.setSelectedIndex(0);
             lstProds.add(prodIni);
             lstProds.addAll(f.listarProduto());
+            //lstProds.add(0, prodIni);
+            jcbxProdutos.setSelectedIndex(0);
         } catch (GeralException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage());
         }
@@ -92,7 +103,7 @@ public class JIFEntrada extends javax.swing.JInternalFrame implements IActionsGu
         }
         obj= lista.get(jTable1.getSelectedRow());
         String [] opcoes= new String[] {"Sim", "Não"};
-        String msg= "Deseja excluir " + obj.toString() + "?";
+        String msg= "Deseja excluir a entrada " + obj.toString() + "?";
         int result= JOptionPane.showOptionDialog(null, msg, "Confirmação",
                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,
                 null, opcoes, opcoes[0]);
@@ -187,6 +198,12 @@ public class JIFEntrada extends javax.swing.JInternalFrame implements IActionsGu
         } catch (GeralException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage());
         }
+        jtxtNumero.setText("");
+        jtxtLote.setText("");
+        jftfDtInicial.setText("01/01/1900");
+        jftfDtFinal.setText(new java.text.SimpleDateFormat("dd/MM/yyyy").format(hj));
+        jcbxFornecedores.setSelectedIndex(0);
+        jcbxProdutos.setSelectedIndex(0);
         firstRecord();
     }
     
@@ -348,7 +365,7 @@ public class JIFEntrada extends javax.swing.JInternalFrame implements IActionsGu
         btnExcluir.setText("Excluir");
         btnExcluir.setDisabledIcon(new javax.swing.ImageIcon(getClass().getResource("/ce/gui/images/btnApagarDisable2.png"))); // NOI18N
 
-        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, jTable1, org.jdesktop.beansbinding.ELProperty.create("${selectedElement!==null}"), btnExcluir, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
+        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, jTable1, org.jdesktop.beansbinding.ELProperty.create("${selectedElement!=null}"), btnExcluir, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
 
         btnExcluir.addActionListener(new java.awt.event.ActionListener() {
@@ -362,7 +379,7 @@ public class JIFEntrada extends javax.swing.JInternalFrame implements IActionsGu
         btnAlterar.setText("Alterar");
         btnAlterar.setDisabledIcon(new javax.swing.ImageIcon(getClass().getResource("/ce/gui/images/btnAlterarDisable.png"))); // NOI18N
 
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, jTable1, org.jdesktop.beansbinding.ELProperty.create("${selectedElement!==null}"), btnAlterar, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, jTable1, org.jdesktop.beansbinding.ELProperty.create("${selectedElement!=null}"), btnAlterar, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
 
         btnAlterar.addActionListener(new java.awt.event.ActionListener() {
@@ -388,6 +405,9 @@ public class JIFEntrada extends javax.swing.JInternalFrame implements IActionsGu
         bindingGroup.addBinding(jComboBoxBinding);
 
         jLabel1.setText("Fornecedor");
+
+        jComboBoxBinding = org.jdesktop.swingbinding.SwingBindings.createJComboBoxBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, lstProds, jcbxProdutos);
+        bindingGroup.addBinding(jComboBoxBinding);
 
         jLabel5.setText("Produto");
 
@@ -515,7 +535,7 @@ public class JIFEntrada extends javax.swing.JInternalFrame implements IActionsGu
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 279, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 295, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
