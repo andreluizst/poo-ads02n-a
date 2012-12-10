@@ -53,9 +53,13 @@ public class RepositorioProduto implements IRepositorioProduto{
             pstmt.setString(1, p.getDescProd());
             pstmt.setDouble(2, p.getQtdeEstoq());
             pstmt.setDouble(3, p.getQtdeMin());
-            pstmt.setDouble(4, p.getQtdeIdeal());
+            if (p.getQtdeIdeal() != null){
+                pstmt.setDouble(4, p.getQtdeIdeal());
+            }else{
+                pstmt.setDouble(4, 0.00);
+            }
             pstmt.setInt(5, p.getCategoria().getCodCateg());
-            pstmt.setInt(6, p.getStatusProd());
+            pstmt.setInt(6, p.getStatus());
             pstmt.setInt(7, p.getUnidade().getCodUnid());
             pstmt.execute();
             if (p.getFornecedores().size() >= 1){
@@ -104,9 +108,13 @@ public class RepositorioProduto implements IRepositorioProduto{
             pstmt.setString(1, p.getDescProd());
             pstmt.setDouble(2, p.getQtdeEstoq());
             pstmt.setDouble(3, p.getQtdeMin());
-            pstmt.setDouble(4, p.getQtdeIdeal());
+            if (p.getQtdeIdeal() != null){
+                pstmt.setDouble(4, p.getQtdeIdeal());
+            }else{
+                pstmt.setDouble(4, 0.00);
+            }
             pstmt.setDouble(5, p.getCategoria().getCodCateg());
-            pstmt.setDouble(6, p.getStatusProd());
+            pstmt.setDouble(6, p.getStatus());
             pstmt.setInt(7, p.getUnidade().getCodUnid());
             pstmt.setInt(8, p.getCodProd());
             pstmt.execute();

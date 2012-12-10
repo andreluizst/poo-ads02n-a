@@ -54,7 +54,7 @@ public class JIFEntrada extends javax.swing.JInternalFrame implements IActionsGu
     }
     
     /**
-     * Seleciona um funcionário na tabela
+     * Seleciona um objeto na tabela
      * @param fun
      * Funcionário que deseja selecionar
      */

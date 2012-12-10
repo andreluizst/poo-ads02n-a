@@ -132,6 +132,7 @@ public class PropEntrada extends javax.swing.JDialog {
         }catch(Exception e){
             obj.setQtde(0.00);
         }
+        obj.setSaldo(obj.getQtde());
         obj.setFornecedor(lstFornecedor.get(jcbxFornecedor.getSelectedIndex()));
         obj.setProduto(jcbxProdsForn.getItemAt(jcbxProdsForn.getSelectedIndex()));
     }

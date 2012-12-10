@@ -540,6 +540,11 @@ public class MainMDIApplication extends javax.swing.JFrame {
     private void miProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miProdutoActionPerformed
         JIFProduto jifProduto= new JIFProduto();
         registrarJanela(jifProduto, miProduto);
+         try {
+            jifProduto.setMaximum(true);
+        } catch (PropertyVetoException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage());
+        }
     }//GEN-LAST:event_miProdutoActionPerformed
 
     private void miAbrirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miAbrirActionPerformed
@@ -636,6 +641,11 @@ public class MainMDIApplication extends javax.swing.JFrame {
     private void miFornecedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miFornecedorActionPerformed
         JIFFornecedor jifFornecedor = new JIFFornecedor();
         registrarJanela(jifFornecedor, miFornecedor);
+         try {
+            jifFornecedor.setMaximum(true);
+        } catch (PropertyVetoException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage());
+        }
     }//GEN-LAST:event_miFornecedorActionPerformed
 
     private void jmnProximaJanelaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmnProximaJanelaActionPerformed

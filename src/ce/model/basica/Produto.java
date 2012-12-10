@@ -153,15 +153,39 @@ public class Produto {
     /**
      * @return the statusProd
      */
-    public int getStatusProd() {
+    public String getStatusProd() {
+        String s="";
+        if (statusProd ==1){
+            s= "BLOQUEADO";
+        }
+        if (statusProd ==0){
+            s= "Normal";
+        } 
+        return s;//statusProd;
+    }
+    
+    /**
+     * Retorna o código do status. Seu principal uso é nas operação de inclusão
+     * e alteração no repositório.
+     * @return 
+     */
+    public int getStatus() {
         return statusProd;
     }
 
     /**
      * @param statusProd the statusProd to set
      */
-    public void setStatusProd(int statusProd) {
-        this.statusProd = statusProd;
+    public void setStatusProd(String statusProd) {
+        if ((statusProd.toLowerCase().compareTo("normal")==0)
+                || (statusProd.toLowerCase().compareTo("0")==0)){
+            this.statusProd= 0;
+        }
+        if ((statusProd.toLowerCase().compareTo("bloqueado")==0)
+                || (statusProd.toLowerCase().compareTo("1")==0)){
+            this.statusProd= 1;
+        }
+        //this.statusProd = statusProd;
     }
 
     /**
@@ -194,13 +218,13 @@ public class Produto {
      * Texto contendo os valores de todos os atribudos do objeto.
      */
     public String toStringAll(){
-        String s= "Normal";
+        /*String s= "Normal";
         if (statusProd != 0){
             s= "Bloqueado";
-        }
+        }*/
         return categoria.getDescricao() + " - " + codProd + " - " + descProd
                 + " - " + qtdeEstoq + " - " + qtdeMin + " - " + qtdeIdeal
-                + " - " + unidade.getDescricao()+ " - " + s;
+                + " - " + unidade.getDescricao()+ " - " + getStatusProd();
     }
   
 }

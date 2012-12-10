@@ -18,6 +18,7 @@ import ce.model.basica.Saida;
 import ce.util.GerenciadorConexao;
 import ce.util.IGerenciadorConexao;
 import java.sql.*;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 /**
@@ -45,11 +46,11 @@ public class RepositorioSaida implements IRepositorioSaida{
     public void inserir(Saida s) throws ConexaoException, 
             RepositorioInserirException{
         Connection c= gerenciadorConexao.conectar();
-        String sql="Insert into saida (codEnt, dtSaida, qtde) values(?,?,?)";
+        String sql="Insert into saida (codEnt, dataSaida, qtde) values(?,?,?)";
         try{
             PreparedStatement pstmt= c.prepareStatement(sql);
             pstmt.setInt(1, s.getEntrada().getNumero());
-            pstmt.setString(2, s.getDataSaida());
+            pstmt.setDate(2, s.getDataToMySqlDate());
             pstmt.setDouble(3, s.getQtde());
             pstmt.executeUpdate();
             pstmt.close();
@@ -78,11 +79,11 @@ public class RepositorioSaida implements IRepositorioSaida{
     public void alterar(Saida s) throws ConexaoException, 
             RepositorioAlterarException{
         Connection c= gerenciadorConexao.conectar();
-        String sql="Update saida set codEnt=?, dtSaida=?, qtde=? where codSaida=?";
+        String sql="Update saida set codEnt=?, dataSaida=?, qtde=? where codSaida=?";
         try{
             PreparedStatement pstmt= c.prepareStatement(sql);
             pstmt.setInt(1, s.getEntrada().getNumero());
-            pstmt.setString(2, s.getDataSaida());
+            pstmt.setDate(2, s.getDataToMySqlDate());
             pstmt.setDouble(3, s.getQtde());
             pstmt.setInt(4, s.getCodSaida());
             pstmt.executeUpdate();
@@ -147,14 +148,16 @@ public class RepositorioSaida implements IRepositorioSaida{
                 + " from Saida as s inner join Entrada as e where e.codEnt = s.codEnt"
                 + " inner join Produto as p where p.codProd = e.codProd"
                 + " inner join Fornecedor as f where f.codForn = e.codForn";*/
-        String sql= "select codSaida, codEnt, dtSaida, qtde from saida "
+        String sql= "select codSaida, codEnt, dataSaida, qtde from saida "
                 + "order by dtSaida desc, codSaida asc";
         try{
             Statement stmt= c.createStatement();
             ResultSet rs= stmt.executeQuery(sql);
             IRepositorioEntrada rpEnt= new RepositorioEntrada();
             while (rs.next()){
-                s= new Saida(rs.getInt("codSaida"), rs.getDouble("qtde"), rs.getString("dtSaida"));
+                s= new Saida(rs.getInt("codSaida"), rs.getDouble("qtde"), 
+                        rs.getDate("dataSaida"),
+                        rpEnt.pesquisar(rs.getInt("codEnt")));
                 /*e= new Entrada();
                 e.setNumero(rs.getInt("codEnt"));
                 e.setLote(rs.getString("lote"));
@@ -170,7 +173,7 @@ public class RepositorioSaida implements IRepositorioSaida{
                 e.setFornecedor(f);
                 e.setProduto(p);
                 s.setEntrada(e);*/
-                s.setEntrada(rpEnt.pesquisar(rs.getInt("codEnt")));
+                //s.setEntrada(rpEnt.pesquisar(rs.getInt("codEnt")));
                 lista.add(s);
                 
             }
@@ -209,15 +212,17 @@ public class RepositorioSaida implements IRepositorioSaida{
                 + " where s.codSaida = ? and e.codEnt = s.codEnt"
                 + " inner join produto as p where p.codProd = e.codProd"
                 + " inner join Fornecedor as f where f.codForn = e.codForn";*/
-        String sql= "select codSaida, codEnt, dtSaida, qtde"
-                + "from saida order by dtSaida desc, codSaida asc";
+        String sql= "select codSaida, codEnt, dataSaida, qtde"
+                + "from saida order by dataSaida desc, codSaida asc";
         try{
             PreparedStatement pstmt= c.prepareStatement(sql);
             pstmt.setInt(1, num);
             ResultSet rs= pstmt.executeQuery();
             IRepositorioEntrada rpEnt= new RepositorioEntrada();
             while (rs.next()){
-                s= new Saida(rs.getInt("codSaida"), rs.getDouble("qtde"), rs.getString("dtSaida"));
+                s= new Saida(rs.getInt("codSaida"), rs.getDouble("qtde"),
+                        rs.getDate("dataSaida"),
+                        rpEnt.pesquisar(rs.getInt("codEnt")));
                 /*e= new Entrada();
                 e.setCodEntrada(rs.getInt("codEnt"));
                 e.setLote(rs.getString("lote"));
@@ -232,7 +237,7 @@ public class RepositorioSaida implements IRepositorioSaida{
                 e.setFornecedor(f);
                 e.setProduto(p);
                 s.setEntrada(e);*/
-                s.setEntrada(rpEnt.pesquisar(rs.getInt("codEnt")));
+                //s.setEntrada(rpEnt.pesquisar(rs.getInt("codEnt")));
             }
             return s;
         }
@@ -243,5 +248,122 @@ public class RepositorioSaida implements IRepositorioSaida{
         finally{
             gerenciadorConexao.desconectar(c);
         }
+    }
+    
+    /**
+     * Pesquisa entradas no período de datas informado.
+     * 
+     * @param saida
+     * Objeto do tipo Saida que terá seus atributos utilizados para filtrar a 
+     * pesquisa com exceção de data de entrada e quantidade.
+     * Se o objeto não for nulo, os atributos abaixo serão válidos se:
+     * Número da entrada for maior que zero;
+     * Código do fornecedor for maior que zero;
+     * Código do produto for maior que zero;
+     * Lote se não for vazio. (pode conter coringa SQL como o caracter %)
+     * 
+     * @param dataInicial
+     * Data inicial no formato texto (dd/MM/yyyy).
+     * 
+     * @param dataFinal
+     * Data final no formato texto (dd/MM/yyyy).
+     * 
+     * @return
+     * Retorna uma lista com as saídas.
+     * 
+     * @throws ConexaoException
+     * Se houver algum problema com a conexão será lançada uma ConexaoException
+     * 
+     * @throws RepositorioPesquisarException 
+     * Se houver algum erro na execução do SQL ou com as datas informadas será lançada uma exceção.
+     */
+    @Override
+    public List<Saida> pesquisar(Saida saida, String dataInicial, String dataFinal)
+            throws ConexaoException, RepositorioPesquisarException{
+        Saida s= null;
+        int nFields=0;
+        int pesqCod= 0;
+        int pesqForn= 0;
+        int pesqProd= 0;
+        int pesqLote= 0;
+        List<Saida> lista = new ArrayList();
+        java.sql.Date sqlDateInicial;
+        java.sql.Date sqlDateFinal;
+        try{
+            sqlDateInicial= new java.sql.Date(new SimpleDateFormat("dd/MM/yyyy").parse(dataInicial).getTime());
+            sqlDateFinal= new java.sql.Date(new SimpleDateFormat("dd/MM/yyyy").parse(dataFinal).getTime());
+        }catch(java.text.ParseException pe){
+            throw new RepositorioPesquisarException(pe,
+                    RepositorioSaida.class.getName()+".pesquisar(dataInicial, dataFinal)");
+        }
+        Entrada e=null;
+        Connection c= gerenciadorConexao.conectar();
+        String sql= "select * from Saida as s ";
+        //boolean hasInnerJoin= false;
+        String sqlInnerJoin="";
+        if (saida != null){
+            if ((saida.getEntrada().getFornecedor().getCodForn()!=null) 
+                    && (saida.getEntrada().getFornecedor().getCodForn() > 0)){
+                sql+= " inner join entrada as e on e.codEnt = s.codEnt and e.codForn=?";
+                //hasInnerJoin= true;
+                nFields++;
+                pesqForn= nFields;
+            }
+            if ((saida.getEntrada().getProduto().getCodProd()!=null) 
+                    && (saida.getEntrada().getProduto().getCodProd() > 0)){
+                if (nFields>0){
+                    sql+= " and e.codProd=?";
+                }else{
+                    sql+= " inner join entrada as e on e.codEnt = s.codEnt and e.codProd=?";
+                }
+                nFields++;
+                pesqProd= nFields;
+            }
+            if ((saida.getEntrada().getLote()!= null) 
+                    && (saida.getEntrada().getLote().length() > 0)){
+                if (nFields>0){
+                    sql+= " and e.lote like ?";
+                }
+                sql+= " inner join entrada as e on e.codEnt = s.codEnt and e.lote like ?";
+                nFields++;
+                pesqLote= nFields;
+            }
+            if ((saida.getCodSaida()!=null) && (saida.getCodSaida() > 0)){
+                /*if (nFields>0){
+                    sql+= " and s.codSaida=?";
+                }else{
+                    sql+= " inner join entrada as e on e.codEnt = s.codEnt and e.lote like ?";
+                }*/
+                nFields++;
+                pesqCod= nFields+2;
+            }
+        }
+        sql+= " where (dataEnt >= ? and dataEnt <= ?)";
+        if (pesqCod>0){
+            sql+= " and s.codSaida=?";
+        }
+        sql+= " order by s.dataSaida desc, s.codSaida asc";
+        
+        ///CONTINUAR CODIFICAÇÃO
+        /*
+        try{
+            PreparedStatement pstmt= c.prepareStatement(sql);
+            pstmt.setInt(1, num);
+            ResultSet rs= pstmt.executeQuery();
+            IRepositorioEntrada rpEnt= new RepositorioEntrada();
+            while (rs.next()){
+                s= new Saida(rs.getInt("codSaida"), rs.getDouble("qtde"),
+                        rs.getDate("dataSaida"),
+                        rpEnt.pesquisar(rs.getInt("codEnt")));
+            }
+            return s;
+        }
+        catch(SQLException ex){
+            throw new RepositorioPesquisarException(ex, 
+                    RepositorioSaida.class.getName()+".pesNum()");
+        }
+        finally{
+            gerenciadorConexao.desconectar(c);
+        }*/
     }
 }

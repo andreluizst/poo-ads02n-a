@@ -27,4 +27,6 @@ public interface IRepositorioSaida {
             RepositorioListarException;
     public Saida pesqNum(Integer Num) 
             throws ConexaoException, RepositorioPesquisarException;
+    public List<Saida> pesquisar(Saida s, String dataInicial, String dataFinal)
+            throws ConexaoException, RepositorioPesquisarException;
 }

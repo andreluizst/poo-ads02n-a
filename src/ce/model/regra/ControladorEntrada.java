@@ -179,6 +179,22 @@ public class ControladorEntrada {
         }
     }
     
+    public List<Entrada> listarDisponiveis() throws ControladorException{
+        try{
+            return rpEnt.listarComSaldo();
+        }
+        catch(ConexaoException e){
+            throw new ControladorException(user.getNome(),
+                    rb.getString("CtrlErroListIndisp") + " entrada.",
+                    ControladorEntrada.class.getName()+".listarDisponiveis()");
+        }
+        catch(RepositorioListarException re){
+            throw new ControladorException(user.getNome(),
+                    rb.getString("CtrlErroListar") + " entrada.",
+                    ControladorEntrada.class.getName()+".listarDisponiveis()");
+        }
+    }
+    
     public List<Entrada> pesquisar(Entrada entrada, String dataInicial, 
             String dataFinal) throws ControladorException{
         try{

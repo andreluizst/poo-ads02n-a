@@ -5,11 +5,11 @@
 package ce.model.dao;
 
 import ce.erro.ConexaoException;
-import ce.erro.RepositorioException;
-import ce.erro.RepositorioInserirException;
 import ce.erro.RepositorioAlterarException;
+import ce.erro.RepositorioException;
 import ce.erro.RepositorioExcluirException;
 import ce.erro.RepositorioForeignKeyException;
+import ce.erro.RepositorioInserirException;
 import ce.erro.RepositorioListarException;
 import ce.erro.RepositorioPesquisarException;
 import ce.model.basica.Entrada;
@@ -46,8 +46,8 @@ public class RepositorioEntrada implements IRepositorioEntrada{
     public void inserir(Entrada e) throws ConexaoException, 
             RepositorioInserirException{
         Connection c= gerenciadorConexao.conectar();
-        String sql="Insert into entrada (codProd, codForn, dataEnt, lote, qtde)"
-                + " values(?,?,?,?,?)";
+        String sql="Insert into entrada (codProd, codForn, dataEnt, lote, qtde, saldo)"
+                + " values(?,?,?,?,?,?)";
         try{
             PreparedStatement pstmt = c.prepareStatement(sql);
             pstmt.setInt(1, e.getProduto().getCodProd());
@@ -55,6 +55,7 @@ public class RepositorioEntrada implements IRepositorioEntrada{
             pstmt.setDate(3, e.getDataToMySqlDate());
             pstmt.setString(4, e.getLote());
             pstmt.setDouble(5, e.getQtde());
+            pstmt.setDouble(6, e.getSaldo());
             pstmt.executeUpdate();
             pstmt.close();
             IRepositorioProduto rpProd= new RepositorioProduto();
@@ -94,7 +95,7 @@ public class RepositorioEntrada implements IRepositorioEntrada{
             RepositorioAlterarException{
         Connection c= gerenciadorConexao.conectar();
         String sql="Update entrada set codProd=?, codForn=?, dataEnt=?, lote=?,"
-                + " qtde=? where codEnt=?";
+                + " qtde=?, saldo=? where codEnt=?";
         try{
             PreparedStatement pstmt = c.prepareStatement(sql);
             pstmt.setInt(1, e.getProduto().getCodProd());
@@ -102,7 +103,8 @@ public class RepositorioEntrada implements IRepositorioEntrada{
             pstmt.setDate(3, e.getDataToMySqlDate());
             pstmt.setString(4, e.getLote());
             pstmt.setDouble(5, e.getQtde());
-            pstmt.setInt(6, e.getNumero());
+            pstmt.setDouble(6, e.getSaldo());
+            pstmt.setInt(7, e.getNumero());
             pstmt.executeUpdate();
             pstmt.close();
             IRepositorioProduto rpProd= new RepositorioProduto();
@@ -166,33 +168,38 @@ public class RepositorioEntrada implements IRepositorioEntrada{
             gerenciadorConexao.desconectar(c);
         }
     }
+    
     /**
-     * Lista todas as entradas existentes.
+     * Método auxiliar do repositorio para dinamizar a listagem.
+     * @param comportamentoToString
+     * Define o comportamento dos objetos do tipo Entrada contidos na lista retornada.
      * @return
      * Retorna uma lista com as entradas.
      * @throws ConexaoException
      * Se houver algum problema com a conexão será lançada uma ConexaoException
      * @throws RepositorioListarException 
-     * Se houver algum erro na execução do SQL será lançada uma exceção.
+     * Se houver algum erro na execução do SQL será lançada uma exceção. 
      */
-    @Override
-    public List<Entrada> listar() throws ConexaoException, 
-            RepositorioListarException{
+    private List<Entrada> listar(int comportamentoToString) 
+            throws ConexaoException, RepositorioListarException{
         List<Entrada> lista = new ArrayList();
         Entrada e=null;
         Connection c= gerenciadorConexao.conectar();
         String sql= "select * from Entrada";
+        if (comportamentoToString == Entrada.TO_STRING_PROD_LOTE_SALDO){
+            sql= "select * from Entrada where saldo > 0";
+        }
         try{
             Statement stmt= c.createStatement();
             ResultSet rs= stmt.executeQuery(sql);
             IRepositorioProduto rpProd= new RepositorioProduto();
             IRepositorioFornecedor rpForn= new RepositorioFornecedor();
             while (rs.next()){
-                e = new Entrada(rs.getInt("codEnt"),
+                e = new Entrada(comportamentoToString, rs.getInt("codEnt"),
                         rpProd.pesqCodProd(rs.getInt("codProd"), false),
                         rpForn.pesqCodForn(rs.getInt("codForn"), false),
                         rs.getDate("dataEnt"), rs.getString("lote"),
-                        rs.getDouble("qtde"));
+                        rs.getDouble("qtde"), rs.getDouble("saldo"));
                 
                 lista.add(e);
             }
@@ -212,6 +219,37 @@ public class RepositorioEntrada implements IRepositorioEntrada{
             gerenciadorConexao.desconectar(c);
         }
     }
+    
+    /**
+     * Lista todas as entradas existentes.
+     * @return
+     * Retorna uma lista com as entradas.
+     * @throws ConexaoException
+     * Se houver algum problema com a conexão será lançada uma ConexaoException
+     * @throws RepositorioListarException 
+     * Se houver algum erro na execução do SQL será lançada uma exceção.
+     */
+    @Override
+    public List<Entrada> listar() throws ConexaoException, 
+            RepositorioListarException{
+        return listar(Entrada.TO_STRING_DEFAULT);
+    }
+    
+    /**
+     * Lista todas as entradas com saldo > 0. 
+     * @return
+     * Retorna uma lista com as entradas.
+     * @throws ConexaoException
+     * Se houver algum problema com a conexão será lançada uma ConexaoException
+     * @throws RepositorioListarException 
+     * Se houver algum erro na execução do SQL será lançada uma exceção.
+     */
+    @Override
+    public List<Entrada> listarComSaldo() throws ConexaoException, 
+            RepositorioListarException{
+        return listar(Entrada.TO_STRING_PROD_LOTE_SALDO);
+    }
+    
     /**
      * Pesquisa entrada pelo número.
      * @param num
@@ -240,7 +278,7 @@ public class RepositorioEntrada implements IRepositorioEntrada{
                         rpProd.pesqCodProd(rs.getInt("codProd"), false),
                         rpForn.pesqCodForn(rs.getInt("codForn"), false),
                         rs.getDate("dataEnt"), rs.getString("lote"),
-                        rs.getDouble("qtde"));
+                        rs.getDouble("qtde"), rs.getDouble("saldo"));
             }
             rs.close();
             pstmt.close();
@@ -357,7 +395,7 @@ public class RepositorioEntrada implements IRepositorioEntrada{
                         rpProd.pesqCodProd(rs.getInt("codProd"), false),
                         rpForn.pesqCodForn(rs.getInt("codForn"), false),
                         rs.getDate("dataEnt"), rs.getString("lote"),
-                        rs.getDouble("qtde"));
+                        rs.getDouble("qtde"), rs.getDouble("saldo"));
                 
                 lista.add(e);
             }

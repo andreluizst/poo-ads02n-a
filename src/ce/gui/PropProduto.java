@@ -109,6 +109,11 @@ public class PropProduto extends javax.swing.JDialog {
         jtxtQtde.setText(prod.getQtdeEstoq().toString().replaceAll("[.]", ","));
         jtxtQtdeMin.setText(prod.getQtdeMin().toString().replaceAll("[.]", ","));
         //jtxtQtdeIdeal.setText(prod.getQtdeIdeal().toString().replaceAll("[.]", ","));
+        if (prod.getStatus() == 0){
+            jcbxStatus.setSelectedIndex(0);
+        }else{
+            jcbxStatus.setSelectedIndex(1);
+        }
         lstFornsProd.clear();
         lstFornsProd.addAll(prod.getFornecedores());
         lstForns.clear();
@@ -156,6 +161,7 @@ public class PropProduto extends javax.swing.JDialog {
         prod.setCategoria(lstCategoria.get(jcbxCateg.getSelectedIndex()));
         prod.setFornecedores(lstFornsProd);
         prod.setDescProd(jtxtDescProduto.getText());
+        prod.setStatusProd(jcbxStatus.getItemAt(jcbxStatus.getSelectedIndex()).toString());
         try{
             dbQtde= Double.parseDouble(jtxtQtde.getText().replaceAll("[,]", "."));
             prod.setQtdeEstoq(dbQtde);
@@ -168,7 +174,7 @@ public class PropProduto extends javax.swing.JDialog {
         }catch(Exception e){
             prod.setQtdeEstoq(0.00);
         }
-        //prod.setQtdeIdeal(Double.parseDouble(jtxtQtdeIdeal.getText()));
+        prod.setQtdeIdeal(0.00);
     }
     
     /**
@@ -198,7 +204,12 @@ public class PropProduto extends javax.swing.JDialog {
     public int getReturnStatus() {
         return returnStatus;
     }
- public Produto getProperties(){
+    
+    /**
+     * Retorna um objeto Produto preenchido.
+     * @return 
+     */
+    public Produto getProperties(){
         return produto;
     }
 
@@ -241,6 +252,8 @@ public class PropProduto extends javax.swing.JDialog {
         jcbxUnid = new javax.swing.JComboBox();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
+        jcbxStatus = new javax.swing.JComboBox();
+        jLabel5 = new javax.swing.JLabel();
 
         lstForns= org.jdesktop.observablecollections.ObservableCollections.observableList(lstForns);
 
@@ -279,6 +292,11 @@ public class PropProduto extends javax.swing.JDialog {
         jtxtQtdeMin.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
 
         btnSalvar.setText("Salvar");
+        btnSalvar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalvarActionPerformed(evt);
+            }
+        });
 
         lblImg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ce/gui/images/Arquivo-Alterar3.jpg"))); // NOI18N
         lblImg.setText("lblImg");
@@ -351,6 +369,10 @@ public class PropProduto extends javax.swing.JDialog {
 
         jLabel9.setText("Unidade");
 
+        jcbxStatus.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Normal", "BLOQUEADO" }));
+
+        jLabel5.setText("Situação");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -364,10 +386,6 @@ public class PropProduto extends javax.swing.JDialog {
                                 .addComponent(jLabel1)
                                 .addGap(71, 71, 71)
                                 .addComponent(jLabel8))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jtxtCodProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(62, 62, 62)
-                                .addComponent(jcbxCateg, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jLabel2)
                             .addComponent(jtxtDescProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 366, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
@@ -375,29 +393,39 @@ public class PropProduto extends javax.swing.JDialog {
                                 .addGap(43, 43, 43)
                                 .addComponent(jLabel4)
                                 .addGap(61, 61, 61)
-                                .addComponent(jLabel9)))
+                                .addComponent(jLabel9))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jtxtCodProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(62, 62, 62)
+                                .addComponent(jcbxCateg, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(186, 186, 186)
                         .addComponent(lblImg, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jtxtQtde, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jtxtQtdeMin, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(26, 26, 26)
-                        .addComponent(jcbxUnid, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel13)
                         .addGap(179, 179, 179)
                         .addComponent(jLabel14))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(6, 6, 6)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnAdicionaUmForn, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnRemoveUmForn, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnAdiconaTodosForns)
-                            .addComponent(btnRemoveTodosForns))
-                        .addGap(6, 6, 6)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(6, 6, 6)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(btnAdicionaUmForn, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btnRemoveUmForn, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btnAdiconaTodosForns)
+                                    .addComponent(btnRemoveTodosForns))
+                                .addGap(6, 6, 6)
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(jtxtQtde, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jtxtQtdeMin, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(26, 26, 26)
+                                .addComponent(jcbxUnid, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(26, 26, 26)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel5)
+                                    .addComponent(jcbxStatus, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                         .addGap(34, 34, 34)
                         .addComponent(btnSalvar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -424,13 +452,17 @@ public class PropProduto extends javax.swing.JDialog {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel3)
                             .addComponent(jLabel4)
-                            .addComponent(jLabel9)))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel9)
+                                .addComponent(jLabel5))))
                     .addComponent(lblImg, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(6, 6, 6)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jtxtQtde, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jtxtQtdeMin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jcbxUnid, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jcbxUnid, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jcbxStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel13)
@@ -464,9 +496,8 @@ public class PropProduto extends javax.swing.JDialog {
     
      /**
      * Salva as alterações ou o novo Produto.
-     * @param evt 
      */
-    private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {                                          
+    private void salvar() {                                          
         produto = new Produto();
         setProduto(produto);
         try{
@@ -541,6 +572,10 @@ public class PropProduto extends javax.swing.JDialog {
             jlstForns.setSelectedIndex(lstForns.size() - 1);
         }
     }//GEN-LAST:event_btnAdicionaUmFornActionPerformed
+
+    private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
+        salvar();
+    }//GEN-LAST:event_btnSalvarActionPerformed
     
     
     /**
@@ -608,11 +643,13 @@ public class PropProduto extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JComboBox jcbxCateg;
+    private javax.swing.JComboBox jcbxStatus;
     private javax.swing.JComboBox jcbxUnid;
     private javax.swing.JList<Fornecedor> jlstForns;
     private javax.swing.JList<Fornecedor> jlstFornsProd;

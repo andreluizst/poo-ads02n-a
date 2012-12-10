@@ -384,6 +384,10 @@ public class Fachada {
         return ctrlE.listar();
     }
     
+    public List<Entrada> listarEntradasDisponiveis() throws GeralException{
+        return ctrlE.listarDisponiveis();
+    }
+    
     public Entrada trazerEntrada(Integer num) throws GeralException{
         ctrlE.verificarSeExiste(num);
         return ctrlE.trazer(num);
@@ -422,6 +426,11 @@ public class Fachada {
     public Saida trazerSaida(Integer num) throws GeralException{
         ctrlS.verificarSeExiste(num);
         return ctrlS.trazer(num);
+    }
+    
+    public List<Saida> pesquisarSaida(Saida s, String dataInicial, String dataFinal)
+            throws GeralException{
+        return ctrlS.listar();
     }
     
     /*

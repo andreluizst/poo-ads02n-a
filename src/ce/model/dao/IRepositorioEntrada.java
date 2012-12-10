@@ -26,6 +26,8 @@ public interface IRepositorioEntrada {
             RepositorioForeignKeyException, RepositorioExcluirException;
     public List<Entrada> listar() throws ConexaoException, 
             RepositorioListarException;
+    public List<Entrada> listarComSaldo() throws ConexaoException, 
+            RepositorioListarException;
     public Entrada pesquisar(Integer Num) 
             throws ConexaoException, RepositorioPesquisarException;
     public List<Entrada> pesquisar(String dataInicial, String dataFinal)

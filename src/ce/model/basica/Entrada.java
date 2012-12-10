@@ -13,9 +13,14 @@ import java.text.SimpleDateFormat;
  * @author aluno
  */
 public class Entrada {
-
+    public static final int TO_STRING_DEFAULT= 0;
+    public static final int TO_STRING_PROD_LOTE_SALDO=1;
+    public static final int TO_STRING_FULL=2;
+    
+    private int comportamentoToString;
     private Integer numero;
     private Double qtde;
+    private Double saldo;
     private String dataEntrada;
     private String lote;
     private Produto produto;
@@ -26,6 +31,7 @@ public class Entrada {
     public Entrada(){
         fornecedor=new Fornecedor();
         produto=new Produto();
+        comportamentoToString= Entrada.TO_STRING_DEFAULT;
     }
     
     /**
@@ -38,6 +44,7 @@ public class Entrada {
     public Entrada(Integer numero, Double qtde, Object dataEntrada, String lote){
         this();
         java.util.Date dt;
+        this.comportamentoToString=Entrada.TO_STRING_DEFAULT;
         this.numero = numero;
         this.qtde = qtde;
         this.qtde = qtde;
@@ -70,10 +77,13 @@ public class Entrada {
      * Objeto do tipo Produto
      * @param fornecedor 
      * Objeto do tipo Fornecedor
+     * @param saldo 
+     * Quantidade disponível
      */
     public Entrada(Integer numero, Produto produto, Fornecedor fornecedor, 
-            Object dataEntrada, String lote, Double qtde){
+            Object dataEntrada, String lote, Double qtde, Double saldo){
         java.util.Date dt;
+        this.comportamentoToString=Entrada.TO_STRING_DEFAULT;
         this.numero = numero;
         this.qtde = qtde;
         if (dataEntrada instanceof String){
@@ -91,6 +101,33 @@ public class Entrada {
         this.lote = lote;
         this.produto=produto;
         this.fornecedor=fornecedor;
+        this.saldo=saldo;
+    }
+    
+    /**
+     * 
+     * @param comportamentoToString
+     * Define a forma como o objeto será representado no formado String.
+     * @param numero
+     * Número da entrada
+     * @param produto
+     * Objeto do tipo Produto
+     * @param fornecedor
+     * Objeto do tipo Fornecedor
+     * @param dataEntrada
+     * * Data no formato de String ou java.sql.Date.
+     * @param lote
+     * Número do lote
+     * @param qtde
+     * Quantidade do produto
+     * @param saldo 
+     * Quantidade disponível
+     */
+    public Entrada(int comportamentoToString, Integer numero, Produto produto,
+            Fornecedor fornecedor, Object dataEntrada, String lote,
+            Double qtde, Double saldo){
+        this(numero, produto, fornecedor, dataEntrada, lote, qtde, saldo);
+        this.comportamentoToString=comportamentoToString;
     }
     
     /**
@@ -132,6 +169,7 @@ public class Entrada {
     public Entrada(Produto produto, Fornecedor fornecedor, 
             Object dataEntrada, String lote, Double qtde){
         java.util.Date dt;
+        this.comportamentoToString=Entrada.TO_STRING_DEFAULT;
         this.numero = 0;
         this.qtde = qtde;
         if (dataEntrada instanceof String){
@@ -268,6 +306,13 @@ public class Entrada {
      */
     @Override
     public String toString(){
+        if (getComportamentoToString() == Entrada.TO_STRING_FULL){
+            return toStringAll();
+        }
+        if (getComportamentoToString() == Entrada.TO_STRING_PROD_LOTE_SALDO){
+            return getProduto().getDescProd() + " - " + lote 
+                    + " - " + getSaldo() + getProduto().getUnidade().getDescricao();
+        }
         return numero + " de " + dataEntrada;
     }
     
@@ -278,7 +323,36 @@ public class Entrada {
      */
     public String toStringAll(){
         return numero + " - " + dataEntrada + " - " + fornecedor.toString()
-                + " - " + produto.toString() +  " - " + qtde +  " - " + lote;
+                + " - " + produto.toString() +  " - " + qtde +  " - " + lote
+                + " - " + getSaldo() + " - " + produto.getStatusProd();
+    }
+
+    /**
+     * @return the comportamentoToString
+     */
+    public int getComportamentoToString() {
+        return comportamentoToString;
+    }
+
+    /**
+     * @param comportamentoToString the comportamentoToString to set
+     */
+    public void setComportamentoToString(int comportamentoToString) {
+        this.comportamentoToString = comportamentoToString;
+    }
+
+    /**
+     * @return the saldo
+     */
+    public Double getSaldo() {
+        return saldo;
+    }
+
+    /**
+     * @param saldo the saldo to set
+     */
+    public void setSaldo(Double saldo) {
+        this.saldo = saldo;
     }
     
 }
