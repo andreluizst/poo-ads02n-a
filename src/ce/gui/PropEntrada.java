@@ -86,12 +86,12 @@ public class PropEntrada extends javax.swing.JDialog {
      * Objeto do tipo Entrada cujos dados serão exibidos nos campos texto da tela.
      */
     private void setFields(Entrada obj){
-        String sQtde="";
+        //String sQtde="";
         jtxtNumero.setText(obj.getNumero().toString());
         jftfData.setText(obj.getDataEntrada());
         jtxtLote.setText(obj.getLote());
-        sQtde= obj.getQtde().toString();
-        jtxtQtde.setText(sQtde.replaceAll("[.]", ","));
+        //sQtde= obj.getQtde().toString();
+        jtxtQtde.setText(obj.getQtde().toString().replaceAll("[.]", ","));
         if (lstFornecedor.size()>0){
             for (int i=0;i<lstFornecedor.size();i++){
                 if (lstFornecedor.get(i).getCodForn() == obj.getFornecedor().getCodForn()){
