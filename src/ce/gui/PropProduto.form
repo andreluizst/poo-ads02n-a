@@ -244,6 +244,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="&lt;"/>
       </Properties>
+      <BindingProperties>
+        <BindingProperty name="enabled" source="jlstFornsProd" sourcePath="${selectedElement!=null}" target="btnRemoveUmForn" targetPath="enabled" updateStrategy="0" immediately="false"/>
+      </BindingProperties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnRemoveUmFornActionPerformed"/>
       </Events>
@@ -252,6 +255,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="&lt;&lt;"/>
       </Properties>
+      <BindingProperties>
+        <BindingProperty name="enabled" source="jlstFornsProd" sourcePath="${selectedElement!=null}" target="btnRemoveTodosForns" targetPath="enabled" updateStrategy="0" immediately="false"/>
+      </BindingProperties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnRemoveTodosFornsActionPerformed"/>
       </Events>
@@ -264,6 +270,9 @@
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
       <SubComponents>
         <Component class="javax.swing.JList" name="jlstFornsProd">
+          <BindingProperties>
+            <BindingProperty name="elements" source="lstFornsProd" target="jlstFornsProd" targetPath="elements" updateStrategy="0" immediately="false"/>
+          </BindingProperties>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;Fornecedor&gt;"/>
           </AuxValues>
@@ -284,6 +293,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="&gt;&gt;"/>
       </Properties>
+      <BindingProperties>
+        <BindingProperty name="enabled" source="jlstForns" sourcePath="${selectedElement!=null}" target="btnAdiconaTodosForns" targetPath="enabled" updateStrategy="0" immediately="false"/>
+      </BindingProperties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAdiconaTodosFornsActionPerformed"/>
       </Events>
@@ -292,6 +304,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="&gt;"/>
       </Properties>
+      <BindingProperties>
+        <BindingProperty name="enabled" source="jlstForns" sourcePath="${selectedElement!=null}" target="btnAdicionaUmForn" targetPath="enabled" updateStrategy="0" immediately="false"/>
+      </BindingProperties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAdicionaUmFornActionPerformed"/>
       </Events>
@@ -304,6 +319,9 @@
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
       <SubComponents>
         <Component class="javax.swing.JList" name="jlstForns">
+          <BindingProperties>
+            <BindingProperty name="elements" source="lstForns" target="jlstForns" targetPath="elements" updateStrategy="0" immediately="false"/>
+          </BindingProperties>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;Fornecedor&gt;"/>
           </AuxValues>

@@ -646,6 +646,7 @@ public class PropFornecedor extends javax.swing.JDialog {
         lstProdsForn.addAll(lstProdsNaoForn);
         ordenarLista(lstProdsForn);
         lstProdsNaoForn.clear();
+        jlstProdsForn.setSelectedIndex(lstProdsForn.size()-1);
     }//GEN-LAST:event_btnAdiconaTodosProdsActionPerformed
     
     /**
@@ -656,6 +657,7 @@ public class PropFornecedor extends javax.swing.JDialog {
         lstProdsNaoForn.addAll(lstProdsForn);
         ordenarLista(lstProdsNaoForn);
         lstProdsForn.clear();
+        jlstProdsNaoFornecidos.setSelectedIndex(lstProdsNaoForn.size()-1);
     }//GEN-LAST:event_btnRemoveTodosProdsActionPerformed
     
     /**

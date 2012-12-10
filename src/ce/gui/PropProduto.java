@@ -62,6 +62,12 @@ public class PropProduto extends javax.swing.JDialog {
         jtxtQtdeMin.setDocument(new TeclasPermitidas("[^0-9|^,]", ","));
         f= Fachada.getInstancia();
         res= Resource.getInstancia();
+        try{
+            lstCategoria.addAll(f.listarCategoria());
+            lstUnidade.addAll(f.listarUnidade());
+        }catch(GeralException ex){
+            JOptionPane.showMessageDialog(null, ex.getMessage());
+        }
         //atlzProdutos(); 
          if (prod == null){
             isIns= true;
@@ -107,7 +113,7 @@ public class PropProduto extends javax.swing.JDialog {
         lstFornsProd.addAll(prod.getFornecedores());
         lstForns.clear();
         try{
-        lstForns.addAll(f.pesqFornsQueNaoFornecemEsteProd(prod.getCodProd()));
+            lstForns.addAll(f.pesqFornsQueNaoFornecemEsteProd(prod.getCodProd()));
         }catch(GeralException e){
             JOptionPane.showMessageDialog(null, e.getMessage());
         }
@@ -278,6 +284,10 @@ public class PropProduto extends javax.swing.JDialog {
         lblImg.setText("lblImg");
 
         btnRemoveUmForn.setText("<");
+
+        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, jlstFornsProd, org.jdesktop.beansbinding.ELProperty.create("${selectedElement!=null}"), btnRemoveUmForn, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
+        bindingGroup.addBinding(binding);
+
         btnRemoveUmForn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnRemoveUmFornActionPerformed(evt);
@@ -285,11 +295,18 @@ public class PropProduto extends javax.swing.JDialog {
         });
 
         btnRemoveTodosForns.setText("<<");
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, jlstFornsProd, org.jdesktop.beansbinding.ELProperty.create("${selectedElement!=null}"), btnRemoveTodosForns, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
+        bindingGroup.addBinding(binding);
+
         btnRemoveTodosForns.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnRemoveTodosFornsActionPerformed(evt);
             }
         });
+
+        org.jdesktop.swingbinding.JListBinding jListBinding = org.jdesktop.swingbinding.SwingBindings.createJListBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, lstFornsProd, jlstFornsProd);
+        bindingGroup.addBinding(jListBinding);
 
         jScrollPane2.setViewportView(jlstFornsProd);
 
@@ -298,6 +315,10 @@ public class PropProduto extends javax.swing.JDialog {
         jLabel13.setText("Lista de fornecedores");
 
         btnAdiconaTodosForns.setText(">>");
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, jlstForns, org.jdesktop.beansbinding.ELProperty.create("${selectedElement!=null}"), btnAdiconaTodosForns, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
+        bindingGroup.addBinding(binding);
+
         btnAdiconaTodosForns.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAdiconaTodosFornsActionPerformed(evt);
@@ -305,11 +326,18 @@ public class PropProduto extends javax.swing.JDialog {
         });
 
         btnAdicionaUmForn.setText(">");
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, jlstForns, org.jdesktop.beansbinding.ELProperty.create("${selectedElement!=null}"), btnAdicionaUmForn, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
+        bindingGroup.addBinding(binding);
+
         btnAdicionaUmForn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAdicionaUmFornActionPerformed(evt);
             }
         });
+
+        jListBinding = org.jdesktop.swingbinding.SwingBindings.createJListBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, lstForns, jlstForns);
+        bindingGroup.addBinding(jListBinding);
 
         jScrollPane1.setViewportView(jlstForns);
 
@@ -476,7 +504,7 @@ public class PropProduto extends javax.swing.JDialog {
             } else {
                 idx = jlstFornsProd.getSelectedIndex();
             }
-            lstForns.add(lstForns.get(idx));
+            lstForns.add(lstFornsProd.get(idx));
             ordenarLista(lstForns);
             jlstForns.setSelectedIndex(lstForns.size() - 1);
             lstFornsProd.remove(idx);
@@ -491,12 +519,14 @@ public class PropProduto extends javax.swing.JDialog {
         lstForns.addAll(lstFornsProd);
         ordenarLista(lstForns);
         lstFornsProd.clear();
+        jlstForns.setSelectedIndex(lstForns.size() - 1);
     }//GEN-LAST:event_btnRemoveTodosFornsActionPerformed
 
     private void btnAdiconaTodosFornsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdiconaTodosFornsActionPerformed
         lstFornsProd.addAll(lstForns);
         ordenarLista(lstFornsProd);
         lstForns.clear();
+        jlstFornsProd.setSelectedIndex(lstFornsProd.size() - 1);
     }//GEN-LAST:event_btnAdiconaTodosFornsActionPerformed
 
     private void btnAdicionaUmFornActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionaUmFornActionPerformed
