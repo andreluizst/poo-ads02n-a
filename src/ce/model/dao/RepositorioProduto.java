@@ -500,10 +500,10 @@ public class RepositorioProduto implements IRepositorioProduto{
         Double qtdeAtual= 0.00;
         Connection c = gc.conectar();
         String sql= "Update Produto set qtdeEstoq=? where codProd=?";
-        String sqlEntrada= "select soma(qtde) as qtdeTotal from Entrada"
-                + " where codProd=? group by codProd";
-        String sqlSaida= "Select soma(qtde) as qtdeTotal from Saida"
-                +" where codProd=? Group By codProd";
+        String sqlEntrada= "SELECT SUM(qtde) as qtdeTotal FROM Entrada"
+                + " WHERE codProd=?";
+        String sqlSaida= "SELECT SUM(s.qtde) as saidaTotal FROM Saida as s "
+                + "inner join entrada as e on e.codEnt = s.codEnt and e.codProd=? ";
         try{
             PreparedStatement pstmtEnt= c.prepareStatement(sqlEntrada);
             pstmtEnt.setInt(1, p.getCodProd());
@@ -515,9 +515,9 @@ public class RepositorioProduto implements IRepositorioProduto{
             pstmtEnt.close();
             PreparedStatement pstmtSai= c.prepareStatement(sqlSaida);
             pstmtSai.setInt(1, p.getCodProd());
-            ResultSet rsSai= pstmtSai.executeQuery(sqlSaida);
+            ResultSet rsSai= pstmtSai.executeQuery();
             while (rsSai.next()){
-                qtdeAtual-= rsSai.getDouble("qtdeTotal");
+                qtdeAtual-= rsSai.getDouble("saidaTotal");
             }
             rsSai.close();
             pstmtSai.close();

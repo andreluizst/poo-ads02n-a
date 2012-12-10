@@ -155,6 +155,11 @@ public class Fachada {
         return ctrlProd.trazer(cod, comFornecedores);
     }
     
+    public void atlzEstoqueDoProd(Produto p) throws GeralException{
+        ctrlProd.verificarSeExiste(p);
+        ctrlProd.atualizarQtde(p);
+    }
+    
     
     
     /*

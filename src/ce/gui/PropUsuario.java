@@ -77,8 +77,8 @@ public class PropUsuario extends javax.swing.JDialog {
             } catch (GeralException ex) {
                 JOptionPane.showMessageDialog(null, ex.getMessage());
             }
-            lblNvSenha.setVisible(!isIns);
-            jpfNvSenha.setVisible(lblNvSenha.isVisible());
+            lblNvSenha.setVisible(false);//!isIns);
+            jpfNvSenha.setVisible(false);//lblNvSenha.isVisible());
             jpfSenha.setEditable(isAdm);
         }
     }

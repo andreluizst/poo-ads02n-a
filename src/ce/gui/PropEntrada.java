@@ -23,6 +23,7 @@ public class PropEntrada extends javax.swing.JDialog {
     private boolean isIns;
     private Resource res;
     private Entrada entrada;
+    private Entrada oldEntrada;
     /**
      * A return status code - returned if Cancel button has been pressed
      */
@@ -53,6 +54,7 @@ public class PropEntrada extends javax.swing.JDialog {
         jtxtQtde.setDocument(new TeclasPermitidas("[^0-9|^,]", ","));
         f= Fachada.getInstancia();
         res= Resource.getInstancia();
+        oldEntrada= obj;
         try {
                 lstFornecedor.addAll(f.listarFornecedor());
             } catch (GeralException ex) {
@@ -84,10 +86,12 @@ public class PropEntrada extends javax.swing.JDialog {
      * Objeto do tipo Entrada cujos dados serão exibidos nos campos texto da tela.
      */
     private void setFields(Entrada obj){
+        String sQtde="";
         jtxtNumero.setText(obj.getNumero().toString());
         jftfData.setText(obj.getDataEntrada());
         jtxtLote.setText(obj.getLote());
-        jtxtQtde.setText(obj.getQtde().toString());
+        sQtde= obj.getQtde().toString();
+        jtxtQtde.setText(sQtde.replaceAll("[.]", ","));
         if (lstFornecedor.size()>0){
             for (int i=0;i<lstFornecedor.size();i++){
                 if (lstFornecedor.get(i).getCodForn() == obj.getFornecedor().getCodForn()){
@@ -131,7 +135,7 @@ public class PropEntrada extends javax.swing.JDialog {
         obj.setFornecedor(lstFornecedor.get(jcbxFornecedor.getSelectedIndex()));
         obj.setProduto(jcbxProdsForn.getItemAt(jcbxProdsForn.getSelectedIndex()));
     }
-
+    
     /**
      * @return the return status of this dialog - one of RET_OK or RET_CANCEL
      */
@@ -335,6 +339,9 @@ public class PropEntrada extends javax.swing.JDialog {
                 f.incluir(entrada);
             }else{
                 f.alterar(entrada);
+                if (oldEntrada.getProduto().getCodProd() != entrada.getProduto().getCodProd()){
+                    f.atlzEstoqueDoProd(oldEntrada.getProduto());
+                }
             }
             doClose(RET_OK);
         }catch(GeralException e){

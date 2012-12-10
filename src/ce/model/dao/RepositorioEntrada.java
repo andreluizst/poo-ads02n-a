@@ -16,7 +16,6 @@ import ce.model.basica.Entrada;
 import ce.util.GerenciadorConexao;
 import ce.util.IGerenciadorConexao;
 import java.sql.*;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -233,7 +232,7 @@ public class RepositorioEntrada implements IRepositorioEntrada{
         try{
             PreparedStatement pstmt= c.prepareStatement(sql);
             pstmt.setInt(1, num);
-            ResultSet rs= pstmt.executeQuery(sql);
+            ResultSet rs= pstmt.executeQuery();
             IRepositorioProduto rpProd= new RepositorioProduto();
             IRepositorioFornecedor rpForn= new RepositorioFornecedor();
             while (rs.next()){
@@ -249,11 +248,11 @@ public class RepositorioEntrada implements IRepositorioEntrada{
         }
         catch(SQLException ex){
             throw new RepositorioPesquisarException(ex,
-                    RepositorioEntrada.class.getName()+".pesqNum()");
+                    RepositorioEntrada.class.getName()+".pesquisar(num)");
         }
         catch(RepositorioException ex){
             throw new RepositorioPesquisarException(ex, 
-                    RepositorioEntrada.class.getName()+".pesqNum()."+ex.getPathClassCall());
+                    RepositorioEntrada.class.getName()+".pesquisar(num)."+ex.getPathClassCall());
         }
         finally{
             gerenciadorConexao.desconectar(c);
@@ -303,7 +302,7 @@ public class RepositorioEntrada implements IRepositorioEntrada{
             sqlDateFinal= new java.sql.Date(new SimpleDateFormat("dd/MM/yyyy").parse(dataFinal).getTime());
         }catch(java.text.ParseException pe){
             throw new RepositorioPesquisarException(pe,
-                    RepositorioEntrada.class.getName()+".pesquisarNoPeriodo()");
+                    RepositorioEntrada.class.getName()+".pesquisar(dataInicial, dataFinal)");
         }
         Entrada e=null;
         Connection c= gerenciadorConexao.conectar();
@@ -368,11 +367,11 @@ public class RepositorioEntrada implements IRepositorioEntrada{
         }
         catch(SQLException ex){
             throw new RepositorioPesquisarException(ex,
-                    RepositorioEntrada.class.getName()+".pesquisarNoPeriodo()");
+                    RepositorioEntrada.class.getName()+".pesquisar(dataInicial, dataFinal)");
         }
         catch(RepositorioException ex){
             throw new RepositorioPesquisarException(ex, 
-                    RepositorioEntrada.class.getName()+".pesquisarNoPeriodo()."+ex.getPathClassCall());
+                    RepositorioEntrada.class.getName()+".pesquisar(dataInicial, dataFinal)"+ex.getPathClassCall());
         }
         finally{
             gerenciadorConexao.desconectar(c);

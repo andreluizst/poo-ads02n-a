@@ -103,3 +103,45 @@ root -> 09/12/2012 - 19:23:06
 	ce.util.GerenciadorConexao.conectar(): java.sql.SQLException: Access denied for user 'root'@'localhost' (using password: YES)
 joao.souza -> 09/12/2012 - 19:23:06
 	ce.model.regra.ControladorUsuario.validarLogin(): No momento não é possível validar o login.
+Sistema -> 09/12/2012 - 21:39:11
+	ce.model.dao.RepositorioProduto.atualizarQtde(): com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: FUNCTION estoque.soma does not exist
+Sistema -> 09/12/2012 - 21:39:11
+	ce.model.dao.RepositorioEntrada.inserir(): Erro ao tentar atualizar a quantidade do produto em estoque.
+joao.souza -> 09/12/2012 - 21:39:11
+	ce.model.regra.ControladorEntrada.inserir(): Erro ao tentar inserir entrada.
+joao.souza -> 09/12/2012 - 21:42:17
+	ce.model.regra.ControladorUsuario.validarLogin(): Senha inválida!
+Sistema -> 09/12/2012 - 21:42:50
+	ce.model.dao.RepositorioEntrada.pesqNum(): com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '?' at line 1
+joao.souza -> 09/12/2012 - 21:42:50
+	ce.model.regra.ControladorEntrada.verificarSeExiste(): Erro ao tentar verificar entrada.
+Sistema -> 09/12/2012 - 21:44:33
+	ce.model.dao.RepositorioProduto.atualizarQtde(): com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '? GROUP BY codProd' at line 1
+Sistema -> 09/12/2012 - 21:44:33
+	ce.model.dao.RepositorioEntrada.inserir(): Erro ao tentar atualizar a quantidade do produto em estoque.
+joao.souza -> 09/12/2012 - 21:44:33
+	ce.model.regra.ControladorEntrada.inserir(): Erro ao tentar inserir entrada.
+Sistema -> 09/12/2012 - 21:48:47
+	ce.model.dao.RepositorioEntrada.pesqNum(): com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '?' at line 1
+joao.souza -> 09/12/2012 - 21:48:47
+	ce.model.regra.ControladorEntrada.verificarSeExiste(): Erro ao tentar verificar entrada.
+Sistema -> 09/12/2012 - 21:54:20
+	ce.model.dao.RepositorioProduto.atualizarQtde(): com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '? GROUP BY codProd' at line 1
+Sistema -> 09/12/2012 - 21:54:20
+	ce.model.dao.RepositorioEntrada.alterar(): Erro ao tentar atualizar a quantidade do produto em estoque.
+joao.souza -> 09/12/2012 - 21:54:20
+	ce.model.regra.ControladorEntrada.alterar(): ce.erro.RepositorioAlterarException: Erro ao tentar atualizar a quantidade do produto em estoque.
+Sistema -> 09/12/2012 - 22:18:51
+	ce.model.dao.RepositorioProduto.atualizarQtde(): com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '?' at line 1
+Sistema -> 09/12/2012 - 22:18:51
+	ce.model.dao.RepositorioEntrada.alterar(): Erro ao tentar atualizar a quantidade do produto em estoque.
+joao.souza -> 09/12/2012 - 22:18:51
+	ce.model.regra.ControladorEntrada.alterar(): ce.erro.RepositorioAlterarException: Erro ao tentar atualizar a quantidade do produto em estoque.
+Sistema -> 09/12/2012 - 22:21:10
+	ce.model.dao.RepositorioProduto.atualizarQtde(): com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '?' at line 1
+Sistema -> 09/12/2012 - 22:21:10
+	ce.model.dao.RepositorioEntrada.alterar(): Erro ao tentar atualizar a quantidade do produto em estoque.
+joao.souza -> 09/12/2012 - 22:21:10
+	ce.model.regra.ControladorEntrada.alterar(): ce.erro.RepositorioAlterarException: Erro ao tentar atualizar a quantidade do produto em estoque.
+joao.souza -> 09/12/2012 - 22:23:13
+	ce.model.regra.ControladorUsuario.validarLogin(): Senha inválida!
