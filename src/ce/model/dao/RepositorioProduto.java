@@ -48,6 +48,8 @@ public class RepositorioProduto implements IRepositorioProduto{
             + " values(?, ?, ?, ?, ?, ?, ?)";
         int codForn=0;
         String sqlForns= "insert into FornXProd(codProd, codForn) values(?,?)";
+        Produto novoProd;
+        List<Produto> lstProd;
         try{
             PreparedStatement pstmt= conexao.prepareStatement(sql);
             pstmt.setString(1, p.getDescProd());
@@ -62,18 +64,21 @@ public class RepositorioProduto implements IRepositorioProduto{
             pstmt.setInt(6, p.getStatus());
             pstmt.setInt(7, p.getUnidade().getCodUnid());
             pstmt.execute();
+            lstProd= pesquisar(p.getDescProd());
+            novoProd=  lstProd.get(0);
             if (p.getFornecedores().size() >= 1){
-                PreparedStatement pstmtFornProd= conexao.prepareStatement(sqlForns);
+                PreparedStatement pstmtFornProd;//= conexao.prepareStatement(sqlForns);
                 for(int i=0;i<p.getFornecedores().size();i++){
-                    pstmtFornProd.setInt(1, p.getCodProd());
+                    pstmtFornProd= conexao.prepareStatement(sqlForns);
+                    pstmtFornProd.setInt(1, novoProd.getCodProd());//p.getCodProd());
                     pstmtFornProd.setInt(2, p.getFornecedores().get(i).getCodForn());
-                    pstmtFornProd.execute();
+                    pstmtFornProd.executeUpdate();
                     pstmtFornProd.close();
                 }
             }
             pstmt.close();
         }
-        catch (SQLException e){
+        catch (SQLException | RepositorioPesquisarException e){
             throw new RepositorioInserirException(e, 
                     RepositorioProduto.class.getName()+".inserir()");
         }
@@ -199,6 +204,7 @@ public class RepositorioProduto implements IRepositorioProduto{
             PreparedStatement pstmt = conexao.prepareStatement(sql);
             pstmt.setInt(1, codProd);
             PreparedStatement pstmtFp= conexao.prepareStatement(sqlFrons);
+            pstmtFp.setInt(1, codProd);
             pstmtFp.execute();
             pstmt.execute();
             pstmt.close();

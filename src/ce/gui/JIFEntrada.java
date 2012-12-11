@@ -87,6 +87,8 @@ public class JIFEntrada extends javax.swing.JInternalFrame implements IActionsGu
                 JOptionPane.showMessageDialog(null, ex.getMessage());
             }
         }
+        //selectObj(obj);
+        firstRecord();
     }
     
     /**
@@ -122,6 +124,7 @@ public class JIFEntrada extends javax.swing.JInternalFrame implements IActionsGu
                 JOptionPane.showMessageDialog(null, ex.getMessage());
             }
         }
+        firstRecord();
     }
     
     /**
@@ -144,6 +147,7 @@ public class JIFEntrada extends javax.swing.JInternalFrame implements IActionsGu
                 JOptionPane.showMessageDialog(null, ex.getMessage());
             }
         }
+        selectObj(obj);
     }
     
     /**

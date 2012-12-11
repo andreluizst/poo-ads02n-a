@@ -30,6 +30,22 @@
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;Unidade&gt;"/>
       </AuxValues>
     </Component>
+    <Container class="javax.swing.JPopupMenu" name="jPopupMenu1">
+
+      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout">
+        <Property name="useNullLayout" type="boolean" value="true"/>
+      </Layout>
+      <SubComponents>
+        <MenuItem class="javax.swing.JMenuItem" name="pupmnNvUnid">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Nova unidade..."/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="pupmnNvUnidActionPerformed"/>
+          </Events>
+        </MenuItem>
+      </SubComponents>
+    </Container>
   </NonVisualComponents>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
@@ -352,6 +368,11 @@
       </BindingProperties>
     </Component>
     <Component class="javax.swing.JComboBox" name="jcbxUnid">
+      <Properties>
+        <Property name="componentPopupMenu" type="javax.swing.JPopupMenu" editor="org.netbeans.modules.form.ComponentChooserEditor">
+          <ComponentRef name="jPopupMenu1"/>
+        </Property>
+      </Properties>
       <BindingProperties>
         <BindingProperty name="elements" source="lstUnidade" target="jcbxUnid" targetPath="elements" updateStrategy="0" immediately="false"/>
       </BindingProperties>

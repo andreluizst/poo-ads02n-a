@@ -213,6 +213,7 @@ public class PropEntrada extends javax.swing.JDialog {
         lblImg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ce/gui/images/Arquivo-Alterar3.jpg"))); // NOI18N
         lblImg.setText("lblImg");
 
+        jtxtNumero.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         jtxtNumero.setEditable(false);
         jtxtNumero.setEnabled(false);
 

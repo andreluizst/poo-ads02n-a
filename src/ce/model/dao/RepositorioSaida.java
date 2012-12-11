@@ -54,8 +54,11 @@ public class RepositorioSaida implements IRepositorioSaida{
             pstmt.setDouble(3, s.getQtde());
             pstmt.executeUpdate();
             pstmt.close();
+            s.getEntrada().setSaldo(s.getEntrada().getQtde()-s.getQtde());
+            IRepositorioEntrada rpEnt= new RepositorioEntrada();
+            rpEnt.alterar(s.getEntrada());
         }
-        catch(SQLException e){
+        catch(SQLException | RepositorioAlterarException e){
             throw new RepositorioInserirException(e, 
                     RepositorioSaida.class.getName()+".inserir()");
         }
@@ -88,6 +91,9 @@ public class RepositorioSaida implements IRepositorioSaida{
             pstmt.setInt(4, s.getCodSaida());
             pstmt.executeUpdate();
             pstmt.close();
+            s.getEntrada().setSaldo(s.getEntrada().getQtde()-s.getQtde());
+            IRepositorioEntrada rpEnt= new RepositorioEntrada();
+            rpEnt.alterar(s.getEntrada());
         }
         catch(SQLException e){
             throw new RepositorioAlterarException(e, 

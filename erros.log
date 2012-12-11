@@ -161,3 +161,21 @@ Sistema -> 10/12/2012 - 19:01:56
 	ce.model.dao.RepositorioSaida.listar(): com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Unknown column 'dtSaida' in 'order clause'
 joao.souza -> 10/12/2012 - 19:01:56
 	ce.model.regra.ControladorSaida.listar(): Erro ao tentar listar saída.
+joao.souza -> 10/12/2012 - 20:50:18
+	ce.model.regra.ControladorProduto.verificarSePodeInserir(): O produto informado já existe.
+joao.souza -> 10/12/2012 - 21:00:45
+	ce.model.regra.ControladorProduto.verificarSePodeInserir(): O produto informado já existe.
+Sistema -> 10/12/2012 - 21:01:12
+	ce.model.dao.RepositorioProduto.excluir(): java.sql.SQLException: No value specified for parameter 1
+joao.souza -> 10/12/2012 - 21:01:12
+	ce.model.regra.ControladorProduto.excluir(): Erro ao tentar exluir produto.
+Sistema -> 10/12/2012 - 21:01:21
+	ce.model.dao.RepositorioProduto.excluir(): java.sql.SQLException: No value specified for parameter 1
+joao.souza -> 10/12/2012 - 21:01:21
+	ce.model.regra.ControladorProduto.excluir(): Erro ao tentar exluir produto.
+Sistema -> 10/12/2012 - 21:17:50
+	ce.model.dao.RepositorioProduto.inserir(): com.mysql.jdbc.exceptions.jdbc4.MySQLNonTransientConnectionException: No operations allowed after statement closed.
+joao.souza -> 10/12/2012 - 21:17:50
+	ce.model.regra.ControladorProduto.inserir(): Erro ao tentar inserir produto.
+joao.souza -> 10/12/2012 - 21:36:45
+	ce.model.regra.ControladorSaida.validarDados(): A quantidade da saída não pode ser maior que a quantade em estoque para este lote!

@@ -37,9 +37,9 @@ public class Main {
         }
         //<teste>
         user= f.getUser();
-        System.out.println("Usuário: " + user.getNome()+"\n"
+        /*System.out.println("Usuário: " + user.getNome()+"\n"
                 + "Perfil: "+ user.getPerfil().getNome()+"\n"
-                + "CPF: " + user.getFuncionario().getCpf());
+                + "CPF: " + user.getFuncionario().getCpf());*/
         //</teste>
         mdiShell= new MainMDIApplication();
         mdiShell.setLocationRelativeTo(null);

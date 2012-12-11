@@ -54,6 +54,7 @@ public class PropSaida extends javax.swing.JDialog {
                 doClose(RET_CANCEL);
             }
         });
+        jtxtQtde.setDocument(new TeclasPermitidas("[^0-9|^,]", ","));
         f= Fachada.getInstancia();
         res= Resource.getInstancia();
         try{
@@ -63,7 +64,7 @@ public class PropSaida extends javax.swing.JDialog {
         }
         if (obj == null){
             isIns= true;
-            this.setTitle("INCLUIR fornecedor");
+            this.setTitle("INCLUIR saída");
             try {
                 lblImg.setIcon(res.get("\\images\\Arquivo-Novo.jpg", lblImg.getWidth(), lblImg.getHeight()));
             } catch (GeralException ex) {
@@ -72,7 +73,7 @@ public class PropSaida extends javax.swing.JDialog {
         }else{
             isIns= false;
             setFields(obj);
-            this.setTitle("ALTERAR fornecedor");
+            this.setTitle("ALTERAR saída");
             try {
                 lblImg.setIcon(res.get("\\images\\Arquivo-Alterar3.jpg", lblImg.getWidth(), lblImg.getHeight()));
             } catch (GeralException ex) {
@@ -87,7 +88,17 @@ public class PropSaida extends javax.swing.JDialog {
      * Objeto do tipo Saida cujos dados serão exibidos nos campos texto da tela.
      */
     private void setFields(Saida obj){
-        //entrar código
+        jtxtNumero.setText(obj.getCodSaida().toString());
+        jftfData.setText(obj.getDataSaida());
+        jtxtQtde.setText(obj.getQtde().toString().replaceAll("[.]", ","));
+        if (lstProdsDisp.size()>0){
+            for (int i=0;i<lstProdsDisp.size();i++){
+                if (lstProdsDisp.get(i).getProduto().getCodProd() == obj.getEntrada().getProduto().getCodProd()){
+                    jcbxProdsDisp.setSelectedIndex(i);
+                    break;
+                }
+            }
+        }
     }
     
     /**
@@ -97,7 +108,19 @@ public class PropSaida extends javax.swing.JDialog {
      * Objeto do tipo Saida que receberá os dados dos campos da tela.
      */
     private void setSaida(Saida obj){
-        //entrar com código
+        obj.setDataSaida(jftfData.getText());
+        try{
+            obj.setCodSaida(Integer.parseInt(jtxtNumero.getText()));
+        }catch(Exception e){
+            obj.setCodSaida(0);
+        }
+        try{
+            Double dbQtde= Double.parseDouble(jtxtQtde.getText().replaceAll("[,]", "."));
+            obj.setQtde(dbQtde);
+        }catch(Exception e){
+            obj.setQtde(0.00);
+        }
+        obj.setEntrada(lstProdsDisp.get(jcbxProdsDisp.getSelectedIndex()));
     }
 
     /**
@@ -123,6 +146,7 @@ public class PropSaida extends javax.swing.JDialog {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
         lstProdsDisp = new LinkedList<Entrada>();
         btnSalvar = new javax.swing.JButton();
@@ -130,6 +154,17 @@ public class PropSaida extends javax.swing.JDialog {
         lblImg = new javax.swing.JLabel();
         jcbxProdsDisp = new javax.swing.JComboBox();
         jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jtxtNumero = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        javax.swing.text.MaskFormatter maskData=null;
+        try{
+            maskData= new javax.swing.text.MaskFormatter("##/##/####");
+            maskData.setPlaceholderCharacter('_');
+        }catch(java.text.ParseException e){}
+        jftfData = new javax.swing.JFormattedTextField(maskData);
+        jLabel7 = new javax.swing.JLabel();
+        jtxtQtde = new javax.swing.JTextField();
 
         lstProdsDisp= org.jdesktop.observablecollections.ObservableCollections.observableList(lstProdsDisp);
 
@@ -156,26 +191,53 @@ public class PropSaida extends javax.swing.JDialog {
         lblImg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ce/gui/images/Arquivo-Alterar3.jpg"))); // NOI18N
         lblImg.setText("lblImg");
 
+        org.jdesktop.swingbinding.JComboBoxBinding jComboBoxBinding = org.jdesktop.swingbinding.SwingBindings.createJComboBoxBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, lstProdsDisp, jcbxProdsDisp);
+        bindingGroup.addBinding(jComboBoxBinding);
+
         jLabel1.setText("Produtos disponíveis");
+
+        jLabel2.setText("Número");
+
+        jtxtNumero.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        jtxtNumero.setEditable(false);
+        jtxtNumero.setEnabled(false);
+
+        jLabel3.setText("Data");
+
+        jLabel7.setText("Quantidade");
+
+        jtxtQtde.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        jtxtQtde.setToolTipText("");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGap(19, 19, 19)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnCancelar))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(43, 43, 43)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jcbxProdsDisp, javax.swing.GroupLayout.PREFERRED_SIZE, 369, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel1))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
-                        .addComponent(lblImg, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jLabel1)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel2)
+                                    .addComponent(jtxtNumero, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel3)
+                                    .addComponent(jftfData, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
+                        .addComponent(lblImg, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel7)
+                            .addComponent(jtxtQtde, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnCancelar)))
                 .addContainerGap())
         );
 
@@ -183,22 +245,39 @@ public class PropSaida extends javax.swing.JDialog {
 
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblImg, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(96, 96, 96)
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jtxtNumero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jftfData, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(18, 18, 18)
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jcbxProdsDisp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 189, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnCancelar)
-                    .addComponent(btnSalvar))
-                .addContainerGap())
+                        .addComponent(jcbxProdsDisp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel7)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jtxtQtde, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(lblImg, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(37, 37, 37)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnCancelar)
+                            .addComponent(btnSalvar))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         getRootPane().setDefaultButton(btnSalvar);
+
+        bindingGroup.bind();
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -281,9 +360,16 @@ public class PropSaida extends javax.swing.JDialog {
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnSalvar;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JComboBox jcbxProdsDisp;
+    private javax.swing.JFormattedTextField jftfData;
+    private javax.swing.JTextField jtxtNumero;
+    private javax.swing.JTextField jtxtQtde;
     private javax.swing.JLabel lblImg;
     private java.util.List<Entrada> lstProdsDisp;
+    private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
     private int returnStatus = RET_CANCEL;
 }

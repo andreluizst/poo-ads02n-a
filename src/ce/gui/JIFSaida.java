@@ -29,7 +29,7 @@ public class JIFSaida extends javax.swing.JInternalFrame implements IActionsGui 
     public JIFSaida() {
         initComponents();
         f= Fachada.getInstancia();
-        activationName= "Entrada";
+        activationName= "Saída";
         hj= new Date();
         jftfDtInicial.setText("01/01/1900");
         jftfDtFinal.setText(new java.text.SimpleDateFormat("dd/MM/yyyy").format(hj));

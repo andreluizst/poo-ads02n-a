@@ -55,6 +55,11 @@ public class ControladorSaida {
                     rb.getString("CtrlErroValInvalido"),
                     ControladorSaida.class.getName()+".validarDados()");
         }
+        if (s.getQtde() > s.getEntrada().getSaldo()){
+            throw new ControladorException(user.getNome(),
+                    "A quantidade da saída não pode ser maior que a quantade em estoque para este lote!",
+                    ControladorSaida.class.getName()+".validarDados()");
+        }
     }
     
     public void inserir(Saida s) throws ControladorException{
@@ -73,7 +78,16 @@ public class ControladorSaida {
         }
     }
     
+    public void verificarSePodeAlterar(Saida s) throws ControladorException{
+        if (s.getQtde() > s.getEntrada().getSaldo()){
+            throw new ControladorException(user.getNome(),
+                    "A quantidade da saída não pode ser maior que a quantade em estoque para este lote!",
+                    ControladorSaida.class.getName()+".verificarSePodeAlterar()");
+        }
+    }
+    
     public void alterar(Saida s) throws ControladorException{
+        verificarSePodeAlterar(s);
         try{
             rpSaida.alterar(s);
         }

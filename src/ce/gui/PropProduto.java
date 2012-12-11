@@ -159,7 +159,7 @@ public class PropProduto extends javax.swing.JDialog {
         }
         prod.setUnidade(lstUnidade.get(jcbxUnid.getSelectedIndex()));
         prod.setCategoria(lstCategoria.get(jcbxCateg.getSelectedIndex()));
-        prod.setFornecedores(lstFornsProd);
+        //prod.setFornecedores(lstFornsProd);
         prod.setDescProd(jtxtDescProduto.getText());
         prod.setStatusProd(jcbxStatus.getItemAt(jcbxStatus.getSelectedIndex()).toString());
         try{
@@ -175,6 +175,10 @@ public class PropProduto extends javax.swing.JDialog {
             prod.setQtdeEstoq(0.00);
         }
         prod.setQtdeIdeal(0.00);
+        prod.getFornecedores().clear();
+        if (lstFornsProd.size()>0){
+            prod.getFornecedores().addAll(lstFornsProd);
+        }
     }
     
     /**
@@ -227,6 +231,8 @@ public class PropProduto extends javax.swing.JDialog {
         lstFornsProd = new LinkedList<Fornecedor>();
         lstCategoria = new LinkedList<Categoria>();
         lstUnidade = new LinkedList<Unidade>();
+        jPopupMenu1 = new javax.swing.JPopupMenu();
+        pupmnNvUnid = new javax.swing.JMenuItem();
         btnCancelar = new javax.swing.JButton();
         jtxtCodProduto = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
@@ -262,6 +268,14 @@ public class PropProduto extends javax.swing.JDialog {
         lstCategoria= org.jdesktop.observablecollections.ObservableCollections.observableList(lstCategoria);
 
         lstUnidade= org.jdesktop.observablecollections.ObservableCollections.observableList(lstUnidade);
+
+        pupmnNvUnid.setText("Nova unidade...");
+        pupmnNvUnid.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pupmnNvUnidActionPerformed(evt);
+            }
+        });
+        jPopupMenu1.add(pupmnNvUnid);
 
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
@@ -361,6 +375,8 @@ public class PropProduto extends javax.swing.JDialog {
 
         org.jdesktop.swingbinding.JComboBoxBinding jComboBoxBinding = org.jdesktop.swingbinding.SwingBindings.createJComboBoxBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, lstCategoria, jcbxCateg);
         bindingGroup.addBinding(jComboBoxBinding);
+
+        jcbxUnid.setComponentPopupMenu(jPopupMenu1);
 
         jComboBoxBinding = org.jdesktop.swingbinding.SwingBindings.createJComboBoxBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, lstUnidade, jcbxUnid);
         bindingGroup.addBinding(jComboBoxBinding);
@@ -498,18 +514,7 @@ public class PropProduto extends javax.swing.JDialog {
      * Salva as alterações ou o novo Produto.
      */
     private void salvar() {                                          
-        produto = new Produto();
-        setProduto(produto);
-        try{
-            if (isIns){
-                f.incluir(produto);
-            }else{
-                f.alterar(produto);
-            }
-            doClose(RET_OK);
-        }catch(GeralException ex){
-            JOptionPane.showMessageDialog(null, ex.getMessage());
-        }
+        
     }                              
        /**
      * Cancela a operação de inclusão ou alteração
@@ -574,8 +579,40 @@ public class PropProduto extends javax.swing.JDialog {
     }//GEN-LAST:event_btnAdicionaUmFornActionPerformed
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
-        salvar();
+        produto = new Produto();
+        setProduto(produto);
+        try{
+            if (isIns){
+                f.incluir(produto);
+            }else{
+                f.alterar(produto);
+            }
+            doClose(RET_OK);
+        }catch(GeralException ex){
+            JOptionPane.showMessageDialog(null, ex.getMessage());
+        }
     }//GEN-LAST:event_btnSalvarActionPerformed
+
+    private void pupmnNvUnidActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pupmnNvUnidActionPerformed
+        Unidade unid= new Unidade();
+        Unidade tmpUnid= new Unidade();
+        unid.setDescricao(JOptionPane.showInputDialog("Digite a descricação da nova unidade"));
+        try{
+            f.incluir(unid);
+            tmpUnid.setCodUnid(lstUnidade.get(jcbxUnid.getSelectedIndex()).getCodUnid());
+            tmpUnid.setDescricao(lstUnidade.get(jcbxUnid.getSelectedIndex()).getDescricao());
+            lstUnidade.clear();
+            lstUnidade.addAll(f.listarUnidade());
+            for(int i=0;i<lstUnidade.size();i++){
+                if (lstUnidade.get(i).getCodUnid() == tmpUnid.getCodUnid()){
+                    jcbxUnid.setSelectedIndex(i);
+                    break;
+                }
+            }
+        }catch(GeralException ex){
+            JOptionPane.showMessageDialog(null, ex.getMessage());
+        }
+    }//GEN-LAST:event_pupmnNvUnidActionPerformed
     
     
     /**
@@ -646,6 +683,7 @@ public class PropProduto extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JPopupMenu jPopupMenu1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JComboBox jcbxCateg;
@@ -662,6 +700,7 @@ public class PropProduto extends javax.swing.JDialog {
     private java.util.List<Fornecedor> lstForns;
     private java.util.List<Fornecedor> lstFornsProd;
     private java.util.List<Unidade> lstUnidade;
+    private javax.swing.JMenuItem pupmnNvUnid;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
     private int returnStatus = RET_CANCEL;
