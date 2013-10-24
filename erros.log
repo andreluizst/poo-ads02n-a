@@ -179,3 +179,25 @@ joao.souza -> 10/12/2012 - 21:17:50
 	ce.model.regra.ControladorProduto.inserir(): Erro ao tentar inserir produto.
 joao.souza -> 10/12/2012 - 21:36:45
 	ce.model.regra.ControladorSaida.validarDados(): A quantidade da saída não pode ser maior que a quantade em estoque para este lote!
+root -> 11/12/2012 - 00:24:49
+	ce.util.GerenciadorConexao.conectar(): java.sql.SQLException: Access denied for user 'root'@'localhost' (using password: YES)
+joao.souza -> 11/12/2012 - 00:24:49
+	ce.model.regra.ControladorUsuario.validarLogin(): No momento não é possível validar o login.
+admin -> 23/10/2013 - 21:45:55
+	ce.model.regra.ControladorFuncionario.validarDados(): CPF inválido!
+Sistema -> 23/10/2013 - 21:55:54
+	ce.model.dao.RepositorioEntrada.inserir(): com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Unknown column 'dataEnt' in 'field list'
+admin -> 23/10/2013 - 21:55:54
+	ce.model.regra.ControladorEntrada.inserir(): Erro ao tentar inserir entrada.
+Sistema -> 23/10/2013 - 21:56:53
+	ce.model.dao.RepositorioEntrada.inserir(): com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Unknown column 'dataEnt' in 'field list'
+admin -> 23/10/2013 - 21:56:53
+	ce.model.regra.ControladorEntrada.inserir(): Erro ao tentar inserir entrada.
+Sistema -> 23/10/2013 - 22:04:49
+	ce.model.dao.RepositorioEntrada.inserir(): com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Unknown column 'saldo' in 'field list'
+admin -> 23/10/2013 - 22:04:49
+	ce.model.regra.ControladorEntrada.inserir(): Erro ao tentar inserir entrada.
+Sistema -> 23/10/2013 - 22:12:53
+	ce.model.dao.RepositorioSaida.inserir(): com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Unknown column 'dataSaida' in 'field list'
+admin -> 23/10/2013 - 22:12:53
+	ce.model.regra.ControladorSaida.inserir(): Erro ao tentar inserir saída.

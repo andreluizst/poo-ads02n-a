@@ -63,6 +63,7 @@ public class PropFuncionario extends javax.swing.JDialog {
         });
         f= Fachada.getInstancia();
         res= Resource.getInstancia();
+        atlzEstados();
         if (funcionario == null ){
             this.setTitle("INCLUIR funcionário");
             isIns= true;
