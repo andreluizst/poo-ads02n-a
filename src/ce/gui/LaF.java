@@ -14,6 +14,14 @@ import javax.swing.UnsupportedLookAndFeelException;
  * @author andreluiz
  */
 public class LaF {
+    public static final String LAF_CROSS = "cross";
+    public static final String LAF_METAL = "javax.swing.plaf.metal.MetalLookAndFeel";
+    public static final String LAF_NIMBUS = "javax.swing.plaf.nimbus.NimbusLookAndFeel";
+    public static final String LAF_MOTIF = "com.sun.java.swing.plaf.motif.MotifLookAndFeel";
+    public static final String LAF_WINDOWS = "com.sun.java.swing.plaf.windows.WindowsLookAndFeel";
+    //public static final String LAF_MAC = "javax.swing.plaf.mac.MacLookAndFeel";
+    public static final String LAF_WINDOWSCLASSICO = "com.sun.java.swing.plaf.windows.WindowsClassicLookAndFeel";
+    
     public static void setNativeLookAndFeel() throws GeralException {
         try{
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -38,26 +46,16 @@ public class LaF {
     
     public static void setLookAndFeel(String estilo) throws GeralException{
         try{
-            String nome= UIManager.getCrossPlatformLookAndFeelClassName();
-            String s2="";
-            for (javax.swing.UIManager.LookAndFeelInfo info: javax.swing.UIManager.getInstalledLookAndFeels()){
-                //if (estilo.toLowerCase().equals(info.getClassName().toLowerCase())){
-                
-                if (estilo.equals(info.getClassName())){
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    JOptionPane.showMessageDialog(null, info.getClassName() + " encontrado!");
-                    break;
-                }
-                s2+=info.getClassName()+"\n";
-            }
-            System.out.println(nome);
-            System.out.println(s2);
             if (estilo.equals("cross")){
-                JOptionPane.showMessageDialog(null, "cross encontrado!");
                 UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
-            }
-            if (estilo.equals("gtk")){
-                UIManager.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
+            }else{
+                for (javax.swing.UIManager.LookAndFeelInfo info: javax.swing.UIManager.getInstalledLookAndFeels()){
+                    if (estilo.equals(info.getClassName())){
+                        javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                        //JOptionPane.showMessageDialog(null, info.getClassName() + " encontrado!");
+                        break;
+                    }
+                }
             }
         }
         catch(ClassNotFoundException | InstantiationException |
@@ -65,5 +63,13 @@ public class LaF {
             throw new GeralException(e.getMessage(),
                     LaF.class.getName()+".SetLookAndFeel()");
         }
+    }
+    
+    public static void showLookAndFeel() throws GeralException{
+            String lookAndFeel = "";
+            for (javax.swing.UIManager.LookAndFeelInfo info: javax.swing.UIManager.getInstalledLookAndFeels()){
+                lookAndFeel+= info.getClassName() + "\n";
+            }
+            JOptionPane.showMessageDialog(null, "Look and Feel encontrados: \n" + lookAndFeel);
     }
 }

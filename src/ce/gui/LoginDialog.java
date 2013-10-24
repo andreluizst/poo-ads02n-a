@@ -120,16 +120,21 @@ public class LoginDialog extends javax.swing.JDialog {
         jLabel1.setToolTipText("");
         getContentPane().add(jLabel1);
         jLabel1.setBounds(20, 23, 70, 15);
+
+        jtxtUser.setMinimumSize(new java.awt.Dimension(6, 24));
+        jtxtUser.setPreferredSize(new java.awt.Dimension(6, 24));
         getContentPane().add(jtxtUser);
-        jtxtUser.setBounds(100, 20, 170, 20);
+        jtxtUser.setBounds(100, 20, 170, 24);
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 0));
         jLabel2.setText("Senha:");
         getContentPane().add(jLabel2);
         jLabel2.setBounds(20, 54, 70, 15);
+
+        jpfSenha.setPreferredSize(new java.awt.Dimension(6, 24));
         getContentPane().add(jpfSenha);
-        jpfSenha.setBounds(100, 50, 170, 20);
+        jpfSenha.setBounds(100, 50, 170, 24);
 
         lblImagem.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblImagem.setLabelFor(this);

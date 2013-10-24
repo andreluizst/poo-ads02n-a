@@ -64,7 +64,7 @@ public class PropSaida extends javax.swing.JDialog {
         }
         if (obj == null){
             isIns= true;
-            this.setTitle("INCLUIR saída");
+            this.setTitle("NOVA saída");
             try {
                 lblImg.setIcon(res.get("\\images\\Arquivo-Novo.jpg", lblImg.getWidth(), lblImg.getHeight()));
             } catch (GeralException ex) {

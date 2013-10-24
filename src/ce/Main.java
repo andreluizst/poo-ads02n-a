@@ -23,8 +23,9 @@ public class Main {
     public static void main(String[] args) {
         f= Fachada.getInstancia();
         try {
-            //LaF.setLookAndFeel("gtk");
-            LaF.setNativeLookAndFeel(); // funciona ok
+            //LaF.showLookAndFeel();
+            LaF.setLookAndFeel(LaF.LAF_NIMBUS);
+            //LaF.setNativeLookAndFeel(); // funciona ok
             //LaF.setCrossLookAndFeel(); //funciona ok
         } catch (GeralException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage());
